@@ -1,61 +1,63 @@
-import {marketAccessDescription} from './regional-market-access.js?v=scenario-calculations-1';
-import {restartCustomScenario} from './scenario-replay.js?v=scenario-calculations-1';
-import {showBuildingDesigner} from './building-designer-ui.js?v=scenario-calculations-1';
-import {scenarioEventPresentation} from './scenario-events.js?v=scenario-calculations-1';
-import {moveScenarioCamera} from './scenario-camera.js?v=scenario-calculations-1';
-import {SCENARIO_SOUNDS,deliverScenarioSound} from './scenario-sounds.js?v=scenario-calculations-1';
-import {allowedSpeed,scenarioSpeed,resumeScenarioSpeed} from './scenario-speed.js?v=scenario-calculations-1';
-import {showPendingScenarioPopup} from './scenario-popups.js?v=scenario-calculations-1';
-import {installScenarioAreaView} from './scenario-area-view.js?v=scenario-calculations-1';
-import {canReplaceBuilding,showBuildingReplacement} from './building-replacement-ui.js?v=scenario-calculations-1';
-import {createGameAudio,showAudioSettings} from './game-audio.js?v=scenario-calculations-1';
+import {cityLibrary,cityRecord} from './city-library.js?v=city-library-1';
+import {showCityLibrary} from './city-library-ui.js?v=city-library-1';
+import {marketAccessDescription} from './regional-market-access.js?v=city-library-1';
+import {restartCustomScenario} from './scenario-replay.js?v=city-library-1';
+import {showBuildingDesigner} from './building-designer-ui.js?v=city-library-1';
+import {scenarioEventPresentation} from './scenario-events.js?v=city-library-1';
+import {moveScenarioCamera} from './scenario-camera.js?v=city-library-1';
+import {SCENARIO_SOUNDS,deliverScenarioSound} from './scenario-sounds.js?v=city-library-1';
+import {allowedSpeed,scenarioSpeed,resumeScenarioSpeed} from './scenario-speed.js?v=city-library-1';
+import {showPendingScenarioPopup} from './scenario-popups.js?v=city-library-1';
+import {installScenarioAreaView} from './scenario-area-view.js?v=city-library-1';
+import {canReplaceBuilding,showBuildingReplacement} from './building-replacement-ui.js?v=city-library-1';
+import {createGameAudio,showAudioSettings} from './game-audio.js?v=city-library-1';
 const gameAudio=createGameAudio();
-import {installNavigation} from './navigation-map.js?v=scenario-calculations-1';
-import {showSnapshots} from './snapshots-ui.js?v=scenario-calculations-1';
-import {conservationReport} from './conservation.js?v=scenario-calculations-1';
-import {LANDMARKS} from './landmarks.js?v=scenario-calculations-1';
-import {showLandmarks} from './landmarks-ui.js?v=scenario-calculations-1';
-import {startUfo} from './ufo.js?v=scenario-calculations-1';
-import {startWhirlpool} from './whirlpool.js?v=scenario-calculations-1';
-import {startToxicCloud} from './toxic-cloud.js?v=scenario-calculations-1';
-import {startSpaceJunk} from './space-junk.js?v=scenario-calculations-1';
-import {startRiot,dispatchPolice} from './riots.js?v=scenario-calculations-1';
-import {startLocusts,dispatchCropDuster} from './locusts.js?v=scenario-calculations-1';
-import {BUSINESSES} from './business.js?v=scenario-calculations-1';
-import {showBusiness} from './business-ui.js?v=scenario-calculations-1';
-import {canPreserve,designateHistorical} from './historical.js?v=scenario-calculations-1';
-import {TECHNOLOGY,available,cityYear,newlyAvailable,showTechnology} from './technology.js?v=scenario-calculations-1';
-import {tunnelAt,tunnelTiles} from './tunnels.js?v=scenario-calculations-1';
-import {REWARDS,rewardActive} from './rewards.js?v=scenario-calculations-1';
-import {showRewards} from './rewards-ui.js?v=scenario-calculations-1';
-import {industrialJobs,cleanThreshold} from './industry.js?v=scenario-calculations-1';
-import {RECREATION,recreationActive} from './recreation.js?v=scenario-calculations-1';
-import {showReports} from './reports-ui.js?v=scenario-calculations-1';
-import {showNewCity} from './new-city-ui.js?v=scenario-calculations-1';
-import {LANDSCAPE} from './landscape.js?v=scenario-calculations-1';
-import {POWER_PLANTS,plantCapacity} from './power.js?v=scenario-calculations-1';
-import {serializeCity} from './save.js?v=scenario-calculations-1';
-import {SCENARIOS,scenarioGoals,scenarioDefinition} from './scenarios.js?v=scenario-calculations-1';
-import {createScenario} from './scenario-setup.js?v=scenario-calculations-1';
-import {showScenarios} from './scenario-ui.js?v=scenario-calculations-1';
-import {ignite,startEarthquake,startTornado,dispatchFire,stepFire} from './emergency.js?v=scenario-calculations-1';
-import {showEmergency} from './emergency-ui.js?v=scenario-calculations-1';
-import {showRegion} from './region-ui.js?v=scenario-calculations-1';
-import {FACILITIES} from './facilities.js?v=scenario-calculations-1';
-import {STATIONS} from './rail.js?v=scenario-calculations-1';
-import {showTransport} from './transport-ui.js?v=scenario-calculations-1';
-import {SERVICES} from './civic.js?v=scenario-calculations-1';
-import {showCivic,civicAdvice} from './civic-ui.js?v=scenario-calculations-1';
-import {showFinance} from './finance-ui.js?v=scenario-calculations-1';
-import {landDensityLimit} from './economy.js?v=scenario-calculations-1';
-import {WASTE_STRUCTURES,wasteCapacity,wasteActive,wastePower,WATER_STRUCTURES,occupancy} from './utilities.js?v=scenario-calculations-1';
-import {createCity,recompute,build,tick,selection,planBuild,validateSave,idx,inside,SIZE,ZONES,LABEL,COST} from './engine.js?v=scenario-calculations-1';
-import {CityRenderer} from './renderer.js?v=scenario-calculations-1';
+import {installNavigation} from './navigation-map.js?v=city-library-1';
+import {showSnapshots} from './snapshots-ui.js?v=city-library-1';
+import {conservationReport} from './conservation.js?v=city-library-1';
+import {LANDMARKS} from './landmarks.js?v=city-library-1';
+import {showLandmarks} from './landmarks-ui.js?v=city-library-1';
+import {startUfo} from './ufo.js?v=city-library-1';
+import {startWhirlpool} from './whirlpool.js?v=city-library-1';
+import {startToxicCloud} from './toxic-cloud.js?v=city-library-1';
+import {startSpaceJunk} from './space-junk.js?v=city-library-1';
+import {startRiot,dispatchPolice} from './riots.js?v=city-library-1';
+import {startLocusts,dispatchCropDuster} from './locusts.js?v=city-library-1';
+import {BUSINESSES} from './business.js?v=city-library-1';
+import {showBusiness} from './business-ui.js?v=city-library-1';
+import {canPreserve,designateHistorical} from './historical.js?v=city-library-1';
+import {TECHNOLOGY,available,cityYear,newlyAvailable,showTechnology} from './technology.js?v=city-library-1';
+import {tunnelAt,tunnelTiles} from './tunnels.js?v=city-library-1';
+import {REWARDS,rewardActive} from './rewards.js?v=city-library-1';
+import {showRewards} from './rewards-ui.js?v=city-library-1';
+import {industrialJobs,cleanThreshold} from './industry.js?v=city-library-1';
+import {RECREATION,recreationActive} from './recreation.js?v=city-library-1';
+import {showReports} from './reports-ui.js?v=city-library-1';
+import {showNewCity} from './new-city-ui.js?v=city-library-1';
+import {LANDSCAPE} from './landscape.js?v=city-library-1';
+import {POWER_PLANTS,plantCapacity} from './power.js?v=city-library-1';
+import {serializeCity} from './save.js?v=city-library-1';
+import {SCENARIOS,scenarioGoals,scenarioDefinition} from './scenarios.js?v=city-library-1';
+import {createScenario} from './scenario-setup.js?v=city-library-1';
+import {showScenarios} from './scenario-ui.js?v=city-library-1';
+import {ignite,startEarthquake,startTornado,dispatchFire,stepFire} from './emergency.js?v=city-library-1';
+import {showEmergency} from './emergency-ui.js?v=city-library-1';
+import {showRegion} from './region-ui.js?v=city-library-1';
+import {FACILITIES} from './facilities.js?v=city-library-1';
+import {STATIONS} from './rail.js?v=city-library-1';
+import {showTransport} from './transport-ui.js?v=city-library-1';
+import {SERVICES} from './civic.js?v=city-library-1';
+import {showCivic,civicAdvice} from './civic-ui.js?v=city-library-1';
+import {showFinance} from './finance-ui.js?v=city-library-1';
+import {landDensityLimit} from './economy.js?v=city-library-1';
+import {WASTE_STRUCTURES,wasteCapacity,wasteActive,wastePower,WATER_STRUCTURES,occupancy} from './utilities.js?v=city-library-1';
+import {createCity,recompute,build,tick,selection,planBuild,validateSave,idx,inside,SIZE,ZONES,LABEL,COST} from './engine.js?v=city-library-1';
+import {CityRenderer} from './renderer.js?v=city-library-1';
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],money=n=>'§'+Math.round(n).toLocaleString(),escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const SAVE='sims3000.manual.v1',AUTO='sims3000.autosave.v1';
 let city=createCity(),speed=0,category='build',tool='road',density=1,undo=[],toastTimer,pointer=null,space=false,lastTime=performance.now(),elapsed=0;
 let storageFailed=false,toolsYear=null;
-let recovered=false;try{const raw=localStorage.getItem(AUTO);if(raw){city=validateSave(JSON.parse(raw));recovered=true;}}catch(e){console.warn('Autosave not loaded',e.message);}
+let recovered=false,storageStartupError='';try{await cityLibrary.migrateLegacy(localStorage,raw=>validateSave(JSON.parse(raw)));const record=await cityLibrary.load(AUTO);if(record){city=validateSave(JSON.parse(record.raw));recovered=true;}}catch(e){storageStartupError=e.message;console.warn('Autosave not loaded',e.message);try{const raw=localStorage.getItem(AUTO);if(raw){city=validateSave(JSON.parse(raw));recovered=true;}}catch{}}
 let emergencyElapsed=0,emergencyHeld=recovered&&city.emergency.active;
 const canvas=$('#city'),renderer=new CityRenderer(canvas,()=>city);installNavigation(renderer);const focusGoalArea=installScenarioAreaView(renderer);
 function goToFire(){const t=city.emergency.ufo||city.emergency.whirlpool||city.emergency.toxicCloud||city.emergency.spaceJunk||city.emergency.riot||city.emergency.locust||city.emergency.tornado||city.emergency.earthquake||city.tiles.find(t=>t.fire>0);if(!t)return;const p=renderer.project(t.x,t.y);renderer.pan.x+=renderer.w/2-p.x;renderer.pan.y+=renderer.h/2-p.y;renderer.dirty=true;}
@@ -91,7 +93,7 @@ function update(){gameAudio.observe(city);if(toolsYear!==cityYear(city))renderTo
 }
 function getGoals(){if(city.scenario)return scenarioGoals(city);return[{title:'Build 10 road tiles',done:city.goals.roads>=10,detail:`${Math.min(10,city.goals.roads)} / 10 new road tiles`},{title:'Zone homes and workplaces',done:city.goals.zones>=10&&ZONES.every(z=>city.tiles.some(t=>t.type===z)),detail:'Add 10 zone tiles and include all three RCI types.'},{title:'Connect electricity',done:(city.stats.plants>0||city.stats.wastePower>0)&&city.stats.powered>=city.stats.zoned&&city.stats.zoned>0,detail:'Every zoned tile needs power from your plant.'},{title:'Welcome new residents',done:city.goals.grown&&city.stats.population>=80,detail:'Run the simulation and reach 80 residents.'}];}
 function setSpeed(n){if(city.emergency.active)return notify('Speed is locked during a disaster. Open Emergency for response tools.');if(!allowedSpeed(city,n))return notify('This scenario runs at '+resumeScenarioSpeed(city)+'×. Pause remains available.');speed=n;lastTime=performance.now();elapsed=0;if(speed)undo=[];update();}
-function persist(key,quiet=false){try{localStorage.setItem(key,serializeCity(city));storageFailed=false;$('#saveBtn').textContent='Save city';if(!quiet)notify(key===SAVE?'City saved on this browser.':'Autosaved on this browser.');return true;}catch{if(!storageFailed||!quiet)notify('City could not be saved in this browser. Export a city file from the City menu to keep your progress.');storageFailed=true;$('#saveBtn').textContent='Save failed';return false;}}
+async function persist(key,quiet=false){try{const record=cityRecord(city);await cityLibrary.save(key,record);storageFailed=false;$('#saveBtn').textContent='Save city';if(!quiet)notify(key===SAVE?'City saved on this browser.':'Autosaved on this browser.');return true;}catch{if(!storageFailed||!quiet)notify('City could not be saved in this browser. Export a city file from the City menu to keep your progress.');storageFailed=true;$('#saveBtn').textContent='Save failed';return false;}}
 function commit(points,bridgeApproved=false){if(['ufo','whirlpool','toxicCloud','spaceJunk'].includes(tool)){const toxic=tool==='toxicCloud',p=points.at(-1),r=tool==='ufo'?startUfo(city,p.x,p.y):tool==='whirlpool'?startWhirlpool(city,p.x,p.y):toxic?startToxicCloud(city,p.x,p.y):startSpaceJunk(city,p.x,p.y);if(!r.ok){notify(r.error);return r;}undo=[];city.emergency.resumeSpeed=speed;emergencyHeld=false;emergencyElapsed=0;goToFire();setTool('dispatchFire');recompute(city);update();persist(AUTO,true);notify(tool==='ufo'?'Alien craft approaching. Sound the early warning siren.':tool==='whirlpool'?'Whirlpool reported. Shoreline connections are at risk.':toxic?'Toxic cloud reported. Occupants will leave affected zones.':'Space junk is falling. Prepare firefighters near the impact zone.');emergencyPanel();return r;}if(['riot','dispatchPolice'].includes(tool)){const p=points.at(-1),start=tool==='riot',r=start?startRiot(city,p.x,p.y):dispatchPolice(city,p.x,p.y);if(!r.ok){notify(r.error);return r;}undo=[];if(start){city.emergency.resumeSpeed=speed;emergencyHeld=false;emergencyElapsed=0;goToFire();setTool('dispatchPolice');}recompute(city);update();persist(AUTO,true);notify(start?'Riot reported. Dispatch police near the crowd.':'Police dispatched.');if(start)emergencyPanel();return r;}if(['locust','dispatchCropDuster'].includes(tool)){const p=points.at(-1),start=tool==='locust',r=start?startLocusts(city,p.x,p.y):dispatchCropDuster(city,p.x,p.y);if(!r.ok){notify(r.error);return r;}undo=[];if(start){city.emergency.resumeSpeed=speed;emergencyHeld=false;emergencyElapsed=0;goToFire();setTool('dispatchCropDuster');}recompute(city);update();persist(AUTO,true);notify(start?'Locust swarm reported. Dispatch crop dusters ahead of its path.':'Crop duster dispatched. Spray arrives in two response steps.');if(start)emergencyPanel();return r;}if(['tornado','earthquake','ignite','dispatchFire'].includes(tool)){const p=points.at(-1),storm=tool==='tornado',quake=tool==='earthquake',start=tool!=='dispatchFire',result=storm?startTornado(city,p.x,p.y):quake?startEarthquake(city,p.x,p.y):start?ignite(city,p.x,p.y):dispatchFire(city,p.x,p.y);if(result.ok){undo=[];if(start){city.emergency.resumeSpeed=speed;emergencyHeld=false;emergencyElapsed=0;goToFire();setTool('dispatchFire');}recompute(city);update();persist(AUTO,true);notify(storm?'Tornado reported. Restore damaged routes and fight resulting fires.':quake?'Earthquake underway. Inspect broken networks and fight any resulting fires.':start?'Fire reported. Dispatch firefighters near the flames.':'Firefighters dispatched.');if(storm)emergencyPanel();}else notify(result.error);return result;}if(['road','rail','highway'].includes(tool)&&!bridgeApproved){const plan=planBuild(city,tool,points,density);if(plan.ok&&(plan.tunnel||plan.points.some(p=>city.tiles[idx(p.x,p.y)].terrain==='water'))){const savedPoints=points.map(p=>({...p}));dialog(plan.tunnel?'City engineers · tunnel proposal':'City engineers · bridge proposal',`<p>${plan.tunnel?`Bore ${plan.points.length-2} underground tiles between level portals. Terrain and buildings above remain intact. `:''}${tool==='highway'?'A highway':tool==='rail'?'A rail':'A road'} crossing with ${plan.tunnel?plan.points.length:plan.points.filter(p=>city.tiles[idx(p.x,p.y)].terrain==='water').length} ${plan.tunnel?'route':'new water'} tiles. Total construction cost: <strong>${money(plan.cost)}</strong>.</p><div class="actions"><button id="acceptBridge" class="primary">${plan.tunnel?'Build tunnel':'Build crossing'}</button><button id="cancelBridge">Cancel</button></div>`);$('#acceptBridge').onclick=()=>{closeDialog();commit(savedPoints,true);};$('#cancelBridge').onclick=closeDialog;return{ok:false,pending:true};}}const before=serializeCity(city);const result=build(city,tool,points,density);gameAudio.play(result.ok?(tool==='bulldoze'?'bulldoze':'build'):'error');if(result.ok){if(!speed&&!city.emergency.active){undo.push(before);if(undo.length>20)undo.shift();}notify(`${LABEL[tool]} ${LANDSCAPE[tool]?'applied':tool==='bulldoze'?'cleared':'built'} · ${money(result.cost)}`);persist(AUTO,true);update();}else notify(result.error);return result;}
 function undoBuild(){if(city.emergency.active)return notify('Construction undo is unavailable during a disaster.');if(speed)return notify('Pause the simulation before undoing construction.');if(!undo.length)return notify('No construction to undo. History resets when time advances.');city=validateSave(JSON.parse(undo.pop()));update();persist(AUTO,true);notify('Last construction undone.');}
 function dialog(title,html){if(!city.emergency.active)setSpeed(0);$('#dialogTitle').textContent=title;$('#dialogBody').innerHTML=html;if(!$('#dialog').open)$('#dialog').showModal();}
@@ -129,10 +131,11 @@ function showUtilities(){
  $('#seeWater').onclick=()=>{setLayer('water');closeDialog();};$('#seeWaterPollution').onclick=()=>{setLayer('waterPollution');closeDialog();};$('#seeWaste').onclick=()=>{setLayer('garbage');closeDialog();};$('#reviewUtilities').onclick=()=>showReview(2);
 }
 function download(name,content,type='application/json'){const url=URL.createObjectURL(new Blob([content],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);}
-function showMenu(){dialog('City desk',`<p>City files and automatic saves are stored on this device. Export a file to move your city between browsers.</p><div class="actions"><button id="newCity">New city</button><button id="loadCity">Load manual save</button><button id="exportCity" class="primary">Export city file</button><button id="importCity">Import city file</button><button id="undoCity">Undo construction</button></div><h3>City tools</h3><div class="actions"><button id="menuInspect">Inspect a tile</button><button id="menuHelp">How to play</button><button id="menuSound">Sound settings</button><button id="menuGuide">First-town checklist</button><button id="menuUtilities">Utilities report</button><button id="menuScenarios">Scenarios &amp; status</button><button id="menuEmergency">Emergency &amp; disasters</button><button id="menuNeighbors">Neighbors &amp; utility deals</button><button id="menuTransit">Transport &amp; commuting</button><button id="menuCivic">Civic services &amp; advisors</button><button id="menuBusiness">Business deals</button><button id="menuSnapshots">City snapshots</button><button id="menuLandmarks">Landmarks</button><button id="menuRewards">Rewards</button><button id="menuIndustry">Industry &amp; farming</button><button id="menuTechnology">Technology timeline</button><button id="menuReports">City data · maps &amp; trends</button><button id="menuBudget">Budget &amp; taxes</button></div><label>Map view<select id="menuLayer"><option value="city">City</option><option value="zones">Zones</option><option value="power">Power</option><option value="water">Water · underground</option><option value="garbage">Garbage</option><option value="landValue">Land value</option><option value="pollution">Air pollution</option></select></label><h3>Monthly accounts</h3><div class="metric-grid"><div><small>Estimated revenue</small><strong>${money(city.stats.income)}</strong></div><div><small>Upkeep</small><strong>${money(city.stats.expenses)}</strong></div></div><p>Open Budget & taxes to change sector rates, fund road maintenance, review projections, or take a loan.</p>`);
+function showMenu(){dialog('City desk',`<p>City files and automatic saves are stored on this device. Export a file to move your city between browsers.</p><div class="actions"><button id="newCity">New city</button><button id="cityLibrary">Saved city library</button><button id="loadCity">Load manual save</button><button id="exportCity" class="primary">Export city file</button><button id="importCity">Import city file</button><button id="undoCity">Undo construction</button></div><h3>City tools</h3><div class="actions"><button id="menuInspect">Inspect a tile</button><button id="menuHelp">How to play</button><button id="menuSound">Sound settings</button><button id="menuGuide">First-town checklist</button><button id="menuUtilities">Utilities report</button><button id="menuScenarios">Scenarios &amp; status</button><button id="menuEmergency">Emergency &amp; disasters</button><button id="menuNeighbors">Neighbors &amp; utility deals</button><button id="menuTransit">Transport &amp; commuting</button><button id="menuCivic">Civic services &amp; advisors</button><button id="menuBusiness">Business deals</button><button id="menuSnapshots">City snapshots</button><button id="menuLandmarks">Landmarks</button><button id="menuRewards">Rewards</button><button id="menuIndustry">Industry &amp; farming</button><button id="menuTechnology">Technology timeline</button><button id="menuReports">City data · maps &amp; trends</button><button id="menuBudget">Budget &amp; taxes</button></div><label>Map view<select id="menuLayer"><option value="city">City</option><option value="zones">Zones</option><option value="power">Power</option><option value="water">Water · underground</option><option value="garbage">Garbage</option><option value="landValue">Land value</option><option value="pollution">Air pollution</option></select></label><h3>Monthly accounts</h3><div class="metric-grid"><div><small>Estimated revenue</small><strong>${money(city.stats.income)}</strong></div><div><small>Upkeep</small><strong>${money(city.stats.expenses)}</strong></div></div><p>Open Budget & taxes to change sector rates, fund road maintenance, review projections, or take a loan.</p>`);
  $('#menuBusiness').onclick=businessPanel;$('#menuTechnology').onclick=()=>showTechnology({city:()=>city,dialog,close:closeDialog,setTool});$('#menuSnapshots').onclick=()=>showSnapshots({city:()=>city,renderer,dialog,notify});$('#menuLandmarks').onclick=()=>showLandmarks({city:()=>city,dialog,close:closeDialog,setTool});$('#menuRewards').onclick=()=>showRewards({city:()=>city,dialog,close:closeDialog,setTool});$('#menuIndustry').onclick=showIndustry;$('#menuReports').onclick=()=>showReports({review:showReview,city:()=>city,dialog,close:closeDialog,setLayer});$('#menuInspect').onclick=()=>{closeDialog();setTool('query');};$('#menuHelp').onclick=showHelp;$('#menuSound').onclick=()=>showAudioSettings(gameAudio,dialog,notify);$('#menuGuide').onclick=showGuide;$('#menuUtilities').onclick=showUtilities;$('#menuBudget').onclick=showBudget;$('#menuCivic').onclick=showServices;$('#menuTransit').onclick=showTransit;$('#menuNeighbors').onclick=showNeighbors;$('#menuEmergency').onclick=emergencyPanel;$('#menuScenarios').onclick=scenarioPanel;$('#menuLayer').value=renderer.layer;$('#menuLayer').onchange=e=>{setLayer(e.target.value);closeDialog();};
  $('#newCity').onclick=()=>showNewCity({dialog,close:closeDialog,exportCity:()=>download('sims3000-city.json',serializeCity(city)),start:draft=>{city=draft;speed=0;elapsed=0;emergencyElapsed=0;emergencyHeld=false;undo=[];recovered=false;renderer.center();setTool('road');persist(AUTO,true);update();$('#news').textContent=city.starter?'Your starter town is ready. Add services and room to grow.':'Start with roads, then zone homes and workplaces and connect power.';notify('Welcome to '+city.name+', Mayor.');}});
- $('#loadCity').onclick=()=>{let raw;try{raw=localStorage.getItem(SAVE);if(!raw)return notify('No manual save yet. Use Save city first.');const loaded=validateSave(JSON.parse(raw));dialog('Load your saved city?',`<p>This replaces the current city with <strong>${escapeHTML(loaded.name)}</strong> (${loaded.stats.population} residents). Export the current city first if you want to keep it.</p><div class="actions"><button id="exportBeforeLoad">Export current city</button><button id="confirmLoad" class="primary">Load saved city</button></div>`);$('#exportBeforeLoad').onclick=()=>download('sims3000-city.json',serializeCity(city));$('#confirmLoad').onclick=()=>{city=loaded;speed=0;elapsed=0;emergencyHeld=city.emergency.active;undo=[];persist(AUTO,true);update();closeDialog();notify('Saved city restored.');};}catch{notify('The saved city could not be read. Import a valid city file instead.');}};
+ $('#cityLibrary').onclick=()=>showCityLibrary({city:()=>city,dialog,close:closeDialog,validate:validateSave,download,notify,isCurrent:title=>$('#dialog').open&&$('#dialogTitle').textContent===title,restore:loaded=>{city=loaded;speed=0;elapsed=0;emergencyElapsed=0;emergencyHeld=city.emergency.active;undo=[];pointer=null;renderer.drag=null;renderer.center();persist(AUTO,true);update();}});
+ $('#loadCity').onclick=async()=>{let raw;try{raw=(await cityLibrary.load(SAVE))?.raw;if(!raw)return notify('No manual save yet. Use Save city first.');const loaded=validateSave(JSON.parse(raw));dialog('Load your saved city?',`<p>This replaces the current city with <strong>${escapeHTML(loaded.name)}</strong> (${loaded.stats.population} residents). Export the current city first if you want to keep it.</p><div class="actions"><button id="exportBeforeLoad">Export current city</button><button id="confirmLoad" class="primary">Load saved city</button></div>`);$('#exportBeforeLoad').onclick=()=>download('sims3000-city.json',serializeCity(city));$('#confirmLoad').onclick=()=>{city=loaded;speed=0;elapsed=0;emergencyHeld=city.emergency.active;undo=[];persist(AUTO,true);update();closeDialog();notify('Saved city restored.');};}catch{notify('The saved city could not be read. Import a valid city file instead.');}};
  $('#exportCity').onclick=()=>download('sims3000-city.json',serializeCity(city));$('#importCity').onclick=()=>$('#importFile').click();$('#undoCity').onclick=()=>{closeDialog();undoBuild();};
 }
 $('#importFile').onchange=async e=>{const file=e.target.files[0];e.target.value='';if(!file)return;if(file.size>3000000)return notify('City file is too large (maximum 3 MB).');try{const loaded=validateSave(JSON.parse(await file.text()));dialog('Import this city?',`<p>Load <strong>${escapeHTML(loaded.name)}</strong> with ${loaded.stats.population} residents? This replaces your current autosave.</p><div class="actions"><button id="backupImport">Export current city</button><button class="primary" id="confirmImport">Import city</button></div>`);$('#backupImport').onclick=()=>download('sims3000-city.json',serializeCity(city));$('#confirmImport').onclick=()=>{city=loaded;speed=0;elapsed=0;emergencyHeld=city.emergency.active;undo=[];persist(AUTO,true);update();closeDialog();notify('City imported. Simulation paused.');};}catch(err){notify(err.message||'Could not read the city file.');}};
@@ -156,3 +159,5 @@ window.addEventListener('pagehide',()=>persist(AUTO,true));window.addEventListen
 // Structured tools use the same actions as the visible game. Optional browser API.
 if(document.modelContext?.registerTool){const lifetime=new AbortController();window.addEventListener('pagehide',()=>lifetime.abort(),{once:true});const definitions=[{name:'read_city_status',description:'Read current city statistics, date, and selected tool.',inputSchema:{type:'object',properties:{},additionalProperties:false},annotations:{readOnlyHint:true},execute:()=>({name:city.name,month:city.month,funds:city.funds,stats:city.stats,selectedTool:tool})},{name:'select_construction_tool',description:'Select a tool without placing or spending money.',inputSchema:{type:'object',properties:{tool:{type:'string',enum:Object.keys(LABEL)}},required:['tool'],additionalProperties:false},execute:input=>{if(!input||typeof input.tool!=='string'||!Object.hasOwn(LABEL,input.tool))throw Error('Unknown tool');setTool(input.tool);return{selectedTool:tool};}}];for(const d of definitions){try{Promise.resolve(document.modelContext.registerTool(d,{signal:lifetime.signal})).catch(()=>{});}catch{}}}
 renderTools();update();requestAnimationFrame(()=>{renderer.center();update();});if(recovered)notify(city.emergency.active?'Emergency restored and held. Open Emergency to continue.':'Autosave restored. Your city is paused.');
+
+if(storageStartupError)notify('City storage could not open. Any restored localStorage copy may be older. Export your city before leaving this page.');
