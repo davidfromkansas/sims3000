@@ -1,0 +1,14 @@
+Use case: stylized-concept
+Asset type: functional transparent building sprite atlas for SIMS3000, an isometric city-building game. This is a raster asset sheet to cut into sprites, not a picture of a game screen.
+Primary request: ONE landscape sprite atlas, 1536 x 1024 pixels, transparent RGBA background, strict 4 columns by 3 rows of equally sized invisible cells, exactly 12 isolated miniature buildings/structures.
+Subjects in reading order, left to right then top to bottom:
+Row 1: small suburban house; 3-story brick apartment; tall residential tower; corner shop.
+Row 2: midrise office; glass office tower; small warehouse; brick factory.
+Row 3: large industrial plant; coal power station with smokestacks; leafy park with trees; small water pumping station.
+Style/medium: detailed prerendered late-1990s city-builder sprites, crisp 3D-looking 2D raster artwork, realistic miniature architectural materials, clean readable silhouettes at small game sizes, finely detailed windows, rooftops and mechanical equipment.
+Camera: consistent orthographic 2:1 isometric with roughly 30-degree elevation, all structures oriented to the exact same ground diamond, showing front and right sides.
+Composition: center exactly one object in each of 12 cells. Each cell is 384px wide and approximately 341px tall. Keep every sprite completely inside its own cell with generous transparent margins on all four sides. Tall buildings must fit, no clipping or crossing cells. Objects have compact ground footprints and no broad surrounding landscapes. Separate all 12 silhouettes clearly so the atlas can be cut automatically. All ground diamonds use the same camera angles.
+Lighting: neutral daylight from upper left, consistent shadows contained within each object footprint.
+Backdrop: actual transparent alpha, not a white background and not a painted checkerboard.
+Text: none.
+Constraints: no user interface, no icons, no text, no grid lines, no labels, no border, no watermark, no shared ground plane, no scenery between objects, no shared shadows, no overlapping sprites.

@@ -1,0 +1,11 @@
+import {occupancy} from './utilities.js?v=airport-flights-1';
+// Manual p.112 specifies causal relationships; coefficients are recreation tuning.
+export function healthOutlook(c){
+ let population=0,air=0,water=0,care=0,recreation=0;
+ for(const t of c.tiles){if(t.type!=='residential'||!t.level)continue;const people=occupancy(t.level)*8;population+=people;air+=(t.airPollution||0)*people;water+=(t.waterPollution||0)*people;care+=(t.healthCoverage||0)*people;recreation+=(t.recreationHealth||0)*people;}
+ const avg=n=>population?n/population:0;
+ const airExposure=avg(air),waterExposure=avg(water),hospitalBenefit=avg(care)*.31,recreationBenefit=avg(recreation),airPenalty=airExposure*.1,waterPenalty=waterExposure*.1;
+ const clinicBenefit=c.civic.ordinances.freeClinics?3:0;
+ return{clinicBenefit,population,airExposure,waterExposure,hospitalBenefit,recreationBenefit,airPenalty,waterPenalty,target:Math.max(45,Math.min(90,59+hospitalBenefit+recreationBenefit+clinicBenefit-airPenalty-waterPenalty))};
+}
+export function healthReport(c){const h=healthOutlook(c),f=n=>n.toFixed(1);return `<details><summary>What affects life expectancy?</summary>${h.population?`<p>At current conditions, life expectancy is moving toward ${f(h.target)} years. Changes take several years to develop. Longer life expectancy increases workforce participation; the Population report shows the effect.</p><div class="table-scroll"><table><thead><tr><th>Factor</th><th>Effect on long-term target</th></tr></thead><tbody><tr><td>Baseline</td><td>59 years</td></tr><tr><td>Accessible hospital care</td><td>+${f(h.hospitalBenefit)} years</td></tr><tr><td>Free clinics</td><td>+${f(h.clinicBenefit)} years</td></tr><tr><td>Recreation</td><td>+${f(h.recreationBenefit)} years</td></tr><tr><td>Air pollution near homes</td><td>−${f(h.airPenalty)} years</td></tr><tr><td>Water pollution near homes</td><td>−${f(h.waterPenalty)} years</td></tr></tbody></table></div><p>Residential exposure: air ${f(h.airExposure)}/100; water ${f(h.waterExposure)}/100. More residents give a neighborhood more weight. The target stays between 45 and 90 years.</p><p>Keep hospitals connected and funded, separate homes from polluting industry, and reduce traffic emissions. Pollution can offset the benefits of hospital care.</p>`:'<p>No residents yet. Health begins changing when residents move in.</p>'}</details>`;}

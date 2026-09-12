@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {createCity,tick,validateSave} from '../dist/engine.js';
+import {attachCustomScenario,validateCustomDefinition} from '../dist/custom-scenarios.js';
+import {runScenarioEvents,scenarioEventReport} from '../dist/scenario-events.js';
+import {serializeCity} from '../dist/save.js';
+const d={title:'Mayor dispatches',months:24,objectives:[{metric:'population',target:100000}],events:[{type:'announcement',month:1,message:'Treasury: {funds}. <script>alert(1)</script>',repeatCount:2,repeatEvery:2}]};
+const c=createCity();attachCustomScenario(c,d);const first=tick(c).scenarioEvent;assert.equal(first.type,'announcement');assert.equal(c.emergency.active,false);assert.match(first.message,/Treasury: /);assert.ok(!first.message.includes('{funds}'));
+assert.equal(runScenarioEvents(c),null,'no duplicate delivery');const saved=validateSave(JSON.parse(serializeCity(c)));assert.equal(saved.scenario.events[0].message,first.message);assert.equal(saved.scenario.definition.events[0].message,d.events[0].message);
+assert.ok(scenarioEventReport(saved).includes('&lt;script&gt;'));assert.ok(!scenarioEventReport(saved).includes('<script>'));
+saved.funds+=1000;assert.equal(tick(saved).scenarioEvent,null);const second=tick(saved).scenarioEvent;assert.equal(second.type,'announcement');assert.notEqual(second.message,first.message);assert.equal(saved.scenario.events[0].runs,2);assert.equal(tick(saved).scenarioEvent,null);
+const conditional=createCity();attachCustomScenario(conditional,{...d,events:[{type:'announcement',month:1,message:'Conservation is in force.',condition:{metric:'ordinancePowerConservation',operator:'eq',target:1}}]});conditional.month=1;assert.equal(runScenarioEvents(conditional),null);conditional.civic.ordinances.powerConservation=true;assert.equal(runScenarioEvents(conditional).message,'Conservation is in force.');assert.equal(conditional.emergency.active,false);
+for(const message of ['', ' '.repeat(3), 'x'.repeat(501), '\u0001', 7])assert.throws(()=>validateCustomDefinition({...d,events:[{type:'announcement',month:1,message}]}));
+const bad=JSON.parse(serializeCity(saved));delete bad.scenario.events[0].message;assert.throws(()=>validateSave(bad));
+console.log('PASS: scheduled and conditional announcements, no emergency, live-value snapshots, repeat timing, saved delivery/no replay, safe report text and bounded message validation.');

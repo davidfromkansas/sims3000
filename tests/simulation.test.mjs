@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {createCity,build,tick,recompute,idx,selection,validateSave} from '../dist/engine.js';
+const line=(x,y,x2,y2)=>selection('road',{x,y},{x:x2,y:y2});
+function town(){const c=createCity('Test',false);assert.ok(build(c,'road',line(15,20,30,20)).ok);assert.ok(build(c,'residential',[{x:18,y:19},{x:19,y:19},{x:20,y:19}]).ok);assert.ok(build(c,'commercial',[{x:22,y:19}]).ok);assert.ok(build(c,'industrial',[{x:24,y:19},{x:25,y:19}]).ok);return c;}
+const c=town();for(let i=0;i<18;i++)tick(c);assert.equal(c.stats.population,0,'unpowered zones never grow');
+assert.ok(build(c,'coal',[{x:30,y:23}]).ok);assert.equal(c.tiles[idx(25,19)].powered,true,'power propagates within five tiles');assert.equal(c.tiles[idx(18,19)].powered,true,'zones relay electricity');
+for(let i=0;i<18;i++)tick(c);assert.ok(c.stats.population>0,'powered road-connected zones grow');
+const before=JSON.stringify(c);const funds=c.funds;const blocked=build(c,'road',[{x:10,y:20},{x:18,y:19}]);assert.equal(blocked.ok,false);assert.equal(JSON.stringify(c),before,'invalid drags are atomic');assert.equal(c.funds,funds);
+assert.ok(build(c,'bulldoze',[{x:31,y:24}]).ok);assert.equal(c.stats.plants,0,'any plant tile removes the full footprint');assert.equal(c.tiles.filter(t=>t.type==='coal').length,0);const pop=c.stats.population;for(let i=0;i<4;i++)tick(c);assert.ok(c.stats.population<pop,'extended power loss causes abandonment');
+const split=town();split.tiles[idx(22,19)].type=null;split.tiles[idx(30,19)].type='commercial';for(let x=15;x<=30;x++)split.tiles[idx(x,20)].type=null;split.tiles[idx(18,20)].type='road';split.tiles[idx(30,20)].type='road';recompute(split);assert.equal(split.tiles[idx(18,19)].access,false,'isolated residential roads do not connect to distant jobs');
+const poor=createCity('Poor',false);poor.funds=4999;assert.equal(build(poor,'coal',[{x:20,y:20}]).ok,false);assert.equal(poor.funds,4999);assert.equal(poor.stats.plants,0);
+const water=createCity('Water',false);assert.equal(build(water,'road',[{x:0,y:0}]).ok,false);assert.ok(build(water,'powerline',[{x:0,y:0}]).ok);
+const valid=createCity();for(let i=0;i<12;i++)tick(valid);const restored=validateSave(JSON.parse(JSON.stringify(valid)));assert.deepEqual(restored.stats,valid.stats);assert.equal(restored.funds,valid.funds);assert.equal(restored.month,valid.month);assert.equal(restored.name,valid.name);assert.throws(()=>validateSave({version:1,tiles:[]}));const corrupt=JSON.parse(JSON.stringify(valid));corrupt.tiles.find(t=>t.type==='coal').root=-2;assert.throws(()=>validateSave(corrupt));
+const a=town(),b=town();build(a,'coal',[{x:30,y:23}]);build(b,'coal',[{x:30,y:23}]);for(let i=0;i<120;i++){tick(a);tick(b);}assert.deepEqual(a.stats,b.stats,'simulation is deterministic');assert.ok(Number.isFinite(a.funds));assert.equal(a.history.length,120);
+console.log('PASS: no-power growth gate, five-tile relay, road-connected growth, atomic placement, footprint demolition, abandonment, disconnected roads, affordability, water constraints, save validation, deterministic 10-year run.');

@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {createCity,validateSave} from '../dist/engine.js';
+import {attachCustomScenario,customGoals,validateCustomDefinition} from '../dist/custom-scenarios.js';
+import {advanceScenario} from '../dist/scenarios.js';
+import {serializeCity} from '../dist/save.js';
+const d={title:'Stable treasury',months:12,holdMonths:3,objectives:[{metric:'funds',target:10000}]};const c=createCity();attachCustomScenario(c,d);for(let m=1;m<=2;m++){c.month=m;advanceScenario(c);}assert.equal(c.scenario.streak,2);assert.equal(c.scenario.status,'playing');advanceScenario(c);assert.equal(c.scenario.streak,2,'same monthly check cannot count twice');c.month=3;c.funds=9999;advanceScenario(c);assert.equal(c.scenario.streak,0);c.funds=10000;c.month=4;advanceScenario(c);const saved=validateSave(JSON.parse(serializeCity(c)));assert.equal(saved.scenario.streak,1);for(let m=5;m<=6;m++){saved.month=m;advanceScenario(saved);}assert.equal(saved.scenario.status,'won');assert.ok(customGoals(saved)[0].done);
+const scheduled=createCity();attachCustomScenario(scheduled,{...d,events:[{type:'fire',month:5,x:20,y:20}]});scheduled.month=1;advanceScenario(scheduled);assert.equal(scheduled.scenario.streak,0,'unfinished required events prevent banking a streak');
+for(const holdMonths of [0,13,1.5,NaN])assert.throws(()=>validateCustomDefinition({...d,holdMonths}));const legacy=JSON.parse(serializeCity(c));legacy.version=48;delete legacy.scenario.definition.holdMonths;assert.equal(validateSave(legacy).scenario.definition.holdMonths,1);
+const edge=createCity();attachCustomScenario(edge,{...d,holdMonths:12});for(let m=1;m<=12;m++){edge.month=m;advanceScenario(edge);}assert.equal(edge.scenario.status,'won','full streak on deadline wins');
+console.log('PASS: sustained custom goals, missed-goal reset, once-per-month counting, save resumption, event gating, deadline boundary and migration.');

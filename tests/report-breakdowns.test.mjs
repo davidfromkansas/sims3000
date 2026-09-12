@@ -1,0 +1,8 @@
+import assert from 'node:assert/strict';
+import {createCity,build,recompute,idx} from '../dist/engine.js';
+import {populationBreakdown,powerBreakdown} from '../dist/report-breakdowns.js';
+const empty=createCity('Empty',false);assert.equal(populationBreakdown(empty).share,0);assert.equal(powerBreakdown(empty).total,0);
+const c=createCity(),pop=populationBreakdown(c);assert.equal(pop.rows.reduce((s,r)=>s+r.people,0),c.stats.population);assert.equal(pop.rows[0].people,c.stats.commuters-c.stats.unemployed);assert.equal(pop.rows.reduce((s,r)=>s+r.percent,0),100);
+const p=createCity('Power mix',false);for(const t of p.tiles){t.terrain='land';t.nature=false;t.elevation=0;}p.startYear=2050;assert.ok(build(p,'coal',[{x:10,y:10}]).ok);assert.ok(build(p,'wind',[{x:30,y:30}]).ok);let mix=powerBreakdown(p);assert.equal(mix.rows.find(r=>r.kind==='coal').plants,1,'footprint counts once');assert.equal(mix.total,525);p.tiles[idx(10,10)].age=600;p.tiles[idx(30,30)].elevation=3;mix=powerBreakdown(p);assert.equal(mix.total,125+33);assert.ok(Math.abs(mix.rows.reduce((s,r)=>s+r.percent,0)-100)<1e-8);
+assert.ok(build(p,'wasteEnergy',[{x:20,y:20}]).ok);const w=p.tiles[idx(20,20)];w.burnedLastMonth=20;assert.equal(powerBreakdown(p).rows.find(r=>r.kind==='wasteEnergy').capacity,40);w.burnedLastMonth=0;assert.equal(powerBreakdown(p).rows.find(r=>r.kind==='wasteEnergy').capacity,0);build(p,'bulldoze',[{x:10,y:10}]);assert.equal(powerBreakdown(p).rows.some(r=>r.kind==='coal'),false);
+console.log('PASS: population groups sum to residents, employment share, empty charts, plant root counting, aging/wind capacity and waste-fuel power breakdown.');

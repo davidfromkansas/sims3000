@@ -1,0 +1,12 @@
+Built-in Imagegen asset, 2026-09-12. Transparent 1774×887 PNG, 4 columns × 2 rows. Row 1 police, fire, hospital, school; row 2 jail, college, library, museum.
+
+Use case: stylized-concept.
+Asset type: one transparent PNG sprite atlas for an original isometric city simulation game.
+Primary request: create EXACTLY eight separate civic buildings in a strict 4-column by 2-row atlas of equal-size cells. Wide 2:1 canvas. Each building and its footprint fits entirely inside its own cell with generous transparent margins. No sprites cross cells. Center each sprite horizontally within its cell and align ground footprints consistently.
+Top row, left to right: (1) police station with blue roof; (2) fire station with red garage bays; (3) hospital, white facade and cyan medical cross; (4) brick school with small playground.
+Bottom row, left to right: (5) jail with gray secure courtyard; (6) college academic hall; (7) small classical library; (8) stone museum with dome.
+Style/medium: detailed crisp 3D-looking 2D sprites, classic late-1990s city-builder visual character, original muted realistic architecture, careful tiny windows, roof equipment, entrances and paving details.
+Projection: consistent orthographic isometric camera, 2:1 ground perspective with ground edges at approximately 26.565 degrees to horizontal; all eight buildings have identical orientation and camera.
+Lighting: consistent soft top-left illumination with restrained shadows contained in each sprite footprint.
+Scene/backdrop: actual transparent alpha background everywhere outside the isolated building sprites, including all space between cells.
+Constraints: entire roofs and grounds visible, no clipping, exactly eight buildings, no extra detached objects, no text, no letters, no numbers, no captions, no grid lines, no border, no colored or white backdrop, no checkerboard pattern, no watermarks, no logos, no copied branded assets. Architecture should read clearly when reduced to small game sprites.

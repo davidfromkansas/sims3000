@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {createCity,tick,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {maybeLocusts,locustRisk,setRandomLocusts,startLocusts,dispatchCropDuster,cropDusterReport} from '../dist/locusts.js';
+const c=createCity();assert.equal(c.emergency.randomLocusts,false);assert.equal(maybeLocusts(c),false);assert.ok(setRandomLocusts(c,true).ok);const baseline=locustRisk(c);let trigger=0;for(let m=1;m<10000;m++){c.month=m;if(maybeLocusts(c)){trigger=m;break;}}assert.ok(trigger);assert.ok(c.emergency.active);assert.equal(setRandomLocusts(c,false).ok,false);assert.equal(maybeLocusts(c),false);const a=c.emergency.locust;assert.ok(a.x===0||a.y===0||a.x===47||a.y===47);
+const replay=createCity();setRandomLocusts(replay,true);replay.month=trigger-1;tick(replay);assert.deepEqual(replay.emergency.locust,a,'monthly simulation triggers same saved-seed event');const loaded=validateSave(JSON.parse(serializeCity(replay)));assert.deepEqual(loaded.emergency,replay.emergency);
+const empty=createCity();for(const t of empty.tiles){t.nature=false;t.industry='dirty';}setRandomLocusts(empty,true);empty.month=trigger;assert.equal(locustRisk(empty),0);assert.equal(maybeLocusts(empty),false);empty.tiles[0].nature=true;Object.assign(empty.tiles[1],{industry:'farm',farmRoot:1,level:1});assert.ok(locustRisk(empty)>baseline);
+const d=createCity();startLocusts(d,20,20);for(let i=0;i<3;i++)dispatchCropDuster(d,20+i,20);d.emergency.cropDusters[1].remaining=0;dispatchCropDuster(d,30,20);assert.equal(d.emergency.cropDusters[1].x,30);assert.equal(d.emergency.cropDusters[0].x,20);assert.match(cropDusterReport(d),/En route/);d.emergency.cropDusters[0].remaining=0;assert.match(cropDusterReport(d),/Ready for dispatch/);
+const old=JSON.parse(serializeCity(createCity()));old.version=31;delete old.emergency.randomLocusts;assert.equal(validateSave(old).emergency.randomLocusts,false);old.version=32;assert.throws(()=>validateSave(old),/locust/);
+console.log('PASS: optional seeded locust outbreaks, monthly integration, vegetation risk, active-event protection, idle-plane reuse and save migration.');

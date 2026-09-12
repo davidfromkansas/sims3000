@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {createCity,build,recompute,idx,validateSave} from '../dist/engine.js';
+import {changeCivic,recomputeCivic} from '../dist/civic.js';
+import {serializeCity} from '../dist/save.js';
+const c=createCity(),home=c.tiles[idx(20,20)];assert.ok(home.crimeLandPenalty>0);assert.ok(home.landValue<home.environmentLandValue);const oldValue=home.landValue,oldCrime=home.crime,oldRevenue=c.stats.revenues.residential;
+assert.ok(build(c,'police',[{x:20,y:21}]).ok);assert.ok(home.crime<oldCrime);assert.ok(home.landValue>oldValue);assert.ok(c.stats.revenues.residential>=oldRevenue);
+const once=serializeCity(c),value=home.landValue;for(let i=0;i<8;i++)recompute(c);assert.equal(home.landValue,value);assert.equal(serializeCity(c),once);recomputeCivic(c);assert.equal(home.landValue,value,'direct civic recalculation does not compound value penalties');
+const beforeWatch=home.landValue;changeCivic(c,c.civic.funding,{...c.civic.ordinances,watch:true});recompute(c);assert.ok(home.landValue>beforeWatch);changeCivic(c,c.civic.funding,{...c.civic.ordinances,watch:false});recompute(c);assert.equal(home.landValue,value);
+const loaded=validateSave(JSON.parse(serializeCity(c)));assert.equal(loaded.tiles[idx(20,20)].landValue,home.landValue);assert.equal(loaded.stats.averageLandValue,c.stats.averageLandValue);
+const d=createCity('Casino impact',false);for(const t of d.tiles){t.terrain='land';t.nature=false;t.elevation=0;}Object.assign(d.tiles[idx(24,21)],{type:'residential',level:1});recompute(d);const h=d.tiles[idx(24,21)],before=h.landValue;d.business={offered:0,accepted:true,declinedUntil:0};build(d,'casino',[{x:20,y:20}]);assert.ok(h.landValue<before);build(d,'bulldoze',[{x:20,y:20}]);assert.equal(h.landValue,before);
+h.radiation=true;recompute(d);assert.equal(h.landValue,1);assert.equal(h.crimeLandPenalty,0,'radiation floor is preserved');
+console.log('PASS: crime property penalty, police/watch recovery, casino impact/removal, noncompounding recomputation, save-derived values and radiation floor.');

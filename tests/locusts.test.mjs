@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {createCity,idx,recompute,validateSave} from '../dist/engine.js';
+import {startLocusts,dispatchCropDuster} from '../dist/locusts.js';
+import {stepFire,dispatchFire} from '../dist/emergency.js';
+import {serializeCity} from '../dist/save.js';
+function fixture(){const c=createCity('Swarm',false);for(const t of c.tiles){t.terrain='land';t.nature=false;}for(let y=15;y<25;y++)for(let x=15;x<25;x++){c.tiles[idx(x,y)].nature=true;c.tiles[idx(x,y)].treeLevel=2;}recompute(c);return c;}
+const c=fixture();assert.ok(startLocusts(c,20,20).ok);assert.equal(startLocusts(c,20,20).ok,false);const month=c.month;stepFire(c);assert.ok(c.emergency.vegetationLost>0);assert.equal(c.month,month);assert.deepEqual(validateSave(JSON.parse(serializeCity(c))).emergency,c.emergency);
+const saved=validateSave(JSON.parse(serializeCity(c)));while(c.emergency.active){stepFire(c);stepFire(saved);}assert.deepEqual(saved.emergency,c.emergency);assert.equal(c.emergency.contained,1);assert.equal(dispatchCropDuster(c,20,20).ok,false);
+const defended=fixture(),bare=fixture();for(const x of [defended,bare])startLocusts(x,20,20);for(let i=0;i<3;i++)assert.ok(dispatchCropDuster(defended,20+i,20).ok);dispatchCropDuster(defended,20,20);assert.equal(defended.emergency.cropDusters.length,3);const data=JSON.parse(serializeCity(defended));assert.deepEqual(validateSave(data).emergency,defended.emergency);for(let i=0;i<40;i++){stepFire(defended);stepFire(bare);}assert.ok(defended.emergency.vegetationLost<bare.emergency.vegetationLost);assert.equal(defended.emergency.cropDusters.length,0);
+const farm=fixture();for(const t of farm.tiles)t.nature=false;for(let y=20;y<23;y++)for(let x=20;x<23;x++)Object.assign(farm.tiles[idx(x,y)],{type:'industrial',industry:'farm',farmRoot:idx(20,20),level:1});startLocusts(farm,20,20);stepFire(farm);assert.equal(farm.emergency.vegetationLost,9);assert.equal(farm.tiles[idx(20,20)].type,'industrial');assert.equal(farm.tiles[idx(20,20)].level,0);assert.equal(farm.tiles[idx(20,20)].rubble,false);
+const old=JSON.parse(serializeCity(fixture()));old.version=30;delete old.emergency.locust;delete old.emergency.cropDusters;assert.equal(validateSave(old).emergency.locust,null);const bad=JSON.parse(serializeCity(fixture()));bad.emergency.locust={x:0,y:0,age:0,strength:100};assert.throws(()=>validateSave(bad),/emergency/);
+console.log('PASS: locust vegetation damage, crop-duster mitigation, three-plane limit, farm recovery, emergency timing, deterministic saves and migration.');

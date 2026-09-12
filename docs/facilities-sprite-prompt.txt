@@ -1,0 +1,12 @@
+Built-in Imagegen, 2026-09-12. Original transparent1983×793 airport/seaport atlas. Runtime diagonal source masks separate the facilities because the airport crosses the midpoint slightly.
+
+Use case: stylized-concept.
+Asset type: one original transparent PNG game-sprite atlas, TWO equally sized columns in one row, landscape canvas.
+Primary request: two distinct complete isometric city simulation facilities, each centered and fully contained within its own equal-size cell with generous transparent margins.
+LEFT: compact regional airport on a long rectangular 3-by-5 game-tile footprint, a single short runway along its length, compact passenger terminal, small hangar, tiny parked propeller airplane, limited apron and service paving. Keep the whole airport including both runway ends inside the sprite footprint.
+RIGHT: cargo seaport on a long rectangular 2-by-6 game-tile footprint, compact warehouses, stacked muted shipping containers, one gantry crane, quay edge and limited service paving. No sea or water background outside its footprint. Keep entire crane including boom inside its cell.
+Style: detailed crisp 3D-looking 2D sprites, muted realistic late-1990s city-builder architecture, original assets, coherent architectural scale, subtle material textures.
+Projection: consistent orthographic isometric camera for both facilities; strict 2:1 ground perspective, ground edges at approximately 26.565 degrees to horizontal.
+Lighting: soft illumination from upper left, restrained shadows contained within each facility footprint.
+Background: genuinely transparent alpha PNG outside both facilities and between the two cells, clean silhouette with no glow.
+Constraints: exactly two separate facilities, no clipping, no overlap between cells, no text, no letters, no numbers or runway numerals, no logos, no watermark, no border, no grid lines, no checkerboard pattern, no scenery background, no ocean surrounding port.

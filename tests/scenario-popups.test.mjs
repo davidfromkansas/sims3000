@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {generateCity} from '../dist/terrain-generator.js';
+import {tick,validateSave} from '../dist/engine.js';
+import {attachCustomScenario,validateCustomDefinition} from '../dist/custom-scenarios.js';
+import {runScenarioEvents,scenarioEventReport} from '../dist/scenario-events.js';
+import {pendingScenarioPopup} from '../dist/scenario-popups.js';
+import {serializeCity} from '../dist/save.js';
+let c=generateCity({water:0,mountains:0,trees:0});
+attachCustomScenario(c,{title:'Message test',months:24,objectives:[{metric:'population',target:100000}],events:[{type:'popup',month:1,message:'Welcome <b>{mayor}</b>. Funds: {funds}',showStatus:false,repeatCount:2,repeatEvery:1}]});
+const r=tick(c);assert.equal(r.scenarioEvent.type,'popup');assert.equal(c.emergency.active,false);assert.equal(pendingScenarioPopup(c).definition.showStatus,false);const message=pendingScenarioPopup(c).state.message;assert.ok(!message.includes('{funds}'));assert.match(scenarioEventReport(c),/&lt;b&gt;/);
+c=validateSave(JSON.parse(serializeCity(c)));assert.equal(pendingScenarioPopup(c).state.message,message);tick(c);assert.equal(c.scenario.events[0].runs,1,'unread popup is not overwritten');pendingScenarioPopup(c).state.acknowledged=true;assert.equal(pendingScenarioPopup(c),null);assert.ok(runScenarioEvents(c));assert.equal(c.scenario.events[0].runs,2);assert.equal(pendingScenarioPopup(c).state.acknowledged,false,'new occurrence needs acknowledgement');pendingScenarioPopup(c).state.acknowledged=true;c=validateSave(JSON.parse(serializeCity(c)));assert.equal(pendingScenarioPopup(c),null,'acknowledged popup does not replay');
+const bad=JSON.parse(serializeCity(c));bad.scenario.events[0].acknowledged='yes';assert.throws(()=>validateSave(bad));
+for(const event of [{message:''},{message:'hi',showStatus:'yes'},{message:'a'.repeat(501)}])assert.throws(()=>validateCustomDefinition({title:'Invalid',months:12,objectives:[{metric:'population',target:1}],events:[{type:'popup',month:1,...event}]}));
+console.log('PASS: captured popup messages, save/reload unread delivery, acknowledgement, repeat protection, escaped report and validation.');

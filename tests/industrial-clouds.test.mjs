@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {createCity,idx,recompute,tick,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {toxicCloudRisk,toxicCloudSource,setRandomToxicClouds,maybeToxicCloud} from '../dist/toxic-cloud.js';
+const c=createCity('Factories',false);for(let y=18;y<25;y++)for(let x=18;x<25;x++)Object.assign(c.tiles[idx(x,y)],{terrain:'land',type:'industrial',level:3,density:3,industry:'dirty'});recompute(c);assert.equal(toxicCloudRisk(c),.03);assert.equal(c.emergency.randomToxicClouds,false);assert.equal(maybeToxicCloud(c),false);assert.equal(setRandomToxicClouds(c,1).ok,false);setRandomToxicClouds(c,true);
+const saved=serializeCity(c);let month=0;for(let m=1;m<10000;m++){c.month=m;if(maybeToxicCloud(c)){month=m;break;}}assert.ok(month);assert.equal(setRandomToxicClouds(c,false).ok,false);assert.equal(maybeToxicCloud(c),false);
+const a=validateSave(JSON.parse(saved)),b=validateSave(JSON.parse(saved));a.month=b.month=month-1;tick(a);tick(b);assert.ok(a.emergency.toxicCloud,'monthly simulation triggers from pollution');assert.deepEqual(a.emergency,b.emergency);assert.deepEqual(validateSave(JSON.parse(serializeCity(a))).emergency,a.emergency);
+const clean=validateSave(JSON.parse(saved));for(const t of clean.tiles)if(t.type==='industrial')t.industry='clean';recompute(clean);assert.equal(toxicCloudRisk(clean),0);assert.equal(toxicCloudSource(clean),null);clean.month=month;assert.equal(maybeToxicCloud(clean),false);
+const threshold=createCity('Threshold',false),t=threshold.tiles[idx(20,20)];Object.assign(t,{type:'industrial',industry:'dirty',level:1,airPollution:50});assert.equal(toxicCloudRisk(threshold),0);t.airPollution=75;assert.equal(toxicCloudRisk(threshold),.015);t.level=0;assert.equal(toxicCloudRisk(threshold),0);
+const old=JSON.parse(saved);old.version=44;delete old.emergency.randomToxicClouds;assert.equal(validateSave(old).emergency.randomToxicClouds,false);old.version=45;assert.throws(()=>validateSave(old));
+console.log('PASS: pollution-scaled outbreak risk, clean-industry prevention, occupied-source threshold, monthly integration, deterministic save continuation, opt-in settings and migration.');

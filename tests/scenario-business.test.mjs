@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {createCity,build,tick,validateSave} from '../dist/engine.js';
+import {advanceBusiness,answerBusiness} from '../dist/business.js';
+import {attachCustomScenario,customGoals} from '../dist/custom-scenarios.js';
+import {eventConditionMet} from '../dist/scenario-events.js';
+import {serializeCity} from '../dist/save.js';
+const c=createCity('Clean deal',false);for(const t of c.tiles){t.terrain='land';t.nature=false;}c.month=12;c.stats.population=256;c.stats.balance=-1;advanceBusiness(c);answerBusiness(c,true);answerBusiness(c,true,'toxicWaste');
+attachCustomScenario(c,{title:'Income without hazardous waste',months:12,objectives:[{metric:'businessIncome',target:150},{metric:'casinos',target:1},{metric:'toxicWastePlants',target:0}]});assert.equal(customGoals(c)[0].done,false);assert.equal(customGoals(c)[1].done,false);
+build(c,'casino',[{x:20,y:20}]);build(c,'toxicWaste',[{x:30,y:30}]);assert.equal(customGoals(c)[0].done,true);assert.equal(customGoals(c)[1].done,true);assert.equal(customGoals(c)[2].done,false);assert.ok(eventConditionMet(c,{metric:'toxicWastePlants',operator:'gte',target:1}));tick(c);assert.equal(c.scenario.status,'playing');build(c,'bulldoze',[{x:31,y:31}]);assert.equal(customGoals(c)[2].done,true);assert.equal(eventConditionMet(c,{metric:'toxicWastePlants',operator:'gte',target:1}),false);assert.deepEqual(validateSave(JSON.parse(serializeCity(c))).scenario,c.scenario);tick(c);assert.equal(c.scenario.status,'won');
+console.log('PASS: business goals ignore unplaced permits, count unique facilities, track demolition, gate victory and support conditions and saved challenges.');

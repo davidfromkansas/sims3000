@@ -1,0 +1,3 @@
+# Power artwork
+
+Imagegen produced transparent1774×887 power-atlas.png: top row oil plant with tanks/chimney, gas turbine hall/pipes/stacks, nuclear reactor/cooling towers, single wind turbine; bottom row solar array, microwave rectenna/dish, fusion reactor, empty. Original detailed 3D-looking 2D late-1990s city-builder style, muted concrete/metal, strict2:1 isometric projection, upper-left lighting, paved diamond footprints, complete isolated silhouettes, no labels/text/logos/people/grid/backdrop. Cells were not perfectly aligned; runtime uses inspected non-overlapping rectangles and trims alpha. Sprites35–41 correspond to the seven facilities.

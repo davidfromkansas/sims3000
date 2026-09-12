@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {createCity,recompute,build,tick,validateSave} from '../dist/engine.js';
+import {refreshEducationAverages,educationWeights,educationReport} from '../dist/education.js';
+import {serializeCity} from '../dist/save.js';
+const c=createCity(),p=c.stats.population;c.civic.ageEducation=[20,40,60,80,50,30,70,90];c.demographics.cohorts=[p*.25,p*.25,p*.5,0,0,0,0,0];refreshEducationAverages(c);assert.equal(c.civic.youthEducation,30);assert.equal(c.civic.adultEducation,60);assert.equal(c.civic.education,45);recompute(c);assert.equal(c.stats.education,45);const crime=c.stats.averageCrime;
+c.demographics.cohorts=[0,0,0,p,0,0,0,0];recompute(c);assert.equal(c.stats.education,80);assert.ok(c.stats.averageCrime<crime,'weighted education affects actual civic crime');assert.equal(educationWeights(c).youth,0);assert.ok(build(c,'school',[{x:21,y:22}]).ok);assert.equal(c.stats.schoolCoverage,0,'no youth means no school cohort demand');
+c.demographics.cohorts=[p,0,0,0,0,0,0,0];recompute(c);assert.equal(c.stats.education,20);assert.ok(c.stats.schoolCoverage>0);assert.equal(c.stats.adultEducationCoverage,0);assert.match(educationReport(c),/Residents/);assert.match(educationReport(c),/100.0% young residents/);
+const live=createCity();build(live,'school',[{x:21,y:22}]);build(live,'library',[{x:21,y:20}]);for(let i=0;i<24;i++)tick(live);const restored=validateSave(JSON.parse(serializeCity(live)));assert.deepEqual(restored.civic,live.civic);for(let i=0;i<12;i++){tick(live);tick(restored);}assert.deepEqual(restored.civic,live.civic);assert.deepEqual(restored.demographics,live.demographics);
+const empty=createCity('Empty',false),before=structuredClone(empty.civic);refreshEducationAverages(empty);assert.deepEqual(empty.civic,before);
+console.log('PASS: census-weighted youth/adult/city EQ, downstream crime, cohort-specific service demand, empty cohorts, education report and saved monthly continuation.');

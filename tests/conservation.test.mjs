@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {createCity,build,idx,recompute,validateSave,selection} from '../dist/engine.js';
+import {recomputeWater} from '../dist/utilities.js';
+import {addConnection,connectionCandidates,signDeal} from '../dist/region.js';
+import {serializeCity} from '../dist/save.js';
+const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-8,`${a} != ${b}`);
+function base(){const c=createCity('Conserve',false);c.month=360;for(const t of c.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});return c;}
+const c=base();build(c,'wind',[{x:20,y:20}]);for(let k=0;k<27;k++)build(c,'residential',[{x:21+k%6,y:20+Math.floor(k/6)}]);recompute(c);assert.equal(c.stats.overloadedPlants,1);const demand=c.stats.powerDemand;c.civic.ordinances.powerConservation=true;recompute(c);near(c.stats.powerDemand,demand*.9);near(c.stats.powerConserved,demand*.1);assert.equal(c.stats.overloadedPlants,0);assert.equal(c.stats.powered,c.stats.zoned);c.civic.ordinances.powerConservation=false;recompute(c);assert.equal(c.stats.overloadedPlants,1);
+const w=base();Object.assign(w.tiles[idx(20,20)],{type:'waterTower',powered:true,pipe:true});for(let k=0;k<32;k++)Object.assign(w.tiles[idx(21+k%6,20+Math.floor(k/6))],{type:'residential',level:1});let a=recomputeWater(w);assert.ok(a.watered<32);w.civic.ordinances.waterConservation=true;let b=recomputeWater(w);assert.equal(b.watered,32);near(b.waterDemand,a.waterDemand*.9);near(b.waterUsed,115.2);
+const imports=base();build(imports,'pipe',selection('pipe',{x:42,y:20},{x:47,y:20}));Object.assign(imports.tiles[idx(40,20)],{type:'residential',level:1});recompute(imports);const candidate=connectionCandidates(imports).find(p=>p.kind==='water');assert.ok(addConnection(imports,candidate).ok);assert.ok(signDeal(imports,0,'water','import',50).ok);recompute(imports);near(imports.region.deals[0].delivered,4);imports.civic.ordinances.waterConservation=true;recompute(imports);near(imports.region.deals[0].delivered,3.6);near(imports.stats.waterUsed,3.6);
+const saved=validateSave(JSON.parse(serializeCity(imports)));near(saved.stats.waterDemand,imports.stats.waterDemand);assert.equal(saved.civic.ordinances.waterConservation,true);
+const old=JSON.parse(serializeCity(c));old.version=56;delete old.civic.ordinances.powerConservation;delete old.civic.ordinances.waterConservation;assert.equal(validateSave(old).civic.ordinances.powerConservation,false);old.version=57;assert.throws(()=>validateSave(old));
+console.log('PASS: demand conservation relieves overloaded power and water shortages, preserves capacity, reduces actual neighbor imports, and supports saved policies and migration.');
