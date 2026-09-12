@@ -405,3 +405,14 @@ Measured on this development machine: a lightly occupied 256 × 256 city seriali
 All 116 suites passed. New integration checks exercise every map size, construction and utilities beyond the old boundary, regional demand routes, save continuation, old-city migration, simultaneous differently sized cities, large-map farm identifiers, scenario replay, rotated navigation and terrain-aware picking. No browser acceptance test was performed.
 
 Feedback exercise: create a 96 × 96 city, build a serviced district near its far edge, connect a neighbor, save it to the library and load a compact city. Then return to the larger city and compare navigation and simulation pace. Try 256 × 256 when you want more room and assess responsiveness on your device.
+
+
+### Large-city simulation responsiveness — milestone 1
+
+Water coverage now visits each covered tile once per network using a multi-source eight-direction search. It preserves the seven-tile Chebyshev radius and nearest-pipe/tile-index allocation priority, including disconnected and overlapping networks. Road commuting reuses search arrays across households with per-search visitation markers; route costs, congestion, job allocation and household order remain unchanged. No save schema change (92).
+
+A reproducible synthetic 256 × 256 grid with 1,472,256 residents, 1,617,840 jobs and pipes on every tile took about 5.5 seconds per month before these changes and 2.3 seconds afterward on this development machine. Recompute alone fell from about 1.35 seconds to 0.68 seconds. Run `node benchmarks/dense-city.mjs 256` to repeat the workload. This is an intentionally dense, unpowered routing/coverage stress fixture, not a naturally grown fully serviced city or a browser FPS measurement. Simulation still runs on the main thread; larger cities can still pause interaction, and high-speed/browser/mobile acceptance remains unfinished.
+
+An offline differential check compared old/new transport and water functions across nine dense layouts (48/96/128 maps, three road spacings), with identical returned statistics and every tile property. The new coverage regression independently computes nearest-pipe distance and verifies priority, edges, duplicate/empty sources and scratch-state isolation through 256 tiles. Full regression coverage is 117 suites.
+
+Feedback exercise: load a developed large city, advance several months, and compare the delay between updates. Check a water-short neighborhood and busy roads to assess service continuity. This is a continuation of the larger-map milestone, not a claim of complete simulation fidelity or AAA performance.
