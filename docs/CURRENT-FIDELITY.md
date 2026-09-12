@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Reviewed 2026-09-13 against the supplied manual, the current `dist` modules, and the latest 114-suite regression run. Save schema: 91. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
+Reviewed 2026-09-13 against the supplied manual, the current `dist` modules, and the latest 115-suite regression run. Save schema: 91. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, the 48 × 48 map and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -22,7 +22,7 @@ The manual describes behavior but does not expose all simulation formulas. Numer
 
 ## Evidence limits
 
-The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 114 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
+The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 115 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
 
 Player acceptance is still pending. No silence or automatic continuation has been treated as positive feedback. The six in-game milestones provide exercises and locally saved notes; notes are not automatically transmitted.
 
@@ -288,3 +288,16 @@ The manual lists Add, Subtract, Multiply, Divide, Compute Percentage and Generat
 Tests cover real grouped calculations and captured messages, metric/variable inputs, destination self-reference, rounding/saturation, zero-divisor saved failure and later recovery, inclusive deterministic random ranges, malformed definitions/history and older cities. No browser acceptance test was performed.
 
 Feedback exercise: copy an initial population into Variable 1, repeatedly calculate current population as a percentage of Variable 1 into Variable 2, and set a goal of 150. Inspect the stored baseline and changing ratio in Scenario status. Try a zero baseline to assess the failure explanation.
+
+
+### Named city library and larger-capacity storage — milestone 1
+
+City desk → Saved city library stores up to 20 independent named snapshots, with load, download, rename, replacement and deletion. Loading validates the saved city and restores it paused, including a held emergency. Library labels are distinct from the actual city name. Save city and autosave retain their separate quick slots; they do not silently update a named snapshot. Players can keep alternative designs or several active cities without exporting every time they switch.
+
+City persistence now uses IndexedDB instead of localStorage. City payloads and lightweight list metadata commit in one transaction; queued writes preserve save request order, and concurrent new entries cannot overfill the library. Existing localStorage quick/autosaves migrate only into empty slots; originals remain untouched, and an older copy never replaces a newer IndexedDB save. If database opening fails, startup can restore the legacy autosave with an explicit warning that it may be older and should be exported. Failed database writes show the existing Save failed message.
+
+This advances the manual’s save/load workflow and removes the localStorage capacity bottleneck discovered while auditing larger maps. Map size remains 48 × 48; dynamic-grid simulation, coordinate-aware scenarios/rendering and larger-file limits are still required before larger maps ship. The browser library is local to this site/profile and is not cloud synchronization. Clearing site data removes it; portable JSON downloads remain available. No city schema change (91).
+
+Tests use fake-indexeddb as a development-only dependency and verify real transactions through its IndexedDB implementation: migration, playable restoration, independent snapshots, rename/replace/delete, queued save order, concurrent capacity, reopening, malformed inputs and unavailable storage. All 115 suites pass. No browser acceptance test was performed.
+
+Feedback exercise: save two different city layouts with distinct library labels, switch between them, replace one snapshot, and download it. Check whether it is clear which actions update a snapshot versus quick-save/autosave.

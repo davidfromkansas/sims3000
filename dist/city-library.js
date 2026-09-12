@@ -1,0 +1,23 @@
+import {serializeCity} from './save.js?v=city-library-1';
+export const MANUAL_SLOT='sims3000.manual.v1',AUTO_SLOT='sims3000.autosave.v1',CITY_LIMIT=20;
+export function cityRecord(city,label=city.name||'Untitled city'){return{label:label.trim(),name:city.name,mayor:city.mayorName,month:city.month,startYear:city.startYear,population:city.stats.population,funds:city.funds,savedAt:Date.now(),raw:serializeCity(city)};}
+const libraryId=id=>typeof id==='string'&&/^city:[a-zA-Z0-9-]{1,64}$/.test(id);
+const validId=id=>libraryId(id)||[MANUAL_SLOT,AUTO_SLOT].includes(id);
+function checkedRecord(r){if(!r||typeof r.label!=='string'||!r.label.trim()||r.label.length>60||typeof r.raw!=='string'||!r.raw.length||r.raw.length>64000000||typeof r.name!=='string'||r.name.length>50||typeof r.mayor!=='string'||r.mayor.length>50||!['month','startYear','population','funds','savedAt'].every(k=>Number.isFinite(r[k])))throw Error('Choose a save name of 1–60 characters and a valid city.');return{label:r.label.trim(),name:r.name,mayor:r.mayor,month:r.month,startYear:r.startYear,population:r.population,funds:r.funds,savedAt:r.savedAt,raw:r.raw};}
+export function createCityLibrary(factory=globalThis.indexedDB,name='sims3000-city-library'){
+ let database,writeChain=Promise.resolve();
+ function open(){if(!factory)return Promise.reject(Error('City storage is unavailable in this browser. Export a city file to keep your progress.'));if(!database)database=new Promise((resolve,reject)=>{const request=factory.open(name,1);request.onupgradeneeded=()=>{request.result.createObjectStore('cities',{keyPath:'id'});request.result.createObjectStore('summaries',{keyPath:'id'}).createIndex('kind','kind');};request.onerror=request.onblocked=()=>{database=null;reject(Error('City storage could not be opened. Close other game tabs and retry.'));};request.onsuccess=()=>{const db=request.result;db.onversionchange=()=>{db.close();database=null;};resolve(db);};});return database;}
+ async function transaction(mode,action){const db=await open();return new Promise((resolve,reject)=>{const tx=db.transaction(['cities','summaries'],mode);let value,failure;tx.oncomplete=()=>resolve(value);tx.onerror=tx.onabort=()=>reject(failure||Error('City storage failed. Export your city and check browser storage space.'));try{action(tx.objectStore('cities'),tx.objectStore('summaries'),v=>{value=v;},message=>{failure=Error(message);tx.abort();});}catch(e){failure=e;tx.abort();}});}
+ const write=action=>{const next=writeChain.then(()=>transaction('readwrite',action));writeChain=next.catch(()=>{});return next;};
+ const read=async action=>{await writeChain;return transaction('readonly',action);};
+ return{
+  async save(id,record){if(!validId(id))throw Error('Invalid city save slot.');const r=checkedRecord(record);return write((cities,summaries,done,fail)=>{const existing=cities.get(id);existing.onsuccess=()=>{const put=()=>{cities.put({id,...r});const {raw,...meta}=r;summaries.put({id,kind:libraryId(id)?'city':'checkpoint',...meta});done(id);};if(existing.result||!libraryId(id))return put();const count=summaries.index('kind').count('city');count.onsuccess=()=>count.result>=CITY_LIMIT?fail('The city library holds 20 cities. Export and delete a saved city to make room.'):put();};});},
+  async load(id){if(!validId(id))throw Error('Invalid city save slot.');return read((cities,summaries,done)=>{const r=cities.get(id);r.onsuccess=()=>done(r.result||null);});},
+  list(){return read((cities,summaries,done)=>{const r=summaries.getAll();r.onsuccess=()=>done(r.result.filter(s=>s.kind==='city').sort((a,b)=>b.savedAt-a.savedAt||a.id.localeCompare(b.id)));});},
+  async rename(id,label){if(!libraryId(id)||typeof label!=='string'||!label.trim()||label.length>60)throw Error('Choose a save name of 1–60 characters.');return write((cities,summaries,done,fail)=>{const r=cities.get(id);r.onsuccess=()=>{if(!r.result)return fail('This saved city no longer exists.');const next={...r.result,label:label.trim()}, {raw,...meta}=next;cities.put(next);summaries.put({...meta,kind:'city'});done(true);};});},
+  async remove(id){if(!libraryId(id))throw Error('Only named library cities can be deleted here.');return write((cities,summaries,done)=>{cities.delete(id);summaries.delete(id);done(true);});},
+  async migrateLegacy(storage,decode){const failures=[];for(const id of [AUTO_SLOT,MANUAL_SLOT]){if(await this.load(id))continue;let raw,c;try{raw=storage.getItem(id);if(raw)c=decode(raw);}catch(e){failures.push({id,message:e.message});continue;}if(c)await this.save(id,{...cityRecord(c),raw});}return failures;},
+  async close(){await writeChain;if(database)(await database).close();database=null;}
+ };
+}
+export const cityLibrary=createCityLibrary();
