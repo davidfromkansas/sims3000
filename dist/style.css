@@ -73,3 +73,5 @@ dialog:has(.new-city-layout){width:min(1000px,calc(100% - 30px))}
 [id^="eventSoundLabel"][hidden]{display:none}
 
 [id^="eventZoomLabel"][hidden]{display:none}
+
+.building-designer{display:grid;grid-template-columns:minmax(180px,256px) 1fr;gap:24px;align-items:start}.building-designer canvas{width:100%;max-width:256px;display:block;background:#adc0b1;border-radius:10px}.building-designer input[type=color]{width:52px;height:36px;padding:3px}.building-designer input[type=range]{width:100%}@media(max-width:600px){.building-designer{grid-template-columns:1fr}.building-designer canvas{max-height:260px;width:auto;margin:auto}}
