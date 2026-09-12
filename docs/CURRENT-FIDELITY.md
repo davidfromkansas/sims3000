@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Reviewed 2026-09-12 against the supplied manual, the current `dist` modules, and the latest 110-suite regression run. Save schema: 87. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
+Reviewed 2026-09-13 against the supplied manual, the current `dist` modules, and the latest 111-suite regression run. Save schema: 88. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, the 48 × 48 map and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -22,7 +22,7 @@ The manual describes behavior but does not expose all simulation formulas. Numer
 
 ## Evidence limits
 
-The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 110 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
+The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 111 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
 
 Player acceptance is still pending. No silence or automatic continuation has been treated as positive feedback. The six in-game milestones provide exercises and locally saved notes; notes are not automatically transmitted.
 
@@ -244,3 +244,12 @@ Schema 87 stores the accepted price band and derives its rate on import. Old con
 Tests cover scarcity/surplus quotes, immutable existing rates, annual eligibility, exact failed-renewal rollback, preserved identity/funds, reset cancellation terms, saved price persistence, malformed bands, forged rate normalization and legacy contracts. Full regression: 110 suites. No browser acceptance test was performed. Fully negotiated prices, automatic neighbor-initiated offers and original trade formulas remain unfinished.
 
 Milestone 3 feedback exercise: keep a deal for a year, compare its locked rate with current regional capacity, then review a smaller or larger quantity. Check whether keeping, ending or renewing the deal is clear.
+
+
+### Connected outside markets — transport feedback checkpoint
+
+Commercial and industrial plots now receive outside-market demand support only through reachable paid road/highway border routes, active stations on connected surface rail, or operating airports/seaports on their road network. Highway crossings require ramps. Broken routes, inactive stations and facility service failures remove support. Multiple routes to one land neighbor count once. Business queries identify reachable markets; Transport reports connected versus zoned plots. The city demand meter averages access across the sector, while monthly development uses each plot’s own access. With no sector zoning, the meter shows available potential.
+
+Manual page 97 describes exporting industrial goods and bringing commercial customers through connections. The route allocation, station catchment, demand points and averaging are reconstruction rules, not recovered original formulas. This does not simulate cross-border commuters or individual cargo shipments. Schema 88 recomputes derived access on load; older city files remain supported.
+
+Feedback exercise: inspect a business on a disconnected road, join that road to a paid border connection, inspect again, then remove a connecting segment. Check whether the access explanation and Transport totals make the economic effect clear. This advances milestones 3 and 5. Automated tests cover isolated/duplicate/broken connections, highway ramps, active rail stations, facility operation and save migration. No new browser visual acceptance claim is made.
