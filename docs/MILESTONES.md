@@ -364,3 +364,16 @@ A 3 × 3 farm retains 12 jobs, with one extra barn job per three additional tile
 Variable-size estates retain farmRoot membership in schema 90; derived area is rebuilt on load. Original 3 × 3 farms remain valid. Missing fields or malformed rectangles dissolve the farm grouping; high value/pollution can convert it to manufacturing, and destructive disaster damage still affects the whole estate. Tests cover large formation, growth gates, remote fields, barn-only jobs, saved continuation, legacy cities, malformed groups and outer-field destruction. No browser acceptance test was performed.
 
 Feedback exercise: zone a broad rural industrial district with roads near only its barn edge. Inspect a developed farm, add low-density zoning beyond its eastern/southern edge, and watch the agricultural tile and job counts over several months. Assess the pace and whether its footprint is easy to manage.
+
+
+### Scenario calculations — milestone 6
+
+Change scenario variable now offers a calculation between two operands, each selected as a constant or any current metric (including saved scenario variables). Supported operations are sum, subtraction, multiplication, division, percentage and an inclusive random integer range. Both inputs are read before the destination changes, allowing in-place calculations. Later grouped actions read earlier results. This permits relative-growth objectives, compound scores, ratios and reproducible random branches through existing conditions.
+
+Results round to integers and saturate at ±1,000,000. Division/percentage by zero or unavailable/non-finite input records a skipped occurrence, retains the old variable, and shows the reason in event history. A later scheduled repeat can recover. Random endpoints round to integers and accept either order; the output derives from the saved city seed, month, destination and action index, preserving save/replay continuity without using global random state. As with other variable writes, the final result remains bounded.
+
+The manual lists Add, Subtract, Multiply, Divide, Compute Percentage and Generate Random Number on pp.185–190. The operand picker, integer limits, error behavior and random generator are reconstruction choices. Schema 91 preserves calculation definitions and failure history. Existing set/add/copy events retain their behavior. This expands the structured editor, but is not the full original script VM: nested expressions, arbitrary blocks, additional variable slots and original-file compatibility remain unfinished.
+
+Tests cover real grouped calculations and captured messages, metric/variable inputs, destination self-reference, rounding/saturation, zero-divisor saved failure and later recovery, inclusive deterministic random ranges, malformed definitions/history and older cities. No browser acceptance test was performed.
+
+Feedback exercise: copy an initial population into Variable 1, repeatedly calculate current population as a percentage of Variable 1 into Variable 2, and set a goal of 150. Inspect the stored baseline and changing ratio in Scenario status. Try a zero baseline to assess the failure explanation.
