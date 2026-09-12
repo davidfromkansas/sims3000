@@ -1,6 +1,7 @@
-import {conservationDemand} from './conservation.js?v=variable-maps-1';
-import {industrialJobs} from './industry.js?v=variable-maps-1';
-import {tradeCapacity} from './region.js?v=variable-maps-1';
+import {pipeCoverage} from './water-coverage.js?v=large-city-performance-1';
+import {conservationDemand} from './conservation.js?v=large-city-performance-1';
+import {industrialJobs} from './industry.js?v=large-city-performance-1';
+import {tradeCapacity} from './region.js?v=large-city-performance-1';
 // Manual pp. 16–17, 103, 115, 117–118. Capacities/rates are explicit model approximations.
 export const WATER_CAPACITY=500,LANDFILL_CAPACITY=200,LANDFILL_DECAY=.5;
 export const occupancy=level=>[0,1,3,8][level]||0;
@@ -13,15 +14,16 @@ export function recomputeWater(c){
  const n=Math.sqrt(c.tiles.length),tiles=c.tiles,rawPollution=tiles.map(t=>t.waterPollution||0),seen=new Set();let pumps=0,activePumps=0,waterCapacity=0,waterUsed=0,pipes=0,waterUpkeep=0,treatmentPlants=0,activeTreatment=0;
  for(const t of tiles){t.watered=false;t.waterCovered=false;t.pipeWet=false;t.waterNetwork=-1;t.pumpCapacity=0;t.unpollutedCapacity=0;t.pollutionCapacityLoss=0;t.treatmentBenefit=0;t.freshwater=false;t.saltwater=false;t.treatmentActive=false;t.waterEfficiency=WATER_STRUCTURES[t.type]?waterEfficiency(t):1;if(t.pipe)pipes++;if(WATER_STRUCTURES[t.type]){waterUpkeep+=WATER_STRUCTURES[t.type].upkeep;if(t.type==='waterTreatment')treatmentPlants++;else pumps++;nearby(c,t,2,u=>{if(u.terrain==='water'&&u.waterKind!=='salt')t.freshwater=true;if(u.terrain==='water'&&u.waterKind==='salt'&&Math.max(Math.abs(u.x-t.x),Math.abs(u.y-t.y))<=1)t.saltwater=true;});}}
  const baseNeed=t=>isZone(t)?1+occupancy(t.level)*3:['airport','seaport'].includes(t.type)?3:0;const needFor=t=>conservationDemand(c,'water',baseNeed(t));const waterDemand=tiles.reduce((sum,t)=>sum+needFor(t),0),waterConserved=tiles.reduce((sum,t)=>sum+baseNeed(t)-needFor(t),0);
- const networks=[];
+ const networks=[],coverageScratch=new Uint8Array(tiles.length).fill(255);
  for(let i=0;i<tiles.length;i++){
   if(seen.has(i)||(!tiles[i].pipe&&!WATER_STRUCTURES[tiles[i].type]))continue;
   const nodes=[i];seen.add(i);
   for(let k=0;k<nodes.length;k++){const t=tiles[nodes[k]];for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy,j=y*n+x;if(x<0||y<0||x>=n||y>=n||seen.has(j))continue;if(tiles[j].pipe||WATER_STRUCTURES[tiles[j].type]){seen.add(j);nodes.push(j);}}}
   const hasPipes=nodes.some(j=>tiles[j].pipe),treatments=nodes.map(j=>tiles[j]).filter(t=>t.type==='waterTreatment'&&t.powered&&hasPipes);const cleaning=Math.min(.8,treatments.reduce((sum,t)=>sum+.5*t.waterEfficiency,0));for(const t of treatments){t.treatmentActive=true;activeTreatment++;}
   let capacity=0;for(const j of nodes){const t=tiles[j],def=WATER_STRUCTURES[t.type];if(def&&def.capacity){const valid=t.type==='waterTower'||t.type==='pump'&&t.freshwater||t.type==='desalination'&&t.saltwater;const pollution=rawPollution[j]*(1-cleaning);t.unpollutedCapacity=t.powered&&valid?Math.round(def.capacity*t.waterEfficiency):0;t.pumpCapacity=t.powered&&valid?Math.round(def.capacity*t.waterEfficiency*(1-pollution/100*(t.type==='waterTower'?.95:.75))):0;t.pollutionCapacityLoss=t.unpollutedCapacity-t.pumpCapacity;const untreated=t.powered&&valid?Math.round(def.capacity*t.waterEfficiency*(1-rawPollution[j]/100*(t.type==='waterTower'?.95:.75))):0;t.treatmentBenefit=t.pumpCapacity-untreated;capacity+=t.pumpCapacity;if(t.pumpCapacity)activePumps++;}}
-  const candidates=new Map(),id=networks.length;for(const j of nodes){const t=tiles[j];t.waterNetwork=id;if(!t.pipe)continue;nearby(c,t,7,(u,k)=>{u.waterCovered=true;const distance=Math.max(Math.abs(t.x-u.x),Math.abs(t.y-u.y));if(!candidates.has(k)||candidates.get(k)>distance)candidates.set(k,distance);});}
-  capacity=tradeCapacity(c,'water',nodes,capacity,[...candidates.keys()].reduce((sum,j)=>{const t=tiles[j];return sum+(t.watered?0:needFor(t));},0));for(const j of nodes)tiles[j].pipeWet=capacity>0;let remaining=capacity;for(const [j]of [...candidates].sort((a,b)=>a[1]-b[1]||a[0]-b[0])){const t=tiles[j];if(t.watered)continue;const need=needFor(t);if(capacity>0&&remaining+1e-9>=need){t.watered=true;remaining=Math.max(0,remaining-need);}if(cleaning)t.waterPollution=Math.min(t.waterPollution,rawPollution[j]*(1-cleaning));}
+  const id=networks.length;for(const j of nodes)tiles[j].waterNetwork=id;
+  const candidates=pipeCoverage(n,nodes.filter(j=>tiles[j].pipe),coverageScratch);for(const j of candidates)tiles[j].waterCovered=true;
+  capacity=tradeCapacity(c,'water',nodes,capacity,candidates.reduce((sum,j)=>{const t=tiles[j];return sum+(t.watered?0:needFor(t));},0));for(const j of nodes)tiles[j].pipeWet=capacity>0;let remaining=capacity;for(const j of candidates){const t=tiles[j];if(t.watered)continue;const need=needFor(t);if(capacity>0&&remaining+1e-9>=need){t.watered=true;remaining=Math.max(0,remaining-need);}if(cleaning)t.waterPollution=Math.min(t.waterPollution,rawPollution[j]*(1-cleaning));}
   waterCapacity+=capacity;waterUsed+=capacity-remaining;networks.push({capacity,used:capacity-remaining,pipeCount:nodes.filter(j=>tiles[j].pipe).length,treatments:treatments.length,cleaning});
  }
  return{waterDemand,waterConserved,pumps,activePumps,pipes,waterCapacity,waterUsed,waterUpkeep,treatmentPlants,activeTreatment,watered:tiles.filter(t=>isZone(t)&&t.watered).length,waterNetworks:networks};
