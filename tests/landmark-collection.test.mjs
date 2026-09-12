@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {createCity,build,idx,planBuild,validateSave,recompute,tick} from '../dist/engine.js';
+import {VERSION,createCity,build,idx,planBuild,validateSave,recompute,tick} from '../dist/engine.js';
 import {serializeCity} from '../dist/save.js';
 import {LANDMARKS,landmarkRoots} from '../dist/landmarks.js';
 import {drawLandmarkModel,landmarkGeometry,MODELED_LANDMARKS} from '../dist/landmark-models.js';
@@ -14,5 +14,5 @@ assert.equal(c.funds,funds);assert.equal(CUSTOM_METRICS.landmarks.max,4);assert.
 const saved=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(saved.stats,c.stats);assert.deepEqual(landmarkRoots(saved).map(t=>t.type),['bigBen','statueLiberty']);tick(c);tick(saved);assert.deepEqual(saved.stats,c.stats);
 assert.ok(build(c,'bulldoze',[{x:11,y:11}]).ok);assert.equal(c.tiles.some(t=>t.type==='bigBen'),false);assert.ok(build(c,'bigBen',[{x:10,y:10}]).ok);
 const forged=JSON.parse(serializeCity(c));for(let y=30;y<33;y++)for(let x=30;x<33;x++)Object.assign(forged.tiles[idx(x,y)],{type:'statueLiberty',root:idx(30,30)});assert.throws(()=>validateSave(forged),/one of each landmark/);
-const legacy=createCity();legacy.version=88;assert.equal(validateSave(JSON.parse(serializeCity(legacy))).version,89);assert.throws(()=>landmarkGeometry('missing'));
+const legacy=createCity();legacy.version=88;assert.equal(validateSave(JSON.parse(serializeCity(legacy))).version,VERSION);assert.throws(()=>landmarkGeometry('missing'));
 console.log('PASS: expanded landmark placement, uniqueness, scenario goals, whole-footprint rebuilding, saved continuation, legacy migration and all four model projections.');

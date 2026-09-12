@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Reviewed 2026-09-13 against the supplied manual, the current `dist` modules, and the latest 112-suite regression run. Save schema: 89. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
+Reviewed 2026-09-13 against the supplied manual, the current `dist` modules, and the latest 113-suite regression run. Save schema: 90. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, the 48 × 48 map and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -22,7 +22,7 @@ The manual describes behavior but does not expose all simulation formulas. Numer
 
 ## Evidence limits
 
-The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 112 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
+The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 113 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
 
 Player acceptance is still pending. No silence or automatic continuation has been treated as positive feedback. The six in-game milestones provide exercises and locally saved notes; notes are not automatically transmitted.
 
@@ -264,3 +264,14 @@ Both landmarks occupy 3 × 3 level, clear land, are available immediately, cost 
 Manual pp.56 and 124 supply the landmark placement/uniqueness behavior; the choice of these additions, footprints and simplified artwork are reconstruction decisions. This is not the full original catalog or original game artwork. Offline Canvas-path renders were inspected in all four orientations and a tower-window occlusion issue was corrected. Regression tests cover placement, duplicate rejection, rebuilding, scenario metrics, saves and projection bounds. No browser acceptance check was performed.
 
 Feedback exercise: place both landmarks, rotate the city four times, inspect them, then demolish and rebuild one. Try a custom challenge requiring both named monuments. Assess the silhouettes at normal game zoom and whether their size suits the surrounding neighborhoods.
+
+
+### Larger agricultural estates — milestones 1 and 3
+
+Farms can now occupy rectangular low-density industrial plots from 3 × 3 to 8 × 8 tiles. Initial development takes adjoining suitable zoning; an existing farm at least six months old may add one full eastern or southern row on quarterly checks. The barn retains its location and needs electricity/transport access. New fields require flat, vacant rural zoning, low land value/pollution, and fewer than three road-fronted sides. Fields retain the barn’s road-access exception. Growth will not consume developed lots or another farm.
+
+A 3 × 3 farm retains 12 jobs, with one extra barn job per three additional tiles, up to 30. Tax, commuting and waste use that barn-only capacity. Queries show estate size and employment, and the Industry & farming guide explains expansion. The manual (pp.99,124) describes larger agricultural fields spreading beyond roads, but the 8-tile limit, rectangles, intervals and job scaling are reconstruction tuning. Farm formation also uses the barn’s local industrial demand support rather than borrowing inaccessible citywide market bonuses.
+
+Variable-size estates retain farmRoot membership in schema 90; derived area is rebuilt on load. Original 3 × 3 farms remain valid. Missing fields or malformed rectangles dissolve the farm grouping; high value/pollution can convert it to manufacturing, and destructive disaster damage still affects the whole estate. Tests cover large formation, growth gates, remote fields, barn-only jobs, saved continuation, legacy cities, malformed groups and outer-field destruction. No browser acceptance test was performed.
+
+Feedback exercise: zone a broad rural industrial district with roads near only its barn edge. Inspect a developed farm, add low-density zoning beyond its eastern/southern edge, and watch the agricultural tile and job counts over several months. Assess the pace and whether its footprint is easy to manage.
