@@ -1,6 +1,6 @@
-import {businessRoots} from './business.js?v=building-blocks-1';
-import {validateEventProgress} from './scenario-events.js?v=building-blocks-1';
-import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=building-blocks-1';
+import {businessRoots} from './business.js?v=building-paint-1';
+import {validateEventProgress} from './scenario-events.js?v=building-paint-1';
+import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=building-paint-1';
 // Original challenges using the manual's scenario/status model; not shipped SC3KU scenarios.
 export const SCENARIOS={
  harbor:{title:'The harbor wakes',months:36,description:'Reconnect a dormant harbor, grow to 400 residents, and sustain six months of shipping with a §5,000 reserve.',briefing:'Your coastal town starts with 224 residents and §12,500. The developed harbor at map coordinates 11, 21 has no water: reconnect the missing pipe at 20, 21 in the Water view. The pumping station and the rest of the pipe route already exist. Keep the original harbor supplied with power, water and road access, expand housing and jobs, and maintain 400 residents plus §5,000 for six consecutive months. Ships appear when the harbor operates. Random disasters start off.'},

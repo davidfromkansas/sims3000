@@ -1,4 +1,4 @@
-import {occupancy} from './utilities.js?v=building-blocks-1';
+import {occupancy} from './utilities.js?v=building-paint-1';
 // Manual p.112 specifies causal relationships; coefficients are recreation tuning.
 export function healthOutlook(c){
  let population=0,air=0,water=0,care=0,recreation=0;

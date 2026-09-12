@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Reviewed 2026-09-12 against the supplied manual, the current `dist` modules, and the latest 102-suite regression run. Save schema: 79. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
+Reviewed 2026-09-12 against the supplied manual, the current `dist` modules, and the latest 103-suite regression run. Save schema: 80. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, the 48 × 48 map and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -22,7 +22,7 @@ The manual describes behavior but does not expose all simulation formulas. Numer
 
 ## Evidence limits
 
-The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 102 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
+The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 103 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
 
 Player acceptance is still pending. No silence or automatic continuation has been treated as positive feedback. The six in-game milestones provide exercises and locally saved notes; notes are not automatically transmitted.
 
@@ -160,3 +160,13 @@ The geometry builder emits only exposed portions of walls, omitting faces hidden
 This advances the manual’s Building Architect functionality through height-column editing. Overhangs, sculpting arbitrary individual voxels, per-block textures, original building-file formats and the complete catalog remain unfinished. Automated checks cover immutable painting, parameter conversion, courtyards, exposed-wall bounds, four-view projection, city/model roundtrips, unchanged simulation outcomes, saved continuation and malformed layouts. No new browser interaction or visual acceptance claim is made for this checkpoint.
 
 Feedback exercise: choose Paint a block layout, erase a courtyard, paint a taller wing, undo a stroke, then apply and rotate the city. Assess footprint editing and the resulting shape.
+
+
+## Building surface painting milestone
+Manual pp.145–147 describes surface paints, textures, brushes and contiguous fills. The block designer now has a surface brush and connected-fill tool, with original facade, brick, stucco, glass and roof-tile materials. Choose north/east/south/west wall or roof and paint a footprint cell; this applies to the exposed portion of that column's selected face. World-oriented materials remain on the same side when preview/city rotation changes. Fill follows touching faces of equal column height and original material; wall fills stay in one plane, roof fills can turn around obstacles. Hidden faces cannot be painted. This is column-face painting, not the manual's individual wall-tile editor.
+
+Height and surface edits share the existing 20-step undo history. Construction-method switching preserves the block model and its paint draft. Clear and tower-reset clear paint, and undo restores both. Height edits retain paint for the column, including temporarily hidden faces. Procedural materials use the existing cached sprite renderer. Brick/stucco retain windows; glass and tile surfaces replace them. The palette is original artwork and is not the complete manual texture catalog.
+
+Building-file version 3 and city schema 80 retain a validated 500-entry surface map; versions 1 and 2 remain importable without invented materials. Painting still changes appearance only. Tests cover coplanar and roof flood-fill boundaries, hidden faces, material barriers, geometry in all views and at maximum height, strict format validation, unchanged simulation and saved continuation. Full regression: 103 suites. No browser or visual acceptance test was performed this checkpoint.
+
+Feedback exercise: paint a brick wing, fill a glass facade, add tiled roofing, undo a paint stroke, then apply and rotate the city. Compare the surface choices and editing workflow. Arbitrary voxels/overhangs, individual floor painting, detail/prop placement, original-file compatibility and the broader architect catalog remain unfinished.
