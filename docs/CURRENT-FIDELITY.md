@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Reviewed 2026-09-12 against the supplied manual, the current `dist` modules, and the latest 103-suite regression run. Save schema: 80. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
+Reviewed 2026-09-12 against the supplied manual, the current `dist` modules, and the latest 104-suite regression run. Save schema: 81. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, the 48 × 48 map and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -22,7 +22,7 @@ The manual describes behavior but does not expose all simulation formulas. Numer
 
 ## Evidence limits
 
-The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 103 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
+The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 104 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
 
 Player acceptance is still pending. No silence or automatic continuation has been treated as positive feedback. The six in-game milestones provide exercises and locally saved notes; notes are not automatically transmitted.
 
@@ -167,6 +167,16 @@ Manual pp.145–147 describes surface paints, textures, brushes and contiguous f
 
 Height and surface edits share the existing 20-step undo history. Construction-method switching preserves the block model and its paint draft. Clear and tower-reset clear paint, and undo restores both. Height edits retain paint for the column, including temporarily hidden faces. Procedural materials use the existing cached sprite renderer. Brick/stucco retain windows; glass and tile surfaces replace them. The palette is original artwork and is not the complete manual texture catalog.
 
-Building-file version 3 and city schema 80 retain a validated 500-entry surface map; versions 1 and 2 remain importable without invented materials. Painting still changes appearance only. Tests cover coplanar and roof flood-fill boundaries, hidden faces, material barriers, geometry in all views and at maximum height, strict format validation, unchanged simulation and saved continuation. Full regression: 103 suites. No browser or visual acceptance test was performed this checkpoint.
+Building-file version 3 and city schema 80 retain a validated 500-entry surface map; versions 1 and 2 remain importable without invented materials. Painting still changes appearance only. Tests cover coplanar and roof flood-fill boundaries, hidden faces, material barriers, geometry in all views and at maximum height, strict format validation, unchanged simulation and saved continuation. Full regression: 104 suites. No browser or visual acceptance test was performed this checkpoint.
 
 Feedback exercise: paint a brick wing, fill a glass facade, add tiled roofing, undo a paint stroke, then apply and rotate the city. Compare the surface choices and editing workflow. Arbitrary voxels/overhangs, individual floor painting, detail/prop placement, original-file compatibility and the broader architect catalog remain unfinished.
+
+
+## Stateful scenario variables milestone
+The creator now defines four named integer variables, each with an initial value. Change scenario variable events can set, add/subtract or copy a citywide metric into a slot. Copy rounds to the nearest integer; all values saturate at ±1,000,000. Goals and conditions select Scenario variable 1–4, and messages use {variable1}–{variable4}. Status lists the author names and current values; event history retains the latest before/after values. Grouped events see earlier variable changes before testing later conditions. Existing occurrence limits, intervals, emergency pauses, popup acknowledgement and terminal scenario behavior apply.
+
+This provides persistent counters and metric snapshots toward the manual's Variables Manager, Set Variable, Assign and arithmetic commands. It remains an original bounded authoring interface, not the original script VM. Four slots/actions, integer-only storage, no expressions, loops, arbitrary blocks, variable-to-variable arithmetic or configurable ranks remain limitations. A copied spatial metric is citywide; authors cannot select a copy region yet.
+
+City schema 81 preserves variables and action history. Older definitions initialize four zero counters without inventing past actions; modern definitions missing saved values are rejected. Tests exercise an actual three-month counter victory, grouped dependent messages, population snapshots, save continuation, arithmetic limits, malformed definitions/history and legacy migration. Full regression: 104 suites. No browser acceptance test was performed.
+
+Milestone 6 feedback exercise: name variable 1 Successful months, schedule a repeated Add 1 action conditional on a healthy city metric, and make the goal variable 1 ≥ 3. Add a message when it reaches 2. Check that progress remains recorded even when the qualifying city condition later fails.
