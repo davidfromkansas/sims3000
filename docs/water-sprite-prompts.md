@@ -1,0 +1,3 @@
+# Water infrastructure artwork
+
+Built-in Imagegen produced water-atlas.png, transparent 2172×724, three equal724px cells: elevated municipal water tower; compact seawater desalination plant with blue process tanks/pipes; water treatment plant with circular settling tanks. Original detailed crisp 3D-looking 2D late-1990s city-builder style, muted realistic materials, matching 2:1 orthographic isometric camera, upper-left lighting, restrained footprint shadows, complete isolated structures with transparent margins, no text/logos/grid/people/scenery. Runtime trims alpha within each cell and draws sprites29–31.

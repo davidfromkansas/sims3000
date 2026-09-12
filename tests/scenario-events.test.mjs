@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {createCity,tick,validateSave,recompute} from '../dist/engine.js';
+import {attachCustomScenario} from '../dist/custom-scenarios.js';
+import {runScenarioEvents,validateEventDefinitions} from '../dist/scenario-events.js';
+import {scenarioGoals} from '../dist/scenarios.js';
+import {stepFire,dispatchFire} from '../dist/emergency.js';
+import {serializeCity} from '../dist/save.js';
+const definition={title:'Fire recovery',months:12,objectives:[{metric:'population',target:0}],events:[{type:'fire',month:2,x:20,y:20}]};const c=createCity();attachCustomScenario(c,definition);tick(c);assert.equal(c.scenario.status,'playing','already met metric cannot bypass the scheduled event');tick(c);assert.ok(c.emergency.active);assert.equal(c.scenario.events[0].status,'triggered');assert.equal(scenarioGoals(c)[0].done,false);const saved=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(saved.scenario,c.scenario);assert.equal(runScenarioEvents(c),null);const count=c.emergency.started;while(c.emergency.active){const t=c.tiles.find(t=>t.fire>0);if(t)dispatchFire(c,t.x,t.y);stepFire(c);recompute(c);}tick(c);assert.equal(c.scenario.status,'won');assert.equal(c.emergency.started,count);
+const empty=createCity('Empty',false);for(const t of empty.tiles)t.nature=false;attachCustomScenario(empty,definition);tick(empty);tick(empty);assert.equal(empty.scenario.events[0].status,'skipped');assert.equal(empty.scenario.status,'won');
+for(const type of ['earthquake','tornado','locust','riot']){const c=createCity();attachCustomScenario(c,{...definition,events:[{type,month:1,x:20,y:20}]});tick(c);assert.equal(c.scenario.events[0].status,'triggered',type);assert.ok(c.emergency.active);assert.deepEqual(validateSave(JSON.parse(serializeCity(c))).scenario,c.scenario);}
+assert.throws(()=>validateEventDefinitions([{type:'fire',month:12,x:20,y:20}],12));assert.throws(()=>validateEventDefinitions([{type:'constructor',month:2,x:20,y:20}],12));assert.throws(()=>validateEventDefinitions([{type:'fire',month:2,x:48,y:20}],12));assert.throws(()=>validateEventDefinitions([definition.events[0],definition.events[0]],12));
+const bad=JSON.parse(serializeCity(c));bad.scenario.events[0].month=999;assert.throws(()=>validateSave(bad),/event/);const old=createCity();attachCustomScenario(old,{...definition,events:[]});const legacy=JSON.parse(serializeCity(old));legacy.version=35;delete legacy.scenario.events;delete legacy.scenario.definition.events;assert.deepEqual(validateSave(legacy).scenario.events,[]);
+console.log('PASS: scheduled disasters, no premature victory, one-time firing, skipped targets, emergency saves, event validation and older custom challenges.');

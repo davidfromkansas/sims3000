@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {createCity,recompute,validateSave} from '../dist/engine.js';
+import {changeCivic,civicSpending,ordinanceCost,advanceCivic} from '../dist/civic.js';
+import {healthOutlook,healthReport} from '../dist/health.js';
+import {serializeCity} from '../dist/save.js';
+const c=createCity();const baseline=validateSave(JSON.parse(serializeCity(c)));assert.equal(c.civic.ordinances.freeClinics,false);assert.equal(c.civic.ordinances.juniorSports,false);const crime=c.stats.averageCrime,target=healthOutlook(c).target,spend=civicSpending(c).ordinances;
+assert.ok(changeCivic(c,c.civic.funding,{...c.civic.ordinances,freeClinics:true,juniorSports:true}).ok);recompute(c);assert.equal(ordinanceCost(c,'freeClinics'),Math.ceil(c.stats.population*.02));assert.equal(ordinanceCost(c,'juniorSports'),Math.ceil(c.stats.population*.015));assert.equal(civicSpending(c).ordinances-spend,ordinanceCost(c,'freeClinics')+ordinanceCost(c,'juniorSports'));assert.ok(c.stats.averageCrime<crime);assert.equal(healthOutlook(c).target,target+3);assert.match(healthReport(c),/Free clinics/);
+advanceCivic(c);advanceCivic(baseline);assert.ok(c.civic.youthEducation>baseline.civic.youthEducation);assert.ok(c.civic.lifeExpectancy>baseline.civic.lifeExpectancy);const saved=validateSave(JSON.parse(serializeCity(c)));assert.equal(saved.civic.ordinances.freeClinics,true);assert.equal(saved.civic.ordinances.juniorSports,true);
+changeCivic(c,c.civic.funding,{...c.civic.ordinances,freeClinics:false,juniorSports:false});recompute(c);assert.equal(civicSpending(c).ordinances,spend);assert.equal(healthOutlook(c).clinicBenefit,0);
+const old=JSON.parse(serializeCity(c));old.version=55;delete old.civic.ordinances.freeClinics;delete old.civic.ordinances.juniorSports;assert.equal(validateSave(old).civic.ordinances.juniorSports,false);old.version=56;assert.throws(()=>validateSave(old));
+const empty=createCity('Empty',false);empty.civic.ordinances.freeClinics=empty.civic.ordinances.juniorSports=true;assert.equal(civicSpending(empty).ordinances,0);const initial=empty.civic.lifeExpectancy;advanceCivic(empty);assert.equal(empty.civic.lifeExpectancy,initial);
+console.log('PASS: population-based civic program budgets, crime reduction, gradual education and health benefits, report breakdown, repeal, saved settings, migration and empty-city behavior.');

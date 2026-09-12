@@ -1,0 +1,9 @@
+import assert from 'node:assert/strict';
+import {createCity,build,tick,recompute,validateSave} from '../dist/engine.js';
+import {wasteState,wasteMonth,wasteBreakdown} from '../dist/waste-accounting.js';
+import {serializeCity} from '../dist/save.js';
+const c=createCity();assert.equal(wasteBreakdown(c),null);for(let month=0;month<12;month++){const before=wasteState(c);tick(c);const h=c.history.at(-1),after=wasteState(c);assert.ok(Math.abs(before.waiting+h.garbageGenerated+h.garbageImported-h.garbageRecycled-h.garbageIncinerated-h.garbageLandfilled-h.garbageExported-after.waiting)<1e-7,'waste mass balances');assert.equal(h.garbageUncollected,after.waiting);}const annual=wasteBreakdown(c);assert.equal(annual.recordedMonths,12);assert.equal(annual.yearGenerated,c.history.reduce((s,h)=>s+h.garbageGenerated,0));assert.equal(serializeCity(validateSave(JSON.parse(serializeCity(c)))),serializeCity(c));
+const legacy=JSON.parse(serializeCity(c));for(const h of legacy.history)for(const k of Object.keys(h))if(k.startsWith('garbage'))delete h[k];assert.equal(wasteBreakdown(validateSave(legacy)),null);const migrated=validateSave(legacy);tick(migrated);assert.equal(wasteBreakdown(migrated).recordedMonths,1);
+const flows=wasteMonth(10,{waiting:4,stored:30},{waiting:9,stored:30,decay:.5},{waiting:8,stored:34.5,recycled:2,burned:4},{waiting:3});assert.deepEqual(flows,{garbageGenerated:10,garbageImported:5,garbageRecycled:2,garbageIncinerated:4,garbageLandfilled:5,garbageExported:5,garbageUncollected:3});
+const dump=createCity();assert.ok(build(dump,'landfill',[{x:19,y:22}]).ok);recompute(dump);const state=wasteState(dump);tick(dump);const h=dump.history.at(-1);assert.ok(h.garbageLandfilled>0);assert.ok(Math.abs(h.garbageLandfilled-(wasteState(dump).stored-state.stored+state.decay))<1e-7);
+console.log('PASS: monthly waste conservation, landfill decay exclusion, import/export flows, annual partial/full totals and historical save preservation.');

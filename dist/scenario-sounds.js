@@ -1,0 +1,2 @@
+export const SCENARIO_SOUNDS={notice:{name:'Civic bell',cue:'notice'},achievement:{name:'Celebration',cue:'achievement'},tension:{name:'Warning pulse',cue:'tension'}};
+export function deliverScenarioSound(event,audio,emergency=false){if(event?.type!=='sound'||event.status!=='triggered'||!Object.hasOwn(SCENARIO_SOUNDS,event.sound)||emergency)return false;audio.play(SCENARIO_SOUNDS[event.sound].cue);return true;}

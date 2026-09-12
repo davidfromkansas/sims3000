@@ -1,0 +1,4 @@
+// Manual pp.56 and 124: freely available, one of each, and attractive to aliens.
+export const LANDMARKS={eiffelTower:{name:'Eiffel Tower',place:'Paris, France',size:3,cost:0,upkeep:0,sprite:72,asset:'eiffel-tower.png'},greatPyramid:{name:'Great Pyramid',place:'Giza, Egypt',size:4,cost:0,upkeep:0,sprite:73,asset:'great-pyramid.png'}};
+export function landmarkRoots(c){const n=Math.sqrt(c.tiles.length);return c.tiles.filter(t=>LANDMARKS[t.type]&&t.root===t.y*n+t.x&&!t.rubble);}
+export function validateLandmarks(c){for(const type of Object.keys(LANDMARKS))if(landmarkRoots(c).filter(t=>t.type===type).length>1)throw Error('Only one of each landmark can be placed.');}

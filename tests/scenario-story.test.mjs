@@ -1,0 +1,9 @@
+import assert from 'node:assert/strict';
+import {createCity,validateSave,tick} from '../dist/engine.js';
+import {attachCustomScenario} from '../dist/custom-scenarios.js';
+import {validateScenarioStory,scenarioStory,DEFAULT_BRIEFING} from '../dist/scenario-story.js';
+import {serializeCity} from '../dist/save.js';
+const d={title:'Restore the harbor',months:12,objectives:[{metric:'population',target:200}],briefing:'Keep the harbor working.\n<Ships> & shops need roads.',winMessage:'The harbor thrives!',lossMessage:'Try a smaller district next time.'};const c=createCity();attachCustomScenario(c,d);const before=scenarioStory(c.scenario);assert.match(before,/&lt;Ships&gt; &amp; shops/);assert.match(before,/\n/);assert.doesNotMatch(before,/harbor thrives/);assert.doesNotMatch(before,/smaller district/);tick(c);assert.equal(c.scenario.status,'won');assert.match(scenarioStory(c.scenario),/harbor thrives/);assert.doesNotMatch(scenarioStory(c.scenario),/smaller district/);assert.deepEqual(validateSave(JSON.parse(serializeCity(c))).scenario,c.scenario);
+c.scenario.status='lost';assert.match(scenarioStory(c.scenario),/smaller district/);assert.doesNotMatch(scenarioStory(c.scenario),/harbor thrives/);
+for(const value of [null,{},'x'.repeat(1501),'bad\u0000text'])assert.throws(()=>validateScenarioStory({briefing:value}));const old=createCity();attachCustomScenario(old,d);const data=JSON.parse(serializeCity(old));data.version=37;for(const key of ['briefing','winMessage','lossMessage'])delete data.scenario.definition[key];const restored=validateSave(data);assert.match(scenarioStory(restored.scenario),/A challenge created from your city/);assert.equal(restored.scenario.definition.briefing,'');
+console.log('PASS: authored briefings, outcome-specific messages, escaped text and preserved line breaks, size/type validation, saved text and migration.');

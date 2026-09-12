@@ -1,0 +1,37 @@
+import {workforceShare} from './workforce.js?v=airport-flights-1';
+import {routeLength} from './tunnels.js?v=airport-flights-1';
+import {industrialJobs} from './industry.js?v=airport-flights-1';
+import {streetGraph,MinQueue} from './highway.js?v=airport-flights-1';
+import {railNetwork,STATIONS} from './rail.js?v=airport-flights-1';
+import {occupancy} from './utilities.js?v=airport-flights-1';
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+export const freshTransport=()=>({funding:100,condition:100,underfunded:0});
+export function changeTransit(c,value){if(!Number.isInteger(value)||value<0||value>150)return{ok:false,error:'Transit funding must be 0–150%.'};c.transport.funding=value;return{ok:true};}
+export function advanceTransit(c){const t=c.transport,exists=c.tiles.some(t=>t.type==='busStop'||STATIONS[t.type]||t.rail||t.subway);t.condition=clamp(t.condition+(t.funding>=100?5:-(100-t.funding)/20),0,100);t.underfunded=exists&&t.funding<50?Math.min(120000,t.underfunded+1):t.funding>=100||!exists?0:t.underfunded;}
+export function validateTransport(v){if(!v||!Number.isInteger(v.funding)||v.funding<0||v.funding>150||!Number.isFinite(v.condition)||v.condition<0||v.condition>100||!Number.isInteger(v.underfunded)||v.underfunded<0||v.underfunded>120000)throw Error('Invalid transit budget.');return{funding:v.funding,condition:v.condition,underfunded:v.underfunded};}
+export function roadNeighbors(tiles,i){const n=Math.sqrt(tiles.length),t=tiles[i],out=[];for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy;if(x<0||y<0||x>=n||y>=n)continue;const j=y*n+x,u=tiles[j];if(u.type!=='road')continue;const axis=dx?'x':'y';if(t.terrain==='water'&&t.bridgeAxis!==axis||u.terrain==='water'&&u.bridgeAxis!==axis)continue;out.push(j);}return out;}
+export function bridgePlan(c,points,mode='road'){const tiles=c.tiles,n=Math.sqrt(tiles.length),valid=points.length&&points.every(p=>Number.isInteger(p.x)&&Number.isInteger(p.y)&&p.x>=0&&p.y>=0&&p.x<n&&p.y<n);if(!valid)return{ok:false,error:'Build inside the city boundary.'};if(!points.some(p=>tiles[p.y*n+p.x].terrain==='water'))return{ok:true,axis:null};const axis=points.every(p=>p.y===points[0].y)?'x':points.every(p=>p.x===points[0].x)?'y':null;if(!axis)return{ok:false,error:'Bridges must run straight across water.'};const sorted=[...points].sort((a,b)=>a[axis]-b[axis]);if(sorted.some((p,i)=>i&&p[axis]!==sorted[i-1][axis]+1)||tiles[sorted[0].y*n+sorted[0].x].terrain==='water'||tiles[sorted.at(-1).y*n+sorted.at(-1).x].terrain==='water')return{ok:false,error:'Drag the route across water until both ends reach dry land.'};if(sorted.some(p=>{const t=tiles[p.y*n+p.x];return t.terrain==='water'&&(mode==='highway'?t.highway:mode==='rail'?t.rail:t.type==='road')&&(mode==='highway'?t.highwayAxis:mode==='rail'?t.railAxis:t.bridgeAxis)!==axis;}))return{ok:false,error:'Bridges cannot intersect over water.'};return{ok:true,axis};}
+export function recomputeTransport(c){
+ const tiles=c.tiles,n=Math.sqrt(tiles.length),transit=c.transport,stops=tiles.filter(t=>t.type==='busStop'),strike=transit.underfunded>=6;
+ const roadsNear=(t,r)=>{const out=[];for(let y=Math.max(0,t.y-r);y<=Math.min(n-1,t.y+r);y++)for(let x=Math.max(0,t.x-r);x<=Math.min(n-1,t.x+r);x++)if(tiles[y*n+x].type==='road')out.push(y*n+x);return out;};
+ for(const t of tiles){t.traffic=0;t.highwayTraffic=0;t.busRiders=0;t.commuteLength=0;t.commuters=0;t.unemployed=0;t.stopActive=false;}
+ for(const s of stops){s.stopRoads=[];for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=s.x+dx,y=s.y+dy;if(x>=0&&y>=0&&x<n&&y<n&&tiles[y*n+x].type==='road'&&tiles[y*n+x].terrain==='land')s.stopRoads.push(y*n+x);}s.stopActive=s.stopRoads.length>0&&transit.funding>0&&transit.condition>20&&!strike&&c.finance.roadCondition>20;}
+ const street=streetGraph(c),groups=street.groups,N=tiles.length;
+ const network=railNetwork(c);
+ const workplaces=tiles.filter(t=>['commercial','industrial'].includes(t.type)&&t.level&&t.access),remaining=new Map(workplaces.map(t=>[t,t.type==='commercial'?occupancy(t.level)*6:industrialJobs(t)])),targets=new Map();for(const w of workplaces)for(const i of roadsNear(w,4)){if(!targets.has(i))targets.set(i,[]);targets.get(i).push(w);}
+ let commuters=0,busRiders=0,trainRiders=0,unemployed=0,travel=0,carpoolVehiclesSaved=0;
+ const homes=tiles.filter(t=>t.type==='residential'&&t.level),participation=workforceShare(c,homes.reduce((sum,t)=>sum+occupancy(t.level)*8,0));
+ for(const h of homes){
+ let workers=occupancy(h.level)*8*participation;h.commuters=workers;commuters+=workers;
+ if(!h.access){h.unemployed=workers;unemployed+=workers;continue;}
+ const train=network.allocate(h,workplaces,remaining,workers*(h.roadAccess?.65:1)*Math.min(1,transit.funding/100)*transit.condition/100);workers-=train.passengers;trainRiders+=train.passengers;h.commuteLength+=train.travel;travel+=train.travel;
+ const starts=h.roadAccess?roadsNear(h,4):[],prev=new Int32Array(N*2).fill(-2),distance=new Float64Array(N*2).fill(Infinity),queue=new MinQueue();for(const i of starts){prev[i]=-1;distance[i]=0;queue.push(i,0);}
+ while(queue.length&&workers>0){const entry=queue.pop(),i=entry.node;if(entry.cost!==distance[i])continue;for(const w of targets.get(i)||[]){const available=remaining.get(w);if(!available)continue;const amount=Math.min(workers,available),path=[];let j=i;while(j>=0){path.push(j);j=prev[j];}path.reverse();const stop=stops.find(s=>s.stopActive&&Math.max(Math.abs(s.x-h.x),Math.abs(s.y-h.y))<=3&&s.stopRoads.some(r=>starts.includes(r)&&groups[r]===groups[path[0]]));
+ const bus=stop?amount*Math.min(.8,.65*transit.funding/100)*transit.condition/100:0;const saved=(amount-bus)*(c.civic.ordinances.carpool?.3:0);carpoolVehiclesSaved+=saved;busRiders+=bus;if(stop)stop.busRiders+=bus;for(const r of path){if(r<N)tiles[r].traffic+=amount-bus-saved+bus/20;else tiles[r-N].highwayTraffic+=amount-bus-saved+bus/20;}h.commuteLength+=amount*routeLength(c,path);travel+=amount*routeLength(c,path);remaining.set(w,available-amount);workers-=amount;if(!workers)break;}
+ for(const j of street.edges[i]){const elevated=j>=N,t=tiles[j%N],load=elevated?t.highwayTraffic:t.traffic,capacity=elevated?160:40,step=(i<N)!==(j<N)?2:(elevated?.45:1)+Math.max(0,load/capacity-1)*2,d=distance[i]+step*Math.max(1,Math.abs(tiles[i%N].x-t.x)+Math.abs(tiles[i%N].y-t.y));if(d<distance[j]){distance[j]=d;prev[j]=i;queue.push(j,d);}}}
+ h.unemployed=workers;unemployed+=workers;if(h.commuters>workers)h.commuteLength/=h.commuters-workers;
+ }
+ const roads=tiles.filter(t=>t.type==='road'),highways=tiles.filter(t=>t.highway),busy=roads.filter(t=>t.traffic>40),used=commuters-unemployed;
+ const rail=network.stats();
+ return{carpoolVehiclesSaved,...rail,highwayTiles:highways.length,highwayBridgeTiles:highways.filter(t=>t.terrain==='water').length,ramps:tiles.filter(t=>t.type==='ramp').length,activeRamps:tiles.filter(t=>t.type==='ramp'&&t.rampActive).length,highwayVehicles:highways.reduce((v,t)=>v+t.highwayTraffic,0),congestedHighways:highways.filter(t=>t.highwayTraffic>160).length,trainRiders,busStops:stops.length,activeBusStops:stops.filter(t=>t.stopActive).length,commuters,unemployed,busRiders,transitStrike:strike,averageCommute:used?travel/used:0,congestedRoads:busy.length,peakTraffic:Math.max(0,...roads.map(t=>t.traffic)),bridgeTiles:roads.filter(t=>t.terrain==='water').length,transitFare:Math.round(busRiders*.03+trainRiders*.05),transitExpense:Math.round(stops.length*5*transit.funding/100)+rail.stationExpense+rail.trackExpense};
+}

@@ -1,0 +1,5 @@
+# Tornado sprite
+
+Built-in Imagegen generated `dist/assets/tornado.png` as one transparent original sprite. Alpha preserved; visually inspected at source size and in the city.
+
+Prompt: Create one original transparent PNG tornado game sprite. One isolated tall funnel cloud, narrow dusty contact point at the bottom widening upward into a swirling grey cloud top, a few small airborne debris pieces very close to the funnel. Muted realistic late-1990s city-builder 3D-looking 2D art, orthographic isometric viewpoint and upper-left lighting, detailed layered swirling cloud texture with a strong readable silhouette. Intended to remain clear when displayed about 80 pixels wide by 140 pixels tall over city tiles. Entire funnel and cloud top fully contained with generous transparent margins. Genuine transparent alpha background; preserve softly translucent cloud edges but no diffuse halo across empty space. No terrain base, no ground tile, no surrounding scene, no buildings, no text, no UI, no labels, no border, no checkerboard pattern, no watermark. Exactly one tornado.

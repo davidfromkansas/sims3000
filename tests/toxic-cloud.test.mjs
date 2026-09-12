@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {createCity,idx,recompute,validateSave} from '../dist/engine.js';
+import {startToxicCloud} from '../dist/toxic-cloud.js';
+import {stepFire,dispatchFire} from '../dist/emergency.js';
+import {serializeCity} from '../dist/save.js';
+import {attachCustomScenario} from '../dist/custom-scenarios.js';
+import {runScenarioEvents} from '../dist/scenario-events.js';
+const c=createCity('Cloud',false);for(const t of c.tiles){t.terrain='land';t.nature=false;}for(const [x,type]of [[20,'residential'],[21,'commercial'],[30,'residential']])Object.assign(c.tiles[idx(x,20)],{type,level:1,pipe:true,rail:true,subway:true});recompute(c);assert.ok(startToxicCloud(c,20,20).ok);assert.equal(startToxicCloud(c,20,20).ok,false);assert.ok(dispatchFire(c,20,20).ok);stepFire(c);recompute(c);assert.equal(c.tiles[idx(20,20)].level,0);assert.equal(c.tiles[idx(21,20)].level,0);assert.equal(c.tiles[idx(30,20)].level,1);assert.ok(c.tiles[idx(20,20)].pipe&&c.tiles[idx(20,20)].rail&&c.tiles[idx(20,20)].subway);assert.equal(c.emergency.displaced,8);assert.equal(c.emergency.toxicEvacuations,2);assert.equal(c.emergency.destroyed,0);assert.equal(c.stats.rubbleTiles,0);assert.equal(c.month,0);
+const resumed=validateSave(JSON.parse(serializeCity(c)));for(let i=0;i<8;i++){stepFire(c);stepFire(resumed);recompute(c);recompute(resumed);}assert.equal(serializeCity(c),serializeCity(resumed));for(let i=0;i<15;i++){stepFire(c);recompute(c);}assert.equal(c.emergency.toxicCloud,null);assert.equal(c.emergency.active,false);assert.equal(c.emergency.contained,1);
+const old=JSON.parse(serializeCity(createCity()));old.version=43;delete old.emergency.toxicCloud;delete old.emergency.toxicClouds;delete old.emergency.toxicEvacuations;assert.equal(validateSave(old).emergency.toxicCloud,null);
+const bad=JSON.parse(serializeCity(resumed));bad.emergency.toxicCloud.dx=2;assert.throws(()=>validateSave(bad));
+const scenario=createCity();attachCustomScenario(scenario,{title:'Gas leak',months:12,objectives:[{metric:'population',target:400}],events:[{type:'toxicCloud',month:1,x:20,y:20}]});scenario.month=1;assert.equal(runScenarioEvents(scenario).status,'triggered');assert.ok(scenario.emergency.toxicCloud);
+console.log('PASS: drifting cloud evacuation, utility preservation, no rubble, units cannot stop gas, paused calendar, deterministic save continuity, expiry, migration and scheduled clouds.');

@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {createCity,idx,build,planBuild,validateSave,recompute} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {LANDMARKS,landmarkRoots} from '../dist/landmarks.js';
+import {startUfo,stepUfo,setRandomUfos,maybeUfo} from '../dist/ufo.js';
+const c=createCity('Landmarks',false);for(const t of c.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});const funds=c.funds;
+assert.ok(build(c,'eiffelTower',[{x:10,y:10}]).ok);assert.equal(c.funds,funds);assert.equal(c.tiles.filter(t=>t.type==='eiffelTower').length,9);assert.equal(planBuild(c,'eiffelTower',[{x:20,y:20}]).ok,false);assert.ok(build(c,'greatPyramid',[{x:25,y:25}]).ok);assert.equal(landmarkRoots(c).length,2);const roundtrip=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(landmarkRoots(roundtrip).map(t=>t.type),['eiffelTower','greatPyramid']);
+assert.ok(build(c,'bulldoze',[{x:11,y:11}]).ok);assert.equal(c.tiles.some(t=>t.type==='eiffelTower'),false);assert.ok(build(c,'eiffelTower',[{x:10,y:10}]).ok);
+startUfo(c,2,2);for(let i=0;i<12;i++)stepUfo(c,()=>0);assert.ok(landmarkRoots(c).some(t=>t.x===c.emergency.ufo.x&&t.y===c.emergency.ufo.y),'subsequent strike prefers landmark');
+const random=validateSave(JSON.parse(serializeCity(roundtrip)));setRandomUfos(random,true);for(let m=1;m<=10000&&!random.emergency.ufo;m++){random.month=m;maybeUfo(random);}assert.ok(random.emergency.ufo);assert.ok(landmarkRoots(random).some(t=>t.x===random.emergency.ufo.x&&t.y===random.emergency.ufo.y));
+const bad=JSON.parse(serializeCity(roundtrip));for(let y=35;y<38;y++)for(let x=35;x<38;x++)Object.assign(bad.tiles[idx(x,y)],{type:'eiffelTower',root:idx(35,35)});assert.throws(()=>validateSave(bad),/one of each landmark/);
+const blocked=createCity('Blocked',false);for(const t of blocked.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});blocked.tiles[idx(11,11)].elevation=1;assert.equal(planBuild(blocked,'eiffelTower',[{x:10,y:10}]).ok,false);
+console.log('PASS: immediately available landmarks, whole-footprint placement and demolition, unique types, free construction, save validation, rebuilding and alien landmark preference.');

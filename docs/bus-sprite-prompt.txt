@@ -1,0 +1,11 @@
+Built-in Imagegen original sprite, 1536×1024 RGBA, 2026-09-12. Some translucent halo remains outside the footprint. Runtime source rectangle frames the shelter.
+
+Use case: stylized-concept.
+Asset type: original transparent PNG game sprite for an isometric city simulation.
+Subject: one small late-1990s bus stop, a modest glass shelter with slim dark metal frame and muted blue-green shallow roof, bench inside and simple bus-stop pole beside it, on a compact diamond-shaped paved footprint.
+Style: detailed crisp 3D-looking 2D sprite, muted realistic late-1990s city-builder architecture with finely rendered materials, visually consistent with traditional isometric civic buildings.
+Projection: orthographic isometric, 2:1 ground perspective, ground edges approximately 26.565 degrees to horizontal, top and two visible sides.
+Lighting: soft top-left lighting with restrained footprint-contained shadow.
+Composition: one centered complete isolated sprite, generous transparent margins on all sides; entire shelter, pole, and paving fully visible.
+Background: genuine transparent alpha outside sprite.
+Constraints: no text, no letters, no numbers, no logos, no watermark, no bus, no road, no people, no extra structures, no background, no checkerboard pattern.

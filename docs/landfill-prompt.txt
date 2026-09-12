@@ -1,0 +1,8 @@
+Use case: stylized-concept
+Asset type: single transparent 1024x1024 PNG 2D sprite for an isometric city-building game, repeated landfill-zone terrain asset.
+Primary request: Create ONE original small municipal landfill tile. A modest low mound of compacted miscellaneous rubbish rests on bare compacted earth, surrounded by a low earth berm and a minimal thin wire fence.
+Style/medium: detailed prerendered 3D miniature aesthetic of late-1990s city-building games, clean readable miniature texture and silhouette.
+Composition/framing: orthographic elevated isometric view, ground plane is a precise 2:1 width-to-height diamond, centered horizontally and vertically with generous transparent margin on all sides. Keep the entire tile, fence, and mound inside the canvas. Low terrain profile. Single tile only.
+Lighting/mood: neutral daylight from upper left, subtle shading restricted to the tile.
+Materials/textures: subdued brown dirt, small varied muted scraps compacted into a mound, sparse thin metal fence posts and wire. No dominant bright colors.
+Constraints: actual transparent alpha background surrounding the tile; no checkerboard painted into image; no background color or scenery; no building, no machinery, no vehicles, no people, no roads, no typography, no text, no labels, no logo, no watermark. Not a spritesheet.

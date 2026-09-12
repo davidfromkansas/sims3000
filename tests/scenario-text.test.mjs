@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {createCity,tick,validateSave} from '../dist/engine.js';
+import {attachCustomScenario} from '../dist/custom-scenarios.js';
+import {expandScenarioText,STORY_VALUES} from '../dist/scenario-text.js';
+import {scenarioStory} from '../dist/scenario-story.js';
+import {serializeCity} from '../dist/save.js';
+const c=createCity('Harbor <North>');c.mayorName='A & B';
+const text='{city}: Mayor {mayor}, {population} residents in {year}; §{funds}; {farms} farms.';
+const expanded=expandScenarioText(text,c);assert.match(expanded,/Harbor <North>: Mayor A & B, 224 residents/);assert.match(expanded,/0 farms/);assert.match(expanded,new RegExp('in '+c.startYear));
+assert.equal(expandScenarioText('{unknown} {constructor} {toString} {__proto__}',c),'{unknown} {constructor} {toString} {__proto__}');
+c.name='{population}';assert.equal(expandScenarioText('{city}',c),'{population}','inserted values are not recursively interpreted');c.name='Harbor <North>';
+attachCustomScenario(c,{title:'Living messages',months:12,objectives:[{metric:'population',target:200}],briefing:text,winMessage:'Success: {population} residents and §{funds}.',lossMessage:'Only {farms} farms remain.'});
+assert.match(scenarioStory(c.scenario,c),/Harbor &lt;North&gt;: Mayor A &amp; B/);assert.doesNotMatch(scenarioStory(c.scenario,c),/Success:/);
+tick(c);assert.equal(c.scenario.status,'won');const html=scenarioStory(c.scenario,c);assert.match(html,/Success:/);assert.ok(html.includes(c.stats.population.toLocaleString()));
+const restored=validateSave(JSON.parse(serializeCity(c)));assert.equal(restored.scenario.definition.briefing,text,'save stores the template, not old values');assert.equal(scenarioStory(restored.scenario,restored),html);
+c.funds=123;assert.match(scenarioStory(c.scenario,c),/§123/,'reopening uses current city values');c.scenario.status='lost';assert.match(scenarioStory(c.scenario,c),/Only 0 farms remain/);assert.doesNotMatch(scenarioStory(c.scenario,c),/Success:/);
+for(const key of Object.keys(STORY_VALUES))assert.doesNotMatch(expandScenarioText('{'+key+'}',restored),/undefined|NaN/);
+console.log('PASS: live scenario values, escaped substituted names, nonrecursive safe placeholders, outcome selection, template saves, current values and all exposed metrics.');

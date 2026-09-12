@@ -1,0 +1,3 @@
+# Waste infrastructure artwork
+
+Built-in Imagegen produced waste-atlas.png: transparent2172×724, three equal724px cells, recycling center with sorting sheds/conveyor/colored bins; compact solid-waste incinerator with brick chimney; waste-to-energy plant with turbine hall/process pipes/chimney. Original crisp detailed 3D-looking 2D late-1990s city-builder style, muted concrete/brick/metal, identical orthographic2:1 isometric projection, upper-left lighting, restrained footprint shadows, generous transparent margins, complete separated silhouettes, no text/logos/people/grid/scenery. Runtime alpha-trims each cell and renders sprites32–34.

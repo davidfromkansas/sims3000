@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import {generateCity} from '../dist/terrain-generator.js';
+import {build,tick,idx,recompute,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {CUSTOM_METRICS,attachCustomScenario,customCurrentGoals} from '../dist/custom-scenarios.js';
+import {baseZonedSprite} from '../dist/building-art.js';
+import {ignite,stepFire} from '../dist/emergency.js';
+import {startToxicCloud,stepToxicCloud} from '../dist/toxic-cloud.js';
+const c=generateCity({startYear:2050,water:0,mountains:0,trees:0});
+assert.ok(build(c,'residential',[{x:20,y:20}]).ok);const home=c.tiles[idx(20,20)];
+assert.equal(CUSTOM_METRICS.abandonedBuildings.read(c),0,'new zoning is not abandoned');home.level=1;recompute(c);for(let i=0;i<4;i++)tick(c);
+assert.equal(home.level,0);assert.equal(home.abandonedLevel,1);assert.equal(c.stats.population,0);assert.equal(CUSTOM_METRICS.abandonedBuildings.read(c),1);
+const saved=validateSave(JSON.parse(serializeCity(c)));assert.equal(saved.tiles[idx(20,20)].abandonedLevel,1);
+attachCustomScenario(saved,{title:'Recover a home',months:60,objectives:[{metric:'abandonedBuildings',target:0,area:{x:20,y:20,radius:0}}]});assert.equal(customCurrentGoals(saved)[0].done,false);
+assert.ok(build(saved,'road',[{x:20,y:19}]).ok);assert.ok(build(saved,'wind',[{x:21,y:20}]).ok);
+assert.ok(build(saved,'industrial',[{x:19,y:20}]).ok);
+for(let i=0;i<60&&!saved.tiles[idx(20,20)].level;i++)tick(saved);
+assert.ok(saved.tiles[idx(20,20)].level);assert.equal(saved.tiles[idx(20,20)].abandonedLevel,0);assert.equal(customCurrentGoals(saved)[0].done,true);
+const fireCity=validateSave(JSON.parse(serializeCity(c))),burn=fireCity.tiles[idx(20,20)];assert.ok(ignite(fireCity,20,20).ok);burn.fire=100;burn.fireAge=100;stepFire(fireCity);assert.equal(burn.rubble,true);assert.equal(burn.abandonedLevel,0);
+const cleared=validateSave(JSON.parse(serializeCity(c)));assert.ok(build(cleared,'bulldoze',[{x:20,y:20}]).ok);assert.equal(cleared.tiles[idx(20,20)].abandonedLevel,0);assert.equal(CUSTOM_METRICS.abandonedBuildings.read(cleared),0);
+const tall=generateCity({startYear:2050,water:0,mountains:0,trees:0});build(tall,'commercial',[{x:20,y:20}],3);const tower=tall.tiles[idx(20,20)];tower.level=3;tower.density=3;const sprite=baseZonedSprite(tower,tall.seed);startToxicCloud(tall,20,20);stepToxicCloud(tall);recompute(tall);assert.equal(tower.level,0);assert.equal(tower.abandonedLevel,3);assert.equal(baseZonedSprite(tower,tall.seed),sprite,'evacuation preserves the tower style');
+const legacy=JSON.parse(serializeCity(c));legacy.version=59;for(const t of legacy.tiles)delete t.abandonedLevel;assert.equal(validateSave(legacy).tiles[idx(20,20)].abandonedLevel,0,'legacy saves do not invent lost history');
+for(const value of [-1,4,.5,'1']){const bad=JSON.parse(serializeCity(c));bad.tiles[idx(20,20)].abandonedLevel=value;assert.throws(()=>validateSave(bad));}
+console.log('PASS: real abandonment, vacant-zone exclusion, zero population, saved continuity, service-led recovery, fire destruction, bulldozing, retained evacuated tower art and legacy validation.');

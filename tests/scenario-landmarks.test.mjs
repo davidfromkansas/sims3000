@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import {createCity,build,tick,recompute,validateSave} from '../dist/engine.js';
+import {attachCustomScenario,customGoals} from '../dist/custom-scenarios.js';
+import {CUSTOM_METRICS} from '../dist/scenario-metrics.js';
+import {eventConditionMet} from '../dist/scenario-events.js';
+import {stepFire} from '../dist/emergency.js';
+import {serializeCity} from '../dist/save.js';
+const c=createCity('Rebuild the skyline',false);for(const t of c.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});build(c,'eiffelTower',[{x:20,y:20}]);
+attachCustomScenario(c,{title:'Rebuild after visitors',months:12,holdMonths:2,objectives:[{metric:'eiffelTower',target:1},{metric:'landmarks',target:1}],events:[{type:'ufo',month:1,x:20,y:20}]});assert.equal(CUSTOM_METRICS.eiffelTower.read(c),1);assert.ok(eventConditionMet(c,{metric:'landmarks',operator:'gte',target:1}));tick(c);assert.ok(c.emergency.ufo);assert.equal(c.scenario.status,'playing');assert.equal(c.scenario.streak,0);for(let i=0;i<32;i++)stepFire(c);recompute(c);assert.equal(CUSTOM_METRICS.eiffelTower.read(c),0);assert.equal(CUSTOM_METRICS.landmarks.read(c),0);assert.equal(eventConditionMet(c,{metric:'eiffelTower',operator:'gte',target:1}),false);tick(c);assert.equal(c.scenario.status,'playing');
+const points=[];for(let y=20;y<23;y++)for(let x=20;x<23;x++)points.push({x,y});assert.ok(build(c,'bulldoze',points).ok);assert.ok(build(c,'eiffelTower',[{x:20,y:20}]).ok);tick(c);assert.equal(c.scenario.streak,1);assert.equal(c.scenario.status,'playing');const resumed=validateSave(JSON.parse(serializeCity(c)));tick(c);tick(resumed);assert.equal(c.scenario.status,'won');assert.deepEqual(c.scenario,resumed.scenario);
+const bad=JSON.parse(serializeCity(c));bad.scenario.definition.objectives[0].target=2;assert.throws(()=>validateSave(bad));assert.equal(CUSTOM_METRICS.greatPyramid.read(c),0);
+console.log('PASS: named and total landmark goals, actual alien destruction and rebuilding, emergency victory gate, consecutive recovery months, conditions, bounded thresholds and saved progress.');

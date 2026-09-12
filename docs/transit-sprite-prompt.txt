@@ -1,0 +1,13 @@
+Built-in Imagegen, 2026-09-12. Transparent 2172×724 PNG; three equal cells: train station, subway entrance, rail/subway transfer.
+
+Use case: stylized-concept.
+Asset type: one transparent PNG game sprite atlas, three columns and one row of equal-size cells, wide 3:1 composition.
+Primary request: exactly THREE distinct original late-1990s transit structures, separate and entirely contained inside their own equally sized cells.
+Left cell: small commuter train station with modest brick station house, muted roof, sheltered platform and short rail section on its own compact ground footprint.
+Middle cell: compact subway entrance, descending stairwell with railings and a small glass-and-metal entrance shelter on a paved diamond footprint.
+Right cell: rail-to-subway transfer station combining a small above-ground rail platform and compact station house with a clearly visible sheltered descending subway stair entrance alongside.
+Style: crisp detailed 3D-looking 2D city-builder game sprites, muted realistic architecture, tiny architectural material detail, consistent scale and visual style.
+Projection and lighting: identical orthographic isometric camera for all three, 2:1 ground projection with edges approximately 26.565 degrees from horizontal, soft illumination from upper left.
+Composition: center sprites within equal columns; keep generous clear margins so all structures and footprints remain complete and separated. No overlapping cells.
+Background: actual transparent alpha PNG, fully transparent between and outside sprites, no backdrop or glow.
+Constraints: no text, no letters, no numbers, no logos, no labels, no grid lines, no border, no checkerboard pattern, no trains, no buses, no people, no watermark, no clipped architecture.

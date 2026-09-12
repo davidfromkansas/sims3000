@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import {generateCity} from '../dist/terrain-generator.js';
+import {build,tick,validateSave} from '../dist/engine.js';
+import {attachCustomScenario,validateCustomDefinition} from '../dist/custom-scenarios.js';
+import {runScenarioEvents,scenarioEventReport} from '../dist/scenario-events.js';
+import {serializeCity} from '../dist/save.js';
+const c=generateCity({startYear:2000,water:0,mountains:0,trees:0});
+assert.equal(build(c,'university',[{x:20,y:20}]).ok,false);
+attachCustomScenario(c,{title:'A founding university',months:24,objectives:[{metric:'population',target:100000}],events:[{type:'reward',month:1,reward:'university',repeatCount:2,repeatEvery:2}]});
+const cash=c.funds,result=tick(c);assert.equal(c.rewards.earned.university,1);assert.deepEqual(result.rewardsUnlocked,['university']);assert.equal(c.funds,cash,'offer itself is free');assert.equal(c.emergency.active,false);assert.equal(c.tiles.some(t=>t.type==='university'),false,'author grants a permit, player chooses placement');
+assert.ok(build(c,'university',[{x:20,y:20}]).ok);assert.equal(build(c,'university',[{x:30,y:30}]).ok,false,'still one university per city');
+const saved=validateSave(JSON.parse(serializeCity(c)));assert.equal(saved.scenario.definition.events[0].reward,'university');assert.equal(saved.rewards.earned.university,1);assert.match(scenarioEventReport(saved),/Offer reward: University/);
+tick(saved);const repeated=tick(saved);assert.equal(repeated.scenarioEvent.rewardOffered,false);assert.equal(repeated.rewardsUnlocked.includes('university'),false);assert.equal(saved.rewards.earned.university,1,'repeat preserves original offer date');
+assert.ok(build(saved,'bulldoze',[{x:20,y:20}]).ok);assert.ok(build(saved,'university',[{x:20,y:20}]).ok,'earned permit supports rebuilding');
+const conditional=generateCity({water:0,mountains:0,trees:0});attachCustomScenario(conditional,{title:'Reward a policy',months:12,objectives:[{metric:'population',target:100000}],events:[{type:'reward',reward:'mayorHouse',month:1,condition:{metric:'ordinanceReading',operator:'eq',target:1}}]});conditional.month=1;assert.equal(runScenarioEvents(conditional),null);conditional.civic.ordinances.reading=true;assert.equal(runScenarioEvents(conditional).rewardOffered,true);assert.equal(conditional.rewards.earned.mayorHouse,1);
+for(const reward of ['notAReward','__proto__',null])assert.throws(()=>validateCustomDefinition({title:'Invalid',months:12,objectives:[{metric:'population',target:1}],events:[{type:'reward',month:1,reward}]}));
+console.log('PASS: early scripted reward offers, player placement and cost, unique buildings, saved grants, repeat idempotence, rebuild rights, policy conditions and invalid reward rejection.');

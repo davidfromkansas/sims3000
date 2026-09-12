@@ -1,0 +1,9 @@
+# Toxic cloud checkpoint
+
+The manual lists Toxic Cloud (p. 58) and Start a Toxic Cloud (p. 189), and states that dispatch cannot stop disasters other than fires, riots and locusts (p. 111). A contemporary review describes affected buildings becoming abandoned: https://www.the-nextlevel.com/reviews/pc/simcity3000/ .
+
+Manual and scenario starts are implemented. The cloud affects developed RCI, airport and seaport zones within two tiles, moving one tile every two response steps toward the center from its starting area. It disperses after 24 steps or when leaving the map. These movement, radius and timing values are original calibration. Whole farm/facility plots are emptied together. Displaced residents and affected tile counts are recorded; no rubble, fires or radiation are added. Roads and utility networks survive. Reestablish suitable city conditions and let zones redevelop after the cloud disperses.
+
+Schema 44 preserves cloud position, direction, age and history. Earlier saves default to no toxic cloud. Optional pollution-driven random clouds are implemented in schema 45. Eligible sources are occupied dirty factories with local air pollution above 50. Monthly risk increases linearly from zero at 50 to 3% at 100, capped there; these thresholds are original calibration. The highest-pollution eligible factory is the origin. Clean industry and reducing local pollution can prevent an outbreak. The saved seed and month determine the roll, scripted disasters take priority, and ongoing emergencies block new outbreaks. Previous saves default to random clouds off. The Toxic Waste Conversion Plant business deal is implemented in schema 46 and can also serve as an outbreak source.
+
+Feedback: start a cloud near developed zones, watch its path and restore the neighborhood afterward. Is the distinction between evacuation and physical destruction clear?

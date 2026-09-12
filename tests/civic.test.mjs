@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {createCity,build,recompute,tick,idx,validateSave,selection} from '../dist/engine.js';
+import {freshCivic,changeCivic,recomputeCivic,advanceCivic,civicSpending} from '../dist/civic.js';
+const c=createCity();
+const place=(tool,x,y)=>assert.ok(build(c,tool,[{x,y}]).ok,`${tool} placement`);
+place('police',20,21);place('fire',20,23);place('hospital',21,22);place('school',21,20);
+assert.equal(c.stats.activeServices.police,1);assert.ok(c.stats.policeCoverage>0);assert.ok(c.stats.fireCoverage>0);assert.equal(c.stats.healthCoverage,100);assert.ok(c.stats.educationCoverage>0);
+const p=c.tiles[idx(20,21)],near=c.tiles[idx(20,20)],far=c.tiles[idx(16,20)];assert.ok(near.policeCoverage>far.policeCoverage,'coverage falls with distance');
+const oldCoverage=far.policeCoverage,oldCrime=far.crime;place('police',15,22);assert.ok(far.policeCoverage>oldCoverage,'station coverage overlaps');assert.ok(far.crime<oldCrime,'police coverage reduces crime');
+const funding={...c.civic.funding,police:150};changeCivic(c,funding,c.civic.ordinances);recompute(c);assert.ok(c.stats.policeCoverage>0);assert.equal(c.stats.spending.police,75,'both police stations cost 150% upkeep');
+const beforeJail=near.policeCoverage;place('jail',19,22);assert.equal(c.stats.jailAdequacy,1);assert.ok(near.policeCoverage>=beforeJail);
+const oldEdu=c.civic.education,oldHealth=c.civic.lifeExpectancy;for(let i=0;i<24;i++){advanceCivic(c);recompute(c);}assert.ok(c.civic.education>oldEdu);assert.ok(c.civic.lifeExpectancy>oldHealth,'care changes longevity gradually');
+changeCivic(c,{...c.civic.funding,health:0},c.civic.ordinances);recompute(c);assert.equal(c.stats.activeServices.hospital,0);assert.equal(c.stats.spending.health,0);for(let i=0;i<6;i++){advanceCivic(c);recompute(c);}assert.ok(c.stats.strikes.includes('health'));changeCivic(c,{...c.civic.funding,health:100},c.civic.ordinances);recompute(c);assert.equal(c.stats.activeServices.hospital,0,'restoring funds awaits monthly resumption');advanceCivic(c);recompute(c);assert.equal(c.stats.activeServices.hospital,1);assert.equal(c.stats.strikes.includes('health'),false);
+const airless=createCity('Detached',false);for(const t of airless.tiles){t.terrain='land';t.nature=false;}build(airless,'hospital',[{x:20,y:20}]);assert.equal(airless.stats.activeServices.hospital,0,'unpowered building gives no care');
+// Direct recomputation isolates routing and finite capacity from electrical setup.
+const h=airless.tiles[idx(20,20)];h.powered=true;h.roadIds=[1];for(let x=22;x<42;x++){const t=airless.tiles[idx(x,24)];t.type='residential';t.level=3;t.roadIds=[1];}const disconnected=airless.tiles[idx(15,15)];disconnected.type='residential';disconnected.level=1;disconnected.roadIds=[2];recomputeCivic(airless);assert.equal(disconnected.healthCoverage,0);assert.ok(airless.tiles[idx(22,24)].healthCoverage<100,'hospital capacity is shared, not duplicated for each home');
+const snapshot=JSON.stringify(c);assert.equal(changeCivic(c,{...c.civic.funding,police:-1},c.civic.ordinances).ok,false);assert.equal(JSON.stringify(c),snapshot,'invalid service changes are atomic');
+const t=c.tiles.find(t=>t.type==='residential'&&t.level),crime=t.crime,flammability=t.flammability;changeCivic(c,c.civic.funding,{...c.civic.ordinances,trashPresort:false,watch:true,fireCode:true,reading:true});recompute(c);assert.ok(t.crime<crime);assert.ok(t.flammability<flammability);assert.equal(civicSpending(c).ordinances,35);
+const funds=c.funds,balance=c.stats.balance;tick(c);assert.equal(c.funds,funds+balance);const loaded=validateSave(JSON.parse(JSON.stringify(c)));assert.deepEqual(loaded.civic,c.civic);assert.deepEqual(loaded.stats,c.stats);
+const bad=JSON.parse(JSON.stringify(c));bad.civic.education=NaN;assert.throws(()=>validateSave(bad));const old=createCity();old.version=3;delete old.civic;assert.deepEqual(validateSave(old).civic,freshCivic());assert.equal(selection('hospital',{x:20,y:20},{x:25,y:25}).length,1);
+console.log('PASS: civic construction and operation, distance/overlap coverage, police crime reduction, budgets and capacity, gradual education/health, underfunding strikes and recovery, disconnected roads, ordinance effects/costs, ledger conservation, service saves and migration.');

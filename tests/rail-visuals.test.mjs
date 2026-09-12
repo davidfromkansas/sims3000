@@ -1,0 +1,10 @@
+import {freshDemographics} from '../dist/demographics.js';
+import assert from 'node:assert/strict';
+import {createCity,build,selection,idx,recompute} from '../dist/engine.js';
+import {railPaths,railVehicles} from '../dist/rail-visuals.js';
+const c=createCity('Rail visual',false);for(const t of c.tiles){t.terrain='land';t.nature=false;}Object.assign(c.tiles[idx(12,18)],{type:'residential',level:3,density:3});Object.assign(c.tiles[idx(36,18)],{type:'industrial',level:3,density:3});c.demographics=freshDemographics(64,0);build(c,'rail',selection('rail',{x:12,y:20},{x:36,y:20}));assert.equal(railVehicles(c,0).length,0);build(c,'trainStation',[{x:12,y:19}]);build(c,'trainStation',[{x:36,y:19}]);assert.equal(c.stats.trainRiders,32);assert.equal(railPaths(c).length,1);assert.equal(railVehicles(c,0).length,3);assert.notDeepEqual(railVehicles(c,0),railVehicles(c,1));assert.deepEqual(railVehicles(c,2),railVehicles(c,2),'paused time has identical positions');
+for(let time=0;time<100;time+=.25)for(const v of railVehicles(c,time)){assert.ok(v.x>=12&&v.x<=36);assert.equal(v.y,20);assert.ok(c.tiles[v.tile].railRiders>0);assert.equal(Math.abs(v.dx)+Math.abs(v.dy),1);}
+build(c,'removeRail',[{x:24,y:20}]);assert.equal(railVehicles(c,20).length,0,'broken route removes passenger trains');
+const corner=createCity('Corner',false);for(const t of corner.tiles){t.terrain='land';t.nature=false;}for(const [x,y]of [[20,20],[21,20],[22,20],[22,21],[22,22],[21,22],[20,22],[20,21]])Object.assign(corner.tiles[idx(x,y)],{rail:true,railRiders:10});assert.equal(railPaths(corner).length,1,'cycle is traced once');assert.equal(railPaths(corner)[0].length,9);for(let s=0;s<20;s+=.5)for(const v of railVehicles(corner,s))assert.ok(corner.tiles[v.tile].rail);
+const bridge=corner.tiles[idx(21,20)];bridge.terrain='water';bridge.railAxis='y';assert.ok(railPaths(corner).every(path=>!path.includes(idx(21,20))),'bridge cannot be traversed across its axis');assert.equal(railVehicles(corner,3,2).length,2);
+console.log('PASS: real passenger loads, continuous route motion, paused determinism, removed-link response, loop and bend traversal, bridge axes and bounded draw samples.');

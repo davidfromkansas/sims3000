@@ -1,0 +1,193 @@
+import {freshDemographics,advanceDemographics,validateDemographics} from './demographics.js?v=airport-flights-1';
+import {powerMonth} from './power-accounting.js?v=airport-flights-1';
+import {initialAgeEducation,advanceEducationCohorts} from './education.js?v=airport-flights-1';
+import {validateBuildingReplacements} from './building-art.js?v=airport-flights-1';
+import {conservationDemand} from './conservation.js?v=airport-flights-1';
+import {LANDMARKS,validateLandmarks} from './landmarks.js?v=airport-flights-1';
+import {maybeUfo} from './ufo.js?v=airport-flights-1';
+import {maybeWhirlpool} from './whirlpool.js?v=airport-flights-1';
+import {maybeToxicCloud} from './toxic-cloud.js?v=airport-flights-1';
+import {maybeSpaceJunk} from './space-junk.js?v=airport-flights-1';
+import {runScenarioEventBatch,scenarioEventPresentation} from './scenario-events.js?v=airport-flights-1';
+import {advanceUnrest} from './riots.js?v=airport-flights-1';
+import {maybeLocusts} from './locusts.js?v=airport-flights-1';
+import {wasteState,wasteMonth} from './waste-accounting.js?v=airport-flights-1';
+import {BUSINESSES,freshBusiness,advanceBusiness,businessStats,validateBusiness,businessRoots,businessOffer} from './business.js?v=airport-flights-1';
+import {TECHNOLOGY,available} from './technology.js?v=airport-flights-1';
+import {proposeTunnel,installTunnel,removeTunnels,tunnelStats,validateTunnels,tunnelAt} from './tunnels.js?v=airport-flights-1';
+import {REWARDS,freshRewards,advanceRewards,rewardStats,validateRewards} from './rewards.js?v=airport-flights-1';
+import {normalizeIndustry,advanceIndustry,industryStats,industrialJobs} from './industry.js?v=airport-flights-1';
+import {STRUCTURES} from './structures.js?v=airport-flights-1';
+import {RECREATION,recreationStats} from './recreation.js?v=airport-flights-1';
+import {reportSnapshot,HISTORY_LIMIT,cleanHistory} from './reports.js?v=airport-flights-1';
+import {LANDSCAPE,planLandscape} from './landscape.js?v=airport-flights-1';
+import {POWER_PLANTS,plantCapacity,advancePower,powerStats} from './power.js?v=airport-flights-1';
+import {advanceScenario,validateScenario} from './scenarios.js?v=airport-flights-1';
+import {explodePlant,ignite,freshEmergency,emergencyStats,maybeIgnite,maybeEarthquake,maybeTornado,validateEmergency} from './emergency.js?v=airport-flights-1';
+import {freshRegion,resetTrades,tradeCapacity,importGarbage,exportGarbage,regionBudget,settleRegion,validateRegion} from './region.js?v=airport-flights-1';
+import {FACILITIES,recomputeFacilities,advanceFacilities} from './facilities.js?v=airport-flights-1';
+import {streetGraph,rampCrossings} from './highway.js?v=airport-flights-1';
+import {STATIONS} from './rail.js?v=airport-flights-1';
+import {freshTransport,recomputeTransport,advanceTransit,validateTransport,roadNeighbors,bridgePlan} from './transport.js?v=airport-flights-1';
+import {SERVICES,freshCivic,recomputeCivic,advanceCivic,validateCivic} from './civic.js?v=airport-flights-1';
+import {queueBudgetReview,freshFinance,changeBudget,takeLoan,settleLoans,advanceRoads,recomputeEnvironment,landDensityLimit,budgetForecast,validateFinance} from './economy.js?v=airport-flights-1';
+import {WASTE_STRUCTURES,wastePower,advanceWaste,WATER_STRUCTURES,advanceWater,recomputeWater,garbageStats,processGarbage,occupancy,LANDFILL_CAPACITY} from './utilities.js?v=airport-flights-1';
+// SIMS3000 milestone 3. Gameplay constants are explicit approximations; see docs/manual-fidelity.md.
+export const SIZE=48, VERSION=76;
+export const ZONES=['residential','commercial','industrial'];
+export const COST={...Object.fromEntries(Object.entries(LANDSCAPE).map(([k,v])=>[k,v.cost])),...Object.fromEntries(Object.entries(STRUCTURES).map(([k,v])=>[k,v.cost])),...Object.fromEntries(Object.entries(WASTE_STRUCTURES).map(([k,v])=>[k,v.cost])),...Object.fromEntries(Object.entries(WATER_STRUCTURES).map(([k,v])=>[k,v.cost])),...Object.fromEntries(Object.entries(SERVICES).map(([k,v])=>[k,v.cost])),...Object.fromEntries(Object.entries(STATIONS).map(([k,v])=>[k,v.cost])),...Object.fromEntries(Object.entries(FACILITIES).map(([k,v])=>[k,v.cost])),highway:60,removeHighway:1,ramp:150,rail:20,removeRail:1,subway:100,removeSubway:1,busStop:150,road:10,residential:10,commercial:10,industrial:10,powerline:5,coal:5000,park:100,pump:1000,pipe:5,removePipe:1,landfill:50,dezone:1,bulldoze:1};
+export const LABEL={...Object.fromEntries(Object.entries(LANDSCAPE).map(([k,v])=>[k,v.name])),...Object.fromEntries(Object.entries(STRUCTURES).map(([k,v])=>[k,v.name])),...Object.fromEntries(Object.entries(WASTE_STRUCTURES).map(([k,v])=>[k,v.name])),...Object.fromEntries(Object.entries(WATER_STRUCTURES).map(([k,v])=>[k,v.name])),...Object.fromEntries(Object.entries(SERVICES).map(([k,v])=>[k,v.name])),...Object.fromEntries(Object.entries(STATIONS).map(([k,v])=>[k,v.name])),...Object.fromEntries(Object.entries(FACILITIES).map(([k,v])=>[k,v.name])),highway:'Highway',removeHighway:'Remove highway',ramp:'On-ramp',rail:'Rail track',removeRail:'Remove track',subway:'Subway rail',removeSubway:'Remove subway',busStop:'Bus stop',road:'Road',residential:'Residential',commercial:'Commercial',industrial:'Industrial',powerline:'Power line',coal:'Coal power plant',park:'Park',pump:'Pumping station',pipe:'Water pipes',removePipe:'Remove pipes',landfill:'Landfill',dezone:'De-zone',bulldoze:'Bulldoze',ufo:'Start alien attack',whirlpool:'Start whirlpool',toxicCloud:'Start toxic cloud',spaceJunk:'Start space junk',riot:'Start riot',dispatchPolice:'Dispatch police',locust:'Start locust swarm',dispatchCropDuster:'Dispatch crop dusters',tornado:'Start tornado',earthquake:'Start earthquake',ignite:'Start fire',dispatchFire:'Dispatch firefighters',query:'Inspect',pan:'Pan view'};
+export const idx=(x,y)=>y*SIZE+x;
+export const inside=(x,y)=>Number.isInteger(x)&&Number.isInteger(y)&&x>=0&&y>=0&&x<SIZE&&y<SIZE;
+export const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const hash=(x,y,s=1)=>{let n=Math.imul(x+1234,374761393)^Math.imul(y+5678,668265263)^Math.imul(s,1274126177);n=Math.imul(n^(n>>>13),1274126177);return((n^(n>>>16))>>>0)/4294967296;};
+export function createCity(name='New Haven',starter=true){
+ const c={version:VERSION,demographics:null,buildingReplacements:{},name,startYear:1950,mayorName:'Mayor',difficulty:'easy',month:0,funds:50000,seed:73,finance:freshFinance(),civic:freshCivic(),transport:freshTransport(),region:freshRegion(),emergency:freshEmergency(),scenario:null,business:freshBusiness(),rewards:freshRewards(),tunnels:[],tiles:[],history:[],stats:{},goals:{roads:0,zones:0,power:false,grown:false},starter};
+ for(let y=0;y<SIZE;y++)for(let x=0;x<SIZE;x++)c.tiles.push({x,y,elevation:0,treeLevel:0,facilityAbandoned:false,abandonedLevel:0,historicalLevel:0,industry:'dirty',farmRoot:null,terrain:x<7+Math.sin(y/7)*3+Math.sin(y/3)*.8?'water':'land',type:null,level:0,age:0,stress:0,root:null,density:1,burnedLastMonth:0,recycledLastMonth:0,fire:0,fireAge:0,rubble:false,radiation:false,pipe:false,rail:false,subway:false,highway:false,highwayAxis:null,railAxis:null,bridgeAxis:null,waste:0,garbage:0,powered:false,access:false,nature:hash(x,y)>.955});
+ for(const t of c.tiles){t.treeLevel=t.nature?1:0;t.waterKind=t.terrain==='water'?'salt':'fresh';if(Math.hypot(t.x-38,t.y-9)<3){t.terrain='water';t.waterKind='fresh';t.nature=false;}}
+ if(starter){
+  for(let x=14;x<=31;x++)for(let y of [17,24,31])c.tiles[idx(x,y)].type='road';
+  for(let y=17;y<=31;y++)for(let x of [14,22,31])c.tiles[idx(x,y)].type='road';
+  for(let y=18;y<24;y++)for(let x=15;x<22;x++)if((x+y)%2===0){const t=c.tiles[idx(x,y)];t.type='residential';t.level=hash(x,y)>.3?1:0;t.age=5;}
+  for(let y=25;y<31;y++)for(let x=15;x<22;x++)if((x+y)%3===0){const t=c.tiles[idx(x,y)];t.type='residential';t.level=1;t.age=4;}
+  for(let y=18;y<24;y++)for(let x=23;x<27;x++)if((x+y)%3===0){const t=c.tiles[idx(x,y)];t.type='commercial';t.level=1;t.age=3;}
+  for(let y=25;y<29;y++)for(let x=26;x<31;x++)if((x+y)%3===0){const t=c.tiles[idx(x,y)];t.type='industrial';t.level=1;t.age=3;}
+  for(let x=32;x<38;x++)c.tiles[idx(x,27)].type='powerline';
+  addPlant(c,38,26);
+  for(const [x,y] of [[19,20],[18,28],[25,21],[28,20]]){c.tiles[idx(x,y)].type='park';c.tiles[idx(x,y)].level=0;}
+  for(const t of c.tiles)if(t.type)t.nature=false;
+  c.funds=42500;
+ }
+ recompute(c);return c;
+}
+function addPlant(c,x,y,type='coal'){const root=idx(x,y),size=STRUCTURES[type].size;for(let yy=y;yy<y+size;yy++)for(let xx=x;xx<x+size;xx++){const t=c.tiles[idx(xx,yy)];t.type=type;t.root=root;t.age=0;t.stress=0;t.nature=false;}}
+function neighborhood(t,r,fn){for(let y=Math.max(0,t.y-r);y<=Math.min(SIZE-1,t.y+r);y++)for(let x=Math.max(0,t.x-r);x<=Math.min(SIZE-1,t.x+r);x++)fn(x,y);}
+export function recompute(c){
+ for(const t of c.tiles)if(t.level||t.rubble||!ZONES.includes(t.type))t.abandonedLevel=0;
+ normalizeIndustry(c);resetTrades(c);const tiles=c.tiles;let roads=0,parks=0,plants=0,pop=0,jobs=0,shops=0,zoned=0,powered=0,developed=0,powerDemand=0,powerConserved=0,powerGenerated=0,powerImported=0,powerExported=0,powerServed=0;const powerGenerationByType={};
+ // Transport components require a connection between homes and workplaces. Access range is four tiles.
+ for(const t of tiles){t.plantLoad=0;t.powered=false;t.access=false;t.roadAccess=false;t.roadIds=[];}
+ const streets=streetGraph(c),roadComponent=streets.groups.subarray(0,tiles.length),components=Array.from({length:streets.count},()=>new Set());
+ for(const t of tiles)if(ZONES.includes(t.type)||BUSINESSES[t.type]||REWARDS[t.type]||FACILITIES[t.type]||STATIONS[t.type]||SERVICES[t.type]||WASTE_STRUCTURES[t.type]||t.type==='landfill'||t.waste>0){const ids=new Set();neighborhood(t,4,(x,y)=>{const id=roadComponent[idx(x,y)];if(id>=0)ids.add(id)});t.roadIds=[...ids];for(const id of ids)components[id].add(t.type);}
+ for(const t of tiles)if(ZONES.includes(t.type))t.roadAccess=t.access=c.finance.roadCondition>20&&t.roadIds.some(id=>components[id].has('residential')&&(components[id].has('industrial')||components[id].has('commercial')));
+ // Separate electrical components: each connected component gets only its own plants' capacity.
+ const conductive=t=>BUSINESSES[t.type]||REWARDS[t.type]||ZONES.includes(t.type)||FACILITIES[t.type]||SERVICES[t.type]||WASTE_STRUCTURES[t.type]||WATER_STRUCTURES[t.type]||POWER_PLANTS[t.type]||['powerline','park'].includes(t.type);
+ const visited=new Uint8Array(tiles.length);
+ for(let i=0;i<tiles.length;i++){if(visited[i]||!conductive(tiles[i]))continue;const queue=[i];visited[i]=1;let capacity=0;for(let q=0;q<queue.length;q++){const t=tiles[queue[q]];if(POWER_PLANTS[t.type]&&t.root===queue[q])capacity+=plantCapacity(t);capacity+=wastePower(t);neighborhood(t,5,(x,y)=>{const j=idx(x,y);if(!visited[j]&&conductive(tiles[j])){visited[j]=1;queue.push(j)}});}
+  const baseNeed=t=>ZONES.includes(t.type)?1+occupancy(t.level):FACILITIES[t.type]||BUSINESSES[t.type]||REWARDS[t.type]?3:WATER_STRUCTURES[t.type]||SERVICES[t.type]||t.type==='recycling'?8:0;const needFor=t=>conservationDemand(c,'power',baseNeed(t));const nativeCapacity=capacity,demand=queue.reduce((sum,j)=>sum+needFor(tiles[j]),0);powerDemand+=demand;powerConserved+=queue.reduce((sum,j)=>sum+baseNeed(tiles[j])-needFor(tiles[j]),0);capacity=tradeCapacity(c,'power',queue,capacity,demand);const imported=Math.max(0,capacity-nativeCapacity),exported=Math.max(0,nativeCapacity-capacity);let served=0;const totalCapacity=nativeCapacity+Math.max(0,capacity-nativeCapacity),load=totalCapacity?(demand+Math.max(0,nativeCapacity-capacity))/totalCapacity:0;for(const j of queue)if(POWER_PLANTS[tiles[j].type])tiles[j].plantLoad=load;const sources=queue.filter(j=>(POWER_PLANTS[tiles[j].type]&&tiles[j].root===j)||wastePower(tiles[j])>0);for(const d of c.region.deals)if(d.kind==='power'&&d.direction==='import'&&d.delivered>0&&queue.includes(c.region.connections[d.connection].tile))sources.push(c.region.connections[d.connection].tile);if(capacity){queue.sort((a,b)=>Math.min(...sources.map(s=>Math.abs(tiles[a].x-tiles[s].x)+Math.abs(tiles[a].y-tiles[s].y)))-Math.min(...sources.map(s=>Math.abs(tiles[b].x-tiles[s].x)+Math.abs(tiles[b].y-tiles[s].y))));for(const j of queue){const t=tiles[j],need=needFor(t);if(capacity+1e-9>=need){t.powered=true;served+=need;capacity=Math.max(0,capacity-need);}}}
+  const generated=Math.max(0,served-imported)+exported;powerGenerated+=generated;powerImported+=imported;powerExported+=exported;powerServed+=served;for(const j of queue){const t=tiles[j],sourceCapacity=POWER_PLANTS[t.type]&&t.root===j?plantCapacity(t):wastePower(t);if(sourceCapacity&&nativeCapacity)powerGenerationByType[t.type]=(powerGenerationByType[t.type]||0)+generated*sourceCapacity/nativeCapacity;}
+ }
+ const transport=recomputeTransport(c);
+ const environment=recomputeEnvironment(c);
+ const water=recomputeWater(c);
+ const facilities=recomputeFacilities(c);
+ for(const t of tiles){if(t.type==='road')roads++;if(t.type==='park')parks++;if(POWER_PLANTS[t.type]&&t.root===idx(t.x,t.y))plants++;if(ZONES.includes(t.type)){zoned++;if(t.powered)powered++;if(t.level){developed++;if(t.type==='residential')pop+=occupancy(t.level)*8;if(t.type==='industrial')jobs+=industrialJobs(t);if(t.type==='commercial')shops+=occupancy(t.level)*6;}}}
+ const vacant={};for(const zone of ZONES)vacant[zone]=tiles.filter(t=>t.type===zone&&!t.level).length;
+ const demand={residential:clamp(40+(jobs+shops)*.4-pop*.23-vacant.residential*.7,-80,100),commercial:clamp(18+pop*.2-shops*.8-vacant.commercial*1.4,-80,100),industrial:clamp(50+pop*.28-jobs*.6-vacant.industrial*1.1,-80,100)};
+ for(const sector of ZONES)demand[sector]=clamp(demand[sector]+(7-c.finance.taxes[sector])*8,-100,100);
+ c.stats={powerGenerated,powerImported,powerExported,powerServed,powerGenerationByType,powerDemand,powerConserved,...businessStats(c),...tunnelStats(c),...rewardStats(c),...industryStats(c),...recreationStats(c),...powerStats(c),...emergencyStats(c),...facilities,...transport,...environment,...water,...recomputeCivic(c),...garbageStats(c),population:pop,jobs:jobs+shops,industrialJobs:jobs,commercialJobs:shops,roads,parks,plants,zoned,powered,developed,demand};
+ if(!c.demographics)c.demographics=freshDemographics(pop,c.month);
+ c.stats.demand.commercial=clamp(c.stats.demand.commercial+Math.min(40,facilities.activeAirports*20+facilities.activeSeaports*8),-100,100);c.stats.demand.industrial=clamp(c.stats.demand.industrial+Math.min(40,facilities.activeAirports*5+facilities.activeSeaports*20),-100,100);
+ c.stats.demand.residential=clamp(c.stats.demand.residential+Math.min(30,c.stats.activeZoos*15)+(c.stats.activeStadium?20:0),-100,100);
+ c.stats.demand.commercial=clamp(c.stats.demand.commercial+(c.stats.activeUniversity?10:0),-100,100);
+ if(pop)c.stats.demand.residential=clamp(c.stats.demand.residential+(c.stats.aura-50)*.3-Math.min(35,(c.stats.congestedRoads+c.stats.congestedHighways)*2),-100,100);
+ Object.assign(c.stats,regionBudget(c));for(const sector of ['commercial','industrial'])c.stats.demand[sector]=clamp(c.stats.demand[sector]+Math.min(15,c.stats.tradeConnections*3),-100,100);Object.assign(c.stats,budgetForecast(c));
+ return c.stats;
+}
+export function selection(tool,a,b=a){
+ if(!a||!b)return[];if(STRUCTURES[tool]||WASTE_STRUCTURES[tool]||WATER_STRUCTURES[tool]||SERVICES[tool]||STATIONS[tool]||['coal','pump','busStop','ramp','ufo','whirlpool','toxicCloud','spaceJunk','tornado','earthquake','ignite','dispatchFire','query','pan'].includes(tool))return[{x:b.x,y:b.y}];const out=[];
+ if(['road','highway','removeHighway','rail','removeRail','subway','removeSubway','powerline','pipe','removePipe'].includes(tool)){if(Math.abs(b.x-a.x)>=Math.abs(b.y-a.y)){for(let x=Math.min(a.x,b.x);x<=Math.max(a.x,b.x);x++)out.push({x,y:a.y});}else for(let y=Math.min(a.y,b.y);y<=Math.max(a.y,b.y);y++)out.push({x:a.x,y});}
+ else for(let y=Math.min(a.y,b.y);y<=Math.max(a.y,b.y);y++)for(let x=Math.min(a.x,b.x);x<=Math.max(a.x,b.x);x++)out.push({x,y});
+ if(tool==='levelTerrain')out.sort((p,q)=>(p.x===a.x&&p.y===a.y?-1:0)-(q.x===a.x&&q.y===a.y?-1:0));return out;
+}
+export function planBuild(c,tool,points,density=1){
+ if(LANDSCAPE[tool])return planLandscape(c,tool,points);
+ if(![1,2,3].includes(density))return{ok:false,error:'Choose Light, Medium, or Dense zoning.',cost:0,points:[]};
+ if(!Object.hasOwn(COST,tool))return{ok:false,error:'Choose a construction tool.',cost:0,points:[]};
+ if(!available(c,tool))return{ok:false,error:`${TECHNOLOGY[tool].name} is available from ${TECHNOLOGY[tool].year}.`,cost:0,points:[]};
+ const tunnel=proposeTunnel(c,tool,points);if(tunnel)return tunnel.ok&&tunnel.cost>c.funds?{...tunnel,ok:false,error:'Insufficient funds for this tunnel.'}:tunnel;
+ const bridge=['road','rail','highway'].includes(tool)?bridgePlan(c,points,tool):{ok:true};if(!bridge.ok)return{...bridge,cost:0,points:[]};
+ if(BUSINESSES[tool]&&(!businessOffer(c,tool).accepted||businessRoots(c).some(t=>t.type===tool)))return{ok:false,error:!businessOffer(c,tool).accepted?'Accept the business offer before placing its building.':'This business building is already placed.',cost:0,points:[]};
+ if(LANDMARKS[tool]&&c.tiles.some(t=>t.type===tool))return{ok:false,error:'This landmark is already placed in the city.',cost:0,points:[]};
+ if(REWARDS[tool]&&(c.rewards.earned[tool]===null||c.tiles.some(t=>t.type===tool)))return{ok:false,error:c.rewards.earned[tool]===null?'This reward has not been earned. Open Rewards to see its requirements.':'This reward is already placed in the city.',cost:0,points:[]};
+ const accepted=[],seen=new Set();let cost=0;
+ for(const p of points){if(!inside(p.x,p.y))return{ok:false,error:'Build inside the city boundary.',cost:0,points:[]};const i=idx(p.x,p.y),t=c.tiles[i];if(t.historicalLevel&&!['pipe','removePipe','subway','removeSubway','removeRail','removeHighway'].includes(tool))return{ok:false,error:'Remove the historical designation in Inspect before changing this building.',cost:0,points:[]};if(t.radiation&&!['bulldoze','dezone','removePipe','removeSubway','removeRail','removeHighway'].includes(tool))return{ok:false,error:'Radiation contamination prevents construction. Rebuild outside the contaminated area.',cost:0,points:[]};if(!['pipe','removePipe','subway','removeSubway','removeRail','removeHighway'].includes(tool)&&(t.fire||STRUCTURES[t.type]&&c.tiles.some(u=>STRUCTURES[u.type]&&u.root===t.root&&u.fire)||FACILITIES[t.type]&&t.facilityRoot!==null&&c.tiles.some(u=>u.facilityRoot===t.facilityRoot&&u.fire)))return{ok:false,error:'Dispatch firefighters to active flames. Bulldoze around them to make a firebreak.',cost:0,points:[]};if(t.rubble&&!['bulldoze','pipe','removePipe','subway','removeSubway','removeRail','removeHighway'].includes(tool))return{ok:false,error:'Clear the rubble before rebuilding.',cost:0,points:[]};if(seen.has(i))continue;seen.add(i);
+ if(tool==='subway'&&tunnelAt(c,i))return{ok:false,error:'Subway would intersect an existing tunnel.',cost:0,points:[]};
+ if(tool==='ramp'&&!rampCrossings(c.tiles,t).length)return{ok:false,error:'Place an on-ramp diagonally beside a road–highway crossing.',cost:0,points:[]};
+ if(tool==='highway'){if(t.highway)continue;if(t.type&&t.type!=='road'||t.terrain==='water'&&(t.rail||t.type==='road'))return{ok:false,error:'Highways need clear land, road crossings, or a separate water span.',cost:0,points:[]};accepted.push(p);cost+=t.terrain==='water'?250:COST.highway;continue;}
+ if(tool==='removeHighway'){if(t.highway){accepted.push(p);cost+=COST.removeHighway;}continue;}
+ if(t.highway&&!['road','rail','removeRail','pipe','removePipe','subway','removeSubway','bulldoze'].includes(tool))return{ok:false,error:'Remove the highway before building here.',cost:0,points:[]};
+ if(['subway','removeSubway','removeRail'].includes(tool)){const field=tool==='removeRail'?'rail':'subway',want=tool==='subway';if(t[field]!==want){accepted.push(p);cost+=COST[tool];}continue;}
+ if(tool==='rail'){if(t.rail)continue;if(t.type&&t.type!=='road')return{ok:false,error:'Rail needs clear land or an existing road crossing.',cost:0,points:[]};if(t.terrain==='water'&&(t.type==='road'||t.highway))return{ok:false,error:'Road and rail bridges need separate spans.',cost:0,points:[]};accepted.push(p);cost+=t.terrain==='water'?150:COST.rail;continue;}
+ if(tool==='road'&&(t.rail||t.highway)&&t.terrain==='water')return{ok:false,error:'Road and rail bridges need separate spans.',cost:0,points:[]};
+ if(t.rail&&!['road','pipe','removePipe','bulldoze','query'].includes(tool))return{ok:false,error:'Remove rail before building here.',cost:0,points:[]};
+ if(STRUCTURES[tool]){const size=STRUCTURES[tool].size;if(points.length!==1||p.x>SIZE-size||p.y>SIZE-size)return{ok:false,error:`Needs a clear ${size} × ${size} footprint.`,cost:0,points:[]};for(let y=p.y;y<p.y+size;y++)for(let x=p.x;x<p.x+size;x++){const u=c.tiles[idx(x,y)];if(u.radiation||u.elevation!==t.elevation||u.type||u.rubble||u.rail||u.highway||u.terrain==='water')return{ok:false,error:`Needs ${size} × ${size} clear land tiles.`,cost:COST[tool],points:[]};}if(tool==='marina'&&!c.tiles.some(u=>u.terrain==='water'&&u.x>=p.x-1&&u.x<=p.x+size&&u.y>=p.y-1&&u.y<=p.y+size&&(u.x>=p.x&&u.x<p.x+size||u.y>=p.y&&u.y<p.y+size)))return{ok:false,error:'A marina needs water directly beside its footprint.',cost:0,points:[]};accepted.push(p);cost+=COST[tool];continue;}
+ if(tool==='pipe'||tool==='removePipe'){if(tool==='pipe'&&!t.pipe||tool==='removePipe'&&t.pipe){accepted.push(p);cost+=tool==='road'&&t.terrain==='water'?100:COST[tool]*(ZONES.includes(tool)?density:1);}continue;}
+ if(tool==='dezone'){if(!ZONES.includes(t.type)&&!FACILITIES[t.type]&&t.type!=='landfill')continue;if((ZONES.includes(t.type)||FACILITIES[t.type])&&(t.level||t.facilityAbandoned))return{ok:false,error:'Bulldoze existing buildings before de-zoning.',cost:0,points:[]};if(t.type==='landfill'&&t.garbage>0)return{ok:false,error:'Disconnect landfill roads and wait for the buried garbage to decompose before de-zoning.',cost:0,points:[]};accepted.push(p);cost+=COST.dezone;continue;}
+ if(tool==='bulldoze'){if(t.type==='landfill')return{ok:false,error:'Landfills cannot be bulldozed. Disconnect roads, let the garbage decompose, then use De-zone.',cost:0,points:[]};if(t.type||t.nature||t.rail||t.highway||t.rubble){accepted.push(p);cost+=COST.bulldoze;}continue;}
+ if(t.type===tool&&(!ZONES.includes(tool)||t.density===density))continue;
+ if(t.terrain==='water'&&!['powerline','road'].includes(tool))return{ok:false,error:'This tool needs dry land.',cost:0,points:[]};
+ if(t.type&&!(ZONES.includes(tool)&&ZONES.includes(t.type)&&(t.type===tool||!t.level)))return{ok:false,error:'Clear occupied tiles with Bulldoze first.',cost:0,points:[]};
+ accepted.push(p);cost+=tool==='road'&&t.terrain==='water'?100:COST[tool]*(ZONES.includes(tool)?density:1);}
+ if(!accepted.length)return{ok:false,error:'No tiles to change.',cost:0,points:[]};
+ if(c.funds<cost)return{ok:false,error:`Not enough funds. This costs §${cost.toLocaleString()}.`,cost,points:accepted};
+ return{ok:true,cost,points:accepted,density,bridgeAxis:bridge.axis};
+}
+export function build(c,tool,points,density=1){
+ const plan=planBuild(c,tool,points,density);if(!plan.ok)return plan;if(plan.tunnel){if(plan.cost>c.funds)return{ok:false,error:'Insufficient funds for this tunnel.',cost:plan.cost,points:[]};installTunnel(c,plan.tunnel);c.funds-=plan.cost;recompute(c);return plan;}
+ for(const p of plan.points){
+  const t=c.tiles[idx(p.x,p.y)];if(['bulldoze','removeRail','removeHighway'].includes(tool))removeTunnels(c,idx(p.x,p.y),tool);if(LANDSCAPE[tool]){Object.assign(t,p);continue;}
+  if(tool==='highway'){t.highway=true;t.highwayAxis=t.terrain==='water'?plan.bridgeAxis:null;t.nature=false;continue;}
+ if(tool==='removeHighway'){t.highway=false;t.highwayAxis=null;continue;}
+ if(tool==='rail'){t.rail=true;t.railAxis=t.terrain==='water'?plan.bridgeAxis:null;t.nature=false;continue;}
+ if(tool==='removeRail'){t.rail=false;t.railAxis=null;continue;}
+ if(tool==='subway'){t.subway=true;continue;}
+ if(tool==='removeSubway'){t.subway=false;continue;}
+ if(tool==='pipe'){t.pipe=true;continue;}
+  if(tool==='removePipe'){t.pipe=false;continue;}
+  if(tool==='dezone'){t.type=null;t.level=0;t.garbage=0;t.density=1;continue;}
+  if(STRUCTURES[tool]){addPlant(c,p.x,p.y,tool);continue;}
+  if(tool==='bulldoze'){
+   t.abandonedLevel=0;t.rubble=false;t.fire=0;t.fireAge=0;t.burnedLastMonth=0;t.recycledLastMonth=0;
+   if(FACILITIES[t.type]&&(t.level||t.facilityAbandoned)&&t.facilityRoot!==null){const root=t.facilityRoot;for(const u of c.tiles)if(u.facilityRoot===root){u.level=0;u.facilityAbandoned=false;u.age=0;u.stress=0;u.nature=false;}continue;}
+   if(ZONES.includes(t.type)||FACILITIES[t.type]){t.level=0;t.age=0;t.stress=0;t.nature=false;continue;}
+   t.rail=false;t.railAxis=null;t.highway=false;t.highwayAxis=null;
+   if(STRUCTURES[t.type]){const root=t.root;for(const u of c.tiles)if(STRUCTURES[u.type]&&u.root===root){u.type=null;u.root=null;u.level=0;u.nature=false;}}
+   else{t.type=null;t.level=0;t.nature=false;t.root=null;t.bridgeAxis=null;}
+  }else{
+   const keep=t.type===tool&&ZONES.includes(tool);if(!keep||density!==t.density)t.abandonedLevel=0;t.type=tool;t.bridgeAxis=tool==='road'&&t.terrain==='water'?plan.bridgeAxis:null;t.level=keep?Math.min(t.level,density):0;t.density=density;t.age=keep?t.age:0;t.stress=0;t.nature=false;
+  }
+ }
+ c.funds-=plan.cost;if(tool==='road')c.goals.roads+=plan.points.length;if(ZONES.includes(tool))c.goals.zones+=plan.points.length;if(POWER_PLANTS[tool])c.goals.power=true;
+ recompute(c);return plan;
+}
+export function tick(c){
+ recompute(c);let receivedIncome=c.stats.income-c.stats.regionIncome,paidExpenses=c.stats.expenses-c.stats.regionExpense;const operatingBalance=receivedIncome-paidExpenses;c.month++;c.funds+=operatingBalance;const loanPayment=settleLoans(c);advanceRoads(c);advanceCivic(c);advanceTransit(c);advanceFacilities(c);advanceWater(c);advanceWaste(c);const powerFailures=advancePower(c).map(t=>explodePlant(c,t)).filter(Boolean);recompute(c);const industryChanges=advanceIndustry(c);recompute(c);const powerRecord=powerMonth(c),generatedWaste=c.stats.wasteProduction,beforeWaste=wasteState(c);importGarbage(c);const importedWaste=wasteState(c),collected=processGarbage(c),processedWaste=wasteState(c);exportGarbage(c);const wasteRecord=wasteMonth(generatedWaste,beforeWaste,importedWaste,processedWaste,wasteState(c));const regional=settleRegion(c);receivedIncome+=regional.regionIncome;paidExpenses+=regional.regionExpense;c.finance.monthsInSurplus=receivedIncome>paidExpenses?c.finance.monthsInSurplus+1:0;
+ let grew=0,left=0;for(const t of c.tiles)if(ZONES.includes(t.type)){
+ t.age++;const usable=!t.radiation&&!t.rubble&&!t.fire&&t.powered&&(t.access||t.industry==='farm'&&c.tiles[t.farmRoot]?.access)&&t.waste<20&&(t.level<=1||t.watered)&&t.level<=landDensityLimit(t);
+ if(!usable){t.stress++;if(t.stress>=4&&t.level){t.level--;if(!t.level)t.abandonedLevel=1;t.stress=0;left++;}continue;}
+ t.stress=0;const d=c.stats.demand[t.type];if(t.level<Math.min(t.historicalLevel||3,t.density,t.watered?3:1,landDensityLimit(t))&&t.age>=t.level*4&&d>0&&hash(t.x+c.month,t.y,c.seed)<Math.min(.45,.1+d/240)){t.level++;t.abandonedLevel=0;t.age=0;grew++;c.goals.grown=true;}
+ if(t.level&&d<-45&&hash(t.x,t.y+c.month,c.seed)<.08){t.abandonedLevel=t.level;t.level=0;left++;}
+ }
+ if(c.scenario?.status==='playing'&&c.scenario.id==='recovery'&&!c.scenario.eventFired&&c.month-c.scenario.startMonth>=3){const fuel=c.tiles.find(t=>t.type==='residential'&&t.level&&!t.rubble);if(fuel){ignite(c,fuel.x,fuel.y);c.scenario.eventFired=true;}}const scenarioEvents=runScenarioEventBatch(c),scenarioEvent=scenarioEventPresentation(scenarioEvents).primary;maybeUfo(c);maybeWhirlpool(c);maybeToxicCloud(c);maybeSpaceJunk(c);maybeTornado(c);maybeEarthquake(c);maybeLocusts(c);advanceUnrest(c);maybeIgnite(c);recompute(c);advanceEducationCohorts(c,advanceDemographics(c));recompute(c);const scenarioEnded=advanceScenario(c),rewardsUnlocked=[...scenarioEvents.filter(e=>e.rewardOffered).map(e=>e.reward),...advanceRewards(c)],businessOffered=advanceBusiness(c)||scenarioEvents.some(e=>e.businessOffered);c.history.push({...reportSnapshot(c),...wasteRecord,...powerRecord,month:c.month,population:c.stats.population,funds:c.funds,income:receivedIncome,expenses:paidExpenses,loanPayment,regionalPenalty:regional.penalties,landValue:c.stats.averageLandValue,pollution:c.stats.averagePollution,crime:c.stats.averageCrime,education:c.stats.education,lifeExpectancy:c.stats.lifeExpectancy});if(c.history.length>HISTORY_LIMIT)c.history.shift();queueBudgetReview(c);return{scenarioEvents,scenarioEvent,businessOffered,rewardsUnlocked,industryChanges,powerFailures,scenarioEnded,grew,left,collected,loanPayment,regionalPenalty:regional.penalties,failedDeals:regional.failedDeals};
+}
+export function validateSave(data){
+ if(!data||![1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,VERSION].includes(data.version)||!Array.isArray(data.tiles)||data.tiles.length!==SIZE*SIZE)throw Error('This is not a compatible SIMS3000 city save.');
+ if(typeof data.name!=='string'||data.name.length>50||!Number.isFinite(data.funds)||Math.abs(data.funds)>1e12||!Number.isInteger(data.month)||data.month<0||data.month>120000)throw Error('City details are invalid.');
+ const types=[null,...Object.keys(STRUCTURES),...Object.keys(WASTE_STRUCTURES),...Object.keys(WATER_STRUCTURES),...ZONES,'road','powerline','coal','park','pump','landfill','busStop','ramp',...Object.keys(FACILITIES),...Object.keys(STATIONS),...Object.keys(SERVICES)];
+ const c=createCity(data.name,false);c.buildingReplacements=data.version>=58?validateBuildingReplacements(data.buildingReplacements):{};if(data.version>=16){if(!Number.isInteger(data.startYear)||data.startYear<1900||data.startYear>2050||typeof data.mayorName!=='string'||data.mayorName.length>50||!['easy','medium','hard'].includes(data.difficulty))throw Error('Invalid city setup.');c.startYear=data.startYear;c.mayorName=data.mayorName;c.difficulty=data.difficulty;}if(data.seed!==undefined){if(!Number.isInteger(data.seed)||data.seed<0||data.seed>4294967295)throw Error('Invalid city seed.');c.seed=data.seed;}c.region=data.version>=9?validateRegion(data.region,data.month,SIZE*SIZE):freshRegion();c.transport=data.version>=5?validateTransport(data.transport):freshTransport();c.civic=data.version>=4?validateCivic({...data.civic,...(data.version<62?{ageEducation:initialAgeEducation(data.version<30?data.civic?.education:data.civic?.youthEducation,data.version<30?data.civic?.education:data.civic?.adultEducation)}:{}),...(data.version<30?{youthEducation:data.civic?.education,adultEducation:data.civic?.education}:{}),ordinances:{...data.civic?.ordinances,...(data.version<57?{powerConservation:false,waterConservation:false}:{}),...(data.version<56?{freeClinics:false,juniorSports:false}:{}),...(data.version<28?{parkingFines:false}:{}),...(data.version<27?{carpool:false,cleanAir:false}:{}),...(data.version<13?{trashPresort:false}:{}),...(data.version<19?{cleanWater:false}:{})}}):freshCivic();c.business=data.version>=29?validateBusiness(data.business,data.month,data.version):freshBusiness();c.rewards=data.version>=20?validateRewards(data.rewards,data.month):freshRewards();c.funds=data.funds;c.month=data.month;c.starter=!!data.starter;c.finance=data.version>=3?validateFinance(data.finance,data.month,data.version):freshFinance();
+ for(let i=0;i<data.tiles.length;i++){const t=data.tiles[i];if(data.version>=75&&(!t||typeof t.facilityAbandoned!=='boolean'||t.facilityAbandoned&&(!FACILITIES[t.type]||t.level||t.rubble)))throw Error('Invalid abandoned facility state.');if(data.version>=60&&(!t||![0,1,2,3].includes(t.abandonedLevel)||t.abandonedLevel&&(!ZONES.includes(t.type)||t.level||t.rubble)))throw Error('Invalid abandoned building state.');if(data.version>=24&&(!t||![0,1,2,3].includes(t.historicalLevel)||t.historicalLevel&&(!ZONES.includes(t.type)||t.industry==='farm'||t.rubble||t.level>t.historicalLevel||t.historicalLevel>t.density)))throw Error('Invalid historical designation.');if(data.version>=19&&(!t||!['dirty','farm','clean'].includes(t.industry)||t.farmRoot!==null&&(!Number.isInteger(t.farmRoot)||t.farmRoot<0||t.farmRoot>=SIZE*SIZE)))throw Error('Invalid industry data.');if(data.version>=17&&(!t||typeof t.radiation!=='boolean'))throw Error('Invalid radiation data.');if(data.version>=15&&(!t||!Number.isInteger(t.elevation)||t.elevation<0||t.elevation>8||!Number.isInteger(t.treeLevel)||t.treeLevel<0||t.treeLevel>3))throw Error('Invalid landscape data.');if(data.version>=13&&(!t||['burnedLastMonth','recycledLastMonth'].some(k=>!Number.isFinite(t[k])||t[k]<0||t[k]>1000)))throw Error('Invalid waste processing data.');if(data.version>=12&&(!t||!['fresh','salt'].includes(t.waterKind)))throw Error('Invalid water source type.');if(data.version>=10&&(!t||typeof t.rubble!=='boolean'||!Number.isFinite(t.fire)||t.fire<0||t.fire>100||!Number.isInteger(t.fireAge)||t.fireAge<0||t.fireAge>1e9))throw Error('Invalid fire or rubble data.');if(data.version>=7&&(!t||typeof t.highway!=='boolean'||t.highway&&t.terrain==='water'&&!['x','y'].includes(t.highwayAxis)))throw Error('Invalid highway data.');if(data.version>=6&&(!t||typeof t.rail!=='boolean'||typeof t.subway!=='boolean'||t.rail&&t.terrain==='water'&&!['x','y'].includes(t.railAxis)))throw Error('Invalid railway data.');if(data.version===1&&(!t||![0,1].includes(t.level)||!([null,...ZONES,'road','powerline','coal','park'].includes(t.type))))throw Error('Invalid legacy save.');if(data.version>=2&&(!t||![1,2,3].includes(t.density)||typeof t.pipe!=='boolean'||!Number.isFinite(t.waste)||t.waste<0||t.waste>1e9||!Number.isFinite(t.garbage)||t.garbage<0||t.garbage>LANDFILL_CAPACITY||t.level>t.density))throw Error('Invalid utility or density data.');if(!t||t.x!==i%SIZE||t.y!==Math.floor(i/SIZE)||!['land','water'].includes(t.terrain)||!types.includes(t.type)||![0,1,2,3].includes(t.level)||!Number.isInteger(t.age)||t.age<0||!Number.isInteger(t.stress)||t.stress<0)throw Error('The save contains invalid tiles.');c.tiles[i]={...c.tiles[i],facilityAbandoned:data.version>=75?t.facilityAbandoned:false,abandonedLevel:data.version>=60?t.abandonedLevel:0,historicalLevel:data.version>=24?t.historicalLevel:0,industry:data.version>=19?t.industry:'dirty',farmRoot:data.version>=19?t.farmRoot:null,radiation:data.version>=17?t.radiation:false,elevation:data.version>=15?t.elevation:0,treeLevel:data.version>=15?t.treeLevel:t.nature?1:0,burnedLastMonth:data.version>=13?t.burnedLastMonth:0,recycledLastMonth:data.version>=13?t.recycledLastMonth:0,terrain:t.terrain,waterKind:data.version>=12?t.waterKind:'fresh',type:t.type,level:t.level,density:data.version>=2?t.density:1,pipe:data.version>=2?t.pipe:false,waste:data.version>=2?t.waste:0,garbage:data.version>=2?t.garbage:0,age:Math.min(t.age,120000),stress:Math.min(t.stress,120000),nature:!!t.nature,fire:data.version>=10?t.fire:0,fireAge:data.version>=10?t.fireAge:0,rubble:data.version>=10?t.rubble:false,highway:data.version>=7?t.highway:false,highwayAxis:data.version>=7&&t.highway&&t.terrain==='water'?t.highwayAxis:null,rail:data.version>=6?t.rail:false,subway:data.version>=6?t.subway:false,railAxis:data.version>=6&&t.rail&&t.terrain==='water'?t.railAxis:null,bridgeAxis:t.type==='road'&&t.terrain==='water'?t.bridgeAxis:null,root:STRUCTURES[t.type]?t.root:null};}
+ for(let i=0;i<c.tiles.length;i++){const t=c.tiles[i];if(t.type==='road'&&t.terrain==='water'&&!['x','y'].includes(t.bridgeAxis))throw Error('Invalid bridge direction.');if(STRUCTURES[t.type]){const size=STRUCTURES[t.type].size;if(!Number.isInteger(t.root)||t.root<0||t.root>=c.tiles.length)throw Error('Invalid plant footprint.');const r=c.tiles[t.root];if(r.type!==t.type||r.root!==t.root||r.x>SIZE-size||r.y>SIZE-size||t.x<r.x||t.x>=r.x+size||t.y<r.y||t.y>=r.y+size)throw Error('Invalid plant footprint.');for(let y=r.y;y<r.y+size;y++)for(let x=r.x;x<r.x+size;x++){const u=c.tiles[idx(x,y)];if(u.type!==t.type||u.root!==t.root||u.elevation!==r.elevation)throw Error('Incomplete or uneven plant footprint.');}}}
+ validateLandmarks(c);
+ for(const k of Object.keys(REWARDS)){const roots=c.tiles.filter(t=>t.type===k&&t.root===idx(t.x,t.y));if(roots.length>1||roots.length&&c.rewards.earned[k]===null)throw Error('Invalid reward placement.');}
+ for(const type of Object.keys(BUSINESSES)){const placed=businessRoots(c).filter(t=>t.type===type);if(placed.length>1||placed.length&&!businessOffer(c,type).accepted)throw Error('Invalid business placement.');}
+ c.tunnels=data.version>=21?validateTunnels(c,data.tunnels):[];
+ c.emergency=data.version>=10?validateEmergency(data.emergency,c.tiles,data.version):freshEmergency();
+ if(data.goals&&typeof data.goals==='object'){for(const k of ['roads','zones'])if(Number.isInteger(data.goals[k])&&data.goals[k]>=0)c.goals[k]=data.goals[k];c.goals.power=data.goals.power===true;c.goals.grown=data.goals.grown===true;}
+ c.scenario=data.version>=11?validateScenario(data.scenario,c.month):null;
+ c.demographics=data.version>=72?validateDemographics(data.demographics,c.month):null;
+ c.history=cleanHistory(data.history,c.month);recompute(c);for(const t of c.tiles)if(t.facilityAbandoned&&(t.facilityRoot===null||!c.stats.facilityPlots.find(p=>p.root===t.facilityRoot)?.abandoned))throw Error('Incomplete abandoned facility footprint.');return c;
+}
+
+export function applyBudget(c,taxes,roadFunding){const result=changeBudget(c,taxes,roadFunding);if(result.ok)recompute(c);return result;}
+export function borrow(c,principal){const result=takeLoan(c,principal);if(result.ok)recompute(c);return result;}
