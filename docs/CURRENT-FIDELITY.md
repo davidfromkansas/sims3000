@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Reviewed 2026-09-12 against the supplied manual, the current `dist` modules, and the latest 105-suite regression run. Save schema: 82. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
+Reviewed 2026-09-12 against the supplied manual, the current `dist` modules, and the latest 106-suite regression run. Save schema: 83. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, the 48 × 48 map and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -22,7 +22,7 @@ The manual describes behavior but does not expose all simulation formulas. Numer
 
 ## Evidence limits
 
-The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 105 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
+The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 106 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
 
 Player acceptance is still pending. No silence or automatic continuation has been treated as positive feedback. The six in-game milestones provide exercises and locally saved notes; notes are not automatically transmitted.
 
@@ -167,7 +167,7 @@ Manual pp.145–147 describes surface paints, textures, brushes and contiguous f
 
 Height and surface edits share the existing 20-step undo history. Construction-method switching preserves the block model and its paint draft. Clear and tower-reset clear paint, and undo restores both. Height edits retain paint for the column, including temporarily hidden faces. Procedural materials use the existing cached sprite renderer. Brick/stucco retain windows; glass and tile surfaces replace them. The palette is original artwork and is not the complete manual texture catalog.
 
-Building-file version 3 and city schema 80 retain a validated 500-entry surface map; versions 1 and 2 remain importable without invented materials. Painting still changes appearance only. Tests cover coplanar and roof flood-fill boundaries, hidden faces, material barriers, geometry in all views and at maximum height, strict format validation, unchanged simulation and saved continuation. Full regression: 105 suites. No browser or visual acceptance test was performed this checkpoint.
+Building-file version 3 and city schema 80 retain a validated 500-entry surface map; versions 1 and 2 remain importable without invented materials. Painting still changes appearance only. Tests cover coplanar and roof flood-fill boundaries, hidden faces, material barriers, geometry in all views and at maximum height, strict format validation, unchanged simulation and saved continuation. Full regression: 106 suites. No browser or visual acceptance test was performed this checkpoint.
 
 Feedback exercise: paint a brick wing, fill a glass facade, add tiled roofing, undo a paint stroke, then apply and rotate the city. Compare the surface choices and editing workflow. Arbitrary voxels/overhangs, individual floor painting, detail/prop placement, original-file compatibility and the broader architect catalog remain unfinished.
 
@@ -177,7 +177,7 @@ The creator now defines four named integer variables, each with an initial value
 
 This provides persistent counters and metric snapshots toward the manual's Variables Manager, Set Variable, Assign and arithmetic commands. It remains an original bounded authoring interface, not the original script VM. Four slots/actions, integer-only storage, no expressions, loops, arbitrary blocks, variable-to-variable arithmetic or configurable ranks remain limitations. A copied spatial metric is citywide; authors cannot select a copy region yet.
 
-City schema 81 preserves variables and action history. Older definitions initialize four zero counters without inventing past actions; modern definitions missing saved values are rejected. Tests exercise an actual three-month counter victory, grouped dependent messages, population snapshots, save continuation, arithmetic limits, malformed definitions/history and legacy migration. Full regression: 105 suites. No browser acceptance test was performed.
+City schema 81 preserves variables and action history. Older definitions initialize four zero counters without inventing past actions; modern definitions missing saved values are rejected. Tests exercise an actual three-month counter victory, grouped dependent messages, population snapshots, save continuation, arithmetic limits, malformed definitions/history and legacy migration. Full regression: 106 suites. No browser acceptance test was performed.
 
 Milestone 6 feedback exercise: name variable 1 Successful months, schedule a repeated Add 1 action conditional on a healthy city metric, and make the goal variable 1 ≥ 3. Add a message when it reaches 2. Check that progress remains recorded even when the qualifying city condition later fails.
 
@@ -187,6 +187,16 @@ Manual p.182 describes multiple ratings according to achievement and rank-specif
 
 A 500-character result message expands live values at award time. Rank and expanded message remain fixed even if later city state changes. Scenario status shows the result and a collapsed list of available rank criteria; author text is escaped. City schema 82 preserves the selected rank index/message alongside the existing rank name, rejects incompatible award records and migrates older scenarios to an empty rank list with their standard rating retained.
 
-Tests cover first-match priority, all/any conditions, real monthly early/deadline victory and loss, fallback/either outcomes, frozen messages, portable save restoration, escaping, malformed definitions/awards and legacy migration. Full regression: 105 suites. No browser acceptance test was performed. General-purpose script blocks and arbitrary scripted terminal commands remain unfinished; this is an original structured rank editor rather than original-file compatibility.
+Tests cover first-match priority, all/any conditions, real monthly early/deadline victory and loss, fallback/either outcomes, frozen messages, portable save restoration, escaping, malformed definitions/awards and legacy migration. Full regression: 106 suites. No browser acceptance test was performed. General-purpose script blocks and arbitrary scripted terminal commands remain unfinished; this is an original structured rank editor rather than original-file compatibility.
 
 Milestone 6 feedback exercise: create a first victory rank requiring completion within six months, a second unconditional victory rank, and a loss rank recognizing partial progress via a saved counter. Compare the outcome message and available-ranks list after playing.
+
+
+## Replayable authored challenges milestone
+Beginning a custom challenge captures its exact simulation starting state, including terrain, buildings, treasury, calendar, policies, census, custom building art and history. Scenario status now offers Restart this challenge, Export playable start and Export current progress. Restart has an in-game replacement confirmation and export action, restores the original state paused, clears construction undo and resets goals, events, variables and rank progress. Export playable start produces a normal portable city file ready to replay, without altering the current attempt.
+
+The embedded baseline shares tile field names across a compact value matrix (about 318 KB for a starter city, versus 1.13 MB for its ordinary city JSON). It contains no nested scenario; authoring over an existing challenge captures only the current simulation. Decode uses the normal full city validator and rejects nested baselines, wrong dates, malformed tile matrices and unexpected keys. City schema 83 retains this snapshot across progress exports. Older challenges without a snapshot stay playable but cannot reconstruct a missing original start.
+
+Tests verify exact authored-state restoration after demolition, treasury changes and months of progress, portable deterministic replay, independent nonmutating exports, reset event/variable progress, bounded nonrecursive replacement and malformed/legacy behavior. Full regression: 106 suites. No browser acceptance test was performed. This advances reusable scenario distribution/replay using an original city-file representation; original scenario-file compatibility remains unfinished.
+
+Milestone 6 feedback exercise: author a challenge, play several months, export progress, restart and compare the initial city. Export playable start and import it to confirm a fresh attempt while retaining the original challenge rules.
