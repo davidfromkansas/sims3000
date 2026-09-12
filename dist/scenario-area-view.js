@@ -1,6 +1,6 @@
-import {validateScenarioArea} from './scenario-area.js?v=city-library-1';
+import {validateScenarioArea} from './scenario-area.js?v=variable-maps-1';
 export function focusScenarioArea(renderer,area){
- const checked=validateScenarioArea(area,{spatial:true});if(!checked)throw Error('Choose a neighborhood goal.');
+ const checked=validateScenarioArea(area,{spatial:true},renderer.getCity?.()?.size||48);if(!checked)throw Error('Choose a neighborhood goal.');
  renderer.goalArea={city:renderer.getCity(),area:checked};const p=renderer.project(checked.x,checked.y);
  renderer.pan.x+=renderer.w/2-p.x;renderer.pan.y+=renderer.h/2-p.y-renderer.unit/2;renderer.hover=null;renderer.drag=null;renderer.dirty=true;
  renderer.updateGoalAreaIndicator?.();

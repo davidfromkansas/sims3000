@@ -1,0 +1,7 @@
+export const DEFAULT_MAP_SIZE=48,MAP_SIZES=[48,96,128,256],MAX_MAP_SIZE=256,MAX_CITY_FILE_BYTES=64000000;
+export const mapSize=c=>c?.tiles?Math.sqrt(c.tiles.length):DEFAULT_MAP_SIZE;
+const grids=new Map();
+export function cityGrid(cityOrSize){const size=typeof cityOrSize==='number'?cityOrSize:mapSize(cityOrSize);if(grids.has(size))return grids.get(size);const SIZE=typeof cityOrSize==='number'?cityOrSize:mapSize(cityOrSize),idx=(x,y)=>y*SIZE+x,inside=(x,y)=>Number.isInteger(x)&&Number.isInteger(y)&&x>=0&&y>=0&&x<SIZE&&y<SIZE,neighborhood=(t,r,fn)=>{for(let y=Math.max(0,t.y-r);y<=Math.min(SIZE-1,t.y+r);y++)for(let x=Math.max(0,t.x-r);x<=Math.min(SIZE-1,t.x+r);x++)fn(x,y);};const grid={SIZE,idx,inside,neighborhood};grids.set(size,grid);return grid;}
+export const tileIndex=t=>t.y*(t.mapSize||DEFAULT_MAP_SIZE)+t.x;
+
+export function visibleTileBounds(renderer){const size=mapSize(renderer.getCity()),u=renderer.unit,points=[];for(const x of [-u*8,renderer.w+u*8])for(const y of [-u*12,renderer.h+u*24]){const a=(x-renderer.w/2-renderer.pan.x)/u,b=(y-renderer.h/2-renderer.pan.y)*2/u+size;points.push(renderer.inverse((a+b)/2,(b-a)/2));}return{x0:Math.max(0,Math.floor(Math.min(...points.map(p=>p[0])))-1),y0:Math.max(0,Math.floor(Math.min(...points.map(p=>p[1])))-1),x1:Math.min(size-1,Math.ceil(Math.max(...points.map(p=>p[0])))+1),y1:Math.min(size-1,Math.ceil(Math.max(...points.map(p=>p[1])))+1)};}
