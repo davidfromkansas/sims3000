@@ -1,9 +1,9 @@
-import {REWARDS,rewardRoots,rewardActive} from './rewards.js?v=market-access-1';
-import {industrialJobs,industryPollution} from './industry.js?v=market-access-1';
-import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=market-access-1';
-import {POWER_PLANTS} from './power.js?v=market-access-1';
-import {civicSpending,ordinanceRevenue} from './civic.js?v=market-access-1';
-import {occupancy} from './utilities.js?v=market-access-1';
+import {REWARDS,rewardRoots,rewardActive} from './rewards.js?v=landmark-collection-1';
+import {industrialJobs,industryPollution} from './industry.js?v=landmark-collection-1';
+import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=landmark-collection-1';
+import {POWER_PLANTS} from './power.js?v=landmark-collection-1';
+import {civicSpending,ordinanceRevenue} from './civic.js?v=landmark-collection-1';
+import {occupancy} from './utilities.js?v=landmark-collection-1';
 // Loan terms from manual p. 91. Tax formula from p. 88; calibration constants are original approximations.
 export const SECTORS=['residential','commercial','industrial'];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));

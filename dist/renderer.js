@@ -1,21 +1,22 @@
-import {designForTile,drawDesignedBuilding} from './building-designs.js?v=market-access-1';
-import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=market-access-1';
-import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=market-access-1';
-import {inScenarioArea} from './scenario-area.js?v=market-access-1';
-import {railVehicles} from './rail-visuals.js?v=market-access-1';
-import {zonedSprite} from './building-art.js?v=market-access-1';
-import {trafficVehicles} from './traffic-visuals.js?v=market-access-1';
-import {tunnelAt} from './tunnels.js?v=market-access-1';
-import {STRUCTURES} from './structures.js?v=market-access-1';
-import {LANDSCAPE} from './landscape.js?v=market-access-1';
-import {POWER_PLANTS} from './power.js?v=market-access-1';
-import {WATER_STRUCTURES} from './utilities.js?v=market-access-1';
-import {FACILITIES} from './facilities.js?v=market-access-1';
-import {rampCrossings} from './highway.js?v=market-access-1';
-import {STATIONS} from './rail.js?v=market-access-1';
-import {roadNeighbors} from './transport.js?v=market-access-1';
-import {SERVICES} from './civic.js?v=market-access-1';
-import {SIZE,idx,inside,ZONES,selection,planBuild} from './engine.js?v=market-access-1';
+import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=landmark-collection-1';
+import {designForTile,drawDesignedBuilding} from './building-designs.js?v=landmark-collection-1';
+import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=landmark-collection-1';
+import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=landmark-collection-1';
+import {inScenarioArea} from './scenario-area.js?v=landmark-collection-1';
+import {railVehicles} from './rail-visuals.js?v=landmark-collection-1';
+import {zonedSprite} from './building-art.js?v=landmark-collection-1';
+import {trafficVehicles} from './traffic-visuals.js?v=landmark-collection-1';
+import {tunnelAt} from './tunnels.js?v=landmark-collection-1';
+import {STRUCTURES} from './structures.js?v=landmark-collection-1';
+import {LANDSCAPE} from './landscape.js?v=landmark-collection-1';
+import {POWER_PLANTS} from './power.js?v=landmark-collection-1';
+import {WATER_STRUCTURES} from './utilities.js?v=landmark-collection-1';
+import {FACILITIES} from './facilities.js?v=landmark-collection-1';
+import {rampCrossings} from './highway.js?v=landmark-collection-1';
+import {STATIONS} from './rail.js?v=landmark-collection-1';
+import {roadNeighbors} from './transport.js?v=landmark-collection-1';
+import {SERVICES} from './civic.js?v=landmark-collection-1';
+import {SIZE,idx,inside,ZONES,selection,planBuild} from './engine.js?v=landmark-collection-1';
 const COLORS={residential:'#81b96b',commercial:'#79baca',industrial:'#d9ba6b'};
 export class CityRenderer{
  constructor(canvas,getCity){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.rotation=0;this.layer='city';this.tool='road';this.density=1;this.hover=null;this.drag=null;this.sprites=[];this.assetReady=false;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');this.time=0;this.vehicleTime=0;this.previousFrame=null;this.dirty=true;this.w=0;this.h=0;this.resize=new ResizeObserver(()=>{const first=this.w===0;this.w=canvas.clientWidth;this.h=canvas.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);canvas.width=this.w*this.dpr;canvas.height=this.h*this.dpr;if(first)this.center();this.dirty=true;});this.resize.observe(canvas);this.loadSprites();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);}
@@ -88,7 +89,7 @@ export class CityRenderer{
  if(ZONES.includes(t.type)&&!t.level&&!t.historicalLevel&&!t.abandonedLevel){this.diamond(p.x,p.y+u*.14,u*.72,null,`${t.type==='residential'?'#cde5b0':t.type==='commercial'?'#b8e7e8':'#f4e2a8'}88`);}
  }
  for(const flight of flights)drawAirportFlight(this,flight,true);
- for(const {t,p,r} of sorted){const art=ZONES.includes(t.type)&&(t.level||t.historicalLevel||t.abandonedLevel)?this.sprites[zonedSprite(t,city.seed,city.buildingReplacements)]:null,bottomMargin=designForTile(city,t)?6:art?Math.max(4,art.h/art.w*1.85):4;if(p.x<-u*5||p.x>this.w+u*5||p.y>this.h+u*bottomMargin||p.y<-u*9)continue;
+ for(const {t,p,r} of sorted){const art=ZONES.includes(t.type)&&(t.level||t.historicalLevel||t.abandonedLevel)?this.sprites[zonedSprite(t,city.seed,city.buildingReplacements)]:null,bottomMargin=MODELED_LANDMARKS.has(t.type)?16:designForTile(city,t)?6:art?Math.max(4,art.h/art.w*1.85):4;if(p.x<-u*5||p.x>this.w+u*5||p.y>this.h+u*bottomMargin||p.y<-u*9)continue;
  const fade=['tunnels','aura','density','waterPollution','landValue','pollution','police','fire','health','education','crime','flammability','traffic','transit','rail','subway'].includes(this.layer)?.22:this.layer==='water'?.12:this.layer==='power'?.4:this.layer==='zones'?.35:this.layer==='garbage'?.3:1;
  if(this.layer==='water'){if(t.pipe||WATER_STRUCTURES[t.type]){const center={x:p.x,y:p.y+u/2};for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy;if(!inside(x,y))continue;const next=city.tiles[idx(x,y)];if(!next.pipe&&!WATER_STRUCTURES[next.type])continue;const q=this.project(x,y);this.line([center,{x:(p.x+q.x)/2,y:(p.y+q.y)/2+u/2}],t.pipeWet?'#b0e6ee':'#ddbf91',Math.max(2,u*.16));}c.fillStyle=t.pipeWet?'#c9f9ff':'#e3b78a';c.fillRect(p.x-u*.08,p.y+u*.42,u*.16,u*.16);}}
  for(const ship of ships.get(idx(t.x,t.y))||[])drawHarborShip(this,ship,!this.reducedMotion.matches);
@@ -98,7 +99,7 @@ export class CityRenderer{
  if(t.rubble)this.sprite(28,p.x,p.y+u,u*2,fade);
  else if(STRUCTURES[t.type]){
  const def=STRUCTURES[t.type],size=def.size,root=city.tiles[t.root],corners=[[root.x,root.y],[root.x+size-1,root.y],[root.x,root.y+size-1],[root.x+size-1,root.y+size-1]];const end=corners.map(([x,y])=>({x,y,r:this.transform(x,y)})).sort((a,b)=>(b.r[0]+b.r[1])-(a.r[0]+a.r[1]))[0];
- if(t.x===end.x&&t.y===end.y){const center=this.project(root.x+(size-1)/2,root.y+(size-1)/2);this.sprite(def.sprite,center.x,center.y+u*(size===1?1:size*.65),u*size*1.875,fade);}
+ if(t.x===end.x&&t.y===end.y){const center=this.project(root.x+(size-1)/2,root.y+(size-1)/2);if(def.model)drawCityLandmark(c,t.type,this.rotation,center.x,center.y+u/2,u*size*2.1,fade);else this.sprite(def.sprite,center.x,center.y+u*(size===1?1:size*.65),u*size*1.875,fade);}
  }else if(t.type==='pump')this.sprite(11,p.x,p.y+u,u*1.9,this.layer==='water'?1:fade);
  else if(['waterTower','desalination','waterTreatment'].includes(t.type))this.sprite(29+['waterTower','desalination','waterTreatment'].indexOf(t.type),p.x,p.y+u,u*1.95,this.layer==='water'?.8:fade);
  else if(['recycling','incinerator','wasteEnergy'].includes(t.type))this.sprite(32+['recycling','incinerator','wasteEnergy'].indexOf(t.type),p.x,p.y+u,u*1.95,fade);
