@@ -327,3 +327,14 @@ A reproducible synthetic 256 × 256 grid with 1,472,256 residents, 1,617,840 job
 An offline differential check compared old/new transport and water functions across nine dense layouts (48/96/128 maps, three road spacings), with identical returned statistics and every tile property. The new coverage regression independently computes nearest-pipe distance and verifies priority, edges, duplicate/empty sources and scratch-state isolation through 256 tiles. Full regression coverage is 117 suites.
 
 Feedback exercise: load a developed large city, advance several months, and compare the delay between updates. Check a water-short neighborhood and busy roads to assess service continuity. This is a continuation of the larger-map milestone, not a claim of complete simulation fidelity or AAA performance.
+
+
+### Emergency location navigation — milestone 6
+
+During an emergency, Next emergency appears beside the map navigation controls and cycles between the active main disaster and separate burning areas. Emergency → Active emergency locations lists each target with map coordinates and burning-tile count for direct selection. Neighboring fires, including diagonals, form one area. Selection uses current positions, so moving hazards can be revisited; extinguished areas disappear from the next selection. Navigation retains the selected response tool, cancels an unfinished drag, switches to the city layer and centers the actual tile across map rotation/zoom. It does not change the held/running emergency state.
+
+This addresses the Go to Disaster navigation described on manual p.57. The current simulation still permits one main non-fire disaster at a time, potentially with many fire areas. The main disaster appears first; fires are ordered by their oldest currently burning tile, with tile order breaking ties. This is not a persisted history of original incident start times: spreading, merging, splitting and extinguishing can change fire-area identity/order. Full simultaneous independent main disasters and original chronology remain unfinished. Save schema stays 92; active saved fires require no migration and navigation position is transient.
+
+Regression coverage includes scattered/diagonal fires beyond the original map boundary, wrapping/direct navigation, moving and extinguished targets, changed fire anchors, new city/incident reset, saved-city restoration and centering at all rotations and three zoom levels without changing saved gameplay state. The full suite now contains 118 suites; no browser visual acceptance claim is made.
+
+Feedback exercise: ignite two separated developed districts in a saved copy, open Emergency to select either area, then use Next emergency on the map while dispatching crews. Check whether you can keep track of both areas as fires spread and are contained.

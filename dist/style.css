@@ -79,3 +79,5 @@ dialog:has(.new-city-layout){width:min(1000px,calc(100% - 30px))}
 #blockGrid{max-width:400px;touch-action:none;user-select:none;margin:12px 0}#blockGrid [role=row]{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:2px;margin-bottom:2px}#blockGrid button{padding:0;min-width:0;aspect-ratio:1;border:1px solid #82968a;border-radius:3px;font-size:12px}#blockGrid button:focus-visible{outline:3px solid #d48836;outline-offset:1px;position:relative;z-index:1}.block-editor-controls{display:flex;gap:8px;align-items:end;flex-wrap:wrap}.block-editor-controls input{max-width:100px}
 
 @media(min-width:601px){.building-designer>div:first-child{position:sticky;top:0;align-self:start}}
+
+.view-controls #nextEmergency{font-size:14px;max-width:120px;line-height:1.2;color:#ffd1a8}.view-controls #nextEmergency[hidden]{display:none}
