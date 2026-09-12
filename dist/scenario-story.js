@@ -1,4 +1,4 @@
-import {expandScenarioText} from './scenario-text.js?v=landmark-collection-1';
+import {expandScenarioText} from './scenario-text.js?v=expanding-farms-1';
 export const DEFAULT_BRIEFING='A challenge created from your city. City-file exports preserve its goals, deadline and current progress.';
 export function validateScenarioStory(v){return Object.fromEntries(['briefing','winMessage','lossMessage'].map(key=>{const value=v[key]===undefined?'':v[key];if(typeof value!=='string'||value.length>1500||/[\x00-\x08\x0b\x0c\x0e-\x1f]/.test(value))throw Error('Scenario messages must be plain text, up to 1,500 characters each.');return[key,value.trim()];}));}
 const escapeText=value=>value.replace(/[&<>"']/g,ch=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch]));
