@@ -1,17 +1,17 @@
-import {validateCameraTarget} from './scenario-camera.js?v=airport-flights-1';
-import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=airport-flights-1';
-import {BUSINESSES,businessOffer} from './business.js?v=airport-flights-1';
-import {REWARDS} from './rewards.js?v=airport-flights-1';
-import {validateAnnouncement,announcementText,escapeAnnouncement} from './scenario-announcements.js?v=airport-flights-1';
-import {validateScenarioArea,scenarioAreaLabel} from './scenario-area.js?v=airport-flights-1';
-import {startUfo} from './ufo.js?v=airport-flights-1';
-import {startWhirlpool} from './whirlpool.js?v=airport-flights-1';
-import {startToxicCloud} from './toxic-cloud.js?v=airport-flights-1';
-import {startSpaceJunk} from './space-junk.js?v=airport-flights-1';
-import {CUSTOM_METRICS} from './scenario-metrics.js?v=airport-flights-1';
-import {ignite,combustible,startEarthquake,startTornado} from './emergency.js?v=airport-flights-1';
-import {startLocusts} from './locusts.js?v=airport-flights-1';
-import {startRiot} from './riots.js?v=airport-flights-1';
+import {validateCameraTarget} from './scenario-camera.js?v=scenario-stages-1';
+import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=scenario-stages-1';
+import {BUSINESSES,businessOffer} from './business.js?v=scenario-stages-1';
+import {REWARDS} from './rewards.js?v=scenario-stages-1';
+import {validateAnnouncement,announcementText,escapeAnnouncement} from './scenario-announcements.js?v=scenario-stages-1';
+import {validateScenarioArea,scenarioAreaLabel} from './scenario-area.js?v=scenario-stages-1';
+import {startUfo} from './ufo.js?v=scenario-stages-1';
+import {startWhirlpool} from './whirlpool.js?v=scenario-stages-1';
+import {startToxicCloud} from './toxic-cloud.js?v=scenario-stages-1';
+import {startSpaceJunk} from './space-junk.js?v=scenario-stages-1';
+import {CUSTOM_METRICS} from './scenario-metrics.js?v=scenario-stages-1';
+import {ignite,combustible,startEarthquake,startTornado} from './emergency.js?v=scenario-stages-1';
+import {startLocusts} from './locusts.js?v=scenario-stages-1';
+import {startRiot} from './riots.js?v=scenario-stages-1';
 export const SCENARIO_EVENTS={camera:'Move and zoom city view',sound:'Play sound',popup:'Popup message',business:'Offer business deal',reward:'Offer reward',announcement:'Announcement',ufo:'Alien attack',whirlpool:'Whirlpool',toxicCloud:'Toxic cloud',spaceJunk:'Space junk',fire:'Fire',earthquake:'Earthquake',tornado:'Tornado',locust:'Locust plague',riot:'Riot'};
 export function validateEventDefinitions(events,deadline,eventMode='monthly'){if(events===undefined)return[];if(!Array.isArray(events)||events.length>4)throw Error('Choose at most four scheduled events.');const months=new Set();return events.map(e=>{if(!e||!Object.hasOwn(SCENARIO_EVENTS,e.type)||!Number.isInteger(e.month)||e.month<1||e.month>=deadline||eventMode==='monthly'&&months.has(e.month)||!['announcement','popup','reward','business','sound'].includes(e.type)&&(!Number.isInteger(e.x)||!Number.isInteger(e.y)||e.x<0||e.y<0||e.x>=48||e.y>=48))throw Error('Events need valid months before the deadline and map coordinates from 1 to 48. One-per-month mode requires distinct start months.');const repeatCount=e.repeatCount??1,repeatEvery=repeatCount===1?0:e.repeatEvery;if(!Number.isInteger(repeatCount)||repeatCount<1||repeatCount>12||!Number.isInteger(repeatEvery)||repeatEvery<0||repeatCount>1&&repeatEvery<1||e.month+(repeatCount-1)*repeatEvery>=deadline)throw Error('Choose 1–12 occurrences with a repeat interval that fits before the deadline.');if(e.type==='reward'&&!Object.hasOwn(REWARDS,e.reward))throw Error('Choose a valid reward to offer.');if(e.type==='business'&&!Object.hasOwn(BUSINESSES,e.business))throw Error('Choose a valid business deal to offer.');if(e.type==='popup'&&e.showStatus!==undefined&&typeof e.showStatus!=='boolean')throw Error('Choose whether the popup links to Scenario status.');if(e.type==='sound'&&!Object.hasOwn(SCENARIO_SOUNDS,e.sound))throw Error('Choose a valid scenario sound.');if(e.type==='camera')validateCameraTarget(e);months.add(e.month);return{repeatCount,repeatEvery,type:e.type,month:e.month,x:['announcement','popup','reward','business','sound'].includes(e.type)?0:e.x,y:['announcement','popup','reward','business','sound'].includes(e.type)?0:e.y,...(e.type==='camera'?{zoom:e.zoom}:{}),...(e.type==='sound'?{sound:e.sound}:{}),...(e.type==='business'?{business:e.business}:{}),...(e.type==='reward'?{reward:e.reward}:{}),...(['announcement','popup'].includes(e.type)?{message:validateAnnouncement(e.message)}:{}),...(e.type==='popup'?{showStatus:e.showStatus??true}:{}),condition:validateEventCondition(e.condition)};}).sort((a,b)=>a.month-b.month);}
 export function validateEventProgress(states,definition,startMonth,month){if(!definition.events.length&&states===undefined)return[];if(!Array.isArray(states)||states.length!==definition.events.length)throw Error('Invalid scenario event progress.');return states.map((s,i)=>{const e=definition.events[i],runs=s?.runs??(s?.status==='pending'?0:1);if(!s||!Number.isInteger(runs)||runs<0||runs>e.repeatCount||!['pending','triggered','skipped'].includes(s.status)||(runs===0?(s.status!=='pending'||s.month!==null):(s.status==='pending'||!Number.isInteger(s.month)||s.month<startMonth+e.month+(runs-1)*e.repeatEvery||s.month>month)))throw Error('Invalid scenario event progress.');if(['announcement','popup'].includes(e.type)&&runs&&(s.status!=='triggered'||typeof s.message!=='string'||!s.message||s.message.length>4000))throw Error('Invalid announcement history.');if(e.type==='popup'&&runs&&typeof s.acknowledged!=='boolean')throw Error('Invalid popup acknowledgement.');return{status:s.status,month:s.month,runs,...(['announcement','popup'].includes(e.type)&&runs?{message:s.message}:{}),...(e.type==='popup'&&runs?{acknowledged:s.acknowledged}:{})};});}
