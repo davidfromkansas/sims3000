@@ -390,3 +390,18 @@ This advances the manual’s save/load workflow and removes the localStorage cap
 Tests use fake-indexeddb as a development-only dependency and verify real transactions through its IndexedDB implementation: migration, playable restoration, independent snapshots, rename/replace/delete, queued save order, concurrent capacity, reopening, malformed inputs and unavailable storage. All 115 suites pass. No browser acceptance test was performed.
 
 Feedback exercise: save two different city layouts with distinct library labels, switch between them, replace one snapshot, and download it. Check whether it is clear which actions update a snapshot versus quick-save/autosave.
+
+
+### Larger playable maps — milestone 1
+
+New city setup now offers 48 × 48, 96 × 96, 128 × 128 and 256 × 256 maps. Terrain generation/sculpting, construction selection, fixed footprints, utility/transport networks, border connections, farm barns, map rotation, pointer picking and the navigation map use each city’s dimensions. Cities of different sizes can coexist in tests and library snapshots without shared mutable indexing. Starter-town views center on their developed homes.
+
+Custom scenarios retain their map size. Goals, local conditions, ranks and camera coordinates validate against that map; structure/farm count limits scale with available tiles. Embedded starting snapshots and replay preserve dimensions. Schema 92 explicitly stores city size; earlier saves migrate as 48 × 48 without reshaping their terrain or indexes. City-file imports now accept up to 64 MB, and library metadata identifies map dimensions. Quick-save/autosave use the preceding IndexedDB milestone.
+
+Rendering constructs and sorts only a conservative viewport region. Pointer picking checks a bounded area around the inverse projection and matches exhaustive picking on elevated terrain across rotations. These changes keep larger maps from requiring a complete map scan for every pointer movement or sorting every tile for every frame.
+
+Measured on this development machine: a lightly occupied 256 × 256 city serialized to about 32 MB, with roughly 0.5 seconds per simulation month and 0.4 seconds for a save reload in an isolated starter test. A separate Node drawing-command exercise took roughly 6–11 ms per view, but used a stub Canvas and excluded rasterization/artwork cost; this is not a browser frame-rate claim. Dense cities, high-speed play and mobile performance remain unverified. Larger maps require more memory and may simulate more slowly.
+
+All 116 suites passed. New integration checks exercise every map size, construction and utilities beyond the old boundary, regional demand routes, save continuation, old-city migration, simultaneous differently sized cities, large-map farm identifiers, scenario replay, rotated navigation and terrain-aware picking. No browser acceptance test was performed.
+
+Feedback exercise: create a 96 × 96 city, build a serviced district near its far edge, connect a neighbor, save it to the library and load a compact city. Then return to the larger city and compare navigation and simulation pace. Try 256 × 256 when you want more room and assess responsiveness on your device.
