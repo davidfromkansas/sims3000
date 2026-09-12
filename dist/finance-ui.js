@@ -1,6 +1,6 @@
-import {businessIncomeReport} from './business.js?v=policy-petitions-1';
-import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=policy-petitions-1';
-import {applyBudget,borrow} from './engine.js?v=policy-petitions-1';
+import {businessIncomeReport} from './business.js?v=neighbor-economies-1';
+import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=neighbor-economies-1';
+import {applyBudget,borrow} from './engine.js?v=neighbor-economies-1';
 const names={residential:'Residential',commercial:'Commercial',industrial:'Industrial'};
 export function showFinance(ui){
  const {city,dialog,close,update,save,clearUndo,notify,review}=ui,c=city(),fmt=n=>'§'+Math.round(n).toLocaleString(),$=s=>document.querySelector(s),f=c.finance;
