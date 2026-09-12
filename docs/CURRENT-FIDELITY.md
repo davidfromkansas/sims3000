@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Reviewed 2026-09-13 against the supplied manual, the current `dist` modules, and the latest 111-suite regression run. Save schema: 88. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
+Reviewed 2026-09-13 against the supplied manual, the current `dist` modules, and the latest 112-suite regression run. Save schema: 89. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, the 48 × 48 map and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -13,7 +13,7 @@ The manual describes behavior but does not expose all simulation formulas. Numer
 | Transport, pp.93–96 | `transport.js`, `rail.js`, `highway.js`, `tunnels.js`, `facilities.js`: road/bus/rail/subway/highway routes, bridges, tunnels, ports, airports; actual commuter loads drive vehicle visuals | Full geometric/bridge variations and original route rules. Visual cars and trains are samples, not individual schedules |
 | Public safety, health, education and aura, pp.106–113 | `civic.js`, `health.js`, `education.js`: funding/strikes, coverage, jail effects, crime, fire risk, health targets, youth/adult education and policies | Individual and neighborhood demographic detail, complete ordinance/advisor/petition catalogs, original civic footprints/capacities |
 | Disasters, pp.106–111 and disaster reference | `emergency.js`, `locusts.js`, `riots.js`, `space-junk.js`, `toxic-cloud.js`, `whirlpool.js`, `ufo.js`: all nine currently exposed disaster types, warnings where supported, response/recovery, seeded random events and saved continuity | Exact original event behavior, pacing and warning coverage. Current paths, chances and damage rules are tuned recreations |
-| Rewards, landmarks and architecture | `rewards.js`, `landmarks.js`, `building-art.js`: three reward types, two landmarks, multiple original generated building sprites | Complete landmark/reward/building catalogs and architecture sets; original four-view building art |
+| Rewards, landmarks and architecture | `rewards.js`, `landmarks.js`, `building-art.js`: three reward types, four landmarks, multiple original generated building sprites | Complete landmark/reward/building catalogs and architecture sets; original four-view building art |
 | Snapshot albums, pp.63–65 | `snapshots.js`, `snapshot-frame.js`, `snapshot-files.js`: movable frames, captions, chronological album browsing, PNG download and portable album import/export | Original album-file compatibility; browser albums are separate from city files and bounded to 50 photos |
 | Building replacement, pp.72–84 | `building-replacement-ui.js`, `building-art.js`, `building-designs.js`, `building-designer-ui.js`: previews, citywide substitution, custom tower creation, portable model files, revert and saved overrides | Four tower style slots with custom procedural models/import/export; original building-file compatibility, larger replacement library and free-form block editor |
 | Reports, pp.64–71 | `reports.js`, `reports-ui.js`, `report-breakdowns.js`: data layers, 1/10/100-year histories, income/waste/power/workforce breakdowns | Annual water production and broader chart presentation. Historical implementation notes are not evidence of missing current maps |
@@ -22,7 +22,7 @@ The manual describes behavior but does not expose all simulation formulas. Numer
 
 ## Evidence limits
 
-The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 111 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
+The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 112 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
 
 Player acceptance is still pending. No silence or automatic continuation has been treated as positive feedback. The six in-game milestones provide exercises and locally saved notes; notes are not automatically transmitted.
 
@@ -253,3 +253,14 @@ Commercial and industrial plots now receive outside-market demand support only t
 Manual page 97 describes exporting industrial goods and bringing commercial customers through connections. The route allocation, station catchment, demand points and averaging are reconstruction rules, not recovered original formulas. This does not simulate cross-border commuters or individual cargo shipments. Schema 88 recomputes derived access on load; older city files remain supported.
 
 Feedback exercise: inspect a business on a disconnected road, join that road to a paid border connection, inspect again, then remove a connecting segment. Check whether the access explanation and Transport totals make the economic effect clear. This advances milestones 3 and 5. Automated tests cover isolated/duplicate/broken connections, highway ramps, active rail stations, facility operation and save migration. No new browser visual acceptance claim is made.
+
+
+### Expanded landmark collection — milestone 5
+
+The landmark gallery now includes the Statue of Liberty and Big Ben alongside the Eiffel Tower and Great Pyramid. Both additions use original Imagegen gallery illustrations and separate original low-poly city models with four map orientations. The gallery explicitly distinguishes the illustration from the city model. The generated cutout attempts retained backgrounds and were not used as map sprites. Cached procedural drawings keep the city terrain visible and avoid per-frame mesh construction; tall-landmark culling preserves the upper structure when its base is below the viewport.
+
+Both landmarks occupy 3 × 3 level, clear land, are available immediately, cost nothing, and have no upkeep or direct job/income effect. Each may appear once; whole-footprint demolition and disaster damage allow rebuilding. Named landmark scenario goals and the total-landmark count include all four types. Schema 89 recognizes the expanded tile catalog. Earlier cities remain loadable.
+
+Manual pp.56 and 124 supply the landmark placement/uniqueness behavior; the choice of these additions, footprints and simplified artwork are reconstruction decisions. This is not the full original catalog or original game artwork. Offline Canvas-path renders were inspected in all four orientations and a tower-window occlusion issue was corrected. Regression tests cover placement, duplicate rejection, rebuilding, scenario metrics, saves and projection bounds. No browser acceptance check was performed.
+
+Feedback exercise: place both landmarks, rotate the city four times, inspect them, then demolish and rebuild one. Try a custom challenge requiring both named monuments. Assess the silhouettes at normal game zoom and whether their size suits the surrounding neighborhoods.
