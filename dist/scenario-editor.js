@@ -1,10 +1,10 @@
-import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=regional-reviews-1';
-import {BUSINESSES} from './business.js?v=regional-reviews-1';
-import {REWARDS} from './rewards.js?v=regional-reviews-1';
-import {areaFields,refreshAreaFields,readAreaFields} from './scenario-area-ui.js?v=regional-reviews-1';
-import {STORY_VALUES,expandScenarioText} from './scenario-text.js?v=regional-reviews-1';
-import {SCENARIO_EVENTS} from './scenario-events.js?v=regional-reviews-1';
-import {CUSTOM_METRICS,attachCustomScenario} from './custom-scenarios.js?v=regional-reviews-1';
+import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=market-access-1';
+import {BUSINESSES} from './business.js?v=market-access-1';
+import {REWARDS} from './rewards.js?v=market-access-1';
+import {areaFields,refreshAreaFields,readAreaFields} from './scenario-area-ui.js?v=market-access-1';
+import {STORY_VALUES,expandScenarioText} from './scenario-text.js?v=market-access-1';
+import {SCENARIO_EVENTS} from './scenario-events.js?v=market-access-1';
+import {CUSTOM_METRICS,attachCustomScenario} from './custom-scenarios.js?v=market-access-1';
 const metricOptions=(selected='',directions=false)=>['City and development','Structure counts'].map(group=>`<optgroup label="${group}">${Object.entries(CUSTOM_METRICS).filter(([,m])=>(m.group||'City and development')===group).map(([key,m])=>`<option value="${key}" ${key===selected?'selected':''}>${m.name}${directions?' · '+m.direction:''}</option>`).join('')}</optgroup>`).join('');
 const conditionFields=(id,label)=>`<label>${label}<select id="eventCondition${id}"><option value="">No condition</option>${metricOptions()}</select></label><label>Comparison<select id="eventOperator${id}"><option value="gte">At least</option><option value="lte">At most</option></select></label><label>Threshold<input id="eventThreshold${id}" type="number" step="any" value="50"></label>${areaFields('event'+id)}`;
 export function showCustomScenarioEditor(ui,done){const {city,dialog,exportCity,save,update,clearUndo}=ui,c=city(),$=s=>document.querySelector(s);if(c.emergency.active){dialog('Finish the emergency first','<p>Resolve the active disaster before creating a challenge.</p>');return;}
