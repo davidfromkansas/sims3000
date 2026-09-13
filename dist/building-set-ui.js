@@ -1,0 +1,16 @@
+import {MAX_CITY_FILE_BYTES} from './city-grid.js?v=building-set-import-1';
+import {copyBuildingSet,applyBuildingSet,buildingSetChanges} from './building-sets.js?v=building-set-import-1';
+const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function showBuildingSetImport({city,dialog,validateCity,apply,backup,close}){
+ dialog('Import a building set',`<p>Reuse the custom models and building replacements from an exported SIMS3000 city. Choose a city file to review the changes before applying them.</p><p>This replaces your entire building set, including restoring original artwork for styles absent from the selected city. Terrain, residents, finances and challenge progress stay in your current city.</p><label>Source city file<input id="buildingSetFile" type="file" accept=".json,application/json"></label><p id="buildingSetStatus" role="status"></p><div id="buildingSetReview"></div><div class="actions"><button id="buildingSetBackup">Export current city as backup</button><button id="buildingSetApply" class="primary" disabled>Apply building set</button><button id="buildingSetClose">Cancel</button></div><p class="fine">Supports SIMS3000 city files up to 64 MB, including all saved style and footprint variants. Original SimCity city files are not supported.</p>`);
+ const $=id=>document.getElementById(id),input=$('buildingSetFile'),status=$('buildingSetStatus'),review=$('buildingSetReview'),button=$('buildingSetApply');let draft=null,request=0;
+ input.onchange=async()=>{const file=input.files?.[0],id=++request;draft=null;button.disabled=true;review.innerHTML='';if(!file){status.textContent='Choose a city file.';return;}status.textContent='Reading building set…';try{
+  if(file.size>MAX_CITY_FILE_BYTES)throw Error('City file is too large (maximum 64 MB).');
+  const text=await file.text();if(!document.contains(input)||id!==request)return;
+  const loaded=validateCity(JSON.parse(text)),next=copyBuildingSet(loaded),changes=buildingSetChanges(city,next);draft=next;
+  status.textContent=`${loaded.name}: ${Object.keys(next.buildingDesigns).length} custom models and ${Object.keys(next.buildingReplacements).length} style replacements. ${changes.length} appearance changes affecting ${changes.reduce((n,c)=>n+c.count,0)} current buildings. Future buildings use this set too.`;
+  review.innerHTML=changes.length?`<div style="overflow-x:auto"><table><thead><tr><th>Style / footprint</th><th>Current</th><th>Imported</th><th>Buildings</th></tr></thead><tbody>${changes.map(c=>`<tr><td>${escape(c.style)} · ${c.footprint.width} × ${c.footprint.height}</td><td>${escape(c.from)}</td><td>${escape(c.to)}</td><td>${c.count}</td></tr>`).join('')}</tbody></table></div>`:'<p>This set has the same visible appearance as your current set.</p>';button.disabled=false;
+ }catch(e){if(document.contains(input)&&id===request)status.textContent=e.message||'Could not read the city file.';}};
+ button.onclick=()=>{if(!draft||button.disabled||!document.contains(input))return;applyBuildingSet(city,draft);draft=null;button.disabled=true;apply();status.textContent='Building set applied and saved. Current and future buildings use the imported set.';};
+ $('buildingSetBackup').onclick=backup;$('buildingSetClose').onclick=()=>{request++;draft=null;close();};
+}
