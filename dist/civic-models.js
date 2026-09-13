@@ -1,5 +1,5 @@
-import {projectMiniature as projectCivic,rasterizeMiniature} from './miniature-raster.js?v=scenario-building-utilities-1';
-export {projectMiniature as projectCivic} from './miniature-raster.js?v=scenario-building-utilities-1';
+import {projectMiniature as projectCivic,rasterizeMiniature} from './miniature-raster.js?v=garbage-health-1';
+export {projectMiniature as projectCivic} from './miniature-raster.js?v=garbage-health-1';
 // Original civic miniatures. Geometry is footprint-relative; simulation stays in civic.js.
 export const MODELED_CIVIC=new Set(['police','fire','hospital','school','jail','college','library','museum']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.max(0,Math.min(255,Math.round(parseInt(v,16)*f))).toString(16).padStart(2,'0')).join('');

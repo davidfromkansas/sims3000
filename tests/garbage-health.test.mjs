@@ -1,0 +1,21 @@
+import assert from 'node:assert/strict';
+import {createCity,build,selection,recompute,validateSave} from '../dist/engine.js';
+import {healthOutlook,healthReport} from '../dist/health.js';
+import {advanceCivic} from '../dist/civic.js';
+import {processGarbage} from '../dist/utilities.js';
+import {serializeCity} from '../dist/save.js';
+const base=()=>{const c=createCity('Sanitation recovery',false);c.funds=500000;for(const t of c.tiles){t.terrain='land';t.elevation=0;t.nature=false;}recompute(c);return c;};
+const put=(c,type,x,y,xx=x,yy=y)=>assert.ok(build(c,type,selection(type,{x,y},{x:xx,y:yy},c.size)).ok);
+const c=base(),a=c.tiles[20*48+20],b=c.tiles[30*48+30];Object.assign(a,{type:'residential',level:1,waste:50});Object.assign(b,{type:'residential',level:3,density:3});recompute(c);
+let h=healthOutlook(c);assert.equal(h.garbageExposure,50/9);assert.ok(Math.abs(h.garbagePenalty-15/9)<1e-9,'eight residents exposed; sixty-four not exposed');
+a.waste=5000;assert.equal(healthOutlook(c).garbagePenalty,h.garbagePenalty,'cap risk per home before population averaging');a.waste=0;b.waste=25;assert.ok(Math.abs(healthOutlook(c).garbagePenalty-7.5*8/9)<1e-9);
+b.waste=0;c.tiles[0].waste=10000;assert.equal(healthOutlook(c).garbagePenalty,0,'unoccupied locations are not direct residential exposure');
+a.level=0;a.abandonedLevel=1;a.waste=50;assert.equal(healthOutlook(c).garbagePenalty,0,'abandoned buildings have no residents');
+a.level=1;a.abandonedLevel=0;b.waste=50;recompute(c);h=healthOutlook(c);assert.equal(h.garbagePenalty,15);assert.equal(h.target,45);assert.match(healthReport(c),/Uncollected garbage at homes/);assert.match(healthReport(c),/15.0 years/);
+const before=c.civic.lifeExpectancy;advanceCivic(c);assert.ok(c.civic.lifeExpectancy<before);assert.ok(c.civic.lifeExpectancy>h.target,'health declines over time, not instantly');
+const saved=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(healthOutlook(saved),healthOutlook(c));
+// An actual connected landfill clears the backlog and raises the health outlook.
+const city=base();put(city,'residential',20,20);Object.assign(city.tiles[20*48+20],{level:1,waste:50});recompute(city);advanceCivic(city);const unhealthy=healthOutlook(city),low=city.civic.lifeExpectancy;
+put(city,'road',19,21,28,21);put(city,'landfill',28,22);assert.ok(processGarbage(city)>=50);recompute(city);assert.equal(city.tiles[20*48+20].waste,0);assert.equal(healthOutlook(city).garbagePenalty,0);assert.ok(healthOutlook(city).target>unhealthy.target);advanceCivic(city);assert.ok(city.civic.lifeExpectancy>low);
+const restored=validateSave(JSON.parse(serializeCity(city)));for(let i=0;i<12;i++){for(const v of [city,restored]){processGarbage(v);recompute(v);advanceCivic(v);}}assert.equal(city.civic.lifeExpectancy,restored.civic.lifeExpectancy);assert.deepEqual(healthOutlook(city),healthOutlook(restored));
+console.log('PASS: resident-weighted sanitation risk, per-home saturation, empty and abandoned sites, gradual decline/recovery, real landfill collection and save continuity.');

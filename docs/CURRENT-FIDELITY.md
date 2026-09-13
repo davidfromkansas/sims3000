@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 192 regression suites, save schema 118. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 193 regression suites, save schema 118. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -775,3 +775,5 @@ Viewed-neighborhood traffic checkpoint: camera-local car/highway sampling and vi
 Scenario storytelling checkpoint: timed events and routines can replace current instructions and victory/loss messages with captured live values. Saves preserve the updates; restart restores original text. See [changing scenario dialogs](SCENARIO-DIALOG-TEXT-MILESTONE.md). All 191 regression suites passed; schema117, cache scenario-dialog-text-1. Not yet hosted.
 
 Building utility checkpoint: scenario goals now count unpowered and unwatered buildings across eligible workplaces, facilities and services, once per footprint. See [building utility goals](BUILDING-UTILITY-GOALS-MILESTONE.md). Source only; publication pending.
+
+Sanitation health checkpoint: uncollected garbage now directly lowers exposed residents’ health target, and the Population report explains the penalty and recovery through collection. See [garbage and health](GARBAGE-HEALTH-MILESTONE.md). Source only; publication pending.
