@@ -1,32 +1,33 @@
-import {buildingLotPlacement} from './building-lot-view.js?v=building-set-import-1';
-import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=building-set-import-1';
-import {drawCityWater} from './water-models.js?v=building-set-import-1';
-import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=building-set-import-1';
-import {drawCityCivic} from './civic-models.js?v=building-set-import-1';
-import {drawBridgeStructure} from './bridge-structures.js?v=building-set-import-1';
-import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=building-set-import-1';
-import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=building-set-import-1';
-import {stationAreas} from './service-areas.js?v=building-set-import-1';
-import {cityGrid,visibleTileBounds} from './city-grid.js?v=building-set-import-1';
-import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=building-set-import-1';
-import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=building-set-import-1';
-import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=building-set-import-1';
-import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=building-set-import-1';
-import {inScenarioArea} from './scenario-area.js?v=building-set-import-1';
-import {railVehicles} from './rail-visuals.js?v=building-set-import-1';
-import {baseZonedSprite,zonedSprite} from './building-art.js?v=building-set-import-1';
-import {trafficVehicles} from './traffic-visuals.js?v=building-set-import-1';
-import {tunnelAt} from './tunnels.js?v=building-set-import-1';
-import {STRUCTURES} from './structures.js?v=building-set-import-1';
-import {LANDSCAPE} from './landscape.js?v=building-set-import-1';
-import {POWER_PLANTS} from './power.js?v=building-set-import-1';
-import {WATER_STRUCTURES} from './utilities.js?v=building-set-import-1';
-import {FACILITIES} from './facilities.js?v=building-set-import-1';
-import {rampCrossings} from './highway.js?v=building-set-import-1';
-import {STATIONS} from './rail.js?v=building-set-import-1';
-import {roadNeighbors} from './transport.js?v=building-set-import-1';
-import {SERVICES} from './civic.js?v=building-set-import-1';
-import {ZONES,selection,planBuild} from './engine.js?v=building-set-import-1';
+import {EDUCATION_LAYERS,educationLayerProfile,educationLayerColor} from './education-layers.js?v=education-service-maps-1';
+import {buildingLotPlacement} from './building-lot-view.js?v=education-service-maps-1';
+import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=education-service-maps-1';
+import {drawCityWater} from './water-models.js?v=education-service-maps-1';
+import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=education-service-maps-1';
+import {drawCityCivic} from './civic-models.js?v=education-service-maps-1';
+import {drawBridgeStructure} from './bridge-structures.js?v=education-service-maps-1';
+import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=education-service-maps-1';
+import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=education-service-maps-1';
+import {stationAreas} from './service-areas.js?v=education-service-maps-1';
+import {cityGrid,visibleTileBounds} from './city-grid.js?v=education-service-maps-1';
+import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=education-service-maps-1';
+import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=education-service-maps-1';
+import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=education-service-maps-1';
+import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=education-service-maps-1';
+import {inScenarioArea} from './scenario-area.js?v=education-service-maps-1';
+import {railVehicles} from './rail-visuals.js?v=education-service-maps-1';
+import {baseZonedSprite,zonedSprite} from './building-art.js?v=education-service-maps-1';
+import {trafficVehicles} from './traffic-visuals.js?v=education-service-maps-1';
+import {tunnelAt} from './tunnels.js?v=education-service-maps-1';
+import {STRUCTURES} from './structures.js?v=education-service-maps-1';
+import {LANDSCAPE} from './landscape.js?v=education-service-maps-1';
+import {POWER_PLANTS} from './power.js?v=education-service-maps-1';
+import {WATER_STRUCTURES} from './utilities.js?v=education-service-maps-1';
+import {FACILITIES} from './facilities.js?v=education-service-maps-1';
+import {rampCrossings} from './highway.js?v=education-service-maps-1';
+import {STATIONS} from './rail.js?v=education-service-maps-1';
+import {roadNeighbors} from './transport.js?v=education-service-maps-1';
+import {SERVICES} from './civic.js?v=education-service-maps-1';
+import {ZONES,selection,planBuild} from './engine.js?v=education-service-maps-1';
 const COLORS={residential:'#81b96b',commercial:'#79baca',industrial:'#d9ba6b'};
 export class CityRenderer{
  constructor(canvas,getCity){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.rotation=0;this.layer='city';this.tool='road';this.density=1;this.hover=null;this.drag=null;this.sprites=[];this.assetReady=false;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');this.time=0;this.vehicleTime=0;this.previousFrame=null;this.dirty=true;this.w=0;this.h=0;this.resize=new ResizeObserver(()=>{const first=this.w===0;this.w=canvas.clientWidth;this.h=canvas.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);canvas.width=this.w*this.dpr;canvas.height=this.h*this.dpr;if(first)this.center();this.dirty=true;});this.resize.observe(canvas);this.loadSprites();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);}
@@ -78,6 +79,7 @@ export class CityRenderer{
  line(points,color,width,dash=[]){const c=this.ctx;c.beginPath();points.forEach((p,i)=>i?c.lineTo(p.x,p.y):c.moveTo(p.x,p.y));c.strokeStyle=color;c.lineWidth=width;c.setLineDash(dash);c.stroke();c.setLineDash([]);}
  frame(time){const dt=this.previousFrame===null?0:Math.min(100,time-this.previousFrame);this.previousFrame=time;if((this.preferences?.vehicleAnimations!==false||this.preferences?.sceneryAnimations!==false||this.preferences?.pedestriansVisible!==false)&&this.running&&!this.getCity()?.emergency.active&&!document.hidden&&!document.querySelector('#dialog')?.open&&!this.reducedMotion.matches)this.vehicleTime+=dt/1000;if(this.dirty||time-this.time>((this.getCity()?.emergency.whirlpool||this.getCity()?.emergency.ufo||this.running&&(this.preferences?.vehicleAnimations!==false&&this.zoom>=(this.preferences?.trafficMinZoom??.4)&&['city','rail'].includes(this.layer)||this.layer==='city'&&(this.preferences?.sceneryAnimations!==false||this.preferences?.pedestriansVisible!==false&&this.zoom>=(this.preferences?.pedestrianMinZoom??1))))&&!this.reducedMotion.matches?33:160)){this.draw(time);this.drawNavigation?.();this.time=time;this.dirty=false;}requestAnimationFrame(this.frame);}
  draw(time=0){const {SIZE,idx,inside}=cityGrid(this.getCity());const c=this.ctx,city=this.getCity(),u=this.unit;if(!city)return;c.setTransform(this.dpr,0,0,this.dpr,0,0);c.clearRect(0,0,this.w,this.h);c.fillStyle='#90b4ad';c.fillRect(0,0,this.w,this.h);
+ const educationProfile=educationLayerProfile(city,this.layer);
  const showTransportation=cityElementVisible(this,'transportation'),showZones=cityElementVisible(this,'zones');
  const showVehicles=showTransportation&&this.preferences?.vehicleAnimations!==false&&this.zoom>=(this.preferences?.trafficMinZoom??.4);
  const flights=showVehicles&&this.layer==='city'&&!this.reducedMotion.matches?airportFlights(city,this.vehicleTime):[];
@@ -96,6 +98,7 @@ export class CityRenderer{
  if(t.elevation>0){const drop=t.elevation*u*.5;for(const [a,b,color] of [[[-u,u/2],[0,u],'#677c58'],[[0,u],[u,u/2],'#7f9066']]){c.fillStyle=color;c.beginPath();c.moveTo(p.x+a[0],p.y+a[1]);c.lineTo(p.x+b[0],p.y+b[1]);c.lineTo(p.x+b[0],p.y+b[1]+drop);c.lineTo(p.x+a[0],p.y+a[1]+drop);c.closePath();c.fill();}}
  if(this.layer==='waterPollution')fill=`hsl(${120-t.waterPollution*1.2},45%,52%)`;if(this.layer==='aura')fill=t.type==='residential'&&t.level?`hsl(${t.aura*1.2},45%,52%)`:'#6a7770';if(this.layer==='density')fill=ZONES.includes(t.type)?(t.level?`hsl(155,40%,${80-t.level*18}%)`:'#929b95'):'#536a65';
  if(this.layer==='tunnels')fill=tunnelAt(city,idx(t.x,t.y))?'#a687c9':'#718578';
+ if(educationProfile)fill=educationLayerColor(t,educationProfile);
  if(t.radiation)fill='#b2a148';
  this.diamond(p.x,p.y,u,fill,cityElementVisible(this,'grid')?(water?'#578f8911':'#56795618'):null);
  if(this.goalArea?.city===city&&inScenarioArea(t,this.goalArea.area))this.diamond(p.x,p.y,u,'#80e3fa44','#b4f1ffbb');
@@ -104,7 +107,7 @@ export class CityRenderer{
  }
  for(const flight of flights)drawAirportFlight(this,flight,true);
  for(const {t,p,r} of sorted){const artTile=t.lotRoot!=null?city.tiles[t.lotRoot]:t,art=ZONES.includes(t.type)&&(t.level||t.historicalLevel||t.abandonedLevel)?this.sprites[t.lotRoot!=null?baseZonedSprite(artTile,city.seed):zonedSprite(artTile,city.seed,city.buildingReplacements)]:null,bottomMargin=t.lotRoot!=null?Math.max(4,(art?art.h/art.w*1.85:4)*(city.buildingLots.get(t.lotRoot).width+city.buildingLots.get(t.lotRoot).height)/2):MODELED_LANDMARKS.has(t.type)?16:designForTile(city,t)?6:art?Math.max(4,art.h/art.w*1.85):4;if(p.x<-u*5||p.x>this.w+u*5||p.y>this.h+u*bottomMargin||p.y<-u*9)continue;
- const fade=['tunnels','aura','density','waterPollution','landValue','pollution','police','fire','health','education','crime','flammability','traffic','transit','rail','subway'].includes(this.layer)?.22:this.layer==='water'?.12:this.layer==='power'?.4:this.layer==='zones'?.35:this.layer==='garbage'?.3:1;
+ const fade=EDUCATION_LAYERS[this.layer]?.22:['tunnels','aura','density','waterPollution','landValue','pollution','police','fire','health','education','crime','flammability','traffic','transit','rail','subway'].includes(this.layer)?.22:this.layer==='water'?.12:this.layer==='power'?.4:this.layer==='zones'?.35:this.layer==='garbage'?.3:1;
  if(this.layer==='water'){if(t.pipe||WATER_STRUCTURES[t.type]){const center={x:p.x,y:p.y+u/2};for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy;if(!inside(x,y))continue;const next=city.tiles[idx(x,y)];if(!next.pipe&&!WATER_STRUCTURES[next.type])continue;const q=this.project(x,y);this.line([center,{x:(p.x+q.x)/2,y:(p.y+q.y)/2+u/2}],t.pipeWet?'#b0e6ee':'#ddbf91',Math.max(2,u*.16));}c.fillStyle=t.pipeWet?'#c9f9ff':'#e3b78a';c.fillRect(p.x-u*.08,p.y+u*.42,u*.16,u*.16);}}
  for(const walker of walkers.get(idx(t.x,t.y))||[])drawPedestrian(this,walker);
  for(const ship of ships.get(idx(t.x,t.y))||[])drawHarborShip(this,ship,!this.reducedMotion.matches);
@@ -132,7 +135,7 @@ export class CityRenderer{
  }
 
  for(const flight of flights)drawAirportFlight(this,flight);
- for(const area of stationAreas(city,this.layer)){const p=this.project(area.x,area.y);c.beginPath();c.arc(p.x,p.y+u*.5,Math.max(5,u*.2),0,Math.PI*2);c.fillStyle=area.active?'#f6ffe1':'#f4a477';c.fill();c.strokeStyle='#153039';c.lineWidth=2;c.stroke();c.fillStyle='#153039';c.font='bold 10px sans-serif';c.textAlign='center';c.fillText(area.type==='police'?'P':'F',p.x,p.y+u*.5+3);}
+ for(const area of stationAreas(city,this.layer)){const p=this.project(area.x,area.y);c.beginPath();c.arc(p.x,p.y+u*.5,Math.max(5,u*.2),0,Math.PI*2);c.fillStyle=area.active?'#f6ffe1':'#f4a477';c.fill();c.strokeStyle='#153039';c.lineWidth=2;c.stroke();c.fillStyle='#153039';c.font='bold 10px sans-serif';c.textAlign='center';c.fillText(area.label||(area.type==='police'?'P':'F'),p.x,p.y+u*.5+3);}
  for(const {t,p} of sorted)if(t.radiation){c.fillStyle='#302718';c.font=`bold ${Math.max(10,u*.65)}px sans-serif`;c.textAlign='center';c.fillText('☢',p.x,p.y+u*.7);}
  for(const {t,p} of sorted)if(t.fire>0)this.sprite(27,p.x,p.y+u,u*2);
  for(const [i,unit] of city.emergency.units.entries()){const p=this.project(unit.x,unit.y);this.line([{x:p.x,y:p.y+u/2},{x:p.x,y:p.y-u}], '#f06446',u*.2);c.fillStyle='#fff2d4';c.font='bold 12px sans-serif';c.textAlign='center';c.fillText(String(i+1),p.x,p.y-u*1.2);}
