@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current release: 142 regression suites, save schema 102. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 143 regression suites, save schema 102. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -595,3 +595,13 @@ Events and outcome ranks now accept nested AND/OR condition trees, matching the 
 The editor keeps four visible condition rows per event/rank and adds optional Advanced logic, for example `1 AND (2 OR 3)`. AND has precedence over OR; parentheses override it. Every selected row must be used, empty rows cannot be referenced, and repeated references count toward the 16-check bound. A nonempty expression disables the ordinary Match menu. The current challenge remains intact on an invalid expression. Imported definitions can contain up to 16 distinct checks; the editor still exposes four distinct rows. This is nested Boolean logic, not the full If/Else action language, subroutines or a general script VM.
 
 Validation: 142 suites, including nested truth tables, precedence, real repeated event/ending/rank progression, saved continuation and deterministic restart, recursive areas/goal references, malformed/circular trees and actual editor submission with sparse goal rows. Browser acceptance remains pending. Feedback exercise: define three conditions, use `1 AND (2 OR 3)`, then arrange for condition 1 and just one alternative to succeed and observe the event or rank.
+
+
+## Local city ambience checkpoint — publication pending
+Sound settings now include an independent ambient-sound switch and volume, following manual p.36’s nearby-city sound behavior. At zoom above 100%, a bounded eight-tile radius around the camera center samples current traffic, powered occupied industry, green space/farms and water. Distance and zoom weight the mix; projected positions supply stereo placement through camera rotation. Four original filtered-noise textures represent these environments. They are not individual vehicle/animal recordings or hardware 3D audio.
+
+Ambience fades to silence while city time is paused, a dialog is open, a data layer is shown, or an emergency is active. Hidden tabs and disabling the preference stop and disconnect the looped sources and scheduling timer. Audio resources are allocated only after activation; preferences persist separately from music, effects and city saves. The local sampler reads without changing city state and runs four times per second while enabled.
+
+Validation: 143 suites, including the actual camera projection/picking with nearby and distant sources, stereo reversal under rotation, zoom/operating gates, resource cleanup, asynchronous mute, preference persistence and actual settings handlers. Browser listening/subjective quality remain pending. Feedback exercise once published: enable ambient sound, close Sound settings, run the city and zoom into a busy street, an industrial district and a quiet waterfront.
+
+Publication note: nested scenario conditions (PR #44) and this ambient milestone are local/GitHub progress beyond deployed version 150. Automatic approval review rejected Sites source export despite verified owner-private access and a matching payload. No further Sites export will be attempted until explicit authorization arrives.
