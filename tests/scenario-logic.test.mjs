@@ -14,6 +14,6 @@ const definition={title:'Two pressures',months:12,objectives:[{metric:'populatio
 attachCustomScenario(c,definition);c.month=3;c.stats.averageCrime=80;c.funds=2000;assert.equal(runScenarioEvents(c),null);
 c.month=4;c.funds=1000;assert.equal(runScenarioEvents(c).status,'triggered');assert.ok(c.emergency.riot);
 assert.deepEqual(validateSave(JSON.parse(serializeCity(c))).scenario,c.scenario);
-for(const invalid of [{match:'all',conditions:[]},{match:'none',conditions:[crime]},{match:'all',conditions:[all]},{match:'all',conditions:[null]},{match:'all',conditions:Array(5).fill(crime)},{match:'any',conditions:[{...crime,target:Infinity}]},4])assert.throws(()=>validateEventCondition(invalid));
+for(const invalid of [{match:'all',conditions:[]},{match:'none',conditions:[crime]},{match:'all',conditions:[null]},{match:'all',conditions:Array(17).fill(crime)},{match:'any',conditions:[{...crime,target:Infinity}]},4])assert.throws(()=>validateEventCondition(invalid));
 const old=createCity();attachCustomScenario(old,{...definition,events:[{...definition.events[0],condition:crime}]});const legacy=JSON.parse(serializeCity(old));legacy.version=39;assert.deepEqual(validateSave(legacy).scenario.definition.events[0].condition,crime);
 console.log('PASS: AND/OR truth tables, inclusive boundaries, conditional riot timing, grouped save continuity, bounded validation and legacy single predicates.');
