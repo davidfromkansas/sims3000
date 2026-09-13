@@ -449,3 +449,16 @@ Later sequential goals may be revealed only when their stage becomes active. The
 This advances the Goal Manager name/text and delayed-goal presentation described on manual pp.178–179. Reveals currently follow sequential stage progression, not arbitrary Add/Remove Goal script commands. Full dynamic scripting remains unfinished. Tests exercise actual monthly progression through hidden goals, no early victory, save/replay, final debrief, live values, escaped Scenario status and older saves. Full regression coverage is 120 suites; no browser acceptance test was performed.
 
 Feedback exercise: create three sequential goals, write a short instruction for each, and mark goals two and three to reveal when active. Complete the first goal and assess whether the next stage arrives clearly without exposing its instructions early.
+
+
+### Roadless Paradise tutorial adaptation — milestone 6
+
+The prepared challenge catalog now includes Roadless Paradise, based on the Scenario Creator tutorial on manual pp.157–168. Keep the road count at zero for 24 months; a road present at a monthly check ends the scenario as Loser, including on the final month. Reaching month 24 with no road violation at a check awards Winner. Removing a road after a losing check does not undo the result. Removing it before the next check leaves that sample roadless. Highway tiles are not road tiles in this rule.
+
+The supplied town is an original layout with 120 residents, two active rail stations, connected workplaces, solar power, pipes, water towers and §25,000. Real transit and utility systems support it; disabling transit funding interrupts its train commuters. A baseline 24-month run retained 120 residents and a positive treasury. Waste collection still requires roads in this reconstruction and its uncollected waste/pollution remain real; the briefing explains that constraint. No extra population or cash requirement was added to the manual tutorial’s road-count/time ending logic.
+
+The manual refers to a separate original city file that is not supplied by the PDF. The new map is not that original city. The original script checks roads weekly, whereas this adaptation uses the existing monthly simulation boundary. Both differences are disclosed in the chooser/briefing; it is not claimed as an exact shipped-scenario reproduction. Save schema 95 recognizes the new prepared scenario and its Winner/Loser outcomes; prior scenarios remain compatible.
+
+Tests cover the serviced rail-only start, actual two-year continuation and victory, road loss including at the deadline, terminal results after demolition, removal before a check, saved continuation, transit funding dependence, migration and the correct early-loss explanation. Full regression coverage is 121 suites; browser acceptance remains pending.
+
+Feedback exercise: choose Roadless Paradise from Scenarios. Inspect rail commuting and utilities, run the town for a few months, and try expanding around stations. In a separate attempt, place a road and advance a month to assess whether the loss rule is clear.
