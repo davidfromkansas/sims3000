@@ -349,3 +349,14 @@ Presenter data is retained with the event definition, included in downloaded/lib
 This advances the presenter/custom-bitmap workflow on manual pp.177–180. Each of the four available popup event rows defines its own presenter; a reusable presenter library, multiple moods/expressions, the full original advisor/petitioner cast and general scripting VM remain unfinished. No animation or voice is claimed. Tests cover real event delivery, repetition and acknowledgement, saved/unread/replayed portraits, legacy migration, input bounds/text escaping, upload crop arguments and stale-upload/reset behavior. Full regression coverage is 119 suites; no browser acceptance test was performed.
 
 Feedback exercise: author two popup messages with different names and roles, use the planning advisor on one and upload your own portrait for the other. Preview them, begin the challenge, save before reading a message, and reload to check its presentation and acknowledgement.
+
+
+### Authored goals and stage reveals — milestone 6
+
+Scenario authors can give each objective a name (60 characters) and instructions (1,500 characters). Instructions support existing live-value placeholders and are expanded when Scenario status opens. A named goal still displays its measurable requirement and current value. All authored goal text is escaped, with instruction line breaks preserved.
+
+Later sequential goals may be revealed only when their stage becomes active. The first stage and simultaneous goals must remain visible. Revealed completed stages remain visible; unreached goals are shown in the final debrief. The overall stage count stays visible throughout. Hidden goals remain in the definition and still govern completion: this is a player-facing reveal, not concealment from someone inspecting an exported JSON file. Save schema 94 retains text and reveal settings; old goals migrate to generated metric names and visible stages. Replay restores the original reveal progression.
+
+This advances the Goal Manager name/text and delayed-goal presentation described on manual pp.178–179. Reveals currently follow sequential stage progression, not arbitrary Add/Remove Goal script commands. Full dynamic scripting remains unfinished. Tests exercise actual monthly progression through hidden goals, no early victory, save/replay, final debrief, live values, escaped Scenario status and older saves. Full regression coverage is 120 suites; no browser acceptance test was performed.
+
+Feedback exercise: create three sequential goals, write a short instruction for each, and mark goals two and three to reveal when active. Complete the first goal and assess whether the next stage arrives clearly without exposing its instructions early.

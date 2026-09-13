@@ -1,4 +1,4 @@
-import {mapSize} from './city-grid.js?v=scenario-presenters-1';
+import {mapSize} from './city-grid.js?v=authored-goals-1';
 export const NAV_LAYERS={city:'City',zones:'Zones',power:'Power',water:'Water',traffic:'Traffic',pollution:'Air pollution',waterPollution:'Water pollution',crime:'Crime',landValue:'Land value',police:'Police coverage',fire:'Fire coverage',health:'Health coverage',education:'Education coverage',garbage:'Uncollected waste'};
 const heat=(value,good=false)=>`hsl(${Math.max(0,Math.min(120,(good?value:100-value)*1.2))},55%,48%)`;
 export function navigationColor(t,layer){
