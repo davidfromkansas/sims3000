@@ -1,4 +1,4 @@
-import {freshEmergencyOrder} from './emergency-order.js?v=pedestrians-1';
+import {freshEmergencyOrder} from './emergency-order.js?v=goal-activation-1';
 // One response session can contain several different major hazards and fire areas.
 export function beginEmergencySession(e){if(!e.active){e.navigationOrder=freshEmergencyOrder();e.started++;e.units=[];e.nextUnit=0;e.policeUnits=[];e.nextPolice=0;e.shelter=0;}e.active=true;}
 export function pendingWarnings(e){return[e.tornado,e.ufo].filter(s=>s&&s.warningSteps>0&&!s.warned);}
