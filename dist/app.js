@@ -1,63 +1,64 @@
-import {civicFacilityReport} from './civic-service-report.js?v=recreation-models-1';
-import {backgroundInteractionAllowed,nativeSpaceTarget} from './background-controls.js?v=recreation-models-1';
-import {createSimulationRunner} from './simulation-runner.js?v=recreation-models-1';
-import {createEmergencyNavigator,focusEmergencyLocation} from './emergency-navigation.js?v=recreation-models-1';
-import {MAX_CITY_FILE_BYTES} from './city-grid.js?v=recreation-models-1';
-import {cityLibrary,cityRecord} from './city-library.js?v=recreation-models-1';
-import {showCityLibrary} from './city-library-ui.js?v=recreation-models-1';
-import {marketAccessDescription} from './regional-market-access.js?v=recreation-models-1';
-import {restartCustomScenario} from './scenario-replay.js?v=recreation-models-1';
-import {showBuildingDesigner} from './building-designer-ui.js?v=recreation-models-1';
-import {scenarioEventPresentation} from './scenario-events.js?v=recreation-models-1';
-import {moveScenarioCamera} from './scenario-camera.js?v=recreation-models-1';
-import {SCENARIO_SOUNDS,deliverScenarioSound} from './scenario-sounds.js?v=recreation-models-1';
-import {allowedSpeed,scenarioSpeed,resumeScenarioSpeed} from './scenario-speed.js?v=recreation-models-1';
-import {showPendingScenarioPopup} from './scenario-popups.js?v=recreation-models-1';
-import {installScenarioAreaView} from './scenario-area-view.js?v=recreation-models-1';
-import {canReplaceBuilding,showBuildingReplacement} from './building-replacement-ui.js?v=recreation-models-1';
-import {createGameAudio,showAudioSettings} from './game-audio.js?v=recreation-models-1';
+import {powerGridReport,installPowerGridLinks,powerGridSummary} from './power-grid-report.js?v=power-grids-1';
+import {civicFacilityReport} from './civic-service-report.js?v=power-grids-1';
+import {backgroundInteractionAllowed,nativeSpaceTarget} from './background-controls.js?v=power-grids-1';
+import {createSimulationRunner} from './simulation-runner.js?v=power-grids-1';
+import {createEmergencyNavigator,focusEmergencyLocation} from './emergency-navigation.js?v=power-grids-1';
+import {MAX_CITY_FILE_BYTES} from './city-grid.js?v=power-grids-1';
+import {cityLibrary,cityRecord} from './city-library.js?v=power-grids-1';
+import {showCityLibrary} from './city-library-ui.js?v=power-grids-1';
+import {marketAccessDescription} from './regional-market-access.js?v=power-grids-1';
+import {restartCustomScenario} from './scenario-replay.js?v=power-grids-1';
+import {showBuildingDesigner} from './building-designer-ui.js?v=power-grids-1';
+import {scenarioEventPresentation} from './scenario-events.js?v=power-grids-1';
+import {moveScenarioCamera} from './scenario-camera.js?v=power-grids-1';
+import {SCENARIO_SOUNDS,deliverScenarioSound} from './scenario-sounds.js?v=power-grids-1';
+import {allowedSpeed,scenarioSpeed,resumeScenarioSpeed} from './scenario-speed.js?v=power-grids-1';
+import {showPendingScenarioPopup} from './scenario-popups.js?v=power-grids-1';
+import {installScenarioAreaView} from './scenario-area-view.js?v=power-grids-1';
+import {canReplaceBuilding,showBuildingReplacement} from './building-replacement-ui.js?v=power-grids-1';
+import {createGameAudio,showAudioSettings} from './game-audio.js?v=power-grids-1';
 const gameAudio=createGameAudio();
-import {installNavigation} from './navigation-map.js?v=recreation-models-1';
-import {showSnapshots} from './snapshots-ui.js?v=recreation-models-1';
-import {conservationReport} from './conservation.js?v=recreation-models-1';
-import {LANDMARKS} from './landmarks.js?v=recreation-models-1';
-import {showLandmarks} from './landmarks-ui.js?v=recreation-models-1';
-import {startUfo} from './ufo.js?v=recreation-models-1';
-import {startWhirlpool} from './whirlpool.js?v=recreation-models-1';
-import {startToxicCloud} from './toxic-cloud.js?v=recreation-models-1';
-import {startSpaceJunk} from './space-junk.js?v=recreation-models-1';
-import {startRiot,dispatchPolice} from './riots.js?v=recreation-models-1';
-import {startLocusts,dispatchCropDuster} from './locusts.js?v=recreation-models-1';
-import {BUSINESSES} from './business.js?v=recreation-models-1';
-import {showBusiness} from './business-ui.js?v=recreation-models-1';
-import {canPreserve,designateHistorical} from './historical.js?v=recreation-models-1';
-import {TECHNOLOGY,available,cityYear,newlyAvailable,showTechnology} from './technology.js?v=recreation-models-1';
-import {tunnelAt,tunnelTiles} from './tunnels.js?v=recreation-models-1';
-import {REWARDS,rewardActive} from './rewards.js?v=recreation-models-1';
-import {showRewards} from './rewards-ui.js?v=recreation-models-1';
-import {industrialJobs,cleanThreshold} from './industry.js?v=recreation-models-1';
-import {RECREATION,recreationActive} from './recreation.js?v=recreation-models-1';
-import {showReports} from './reports-ui.js?v=recreation-models-1';
-import {showNewCity} from './new-city-ui.js?v=recreation-models-1';
-import {LANDSCAPE} from './landscape.js?v=recreation-models-1';
-import {POWER_PLANTS,plantCapacity} from './power.js?v=recreation-models-1';
-import {serializeCity} from './save.js?v=recreation-models-1';
-import {SCENARIOS,scenarioGoals,scenarioDefinition} from './scenarios.js?v=recreation-models-1';
-import {createScenario} from './scenario-setup.js?v=recreation-models-1';
-import {showScenarios} from './scenario-ui.js?v=recreation-models-1';
-import {ignite,startEarthquake,startTornado,dispatchFire,stepFire} from './emergency.js?v=recreation-models-1';
-import {showEmergency} from './emergency-ui.js?v=recreation-models-1';
-import {showRegion} from './region-ui.js?v=recreation-models-1';
-import {FACILITIES} from './facilities.js?v=recreation-models-1';
-import {STATIONS} from './rail.js?v=recreation-models-1';
-import {showTransport} from './transport-ui.js?v=recreation-models-1';
-import {SERVICES} from './civic.js?v=recreation-models-1';
-import {showCivic,civicAdvice} from './civic-ui.js?v=recreation-models-1';
-import {showFinance} from './finance-ui.js?v=recreation-models-1';
-import {landDensityLimit} from './economy.js?v=recreation-models-1';
-import {WASTE_STRUCTURES,wasteCapacity,wasteActive,wastePower,WATER_STRUCTURES,occupancy} from './utilities.js?v=recreation-models-1';
-import {createCity,recompute,build,tick,selection as gridSelection,planBuild,validateSave,idx as gridIndex,inside as gridInside,ZONES,LABEL,COST} from './engine.js?v=recreation-models-1';
-import {CityRenderer} from './renderer.js?v=recreation-models-1';
+import {installNavigation} from './navigation-map.js?v=power-grids-1';
+import {showSnapshots} from './snapshots-ui.js?v=power-grids-1';
+import {conservationReport} from './conservation.js?v=power-grids-1';
+import {LANDMARKS} from './landmarks.js?v=power-grids-1';
+import {showLandmarks} from './landmarks-ui.js?v=power-grids-1';
+import {startUfo} from './ufo.js?v=power-grids-1';
+import {startWhirlpool} from './whirlpool.js?v=power-grids-1';
+import {startToxicCloud} from './toxic-cloud.js?v=power-grids-1';
+import {startSpaceJunk} from './space-junk.js?v=power-grids-1';
+import {startRiot,dispatchPolice} from './riots.js?v=power-grids-1';
+import {startLocusts,dispatchCropDuster} from './locusts.js?v=power-grids-1';
+import {BUSINESSES} from './business.js?v=power-grids-1';
+import {showBusiness} from './business-ui.js?v=power-grids-1';
+import {canPreserve,designateHistorical} from './historical.js?v=power-grids-1';
+import {TECHNOLOGY,available,cityYear,newlyAvailable,showTechnology} from './technology.js?v=power-grids-1';
+import {tunnelAt,tunnelTiles} from './tunnels.js?v=power-grids-1';
+import {REWARDS,rewardActive} from './rewards.js?v=power-grids-1';
+import {showRewards} from './rewards-ui.js?v=power-grids-1';
+import {industrialJobs,cleanThreshold} from './industry.js?v=power-grids-1';
+import {RECREATION,recreationActive} from './recreation.js?v=power-grids-1';
+import {showReports} from './reports-ui.js?v=power-grids-1';
+import {showNewCity} from './new-city-ui.js?v=power-grids-1';
+import {LANDSCAPE} from './landscape.js?v=power-grids-1';
+import {POWER_PLANTS,plantCapacity} from './power.js?v=power-grids-1';
+import {serializeCity} from './save.js?v=power-grids-1';
+import {SCENARIOS,scenarioGoals,scenarioDefinition} from './scenarios.js?v=power-grids-1';
+import {createScenario} from './scenario-setup.js?v=power-grids-1';
+import {showScenarios} from './scenario-ui.js?v=power-grids-1';
+import {ignite,startEarthquake,startTornado,dispatchFire,stepFire} from './emergency.js?v=power-grids-1';
+import {showEmergency} from './emergency-ui.js?v=power-grids-1';
+import {showRegion} from './region-ui.js?v=power-grids-1';
+import {FACILITIES} from './facilities.js?v=power-grids-1';
+import {STATIONS} from './rail.js?v=power-grids-1';
+import {showTransport} from './transport-ui.js?v=power-grids-1';
+import {SERVICES} from './civic.js?v=power-grids-1';
+import {showCivic,civicAdvice} from './civic-ui.js?v=power-grids-1';
+import {showFinance} from './finance-ui.js?v=power-grids-1';
+import {landDensityLimit} from './economy.js?v=power-grids-1';
+import {WASTE_STRUCTURES,wasteCapacity,wasteActive,wastePower,WATER_STRUCTURES,occupancy} from './utilities.js?v=power-grids-1';
+import {createCity,recompute,build,tick,selection as gridSelection,planBuild,validateSave,idx as gridIndex,inside as gridInside,ZONES,LABEL,COST} from './engine.js?v=power-grids-1';
+import {CityRenderer} from './renderer.js?v=power-grids-1';
 const idx=(x,y)=>gridIndex(x,y,city.size),inside=(x,y)=>gridInside(x,y,city.size),selection=(tool,a,b=a)=>gridSelection(tool,a,b,city.size);
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],money=n=>'§'+Math.round(n).toLocaleString(),escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const SAVE='sims3000.manual.v1',AUTO='sims3000.autosave.v1';
@@ -125,7 +126,7 @@ function showQuery(p){
  if(LANDMARKS[t.type]){const d=LANDMARKS[t.type];dialog(d.name,`<p>${d.place} · ${d.size} × ${d.size} landmark.</p><p>One per city. No monthly upkeep or direct jobs/income. Alien craft prefer standing landmarks. Demolition removes the whole footprint.</p>`);return;}
  if(REWARDS[t.type]){const d=REWARDS[t.type];dialog(d.name,`<p>${rewardActive(city,t)?'Operating: this reward is benefiting your city.':'Not operating: connect power and a nearby road, and clear any emergency.'}</p><p>Upkeep: ${money(d.upkeep)}/month. Whole footprint: ${d.size} × ${d.size}.</p><p>${t.type==='university'?'Adds 10 to the education target and 10 commercial demand.':t.type==='stadium'?'Adds 20 residential demand.':'Improves the surrounding neighborhood.'} Local amenities improve while operating.</p><p>Earned rewards remain unlocked after demolition or destruction. Rebuilding costs ${money(d.cost)}.</p>`);return;}
  if(RECREATION[t.type]){const d=RECREATION[t.type];dialog(d.name,`<p>${recreationActive(city,t)?'Open for recreation.':'Closed by fire, damage or radiation.'}</p><div class="metric-grid"><div><small>Footprint</small><strong>${d.size} × ${d.size}</strong></div><div><small>Monthly upkeep</small><strong>${money(d.upkeep)}</strong></div></div><p>Improves nearby land value and neighborhood happiness within ${d.radius} tiles of its center.${d.health?' Recreation supports residents’ health over time.':''}${t.type==='zoo'?' Each open zoo adds 15 residential demand, up to 30 citywide.':''}${t.type==='marina'?' Marinas must be built directly beside water.':''}${t.type==='pond'?' This is a decorative park feature, not a freshwater pumping source.':''}</p><p>Bulldozing any part removes the entire structure. Prices, footprints and effects are approximations.</p>`);return;}
- if(POWER_PLANTS[t.type]){const root=city.tiles[t.root],def=POWER_PLANTS[t.type];dialog(def.name,`<div class="metric-grid"><div><small>Age</small><strong>${(root.age/12).toFixed(1)} years</strong></div><div><small>Current / potential output</small><strong>${plantCapacity(root)} / ${Math.round(def.capacity*(root.type==='wind'?1+(root.elevation||0)*.1:1))}</strong></div><div><small>Monthly upkeep</small><strong>${money(def.upkeep)}</strong></div><div><small>Grid load / overload streak</small><strong>${Math.round((root.plantLoad||0)*100)}% · ${root.stress} / 6 months</strong></div><div><small>City plant capacity</small><strong>${city.stats.powerCapacity}</strong></div></div><p>${def.air?'This plant creates local air and water pollution. Place it away from neighborhoods and connect power lines.':'This plant produces no routine air or water pollution.'}</p><p>Electricity stays within its connected grid. Output declines after 20 years in this model. Bulldozing any tile removes the whole plant so it can be replaced.</p><p class="fine">Six consecutive months above capacity destroy a plant and ignite adjacent combustible tiles. Wind gains 10% output per elevation step. Nuclear overload also contaminates a five-tile radius around the plant center. Residents cannot return and construction is blocked there; bulldozing does not remove radiation. Plant prices, footprints and capacity curves are approximate.</p>`);return;}
+ if(POWER_PLANTS[t.type]){const root=city.tiles[t.root],def=POWER_PLANTS[t.type];dialog(def.name,`<div class="metric-grid"><div><small>Age</small><strong>${(root.age/12).toFixed(1)} years</strong></div><div><small>Current / potential output</small><strong>${plantCapacity(root)} / ${Math.round(def.capacity*(root.type==='wind'?1+(root.elevation||0)*.1:1))}</strong></div><div><small>Monthly upkeep</small><strong>${money(def.upkeep)}</strong></div><div><small>Grid load / overload streak</small><strong>${Math.round((root.plantLoad||0)*100)}% · ${root.stress} / 6 months</strong></div><div><small>City plant capacity</small><strong>${city.stats.powerCapacity}</strong></div></div><p>${def.air?'This plant creates local air and water pollution. Place it away from neighborhoods and connect power lines.':'This plant produces no routine air or water pollution.'}</p>${powerGridSummary(city,root)}<p>Electricity stays within its connected grid. Output declines after 20 years in this model. Bulldozing any tile removes the whole plant so it can be replaced.</p><p class="fine">Six consecutive months above capacity destroy a plant and ignite adjacent combustible tiles. Wind gains 10% output per elevation step. Nuclear overload also contaminates a five-tile radius around the plant center. Residents cannot return and construction is blocked there; bulldozing does not remove radiation. Plant prices, footprints and capacity curves are approximate.</p>`);return;}
  if(WASTE_STRUCTURES[t.type]){dialog(LABEL[t.type],`<div class="metric-grid"><div><small>Age</small><strong>${(t.age/12).toFixed(1)} years</strong></div><div><small>Processing capacity</small><strong>${wasteCapacity(city,t)} / month</strong></div><div><small>Last month processed</small><strong>${((t.burnedLastMonth||0)+(t.recycledLastMonth||0)).toFixed(1)} units</strong></div><div><small>Operation</small><strong>${wasteActive(city,t)?'Ready':'Missing road access or power'}</strong></div><div><small>Electricity output</small><strong>${wastePower(t).toFixed(1)} units</strong></div><div><small>Monthly upkeep</small><strong>${money(WASTE_STRUCTURES[t.type].upkeep)}</strong></div></div><p>Waste must reach this facility over connected roads. Recycling requires electricity and reduces newly produced waste. Incinerators burn remaining waste before it goes to landfill or export, creating pollution. Capacity declines after 20 years; replacement resets age.</p>`);return;}
  if(WATER_STRUCTURES[t.type]){dialog(LABEL[t.type],`<div class="metric-grid"><div><small>Age</small><strong>${(t.age/12).toFixed(1)} years</strong></div><div><small>Age efficiency</small><strong>${Math.round(t.waterEfficiency*100)}%</strong></div><div><small>Electricity</small><strong>${t.powered?'Connected':'Missing'}</strong></div><div><small>Water output</small><strong>${t.pumpCapacity} units</strong></div><div><small>Output lost to pollution</small><strong>${t.pollutionCapacityLoss} units</strong></div><div><small>Output recovered by treatment</small><strong>${t.treatmentBenefit} units</strong></div><div><small>Water pollution</small><strong>${Math.round(t.waterPollution)} / 100</strong></div><div><small>Pipe network</small><strong>${t.waterNetwork>=0&&city.stats.waterNetworks[t.waterNetwork]?.pipeCount?'Connected':'No pipes connected'}</strong></div></div><p>${t.type==='waterTreatment'?t.treatmentActive?'Treatment is cleaning this connected water grid.':'Power this plant and connect it to pipes.':t.type==='pump'?t.freshwater?'Freshwater source nearby.':'No fresh water nearby. Salt water needs desalination.':t.type==='desalination'?t.saltwater?'Saltwater coast adjacent.':'Requires salt water directly beside the plant.':'Groundwater is available at this location.'}</p><p>Capacity falls with pollution and age. Replace old structures with Bulldoze, then rebuild; underground pipes remain. Treatment plants clean water but do not pump it.</p>`);return;}
  const waterState=t.watered?'Supplied':t.waterCovered?'In pipe range · no supply':'Outside pipe range';
@@ -136,8 +137,9 @@ function showQuery(p){
 }
 function showIndustry(){dialog('Industry & farming',`<div class="metric-grid"><div><small>Farms / agricultural tiles</small><strong>${city.stats.farms} / ${city.stats.farmFields}</strong></div><div><small>Clean industrial lots</small><strong>${city.stats.cleanIndustry}</strong></div><div><small>Education / clean-tech threshold</small><strong>${city.civic.education.toFixed(1)} / ${cleanThreshold(city).toFixed(1)} EQ</strong></div></div><h3>Grow a farming district</h3><p>Zone at least a 3 × 3 block of light industry on flat land. Keep air and water pollution at 15 or lower and land value at 60 or lower. Fewer than three sides should touch roads. The barn at the block’s upper-left map corner needs power and a road route shared with homes; fields can extend beyond road range. Farms need positive industrial demand and develop over time.</p><p>A farm starts at 3 × 3 tiles and can occupy up to 8 × 8 suitable tiles. After six months of development it may add one adjacent row during quarterly growth checks. Leave low-density industrial zoning beyond the eastern or southern field edge to allow expansion. A farm supplies 12 jobs at its barn, plus one for each three additional agricultural tiles (up to 30 jobs). If local value exceeds 68 or pollution exceeds 25, it converts to manufacturing. Rezoning, damage or demolition can also break up the farm. These thresholds, growth intervals and rectangular footprints are reconstruction rules.</p><h3>Attract clean technology</h3><p>Fund education and wait for occupied factories to mature. When education reaches the displayed threshold, powered factories with transport access can gradually convert. Newer dates lower the threshold. Clean industry produces 90% less industrial air and water pollution while keeping its jobs.</p><p>Clean water incentives in Civic services lower the education threshold by 10 EQ, cost §10/month, and give clean firms a 15% tax reduction.</p><div class="actions"><button id="industryEducation">Education &amp; ordinances</button><button id="industryPollution">View pollution</button><button id="industryZone">Zone light industry</button></div>`);$('#industryEducation').onclick=showServices;$('#industryPollution').onclick=()=>{setLayer('pollution');closeDialog();};$('#industryZone').onclick=()=>{density=1;renderer.density=1;setTool('industrial');closeDialog();};}
 function showUtilities(){
- const s=city.stats,goals=[{title:'Operate a powered freshwater pump',done:s.activePumps>0},{title:'Supply water to every zoned lot',done:s.zoned>0&&s.watered===s.zoned},{title:'Collect garbage in a connected landfill',done:s.landfillStored>0&&s.uncollectedWaste<1},{title:'Develop a medium or dense building',done:city.tiles.some(t=>t.level>1)}];
- dialog('Water & garbage',`<div class="metric-grid"><div><small>Watered zones</small><strong>${s.watered} / ${s.zoned}</strong></div><div><small>Water use / capacity</small><strong>${s.waterUsed} / ${s.waterCapacity}</strong></div><div><small>Operating pumps</small><strong>${s.activePumps} / ${s.pumps}</strong></div><div><small>Uncollected garbage</small><strong>${s.uncollectedWaste.toFixed(1)} units</strong></div><div><small>Landfill storage</small><strong>${s.landfillStored.toFixed(1)} / ${s.landfillCapacity}</strong></div><div><small>Monthly waste production</small><strong>${s.wasteProduction.toFixed(1)} units</strong></div></div><h3>Utilities milestone checklist</h3><ol>${goals.map(g=>`<li class="${g.done?'check':''}">${g.done?'✓ ':''}${g.title}</li>`).join('')}</ol>${conservationReport(city)}<h3>Choose a water source</h3><p>Terrain choices determine where coasts, rivers and lakes appear. Use Inspect on water to distinguish salt water from freshwater and check pollution. Legacy saves retain their existing water sources.</p><p>Pumping stations need nearby fresh water (500 base capacity). Water towers draw groundwater anywhere (120), but are more sensitive to pollution. Desalinization plants become available in 1960 and require adjacent salt water (350). All sources need electricity and pipes.</p><p>Powered treatment plants must join the same pipe network to improve water quality and source efficiency. They generate no water. Inspect a water structure to check its age and current capacity; aging begins reducing efficiency after 20 years in this model.</p><h3>Connect the water network</h3><p>Build a pump on land within two tiles of fresh water, then bring it electricity. Select Water pipes and draw a continuous network from the pump beneath your city. Supplied pipes water lots within seven tiles. Watered buildings do not relay water.</p><p>Separate pipe networks have separate capacity. A spare pump cannot help a distant network until the pipes join. Use Inspect to distinguish dry pipes, uncovered lots, and pumps missing power or fresh water.</p><h3>Give garbage a destination</h3><p>Last month: ${s.recycled.toFixed(1)} units recycled and ${s.incinerated.toFixed(1)} burned. Waste-to-energy output: ${s.wastePower.toFixed(1)} electricity units.</p><p>Recycling centers unlock in 1970 and need power plus connected roads. They reduce newly produced waste; Trash Presort in Civic services increases capacity and the recyclable share. Incinerators burn remaining garbage before landfill or export, but pollute nearby neighborhoods. Waste-to-energy plants unlock in 2000 and generate power based on actual garbage burned. Inspect facilities for capacity, age and throughput.</p><p>Zone landfill and connect it to the same roads as your neighborhoods. Each tile holds 200 units and decomposes 0.5 per month. Full or disconnected landfills cannot take more waste. You cannot bulldoze landfill; disconnect the roads, wait until it empties, then De-zone it.</p><p>Medium and dense zones grow only when water, electricity, transport, demand, and manageable garbage levels allow. Land value also limits density, and polluted water reduces pump output. Rates, capacities, footprints and aging curves remain approximations. Waste facilities are available in Utilities; Power technologies are available in Power; sustained overload can destroy plants. Severe water pollution turns surface water brown. Inspect water sources to separate pollution losses from aging and see the output recovered by treatment.</p><div class="actions"><button id="seeWater" class="primary">Water view</button><button id="seeWaterPollution">Water pollution map</button><button id="seeWaste">Garbage view</button><button id="reviewUtilities">Give utilities feedback</button></div>`);
+ const s=city.stats,goals=[{title:'Operate a powered water source',done:s.activePumps>0},{title:'Supply water to every zoned lot',done:s.zoned>0&&s.watered===s.zoned},{title:'Collect garbage in a connected landfill',done:s.landfillStored>0&&s.uncollectedWaste<1},{title:'Develop a medium or dense building',done:city.tiles.some(t=>t.level>1)}];
+ dialog('Power, water & garbage',`${powerGridReport(city)}<div class="metric-grid"><div><small>Watered zones</small><strong>${s.watered} / ${s.zoned}</strong></div><div><small>Water use / capacity</small><strong>${s.waterUsed} / ${s.waterCapacity}</strong></div><div><small>Operating pumps</small><strong>${s.activePumps} / ${s.pumps}</strong></div><div><small>Uncollected garbage</small><strong>${s.uncollectedWaste.toFixed(1)} units</strong></div><div><small>Landfill storage</small><strong>${s.landfillStored.toFixed(1)} / ${s.landfillCapacity}</strong></div><div><small>Monthly waste production</small><strong>${s.wasteProduction.toFixed(1)} units</strong></div></div><h3>Utilities milestone checklist</h3><ol>${goals.map(g=>`<li class="${g.done?'check':''}">${g.done?'✓ ':''}${g.title}</li>`).join('')}</ol>${conservationReport(city)}<h3>Choose a water source</h3><p>Terrain choices determine where coasts, rivers and lakes appear. Use Inspect on water to distinguish salt water from freshwater and check pollution. Legacy saves retain their existing water sources.</p><p>Pumping stations need nearby fresh water (500 base capacity). Water towers draw groundwater anywhere (120), but are more sensitive to pollution. Desalinization plants become available in 1960 and require adjacent salt water (350). All sources need electricity and pipes.</p><p>Powered treatment plants must join the same pipe network to improve water quality and source efficiency. They generate no water. Inspect a water structure to check its age and current capacity; aging begins reducing efficiency after 20 years in this model.</p><h3>Connect the water network</h3><p>Build a pump on land within two tiles of fresh water, then bring it electricity. Select Water pipes and draw a continuous network from the pump beneath your city. Supplied pipes water lots within seven tiles. Watered buildings do not relay water.</p><p>Separate pipe networks have separate capacity. A spare pump cannot help a distant network until the pipes join. Use Inspect to distinguish dry pipes, uncovered lots, and pumps missing power or fresh water.</p><h3>Give garbage a destination</h3><p>Last month: ${s.recycled.toFixed(1)} units recycled and ${s.incinerated.toFixed(1)} burned. Waste-to-energy output: ${s.wastePower.toFixed(1)} electricity units.</p><p>Recycling centers unlock in 1970 and need power plus connected roads. They reduce newly produced waste; Trash Presort in Civic services increases capacity and the recyclable share. Incinerators burn remaining garbage before landfill or export, but pollute nearby neighborhoods. Waste-to-energy plants unlock in 2000 and generate power based on actual garbage burned. Inspect facilities for capacity, age and throughput.</p><p>Zone landfill and connect it to the same roads as your neighborhoods. Each tile holds 200 units and decomposes 0.5 per month. Full or disconnected landfills cannot take more waste. You cannot bulldoze landfill; disconnect the roads, wait until it empties, then De-zone it.</p><p>Medium and dense zones grow only when water, electricity, transport, demand, and manageable garbage levels allow. Land value also limits density, and polluted water reduces pump output. Rates, capacities, footprints and aging curves remain approximations. Waste facilities are available in Utilities; Power technologies are available in Power; sustained overload can destroy plants. Severe water pollution turns surface water brown. Inspect water sources to separate pollution losses from aging and see the output recovered by treatment.</p><div class="actions"><button id="seeWater" class="primary">Water view</button><button id="seeWaterPollution">Water pollution map</button><button id="seeWaste">Garbage view</button><button id="reviewUtilities">Give utilities feedback</button></div>`);
+ installPowerGridLinks(city,(point,inspect)=>{closeDialog();setLayer('power');setTool('query');pointer=null;focusEmergencyLocation(renderer,point);update();if(inspect)showQuery(point);});
  $('#seeWater').onclick=()=>{setLayer('water');closeDialog();};$('#seeWaterPollution').onclick=()=>{setLayer('waterPollution');closeDialog();};$('#seeWaste').onclick=()=>{setLayer('garbage');closeDialog();};$('#reviewUtilities').onclick=()=>showReview(2);
 }
 function download(name,content,type='application/json'){const url=URL.createObjectURL(new Blob([content],{type}));const a=document.createElement('a');a.href=url;a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(url),2000);}
