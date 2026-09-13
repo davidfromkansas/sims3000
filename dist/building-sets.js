@@ -1,7 +1,7 @@
-import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=garbage-health-1';
-import {validateBuildingDesigns} from './building-designs.js?v=garbage-health-1';
-import {parseBuildingSlot} from './building-footprints.js?v=garbage-health-1';
-import {isBuildingLotRoot} from './building-lots.js?v=garbage-health-1';
+import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=water-grid-report-1';
+import {validateBuildingDesigns} from './building-designs.js?v=water-grid-report-1';
+import {parseBuildingSlot} from './building-footprints.js?v=water-grid-report-1';
+import {isBuildingLotRoot} from './building-lots.js?v=water-grid-report-1';
 
 // Read an already validated city. Both maps are copied and validated before
 // either is installed, so a failed import cannot partly change the skyline.

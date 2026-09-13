@@ -1,5 +1,5 @@
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=garbage-health-1';
-import {validateProgramInvocation,programActionSources,programInvocationFinished,pendingProgramMessage} from './scenario-program-history.js?v=garbage-health-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=water-grid-report-1';
+import {validateProgramInvocation,programActionSources,programInvocationFinished,pendingProgramMessage} from './scenario-program-history.js?v=water-grid-report-1';
 // The enclosing scenario validator must validate event definitions first. Event
 // runs count started occurrences; active invocations separately block victory.
 export function validateProgramInvocations(value,definition,eventStates,startMonth,month){

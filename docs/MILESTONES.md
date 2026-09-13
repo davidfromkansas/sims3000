@@ -719,3 +719,5 @@ Scenario storytelling checkpoint: timed events and routines can replace current 
 Building utility checkpoint: scenario goals now count unpowered and unwatered buildings across eligible workplaces, facilities and services, once per footprint. See [building utility goals](BUILDING-UTILITY-GOALS-MILESTONE.md). Source only; publication pending.
 
 Sanitation health checkpoint: uncollected garbage now directly lowers exposed residents’ health target, and the Population report explains the penalty and recovery through collection. See [garbage and health](GARBAGE-HEALTH-MILESTONE.md). Source only; publication pending.
+
+Water diagnostics checkpoint: Utilities now identifies shortages by pipe network, locates uncovered zones, and opens source maintenance queries. See [water network diagnostics](WATER-GRID-DIAGNOSTICS-MILESTONE.md). Source only; publication pending.
