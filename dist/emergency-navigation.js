@@ -1,7 +1,7 @@
 const DISASTERS={ufo:'Alien attack',whirlpool:'Whirlpool',toxicCloud:'Toxic cloud',spaceJunk:'Falling space junk',riot:'Riot',locust:'Locust swarm',tornado:'Tornado',earthquake:'Earthquake'};
 export function emergencyLocations(c){
  if(!c.emergency.active)return[];
- const out=[];for(const [kind,label]of Object.entries(DISASTERS)){const t=c.emergency[kind];if(t)out.push({id:kind,label,x:t.x,y:t.y,tiles:0});}
+ const out=[];for(const [kind,label]of Object.entries(DISASTERS)){const t=c.emergency[kind];if(t)out.push({id:kind,label,x:t.x,y:t.y,tiles:0,order:c.emergency.navigationOrder?.hazards[kind]??Infinity});}
  const size=c.size||Math.sqrt(c.tiles.length),seen=new Uint8Array(c.tiles.length),fires=[];
  for(let i=0;i<c.tiles.length;i++){
   if(seen[i]||!c.tiles[i].fire)continue;
@@ -13,11 +13,12 @@ export function emergencyLocations(c){
     const k=y*size+x;if(seen[k]||!c.tiles[k].fire)continue;seen[k]=1;members.push(k);
    }
   }
-  const t=c.tiles[oldest];fires.push({id:'fire:'+oldest,label:'Fire area',x:t.x,y:t.y,tiles:members.length,age:t.fireAge,members});
+  const t=c.tiles[oldest];fires.push({id:'fire:'+oldest,label:'Fire area',x:t.x,y:t.y,tiles:members.length,age:t.fireAge,order:members.reduce((n,i)=>Math.min(n,c.emergency.navigationOrder?.fires[i]??Infinity),Infinity),members});
  }
  fires.sort((a,b)=>b.age-a.age||a.y-b.y||a.x-b.x);
- return out.concat(fires);
+ return out.concat(fires).sort((a,b)=>a.order-b.order);
 }
+export function fireLocationAt(c,x,y){const index=y*(c.size||Math.sqrt(c.tiles.length))+x;return emergencyLocations(c).find(t=>t.members?.includes(index))?.id;}
 export function createEmergencyNavigator(){
  let previousCity=null,previousIncident=-1,last=null,position=-1;
  return(c,id)=>{
@@ -27,8 +28,8 @@ export function createEmergencyNavigator(){
   let index;
   if(id!==undefined){index=locations.findIndex(t=>t.id===id);if(index<0)return null;}
   else {
-   const previous=last?locations.findIndex(t=>t.id===last.id||last.id.startsWith('fire:')&&t.members?.includes(last.y*(c.size||Math.sqrt(c.tiles.length))+last.x)):-1;
-   index=previous>=0?(previous+1)%locations.length:Math.max(0,position)%locations.length;
+   const previous=last?locations.findIndex(t=>t.id===last.id&&t.order===last.order||last.id.startsWith('fire:')&&t.order<=last.order&&t.members?.includes(last.y*(c.size||Math.sqrt(c.tiles.length))+last.x)):-1;
+   index=previous>=0?(previous+1)%locations.length:last&&Number.isFinite(last.order)?Math.max(0,locations.findIndex(t=>t.order>last.order)):Math.max(0,position)%locations.length;
   }
   position=index;last=locations[index];return{...last,position:index+1,total:locations.length};
  };
