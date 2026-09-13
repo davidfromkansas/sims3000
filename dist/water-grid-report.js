@@ -1,7 +1,7 @@
-import {WATER_STRUCTURES} from './utilities.js?v=available-job-targets-1';
-import {waterBaseNeed} from './utility-demand.js?v=available-job-targets-1';
-import {conservationDemand} from './conservation.js?v=available-job-targets-1';
-import {pipeCoverage} from './water-coverage.js?v=available-job-targets-1';
+import {WATER_STRUCTURES} from './utilities.js?v=waste-facility-models-1';
+import {waterBaseNeed} from './utility-demand.js?v=waste-facility-models-1';
+import {conservationDemand} from './conservation.js?v=waste-facility-models-1';
+import {pipeCoverage} from './water-coverage.js?v=waste-facility-models-1';
 const number=n=>n.toLocaleString('en-US',{maximumFractionDigits:1});
 export function waterGridData(city){
  const groups=(city.stats.waterNetworks||[]).map((g,id)=>({...g,id,nodes:[],pipes:[],sources:[]})),uncovered=[];

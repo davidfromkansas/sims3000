@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 197 regression suites, save schema 119. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 198 regression suites, save schema 119. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -785,3 +785,5 @@ Rail landfill checkpoint: garbage can reach remote landfill sidings through surf
 Water continuity checkpoint: previously supplied buildings retain their water requirement through shrinkage and abandonment, with saved interruption progress and repair/reoccupation behavior. See [water-service continuity](WATER-SERVICE-CONTINUITY-MILESTONE.md). Source only; publication pending.
 
 Dense routing checkpoint: filled workplaces leave the route destination index immediately, reducing the measured dense 256-map month from 1.75 s to 1.12 s while preserving exact city outcomes. See [available job targets](AVAILABLE-JOB-TARGETS-MILESTONE.md). Source only; publication pending.
+
+Waste artwork checkpoint: recycling, incineration and waste-to-energy now use distinct four-view models, with throughput-driven smoke that respects pause and reduced motion. See [waste facility artwork](WASTE-FACILITY-MODELS-MILESTONE.md). Source only; publication pending.

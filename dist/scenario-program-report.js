@@ -1,11 +1,11 @@
-import {dialogTextTarget} from './scenario-dialog-text.js?v=available-job-targets-1';
-import {tornadoSettingsLabel} from './tornado-settings.js?v=available-job-targets-1';
-import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=available-job-targets-1';
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=available-job-targets-1';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=available-job-targets-1';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=available-job-targets-1';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=available-job-targets-1';
-import {escapeAnnouncement} from './scenario-announcements.js?v=available-job-targets-1';
+import {dialogTextTarget} from './scenario-dialog-text.js?v=waste-facility-models-1';
+import {tornadoSettingsLabel} from './tornado-settings.js?v=waste-facility-models-1';
+import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=waste-facility-models-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=waste-facility-models-1';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=waste-facility-models-1';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=waste-facility-models-1';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=waste-facility-models-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=waste-facility-models-1';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';

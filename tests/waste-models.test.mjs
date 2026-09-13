@@ -1,0 +1,26 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {CityRenderer} from '../dist/renderer.js';
+import {MODELED_WASTE,wasteGeometry,rasterizeWaste,drawCityWaste,wastePlumes,wastePlumeOutput} from '../dist/waste-models.js';
+import {projectMiniature} from '../dist/miniature-raster.js';
+import {WASTE_STRUCTURES} from '../dist/utilities.js';
+import {createCity,build,recompute,tick,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+assert.deepEqual([...MODELED_WASTE],Object.keys(WASTE_STRUCTURES));
+for(const type of MODELED_WASTE){const geometry=wasteGeometry(type);assert.ok(geometry.length>100);const views=[];for(let rotation=0;rotation<4;rotation++){for(const face of geometry){assert.match(face.color,/^#[a-f\d]{6}$/i);for(const p of face.points){const [x,y]=projectMiniature(p,rotation);assert.ok(x>=0&&x<512&&y>=0&&y<512);}}const raster=rasterizeWaste(type,rotation);let opaque=0;for(let i=3;i<raster.data.length;i+=4)opaque+=raster.data[i]===255?1:0;assert.ok(opaque>20000&&opaque<150000);views.push(Buffer.from(raster.data).toString('base64'));}assert.equal(new Set(views).size,4);}
+assert.throws(()=>wasteGeometry('unknown'));
+let created=0,put=0,drawn=0;const ellipses=[],ctx={createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),putImageData(){put++;},save(){},restore(){},drawImage(){drawn++;},beginPath(){},ellipse(...args){ellipses.push([...args,this.globalAlpha]);},fill(){}};globalThis.document={createElement(){created++;return{getContext:()=>ctx};}};
+const city=createCity('Waste artwork',false);city.startYear=2000;city.funds=100000;for(const t of city.tiles){t.terrain='land';t.elevation=0;t.nature=false;}for(const [i,type]of [...MODELED_WASTE].entries())assert.ok(build(city,type,[{x:10+i*3,y:10}]).ok);recompute(city);const saved=serializeCity(city);
+for(let repeat=0;repeat<2;repeat++)for(const type of MODELED_WASTE)for(let rotation=0;rotation<4;rotation++)drawCityWaste(ctx,type,rotation,100,100,84,.4);assert.equal(created,12);assert.equal(put,12);assert.equal(drawn,24);assert.equal(serializeCity(city),saved);const loaded=validateSave(JSON.parse(saved));tick(city);tick(loaded);assert.deepEqual(city.stats,loaded.stats);
+for(const type of MODELED_WASTE){assert.deepEqual(wastePlumes(type,0,1,0),[]);const p=wastePlumes(type,0,2,100);if(type==='recycling'){assert.deepEqual(p,[]);continue;}assert.ok(p.length>0);assert.deepEqual(wastePlumes(type,0,2,100),p);assert.notDeepEqual(wastePlumes(type,0,3,100),p);assert.notDeepEqual(wastePlumes(type,1,2,100),p);assert.ok(wastePlumes(type,0,2,25).every((v,i)=>Math.abs(v.alpha-p[i].alpha/4)<1e-10));drawCityWaste(ctx,type,0,100,100,84,.5,2,100);}
+assert.equal(ellipses.length,15);assert.ok(ellipses.every(e=>e[2]>0&&e[3]>0&&e.at(-1)>=0&&e.at(-1)<=.11));assert.equal(created,12,'moving smoke does not allocate cached canvases');
+const burner={type:'incinerator',burnedLastMonth:50,roadIds:[0]};assert.equal(wastePlumeOutput(city,burner),50);for(const key of ['fire','rubble','radiation'])assert.equal(wastePlumeOutput(city,{...burner,[key]:true}),0);assert.equal(wastePlumeOutput(city,{...burner,roadIds:[]}),0);assert.equal(wastePlumeOutput(city,{...burner,burnedLastMonth:0}),0);
+const source=readFileSync(new URL('../dist/renderer.js',import.meta.url),'utf8'),body=source.split('else if(MODELED_WASTE.has(t.type))')[1].split('\n')[0];let call;const actual=new Function('drawCityWaste','wastePlumeOutput','return function(c,t,p,u,fade,city){'+body+'}')( (...args)=>call=args,()=>50 );
+for(const type of MODELED_WASTE)for(const layer of ['city','water','garbage'])for(const reduced of [false,true])for(const scenery of [false,true]){actual.call({rotation:2,layer,city,preferences:{sceneryAnimations:scenery},reducedMotion:{matches:reduced},vehicleTime:7},ctx,{type},{x:100,y:80},40,.12,city);assert.deepEqual(call,[ctx,type,2,100,100,84,.12,scenery&&!reduced?7:0,layer==='city'?50:0]);}
+// Exercise the real draw method with the same getCity interface as the browser.
+const fullCtx=new Proxy({...ctx,createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}}),measureText:()=>({width:0})},{get:(o,k)=>o[k]??(()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
+globalThis.document={createElement:()=>({getContext:()=>fullCtx}),hidden:false,querySelector:()=>null};
+const scene=Object.assign(Object.create(CityRenderer.prototype),{getCity:()=>city,ctx:fullCtx,dpr:1,w:1800,h:1200,rotation:0,zoom:1,pan:{x:0,y:0},sprites:[],layer:'city',reducedMotion:{matches:false},vehicleTime:2,preferences:{vehicleAnimations:false,pedestriansVisible:false,sceneryAnimations:true},hover:null,tool:'query'});
+for(const t of city.tiles)if(MODELED_WASTE.has(t.type)){t.roadIds=[0];t.burnedLastMonth=100;}
+for(let rotation=0;rotation<4;rotation++){scene.rotation=rotation;const beforeDraw=drawn,beforeSmoke=ellipses.length;scene.draw();assert.ok(drawn>=beforeDraw+3,'all three facilities render');assert.equal(ellipses.length,beforeSmoke+15,'real renderer reads throughput from getCity');}
+console.log('PASS: twelve bounded waste-facility views, finite raster cache, real construction/save continuity, throughput-based smoke, stable paused frames, rotation and reduced-motion/scenery/data-layer gating.');
