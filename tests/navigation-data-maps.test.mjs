@@ -27,7 +27,7 @@ for(const layer of Object.keys(NAV_LAYERS)){
 }
 assert.ok(fills>city.tiles.length);assert.throws(()=>renderer.setNavigationLayer('not-a-map'));
 assert.equal(serializeCity(city),before,'map changes never modify the city');
-let html='',closed=0;const selected=[];const controls=new Map([['#reportFeedback',{}],['#reportYears',{value:'1'}],['#reportMetric0',{value:'population'}],['#reportMetric1',{value:''}],['#reportMetric2',{value:''}],['#reportGraphs',{}]]);
+let html='',closed=0;const selected=[];const controls=new Map([['#reportPowerTrends',{}],['#reportWaterTrends',{}],['#reportUtilityUsage',{}],['#reportFeedback',{}],['#reportYears',{value:'1'}],['#reportMetric0',{value:'population'}],['#reportMetric1',{value:''}],['#reportMetric2',{value:''}],['#reportGraphs',{}]]);
 const layerButtons=[],navigationButtons=[];
 globalThis.document={querySelector:s=>controls.get(s),querySelectorAll:s=>s==='[data-report-layer]'?layerButtons:s==='[data-report-navigation]'?navigationButtons:[]};
 showReports({city:()=>city,dialog:(_,body)=>{html=body;for(const m of body.matchAll(/data-report-layer="([^"]+)"/g))layerButtons.push({dataset:{reportLayer:m[1]}});for(const m of body.matchAll(/data-report-navigation="([^"]+)"/g))navigationButtons.push({dataset:{reportNavigation:m[1]}});},close:()=>closed++,setLayer:layer=>selected.push(layer),setNavigationLayer:layer=>renderer.setNavigationLayer(layer),review(){}});

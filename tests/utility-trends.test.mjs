@@ -1,0 +1,20 @@
+import assert from 'node:assert/strict';
+import {createCity,build,selection,recompute,tick,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {utilityTrendSnapshot,utilityTrendReport,UTILITY_METRICS} from '../dist/utility-trends.js';
+import {metricSeries} from '../dist/reports.js';
+import {showReports} from '../dist/reports-ui.js';
+import {addConnection,connectionCandidates,signDeal} from '../dist/region.js';
+const base=()=>{const c=createCity('Utility history',false);c.startYear=2050;c.funds=1000000;for(const t of c.tiles){t.terrain='land';t.nature=false;t.elevation=0;}recompute(c);return c;};
+const put=(c,type,x,y,xx=x,yy=y)=>assert.ok(build(c,type,selection(type,{x,y},{x:xx,y:yy},c.size)).ok,type);
+const empty=base();assert.ok(Object.values(utilityTrendSnapshot(empty)).every(v=>v===0));assert.match(utilityTrendReport(empty),/No supply/);
+const city=base();put(city,'wind',20,20);put(city,'residential',21,20,26,24);let data=utilityTrendSnapshot(city);assert.equal(data.powerAvailable,25);assert.equal(data.powerDemand,30);assert.equal(data.powerUsagePercent,100);assert.equal(data.powerUnserved,5);
+put(city,'wind',40,40);data=utilityTrendSnapshot(city);assert.equal(data.powerAvailable,50);assert.equal(data.powerUsagePercent,50);assert.equal(data.powerUnserved,5,'remote spare capacity cannot fix the blackout');
+put(city,'powerline',20,18,47,18);assert.ok(addConnection(city,connectionCandidates(city).find(p=>p.kind==='power')).ok);assert.ok(signDeal(city,0,'power','import',50).ok);recompute(city);data=utilityTrendSnapshot(city);assert.equal(data.powerUnserved,0);assert.equal(data.powerAvailable,55,'only actual delivered imports enter availability');
+const water=base();put(water,'coal',8,8);put(water,'waterTower',12,12);put(water,'pipe',12,12);put(water,'pipe',16,12);put(water,'residential',14,12);data=utilityTrendSnapshot(water);assert.equal(data.waterDemand,1);assert.equal(data.waterUnserved,0);assert.equal(water.stats.waterUsed,1,'overlapping pipe service does not double-count delivery');assert.equal(data.waterUsagePercent,1/data.waterAvailable*100);
+const dry=base();put(dry,'residential',20,20);data=utilityTrendSnapshot(dry);assert.equal(data.waterUsagePercent,0);assert.equal(data.waterUnserved,1);assert.equal(data.powerUnserved,1);
+for(const c of [city,water,dry]){tick(c);const h=c.history.at(-1),snapshot=utilityTrendSnapshot(c);for(const k of Object.keys(UTILITY_METRICS))assert.equal(h[k],snapshot[k]);const copy=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(copy.history,c.history);tick(copy);tick(c);assert.deepEqual(copy.history,c.history);}
+for(const key of Object.keys(UTILITY_METRICS))assert.deepEqual(metricSeries([{month:1,population:0,funds:0}],key).values,[]);
+let html='',scrolled=0;const controls=new Map();globalThis.document={querySelector:s=>controls.get(s.slice(1)),querySelectorAll:()=>[]};showReports({city:()=>city,dialog:(_,body)=>{html=body;for(const [,id]of body.matchAll(/id="([^"]+)"/g))controls.set(id,{value:'',innerHTML:'',scrollIntoView(){scrolled++;}});controls.get('reportYears').value='1';controls.get('reportMetric0').value='population';},review(){}});
+for(const [button,keys]of [['reportPowerTrends',['powerDemand','powerAvailable','powerUnserved']],['reportWaterTrends',['waterDemand','waterAvailable','waterUnserved']],['reportUtilityUsage',['powerUsagePercent','waterUsagePercent','']]]){controls.get(button).onclick();assert.deepEqual([0,1,2].map(i=>controls.get('reportMetric'+i).value),keys);for(const key of keys.filter(Boolean))assert.ok(controls.get('reportGraphs').innerHTML.includes(UTILITY_METRICS[key][0]));}assert.equal(scrolled,3);assert.match(controls.get('reportGraphs').innerHTML,/>100<\/text>/,'utility percentages share a fixed 0–100 scale');assert.match(html,/No supply|Supply used/);
+console.log('PASS: actual utility usage, no-supply demand, isolated reserve, delivered imports, overlapping water networks, monthly/save continuity, missing old history and three report comparison shortcuts.');

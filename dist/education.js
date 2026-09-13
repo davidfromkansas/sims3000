@@ -1,4 +1,4 @@
-import {populationCohorts,populationCensus} from './demographics.js?v=employment-trends-1';
+import {populationCohorts,populationCensus} from './demographics.js?v=utility-usage-trends-1';
 // Manual pp.68,112–113: education differs by age and follows graduates into adulthood.
 // Learning, newborn and migrant EQ are original calibration; aging uses actual census flows.
 export const EDUCATION_AGES=['0–14','15–24','25–34','35–44','45–54','55–64','65–74','75+'];
