@@ -1,6 +1,6 @@
-import {STATIONS} from './rail.js?v=toolbar-view-1';
-import {occupancy} from './utilities.js?v=toolbar-view-1';
-import {industrialJobs} from './industry.js?v=toolbar-view-1';
+import {STATIONS} from './rail.js?v=scenario-calendar-1';
+import {occupancy} from './utilities.js?v=scenario-calendar-1';
+import {industrialJobs} from './industry.js?v=scenario-calendar-1';
 function catchment(c,station){const n=Math.sqrt(c.tiles.length);let homes=0,residents=0,workplaces=0,jobs=0;
  for(let y=Math.max(0,station.y-3);y<=Math.min(n-1,station.y+3);y++)for(let x=Math.max(0,station.x-3);x<=Math.min(n-1,station.x+3);x++){const t=c.tiles[y*n+x];if(!t.level)continue;if(t.type==='residential'){homes++;residents+=occupancy(t.level)*8;}else if(t.type==='commercial'||t.type==='industrial'){const places=t.type==='commercial'?occupancy(t.level)*6:industrialJobs(t);if(places>0){workplaces++;jobs+=places;}}}
  return{homes,residents,workplaces,jobs};

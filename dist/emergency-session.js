@@ -1,5 +1,5 @@
-import {beginReliefAssessment} from './disaster-relief.js?v=toolbar-view-1';
-import {freshEmergencyOrder} from './emergency-order.js?v=toolbar-view-1';
+import {beginReliefAssessment} from './disaster-relief.js?v=scenario-calendar-1';
+import {freshEmergencyOrder} from './emergency-order.js?v=scenario-calendar-1';
 // One response session can contain several different major hazards and fire areas.
 export function beginEmergencySession(c){const e=c.emergency;if(!e.active){e.navigationOrder=freshEmergencyOrder();e.started++;beginReliefAssessment(c);e.units=[];e.nextUnit=0;e.policeUnits=[];e.nextPolice=0;e.shelter=0;}e.active=true;}
 export function pendingWarnings(e){return[e.tornado,e.ufo].filter(s=>s&&s.warningSteps>0&&!s.warned);}

@@ -8,7 +8,7 @@ const controls=new Map();
 function element(id,attrs='') {
  let value=attrs.match(/value="([^"]*)"/)?.[1]||'';
  const label={hidden:false};
- return {id,hidden:false,disabled:/\sdisabled(?:\s|$)/.test(attrs),checked:/\schecked(?:\s|$)/.test(attrs),
+ return {id,type:attrs.match(/type="([^"]*)"/)?.[1]||'',hidden:false,disabled:/\sdisabled(?:\s|$)/.test(attrs),checked:/\schecked(?:\s|$)/.test(attrs),
  get value(){return value;},set value(v){value=String(v);},textContent:'',files:[],closest:()=>label,
  set outerHTML(html){parse(html);},set innerHTML(html){this.optionsHTML=html;const options=[...html.matchAll(/<option\b([^>]*)>/g)];if(options.length)this.value=(options.find(m=>/selected/.test(m[1]))||options[0])[1].match(/value="([^"]*)"/)?.[1]||'';}};
 }
@@ -54,4 +54,8 @@ assert.equal(city.scenario.definition.events[0].operation,'calculate');
 assert.deepEqual(city.scenario.definition.backgroundRules,{randomDisasters:false,automaticBusiness:false});
 tick(city);assert.equal(city.scenario.variables[0],42);
 assert.equal(validateSave(JSON.parse(serializeCity(city))).scenario.variables[0],42);
+showCustomScenarioEditor({city:()=>city,dialog:(_,html)=>parse(html),exportCity(){},save(){saved++;},update(){},beginCustom(){started++;}},()=>{});
+change('customMetric0','date');assert.equal($('customTarget0').type,'month');assert.equal($('customTarget0').value,'1951-02');$('customTarget0').value='1950-03';
+change('customEvent0','announcement');$('eventMonth0').value=1;$('eventMessage0').value='Date {date}';change('eventCondition0','date');assert.equal($('eventThreshold0').type,'month');$('eventThreshold0').value='1950-03';
+change('eventConditionrank0','date');assert.equal($('eventThresholdrank0').type,'month');$('startCustom').onclick();assert.equal($('customError').textContent,'');assert.equal(city.scenario.definition.objectives[0].target,1950*12+2);assert.equal(city.scenario.definition.events[0].condition.conditions[0].target,1950*12+2);tick(city);assert.equal(city.scenario.status,'won');assert.equal(city.scenario.events[0].message,'Date Mar 1950');
 console.log('PASS: actual scenario editor handlers expose calculation/copy/value controls across all rows, retain operand choices across event switches, and submit a working saved calculation challenge.');

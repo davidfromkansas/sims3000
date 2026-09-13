@@ -2,7 +2,7 @@
 
 Playable browser city-builder reconstruction guided by the SimCity 3000 Unlimited manual. Six feedback milestones cover founding a city, utilities, finance, civic services, transport, and scenarios/disasters. Current gameplay includes city growth, service networks, budgets, transit, airports/ports, nine disaster types, five prepared challenges, a custom scenario editor, saved cities, photos, and original generated and procedural art. This is substantial work in progress, not verified full parity with the original game.
 
-[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 150 suites; save schema is 105.
+[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 151 suites; save schema is 106.
 
 Run `npm start` and open http://127.0.0.1:4387. The website has no runtime npm dependencies or build step. Run `npm ci` before regression tests; IndexedDB tests use the development-only `fake-indexeddb` emulator. The authored static website is in `dist/`.
 
@@ -231,3 +231,5 @@ City view layers: the sidebar and City desk now open the manual’s six above-gr
 Unobstructed city view: Hide in the map controls, City desk → Hide toolbars, or H hides the header, toolkit, information bar and navigation controls. A persistent Show controls button, H or Escape restores them. Hotkeys remain usable, focus returns to the canvas, and active construction drags are cancelled before resizing. The camera center, zoom and rotation are retained. This is an in-page view, not browser fullscreen; it resets on reload and does not change city saves. This source checkpoint is not yet live.
 
 The [ and ] keys rotate the city counterclockwise and clockwise, including with toolbars hidden and during background monthly updates. Modified, editing and repeated key presses are guarded.
+
+Scenario calendar queries: custom goals, event/rank conditions, variable copies/calculations and message values can now read Calendar date, Calendar year and Calendar month. Date thresholds use month/year inputs with contextual defaults and readable reports; named months support seasonal checks. Date variables use year × 12 + zero-based month, so date subtraction gives elapsed months. Schema 106 preserves these definitions. This source checkpoint is not yet published.
