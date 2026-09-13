@@ -1,7 +1,7 @@
-import {LANDMARKS} from './landmarks.js?v=city-view-layers-1';
-import {BUSINESSES} from './business.js?v=city-view-layers-1';
-import {REWARDS} from './rewards.js?v=city-view-layers-1';
-import {POWER_PLANTS} from './power.js?v=city-view-layers-1';
-import {RECREATION} from './recreation.js?v=city-view-layers-1';
+import {LANDMARKS} from './landmarks.js?v=toolbar-view-1';
+import {BUSINESSES} from './business.js?v=toolbar-view-1';
+import {REWARDS} from './rewards.js?v=toolbar-view-1';
+import {POWER_PLANTS} from './power.js?v=toolbar-view-1';
+import {RECREATION} from './recreation.js?v=toolbar-view-1';
 // Fixed-footprint ploppable structures share construction, damage and save validation.
 export const STRUCTURES={...LANDMARKS,...POWER_PLANTS,...RECREATION,...REWARDS,...BUSINESSES};
