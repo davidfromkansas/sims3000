@@ -1,19 +1,19 @@
-import {formatScenarioMetric} from './scenario-calendar.js?v=scenario-environment-1';
-import {validateBackgroundRules} from './scenario-background-rules.js?v=scenario-environment-1';
-import {initialGoalMarks} from './scenario-goal-marks.js?v=scenario-environment-1';
-import {validateGoalStatusReferences} from './scenario-goal-status.js?v=scenario-environment-1';
-import {initialGoalActivations,goalIsActive} from './scenario-goal-activation.js?v=scenario-environment-1';
-import {validateGoalText,goalInstructions} from './scenario-goal-text.js?v=scenario-environment-1';
-import {MAP_SIZES,mapSize} from './city-grid.js?v=scenario-environment-1';
-import {captureScenarioStart} from './scenario-replay.js?v=scenario-environment-1';
-import {validateScenarioRanks} from './scenario-ranks.js?v=scenario-environment-1';
-import {validateScenarioVariables} from './scenario-variables.js?v=scenario-environment-1';
-import {validateScenarioSpeed} from './scenario-speed.js?v=scenario-environment-1';
-import {validateScenarioArea,scenarioAreaLabel} from './scenario-area.js?v=scenario-environment-1';
-import {validateScenarioStory} from './scenario-story.js?v=scenario-environment-1';
-import {validateEventDefinitions,scenarioEventGoals} from './scenario-events.js?v=scenario-environment-1';
-import {CUSTOM_METRICS,metricLimit} from './scenario-metrics.js?v=scenario-environment-1';
-export {CUSTOM_METRICS,metricLimit} from './scenario-metrics.js?v=scenario-environment-1';
+import {formatScenarioMetric} from './scenario-calendar.js?v=water-models-1';
+import {validateBackgroundRules} from './scenario-background-rules.js?v=water-models-1';
+import {initialGoalMarks} from './scenario-goal-marks.js?v=water-models-1';
+import {validateGoalStatusReferences} from './scenario-goal-status.js?v=water-models-1';
+import {initialGoalActivations,goalIsActive} from './scenario-goal-activation.js?v=water-models-1';
+import {validateGoalText,goalInstructions} from './scenario-goal-text.js?v=water-models-1';
+import {MAP_SIZES,mapSize} from './city-grid.js?v=water-models-1';
+import {captureScenarioStart} from './scenario-replay.js?v=water-models-1';
+import {validateScenarioRanks} from './scenario-ranks.js?v=water-models-1';
+import {validateScenarioVariables} from './scenario-variables.js?v=water-models-1';
+import {validateScenarioSpeed} from './scenario-speed.js?v=water-models-1';
+import {validateScenarioArea,scenarioAreaLabel} from './scenario-area.js?v=water-models-1';
+import {validateScenarioStory} from './scenario-story.js?v=water-models-1';
+import {validateEventDefinitions,scenarioEventGoals} from './scenario-events.js?v=water-models-1';
+import {CUSTOM_METRICS,metricLimit} from './scenario-metrics.js?v=water-models-1';
+export {CUSTOM_METRICS,metricLimit} from './scenario-metrics.js?v=water-models-1';
 export function validateCustomDefinition(v,size=v?.mapSize??48){if(!MAP_SIZES.includes(size)||v?.mapSize!==undefined&&v.mapSize!==size)throw Error('Scenario map size does not match this city.');if(!v||typeof v.title!=='string'||!v.title.trim()||v.title.length>60||/[\x00-\x1f]/.test(v.title)||!Number.isInteger(v.months)||v.months<12||v.months>1200||!Array.isArray(v.objectives)||v.objectives.length<1||v.objectives.length>4)throw Error('Choose a title, a 12–1200 month deadline, and one to four goals.');const completionMode=v.completionMode??'goals';if(!['goals','scripted'].includes(completionMode))throw Error('Choose goal completion or scripted endings.');if(completionMode==='scripted'&&!v.events?.some(e=>e.type==='ending'))throw Error('A scripted challenge needs at least one End scenario event.');const objectiveMode=v.objectiveMode??'together';if(!['together','sequence'].includes(objectiveMode))throw Error('Choose simultaneous goals or sequential stages.');const eventMode=v.eventMode??'monthly';if(!['monthly','together'].includes(eventMode))throw Error('Choose one event per month or grouped actions.');const holdMonths=v.holdMonths??1;if(!Number.isInteger(holdMonths)||holdMonths<1||holdMonths>v.months)throw Error('Hold goals for 1 to the deadline’s number of months.');if(objectiveMode==='sequence'&&holdMonths*v.objectives.length>v.months)throw Error('The deadline must allow enough months to hold every stage.');const seen=new Set();const objectives=v.objectives.map((o,index)=>{const m=Object.hasOwn(CUSTOM_METRICS,o?.metric)?CUSTOM_METRICS[o.metric]:null;const area=validateScenarioArea(o.area,m,size),key=o.metric+JSON.stringify(area);if(!m||objectiveMode==='together'&&seen.has(key)||!Number.isFinite(o.target)||o.target<(m.min||0)||o.target>metricLimit(m,size)||m.integer&&!Number.isInteger(o.target))throw Error('Choose distinct goals with targets inside their allowed ranges.');if(o.addAtStartup!==undefined&&typeof o.addAtStartup!=='boolean')throw Error('Choose whether a goal is active at startup.');seen.add(key);return{...(o.addAtStartup===false?{addAtStartup:false}:{}),metric:o.metric,target:o.target,...validateGoalText(o,objectiveMode,index),...(area?{area}:{})};});const events=validateEventDefinitions(v.events,v.months,eventMode,size);if(events.some(e=>['addGoal','markGoal'].includes(e.type)&&e.goal>=objectives.length)||objectives.some((o,i)=>o.addAtStartup===false&&!events.some(e=>e.type==='addGoal'&&e.goal===i)))throw Error('Every inactive goal needs an Add Goal event targeting an existing objective.');return validateGoalStatusReferences({mapSize:size,completionMode,ranks:validateScenarioRanks(v.ranks,size),variables:validateScenarioVariables(v.variables),objectiveMode,eventMode,speed:validateScenarioSpeed(v.speed),backgroundRules:validateBackgroundRules(v.backgroundRules),...validateScenarioStory(v),title:v.title.trim(),months:v.months,holdMonths,objectives,events});}
 function objectiveGoal(c,o){const mark=c.scenario.goalMarks?.[c.scenario.definition.objectives.indexOf(o)];const m=CUSTOM_METRICS[o.metric],value=m.read(c,o.area),requirement=`${m.name}${scenarioAreaLabel(o.area)}: ${m.states?m.states[o.target]:(m.date?'on or after':m.direction)+' '+formatScenarioMetric(m,o.target,20)}`;return{...(o.area?{area:o.area}:{}),title:o.name||requirement,instructions:goalInstructions(o,c),done:mark?mark.satisfied:m.direction==='equals'?value===o.target:m.direction==='at least'?value>=o.target:value<=o.target,detail:`${mark?'Scripted status: '+(mark.satisfied?'satisfied':'unsatisfied')+'. ':''}${o.name?'Requirement: '+requirement+'. ':''}Current: ${m.states?m.states[value]:formatScenarioMetric(m,value)}`};}
 

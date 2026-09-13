@@ -1,3 +1,5 @@
+import {projectMiniature as projectCivic,rasterizeMiniature} from './miniature-raster.js?v=water-models-1';
+export {projectMiniature as projectCivic} from './miniature-raster.js?v=water-models-1';
 // Original civic miniatures. Geometry is footprint-relative; simulation stays in civic.js.
 export const MODELED_CIVIC=new Set(['police','fire','hospital','school','jail','college','library','museum']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.max(0,Math.min(255,Math.round(parseInt(v,16)*f))).toString(16).padStart(2,'0')).join('');
@@ -43,29 +45,11 @@ export function civicGeometry(type){
  }
  return faces;
 }
-export function projectCivic([x,y,z],rotation=0){[x,y]=rotation===0?[x,y]:rotation===1?[-y,x]:rotation===2?[-x,-y]:[y,-x];return[256+(x-y)*230,320+(x+y)*115-z*230];}
 export function civicFaces(type,rotation=0){
  const turn=([x,y,z])=>rotation===0?[x,y,z]:rotation===1?[-y,x,z]:rotation===2?[-x,-y,z]:[y,-x,z];
  return civicGeometry(type).map(f=>({...f,world:f.points.map(turn),height:Math.max(...f.points.map(p=>p[2]))})).sort((a,b)=>{const ag=a.height<=.06,bg=b.height<=.06;if(ag!==bg)return ag?-1:1;if(ag&&bg)return a.height-b.height;return a.world.reduce((n,p)=>n+p[0]+p[1]+2*p[2],0)/a.world.length-b.world.reduce((n,p)=>n+p[0]+p[1]+2*p[2],0)/b.world.length;}).map(f=>({color:f.color,points:f.points.map(p=>projectCivic(p,rotation))})).filter(f=>f.points.reduce((sum,p,i)=>{const q=f.points[(i+1)%f.points.length];return sum+p[0]*q[1]-q[0]*p[1];},0)>0);
 }
-// Rasterize once per cached view. Per-pixel depth resolves intersecting wings,
-// rooftop details and fences that a single painter-order key cannot order.
-export function rasterizeCivic(type,rotation=0){
- const size=512,data=new Uint8ClampedArray(size*size*4),depth=new Float32Array(size*size);depth.fill(-Infinity);
- const turn=([x,y,z])=>rotation===0?[x,y,z]:rotation===1?[-y,x,z]:rotation===2?[-x,-y,z]:[y,-x,z];
- for(const face of civicGeometry(type)){
-  const pts=face.points.map(p=>{const [x,y,z]=turn(p);return [...projectCivic(p,rotation),x+y+z];}),color=face.color.slice(1).match(/../g).map(v=>parseInt(v,16));
-  for(let i=1;i<pts.length-1;i++){
-   const [a,b,c]=[pts[0],pts[i],pts[i+1]],area=(b[1]-c[1])*(a[0]-c[0])+(c[0]-b[0])*(a[1]-c[1]);if(area<=1e-10)continue;
-   const minX=Math.max(0,Math.floor(Math.min(a[0],b[0],c[0]))),maxX=Math.min(size-1,Math.ceil(Math.max(a[0],b[0],c[0]))),minY=Math.max(0,Math.floor(Math.min(a[1],b[1],c[1]))),maxY=Math.min(size-1,Math.ceil(Math.max(a[1],b[1],c[1])));
-   for(let y=minY;y<=maxY;y++)for(let x=minX;x<=maxX;x++){
-    const u=((b[1]-c[1])*(x+.5-c[0])+(c[0]-b[0])*(y+.5-c[1]))/area,v=((c[1]-a[1])*(x+.5-c[0])+(a[0]-c[0])*(y+.5-c[1]))/area,w=1-u-v;if(u<0||v<0||w<0)continue;
-    const z=u*a[2]+v*b[2]+w*c[2],index=y*size+x;if(z<depth[index]-1e-7)continue;depth[index]=z;data.set([...color,255],index*4);
-   }
-  }
- }
- return{width:size,height:size,data};
-}
+export const rasterizeCivic=(type,rotation=0)=>rasterizeMiniature(civicGeometry(type),rotation);
 export function drawCivicModel(ctx,type,rotation=0){const raster=rasterizeCivic(type,rotation),image=ctx.createImageData(raster.width,raster.height);image.data.set(raster.data);ctx.putImageData(image,0,0);}
 const cache=new Map();
 export function drawCityCivic(ctx,type,rotation,x,y,width,alpha=1){const key=type+':'+rotation;let canvas=cache.get(key);if(!canvas){canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;drawCivicModel(canvas.getContext('2d'),type,rotation);cache.set(key,canvas);}ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(canvas,x-width/2,y-320*width/512,width,width);ctx.restore();}

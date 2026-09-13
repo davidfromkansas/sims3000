@@ -603,3 +603,7 @@ Author a challenge requiring all loan payments to clear while keeping residentia
 ### Author utility and cleanup challenges (source checkpoint; publication pending)
 
 Create a challenge requiring spare power and water capacity, then build the supply to satisfy it. Combine these targets with occupied homes without service to catch disconnected neighborhoods. Add pollution, traffic or uncollected-garbage limits and show their current values in messages. Feedback target: do the targets distinguish insufficient capacity, missing connections and environmental cleanup clearly?
+
+### Read water infrastructure from every direction (source checkpoint; publication pending)
+
+Build the four water facilities and rotate the map. Compare their silhouettes, inspect their capacities and switch to the water overlay to trace connections. Feedback target: are storage, pumping, desalination and treatment easy to distinguish at normal play zoom? An offline contact sheet is available at previews/water-facility-models.png.
