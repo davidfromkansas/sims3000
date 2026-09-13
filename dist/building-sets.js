@@ -1,7 +1,7 @@
-import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=first-town-services-1';
-import {validateBuildingDesigns} from './building-designs.js?v=first-town-services-1';
-import {parseBuildingSlot} from './building-footprints.js?v=first-town-services-1';
-import {isBuildingLotRoot} from './building-lots.js?v=first-town-services-1';
+import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=neighborhood-services-2';
+import {validateBuildingDesigns} from './building-designs.js?v=neighborhood-services-2';
+import {parseBuildingSlot} from './building-footprints.js?v=neighborhood-services-2';
+import {isBuildingLotRoot} from './building-lots.js?v=neighborhood-services-2';
 
 // Read an already validated city. Both maps are copied and validated before
 // either is installed, so a failed import cannot partly change the skyline.
