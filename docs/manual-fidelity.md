@@ -388,3 +388,5 @@ Dense routing checkpoint: filled workplaces leave the route destination index im
 Waste artwork checkpoint: recycling, incineration and waste-to-energy now use distinct four-view models, with throughput-driven smoke that respects pause and reduced motion. See [waste facility artwork](WASTE-FACILITY-MODELS-MILESTONE.md). Source only; publication pending.
 
 Employment trends checkpoint: compare actual filled Commerce and Industry jobs with workforce unemployment over time. See [employment trends](EMPLOYMENT-TRENDS-MILESTONE.md). Source only; publication pending.
+
+Utility planning checkpoint: compare power/water usage, available supply, demand and actual unmet demand over time, with report shortcuts. See [utility usage trends](UTILITY-USAGE-TRENDS-MILESTONE.md). Source only; publication pending.
