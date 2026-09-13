@@ -607,3 +607,7 @@ Create a challenge requiring spare power and water capacity, then build the supp
 ### Read water infrastructure from every direction (source checkpoint; publication pending)
 
 Build the four water facilities and rotate the map. Compare their silhouettes, inspect their capacities and switch to the water overlay to trace connections. Feedback target: are storage, pumping, desalination and treatment easy to distinguish at normal play zoom? An offline contact sheet is available at previews/water-facility-models.png.
+
+### Recognize your energy mix from every direction (source checkpoint; publication pending)
+
+Place the available power technologies, rotate the map and compare plant silhouettes at normal zoom. Inspect capacity and age, then switch to the power overlay to find their grids. Feedback target: can you distinguish each technology and understand its footprint without opening a query? Preview: previews/power-plant-models.png.

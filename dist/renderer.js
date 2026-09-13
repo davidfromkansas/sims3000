@@ -1,30 +1,31 @@
-import {drawCityWater} from './water-models.js?v=water-models-1';
-import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=water-models-1';
-import {drawCityCivic} from './civic-models.js?v=water-models-1';
-import {drawBridgeStructure} from './bridge-structures.js?v=water-models-1';
-import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=water-models-1';
-import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=water-models-1';
-import {stationAreas} from './service-areas.js?v=water-models-1';
-import {cityGrid,visibleTileBounds} from './city-grid.js?v=water-models-1';
-import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=water-models-1';
-import {designForTile,drawDesignedBuilding} from './building-designs.js?v=water-models-1';
-import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=water-models-1';
-import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=water-models-1';
-import {inScenarioArea} from './scenario-area.js?v=water-models-1';
-import {railVehicles} from './rail-visuals.js?v=water-models-1';
-import {zonedSprite} from './building-art.js?v=water-models-1';
-import {trafficVehicles} from './traffic-visuals.js?v=water-models-1';
-import {tunnelAt} from './tunnels.js?v=water-models-1';
-import {STRUCTURES} from './structures.js?v=water-models-1';
-import {LANDSCAPE} from './landscape.js?v=water-models-1';
-import {POWER_PLANTS} from './power.js?v=water-models-1';
-import {WATER_STRUCTURES} from './utilities.js?v=water-models-1';
-import {FACILITIES} from './facilities.js?v=water-models-1';
-import {rampCrossings} from './highway.js?v=water-models-1';
-import {STATIONS} from './rail.js?v=water-models-1';
-import {roadNeighbors} from './transport.js?v=water-models-1';
-import {SERVICES} from './civic.js?v=water-models-1';
-import {ZONES,selection,planBuild} from './engine.js?v=water-models-1';
+import {MODELED_POWER,drawCityPower} from './power-models.js?v=power-models-1';
+import {drawCityWater} from './water-models.js?v=power-models-1';
+import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=power-models-1';
+import {drawCityCivic} from './civic-models.js?v=power-models-1';
+import {drawBridgeStructure} from './bridge-structures.js?v=power-models-1';
+import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=power-models-1';
+import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=power-models-1';
+import {stationAreas} from './service-areas.js?v=power-models-1';
+import {cityGrid,visibleTileBounds} from './city-grid.js?v=power-models-1';
+import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=power-models-1';
+import {designForTile,drawDesignedBuilding} from './building-designs.js?v=power-models-1';
+import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=power-models-1';
+import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=power-models-1';
+import {inScenarioArea} from './scenario-area.js?v=power-models-1';
+import {railVehicles} from './rail-visuals.js?v=power-models-1';
+import {zonedSprite} from './building-art.js?v=power-models-1';
+import {trafficVehicles} from './traffic-visuals.js?v=power-models-1';
+import {tunnelAt} from './tunnels.js?v=power-models-1';
+import {STRUCTURES} from './structures.js?v=power-models-1';
+import {LANDSCAPE} from './landscape.js?v=power-models-1';
+import {POWER_PLANTS} from './power.js?v=power-models-1';
+import {WATER_STRUCTURES} from './utilities.js?v=power-models-1';
+import {FACILITIES} from './facilities.js?v=power-models-1';
+import {rampCrossings} from './highway.js?v=power-models-1';
+import {STATIONS} from './rail.js?v=power-models-1';
+import {roadNeighbors} from './transport.js?v=power-models-1';
+import {SERVICES} from './civic.js?v=power-models-1';
+import {ZONES,selection,planBuild} from './engine.js?v=power-models-1';
 const COLORS={residential:'#81b96b',commercial:'#79baca',industrial:'#d9ba6b'};
 export class CityRenderer{
  constructor(canvas,getCity){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.rotation=0;this.layer='city';this.tool='road';this.density=1;this.hover=null;this.drag=null;this.sprites=[];this.assetReady=false;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');this.time=0;this.vehicleTime=0;this.previousFrame=null;this.dirty=true;this.w=0;this.h=0;this.resize=new ResizeObserver(()=>{const first=this.w===0;this.w=canvas.clientWidth;this.h=canvas.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);canvas.width=this.w*this.dpr;canvas.height=this.h*this.dpr;if(first)this.center();this.dirty=true;});this.resize.observe(canvas);this.loadSprites();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);}
@@ -113,7 +114,7 @@ export class CityRenderer{
  if(t.rubble)this.sprite(28,p.x,p.y+u,u*2,fade);
  else if(STRUCTURES[t.type]){
  const def=STRUCTURES[t.type],size=def.size,root=city.tiles[t.root],corners=[[root.x,root.y],[root.x+size-1,root.y],[root.x,root.y+size-1],[root.x+size-1,root.y+size-1]];const end=corners.map(([x,y])=>({x,y,r:this.transform(x,y)})).sort((a,b)=>(b.r[0]+b.r[1])-(a.r[0]+a.r[1]))[0];
- if(t.x===end.x&&t.y===end.y){const center=this.project(root.x+(size-1)/2,root.y+(size-1)/2);if(MODELED_RECREATION.has(t.type))drawCityRecreation(c,t.type,this.rotation,center.x,center.y+u/2,u*size*2.1,fade,this.preferences?.sceneryAnimations!==false&&this.layer==='city'&&!this.reducedMotion.matches?this.vehicleTime:0,!root.fire&&!root.rubble&&!root.radiation);else if(def.model)drawCityLandmark(c,t.type,this.rotation,center.x,center.y+u/2,u*size*2.1,fade);else this.sprite(def.sprite,center.x,center.y+u*(size===1?1:size*.65),u*size*1.875,fade);}
+ if(t.x===end.x&&t.y===end.y){const center=this.project(root.x+(size-1)/2,root.y+(size-1)/2);if(MODELED_POWER.has(t.type))drawCityPower(c,t.type,this.rotation,center.x,center.y+u/2,u*size*2.1,fade);else if(MODELED_RECREATION.has(t.type))drawCityRecreation(c,t.type,this.rotation,center.x,center.y+u/2,u*size*2.1,fade,this.preferences?.sceneryAnimations!==false&&this.layer==='city'&&!this.reducedMotion.matches?this.vehicleTime:0,!root.fire&&!root.rubble&&!root.radiation);else if(def.model)drawCityLandmark(c,t.type,this.rotation,center.x,center.y+u/2,u*size*2.1,fade);else this.sprite(def.sprite,center.x,center.y+u*(size===1?1:size*.65),u*size*1.875,fade);}
  }else if(WATER_STRUCTURES[t.type])drawCityWater(c,t.type,this.rotation,p.x,p.y+u/2,u*2.1,this.layer==='water'?(t.type==='pump'?1:.8):fade);
  else if(['recycling','incinerator','wasteEnergy'].includes(t.type))this.sprite(32+['recycling','incinerator','wasteEnergy'].indexOf(t.type),p.x,p.y+u,u*1.95,fade);
  else if(t.type==='landfill'){if(t.garbage>0)this.sprite(12,p.x,p.y+u,u*1.9,this.layer==='garbage'?1:fade);if(this.layer==='garbage'){c.fillStyle='#f8e2ac';c.font='11px sans-serif';c.textAlign='center';c.fillText(Math.round(t.garbage/2)+'%',p.x,p.y);}}

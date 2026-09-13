@@ -2,7 +2,7 @@
 
 Playable browser city-builder reconstruction guided by the SimCity 3000 Unlimited manual. Six feedback milestones cover founding a city, utilities, finance, civic services, transport, and scenarios/disasters. Current gameplay includes city growth, service networks, budgets, transit, airports/ports, nine disaster types, five prepared challenges, a custom scenario editor, saved cities, photos, and original generated and procedural art. This is substantial work in progress, not verified full parity with the original game.
 
-[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 155 suites; save schema is 108.
+[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 156 suites; save schema is 108.
 
 Run `npm start` and open http://127.0.0.1:4387. The website has no runtime npm dependencies or build step. Run `npm ci` before regression tests; IndexedDB tests use the development-only `fake-indexeddb` emulator. The authored static website is in `dist/`.
 
@@ -241,3 +241,5 @@ Economic scenario queries: goals, event/rank conditions, messages and variable o
 Environmental scenario queries: authors can test water pollution, average road traffic, citywide power/water surplus and uncollected garbage in goals, conditions and messages. Surplus is supply after trade minus demand; it does not prove local connectivity. Pollution and traffic match Reports. Schema 108; publication pending.
 
 Water facility models: pumps, water towers, desalination and treatment plants now use original geometry rendered in four orientations. Sixteen cached views preserve existing footprint, simulation and water-overlay behavior. See docs/previews/water-facility-models.png. Publication pending.
+
+Power plant models: all eight technologies now have original four-view geometry, including coal yards, oil tanks, gas turbines, nuclear cooling towers, wind rotors, solar arrays, microwave receivers and fusion domes. Thirty-two cached views scale to the existing plant footprints. Preview: docs/previews/power-plant-models.png. Publication pending.
