@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current release: 136 regression suites, save schema 99. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current release: 137 regression suites, save schema 100. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -529,3 +529,16 @@ Comparisons use unrounded simulation values. An unavailable/nonfinite metric nev
 Tests cover every operator below/at/above a boundary, fractional values, unavailable values, real grouped exact/strict announcements, outcome ranks, saved continuation and state inequalities. The existing real editor harness also verifies operator menus on primary, secondary and rank condition rows. All 136 suites pass; browser acceptance remains pending.
 
 Feedback exercise: increment a scenario variable each month, announce when it is exactly 2, and add a second announcement when it is greater than 2. Check that the messages arrive in different months and retain their conditions after export/import.
+
+
+### Goal-status scenario conditions — milestone 6
+
+Event and outcome-rank conditions can now query the status of an individual objective, following the manual’s Goal Status Is command (printed p.187). The condition picker exposes Goal row 1–4 status with Inactive, Unsatisfied, Satisfied and Locked choices. Authoring references resolve to the actual validated objective order, including forms with blank goal rows. Missing targets are rejected.
+
+Simultaneous goals report their current requirement result, matching their status checkboxes; the separate all-goal hold streak is not itself a goal status. Sequential stages report Satisfied after completing their hold, retain that result, and report Locked for later active stages. Inactive goals remain distinct from locked stages. Grouped events observe changes from earlier actions in the same batch. Ordinary monthly events run before stage progress is updated, so a just-completed stage is observed on the following monthly event check.
+
+Status queries are condition-only and cannot become objective criteria, preventing self-referential goal evaluation. They do not implement the separate Mark Goal Status command or a general script interpreter. Schema 100 preserves the new condition references; no new simulation counters are required.
+
+The 137-suite regression set covers live and retained statuses, activation followed by status checks, goal-conditioned announcements and ranks, saved continuation, undefined/self-referential rejection, and actual editor submission with sparse goal rows. Browser acceptance remains pending.
+
+Feedback exercise: make an Add Goal event conditional on the first goal being Satisfied. In a sequential challenge, add an announcement for the first stage’s Satisfied status and compare its arrival with the stage-completion month.
