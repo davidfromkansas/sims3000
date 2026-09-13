@@ -701,3 +701,5 @@ Feedback exercise: author a two-month goal requiring an eastern power connection
 Local preview update: the installed Sites 0.1.62 portable workflow permits local browser verification; the earlier restriction applied to the old/cloud workflow. The local server returned HTTP200, but the computer-use tool reported that the Mac is locked and automatic unlock failed. No browser interaction or visual acceptance was completed. The local server was stopped afterward. Unlocking the Mac is the current browser-check prerequisite; the earlier pending browser-testing permission question is superseded by these current skill instructions.
 
 Not published to Sites. The separate automatic approval rejection of repository source export still requires explicit user authorization and has not been retried.
+
+Scripted neighbor-contract checkpoint: scenario events and routines can create or end real agreements, recording results and normal termination fees with save/load continuity. See [neighbor contract milestone](SCENARIO-NEIGHBOR-DEALS-MILESTONE.md). Schema114; 184 regression suites passed. Manual parameter/fee semantics are an explicit interpretation. Not yet hosted.
