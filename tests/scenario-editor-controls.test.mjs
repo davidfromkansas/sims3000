@@ -48,8 +48,10 @@ for(const id of ['0','0_1','rank0','rank0_1']){
 $('customTitle').value='Calculation from the editor';$('customTarget0').value=999999;
 $('eventMonth0').value=1;$('eventCalculation0').value='multiply';
 $('eventOperandValueleft0').value=6;$('eventOperandValueright0').value=7;
+$('customRandomDisasters').checked=false;$('customAutomaticBusiness').checked=false;
 $('startCustom').onclick();assert.equal($('customError').textContent,'');assert.equal(saved,1);assert.equal(started,1);
 assert.equal(city.scenario.definition.events[0].operation,'calculate');
+assert.deepEqual(city.scenario.definition.backgroundRules,{randomDisasters:false,automaticBusiness:false});
 tick(city);assert.equal(city.scenario.variables[0],42);
 assert.equal(validateSave(JSON.parse(serializeCity(city))).scenario.variables[0],42);
 console.log('PASS: actual scenario editor handlers expose calculation/copy/value controls across all rows, retain operand choices across event switches, and submit a working saved calculation challenge.');

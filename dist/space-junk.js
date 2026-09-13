@@ -1,5 +1,6 @@
-import {recordHazard} from './emergency-order.js?v=station-inspection-1';
-import {beginEmergencySession} from './emergency-session.js?v=station-inspection-1';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=scenario-background-1';
+import {recordHazard} from './emergency-order.js?v=scenario-background-1';
+import {beginEmergencySession} from './emergency-session.js?v=scenario-background-1';
 export const freshSpaceJunk=()=>({randomSpaceJunk:false,spaceJunk:null,spaceJunkFalls:0,spaceJunkImpacts:0});
 export function startSpaceJunk(c,x,y){const n=Math.sqrt(c.tiles.length),e=c.emergency;if(e.spaceJunk)return{ok:false,error:'This disaster type is already active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n)return{ok:false,error:'Choose a tile inside the city.'};beginEmergencySession(e);recordHazard(e,'spaceJunk');Object.assign(e,{spaceJunk:{x,y,originX:x,originY:y,age:0}});e.spaceJunkFalls++;return{ok:true};}
 export function stepSpaceJunk(c,impact){const e=c.emergency,s=e.spaceJunk;if(!s)return 0;s.age++;if(s.age%4)return 0;const damage=impact(c,s.x,s.y);e.spaceJunkImpacts++;if(s.age===24){e.spaceJunk=null;return damage;}const n=Math.sqrt(c.tiles.length),k=s.age/4;let seed=Math.imul(c.seed+e.spaceJunkFalls,1664525)^Math.imul(k,1013904223);const dx=((seed>>>0)%13)-6,dy=(((seed>>>8)>>>0)%13)-6;s.x=Math.max(0,Math.min(n-1,s.originX+dx));s.y=Math.max(0,Math.min(n-1,s.originY+dy));return damage;}
@@ -7,4 +8,4 @@ export function validateSpaceJunk(v,n,version){if(version<42)return freshSpaceJu
 
 export function setRandomSpaceJunk(c,value){if(c.emergency.active)return{ok:false,error:'Finish the active emergency before changing disaster settings.'};if(typeof value!=='boolean')return{ok:false,error:'Choose a valid space junk setting.'};c.emergency.randomSpaceJunk=value;return{ok:true};}
 const roll=(month,seed,salt)=>{let h=Math.imul(month+salt,374761393)^Math.imul(seed+71,668265263);h=Math.imul(h^(h>>>13),1274126177);return((h^(h>>>16))>>>0)/4294967296;};
-export function maybeSpaceJunk(c){if(!c.emergency.randomSpaceJunk||c.emergency.active||roll(c.month,c.seed,97)>=.003)return false;const n=Math.sqrt(c.tiles.length);return startSpaceJunk(c,Math.floor(roll(c.month,c.seed,101)*n),Math.floor(roll(c.month,c.seed,107)*n)).ok;}
+export function maybeSpaceJunk(c){if(!scenarioAllowsBackground(c,'randomDisasters'))return false;if(!c.emergency.randomSpaceJunk||c.emergency.active||roll(c.month,c.seed,97)>=.003)return false;const n=Math.sqrt(c.tiles.length);return startSpaceJunk(c,Math.floor(roll(c.month,c.seed,101)*n),Math.floor(roll(c.month,c.seed,107)*n)).ok;}
