@@ -1,0 +1,6 @@
+// Run: node benchmarks/large-city-routing.mjs [absolute path to engine.js]
+// Synthetic occupied districts test routing pressure, not organic growth or browser rendering.
+import {pathToFileURL} from 'node:url';
+const engine=await import(process.argv[2]?pathToFileURL(process.argv[2]).href:new URL('../dist/engine.js',import.meta.url).href);
+export function populateRoutingFixture(c,width){for(const t of c.tiles){t.terrain='land';t.nature=false;t.elevation=0;if(t.x>=4&&t.y>=4&&t.x<4+width&&t.y<4+width){t.type=t.x%6===0||t.y%6===0?'road':t.x%3===0?'industrial':'residential';t.level=t.type==='road'?0:2;t.density=2;}}return c;}
+const results=[];for(const [size,width]of [[96,48],[256,96]]){const samples=[];for(let i=0;i<3;i++){const c=populateRoutingFixture(engine.createCity('Dense profiling city',false,size),width);let start=performance.now();engine.recompute(c);const recomputeMs=performance.now()-start;start=performance.now();engine.tick(c);samples.push({recomputeMs,monthMs:performance.now()-start,population:c.stats.population});}const median=key=>samples.map(v=>v[key]).sort((a,b)=>a-b)[1];results.push({size,width,population:samples[0].population,recomputeMs:Math.round(median('recomputeMs')),monthMs:Math.round(median('monthMs')),samples});}console.log(JSON.stringify({runtime:process.version,platform:process.platform,results}));
