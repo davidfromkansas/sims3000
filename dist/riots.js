@@ -1,5 +1,5 @@
-import {recordHazard} from './emergency-order.js?v=recreation-collection-1';
-import {beginEmergencySession} from './emergency-session.js?v=recreation-collection-1';
+import {recordHazard} from './emergency-order.js?v=age-teaching-1';
+import {beginEmergencySession} from './emergency-session.js?v=age-teaching-1';
 const developed=t=>t.terrain==='land'&&['residential','commercial','industrial'].includes(t.type)&&t.level>0&&!t.rubble;
 export const freshRiots=()=>({randomRiots:false,unrestMonths:0,riot:null,policeUnits:[],nextPolice:0,riots:0});
 export function startRiot(c,x,y){const n=Math.sqrt(c.tiles.length),e=c.emergency;if(e.riot)return{ok:false,error:'This disaster type is already active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n||!developed(c.tiles[y*n+x]))return{ok:false,error:'Choose an occupied residential, commercial or industrial building.'};beginEmergencySession(e);recordHazard(e,'riot');Object.assign(e,{riot:{x,y,age:0,anger:100}});e.riots++;return{ok:true};}

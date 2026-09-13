@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current release: 138 regression suites, save schema 101. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current release: 139 regression suites, save schema 101. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -561,3 +561,13 @@ Feedback exercise: mark an objective unsatisfied after an initial achievement, t
 Large parks, ornamental ponds, marinas and zoos now use original footprint-relative polygon models in all four camera orientations. Together with the existing fountain, playground and sports park models, all seven structures in `RECREATION` have rotating geometry. The separate small-park tile remains on its existing renderer. Parks include walks, planting and a pavilion; ponds include an irregular stone bank and lilies; marinas include docks and static sailboats; zoos include fenced habitats and miniature animals. These are original visual interpretations of the manual p.55 catalog, not recovered original models or new boating/animal simulation. Static textures are cached per type/orientation; existing placement, cost, upkeep, recreation effects and save schema remain unchanged.
 
 Validation: actual model geometry rendered offline into `docs/previews/recreation-collection.png` and inspected in all 16 new views; regression builds every modeled recreation type (including a correctly water-adjacent marina), checks projection bounds and texture reuse, and verifies unchanged saved simulation. Browser scene composition and player visual acceptance remain pending. Feedback exercise: place the four facilities, rotate the city through all four views, and assess readability at normal play zoom.
+
+
+## Separate school and college capacity checkpoint
+Schools now provide teaching places for the 0–14 census band and colleges for the 15–24 band. Each uses its full funded capacity divided by the road-connected population in that band. Extra schools cannot cover a college shortage, or vice versa. Each young band's retained EQ moves toward its own access-based target; existing graduation flows carry learning forward into adulthood. Combined teaching and education coverage still aggregate the groups by their census shares, preserving existing map, scenario and report meanings.
+
+This replaces the old pooled 65% school / 35% college capacity weights. The manual pp.54–55 and 112–113 calls for sufficient schools and colleges with limited capacity; our age boundaries, full-band demand and learning coefficients are explicit reconstruction calibration. Schools serving all ages 0–14 include children younger than normal school age because the current census has no finer age split. The city age mix is still distributed uniformly among homes.
+
+Facility inspections now report the appropriate age-group demand and combined local coverage; the education report distinguishes school and college access. Civic advice and student petitions point to the missing type, without generating teaching requests for empty age groups. Save schema remains 101: new coverage fields are derived, and existing age education history persists. Loading an older city recalculates access under the new allocation rules.
+
+Validation: 139 suites, including independent age learning, repeated schools failing to replace colleges, funded capacity, strikes, disconnected homes, facility reports and actual monthly save continuation. Browser acceptance remains pending. Feedback exercise: serve a neighborhood with schools first, inspect the remaining college demand, then connect a college and follow the two youth EQ bands over time.
