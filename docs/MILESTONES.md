@@ -524,3 +524,14 @@ This implements the station-and-circle data-map presentation described on manual
 Tests compare every tile’s actual fire coverage with the displayed radius at 25%, 100% and 150% funding; verify rotated/scaled ring centers, inactive markers, strike/road/funding changes, unchanged city data and saved-state reconstruction. All 127 regression suites pass. Browser visual acceptance remains pending. Save schema 95 and service rules are unchanged.
 
 Feedback exercise: choose Fire coverage as the navigation map and change fire funding. Compare the changing precinct ring with the heatmap, then inspect an orange station to resolve its operating problem.
+
+
+### Rotating recreation scenery — milestone 4 visual checkpoint
+
+Fountains, playgrounds and sports parks now use original polygon geometry rendered into cached, transparent textures for all four city orientations. The models include a tiered fountain, climbing tower with slide/swings/sandbox, and a marked sports field with goals, seating, lights and a clubhouse. Existing footprints, costs, upkeep and recreation effects are unchanged; other recreation buildings retain their generated sprites.
+
+Fountain streams use the existing scene clock. Their droplets advance while the city runs, freeze on pause/dialog/hidden-tab/emergency holds, and use a static pose under reduced motion or on data layers. Closed fountains have no jets. Canvas drawing is used because these are world objects within the existing renderer, not DOM interface transitions; no new animation library or timer is installed. Static geometry is cached once per model/orientation. This is original stylized scenery, not an exact original-game asset reconstruction or a claim of AAA visual parity.
+
+A four-view contact sheet was rendered from the model polygons and inspected locally. That review caught and corrected ground surfaces covering the field and playground equipment. The preview is `docs/previews/recreation-models.png`; browser compositing and feel acceptance remain pending. Tests cover geometry bounds, distinct views, cache reuse, closed fountains, the real scene clock’s pause/reduced-motion policy and unchanged saved simulation continuation. All 128 regression suites pass; save schema remains 95.
+
+Feedback exercise: place the three recreation structures, rotate the city through all four views, and pause/resume beside a fountain. Compare whether the equipment, field and water remain legible at your usual zoom.
