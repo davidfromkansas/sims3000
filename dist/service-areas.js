@@ -1,4 +1,4 @@
-import {serviceRadius} from './civic.js?v=power-grids-1';
+import {serviceRadius} from './civic.js?v=concurrent-disasters-1';
 export const PRECINCT_LAYERS={police:'police',crime:'police',fire:'fire',flammability:'fire'};
 export const PRECINCT_LEGEND='Station dots: operating white, inactive orange · Rings: current service limit; strength falls toward the edge';
 export function stationAreas(city,layer){

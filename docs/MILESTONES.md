@@ -546,3 +546,16 @@ A plant table orders stressed and aging plants first, reports current/new capaci
 This extends the manual p.116 query-based blackout and aging workflow. Allocation priorities, output curves and service rules are unchanged. Tests verify a real islanded blackout despite citywide surplus, connecting those grids, restoring an overloaded grid, capacity forecasts, imports/exports, report navigation and saved continuation. The 129-suite regression set passes. Save schema remains 95; network metadata is derived, not serialized. Browser acceptance remains pending.
 
 Feedback exercise: isolate a small plant and several developed homes from a larger plant. Use the report to locate the local blackout, join the grids with power lines, and confirm that the shortage disappears. Inspect an older plant from the replacement table before choosing where to add capacity.
+
+
+### Concurrent disaster response — milestone 6
+
+Different major disaster types can now overlap in one emergency response session, alongside multiple fire areas. The Emergency panel’s Add another disaster section offers types that are not already active. One instance of each major type is supported. Adding a hazard preserves firefighters, police squads, the return-to-play speed and the ongoing session; type-specific counters still record each event. Use Next emergency location or the direct location list to move among threats. The calendar resumes only after all hazards and fires are resolved.
+
+Every active hazard advances during a response step, including fires during an earthquake. Tornado and alien-attack warning protection belongs to the individual hazard. Sounding a new warning does not remove earlier protection, departure of one hazard does not clear another’s shelter response, and the panel reports which threat has been warned. Repeating an already-active disaster type is rejected without replacing it. Random-disaster checks and scenario event groups keep their existing monthly scheduling; they do not automatically manufacture overlapping incidents.
+
+This addresses the manual pp.56–57 multiple-disaster workflow. Save schema 96 preserves per-hazard warnings and concurrent states; older single-hazard saves migrate their warning protection. Old schema versions reject concurrent states rather than silently losing hazards. Damage order is deterministic (alien, whirlpool, cloud, debris, riot, locusts, tornado, quake, fires), and the existing per-type damage models remain approximations. Simultaneous repeated instances of the same major type remain unsupported.
+
+The new regression runs all eight major types plus fires concurrently, preserves all three response-unit groups, validates saves through the response, compares deterministic continuation and checks final completion. It also tests duplicate rejection, staggered warnings, legacy migration and the actual panel’s add-hazard controls. All 130 regression suites pass; browser interaction acceptance remains pending.
+
+Feedback exercise: start a fire, dispatch firefighters, then add a tornado from Emergency. Sound the warning, switch between locations and verify your firefighters remain deployed. Add an alien attack later and confirm its warning can be sounded independently.
