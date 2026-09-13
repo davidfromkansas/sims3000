@@ -14,10 +14,10 @@ for(const stream of fountainStreams(20))for(const [x,y,z] of [...stream.points,s
 let created=0,arcs=0;const context=()=>new Proxy({},{get:(_,key)=>key==='arc'?()=>arcs++:()=>{},set:()=>true});
 globalThis.document={createElement:()=>{created++;return{getContext:context};},hidden:false,querySelector:()=>null};
 const ctx=context(),city=createCity('Rotating parks',false);city.funds=100000;for(const t of city.tiles){t.terrain='land';t.nature=false;t.elevation=0;}
-for(const [i,type] of [...MODELED_RECREATION].entries())assert.ok(build(city,type,[{x:10+i*7,y:15}]).ok);
+for(const [i,type] of [...MODELED_RECREATION].entries()){const x=5+(i%4)*10,y=10+Math.floor(i/4)*15;if(type==='marina')city.tiles[y*48+x-1].terrain='water';assert.ok(build(city,type,[{x,y}]).ok,type);}
 const saved=serializeCity(city);
 for(const type of MODELED_RECREATION)for(let rotation=0;rotation<4;rotation++)for(const time of [0,1,2])drawCityRecreation(ctx,type,rotation,200,200,180,.7,time,true);
-assert.equal(created,12,'static model textures are cached once per type and orientation');assert.equal(serializeCity(city),saved);
+assert.equal(created,MODELED_RECREATION.size*4,'static model textures are cached once per type and orientation');assert.equal(serializeCity(city),saved);
 const beforeArcs=arcs;drawCityRecreation(ctx,'fountain',0,200,200,100,1,2,false);assert.equal(arcs,beforeArcs,'closed fountains have no animated jets');
 // Exercise the real scene clock: ornamental water shares vehicle-time pause policy.
 globalThis.requestAnimationFrame=()=>{};

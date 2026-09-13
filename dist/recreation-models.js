@@ -1,5 +1,5 @@
 // Original miniature scenery, modeled in footprint-relative coordinates.
-export const MODELED_RECREATION=new Set(['fountain','playground','sportsPark']);
+export const MODELED_RECREATION=new Set(['fountain','playground','sportsPark','largePark','pond','marina','zoo']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.max(0,Math.min(255,Math.round(parseInt(v,16)*f))).toString(16).padStart(2,'0')).join('');
 export function recreationGeometry(type){
  if(!MODELED_RECREATION.has(type))throw Error('Unknown recreation model.');
@@ -30,7 +30,7 @@ export function recreationGeometry(type){
   for(const x of [.20,.30]){for(const dx of [-.025,.025])beam([x+dx,-.21,.32],[x+dx,-.21,.12],.003,'#58676a');box(x,-.21,.11,.075,.05,.015,'#a16e5a');}
   box(.24,.2,.06,.16,.25,.018,'#d4b98e');box(.24,.2,.078,.13,.22,.003,'#e3cd9d');
   tree(-.36,.34);tree(.36,.36,.34);bench(0,.4);
- }else{
+ }else if(type==='sportsPark'){
   // Playing field with alternating mowing strips and complete painted markings.
   box(-.08,-.07,.045,.62,.64,.005,'#51886b');for(let i=0;i<8;i++)box(-.08,-.35+i*.08,.051,.60,.076,.001,i%2?'#5e936f':'#54896a');
   for(const x of [-.38,.22])box(x,-.07,.053,.005,.62,.002,'#d9e2c2');for(const y of [-.38,.24,-.07])box(-.08,y,.053,.60,.005,.002,'#d9e2c2');
@@ -41,6 +41,52 @@ export function recreationGeometry(type){
   box(0,.35,.045,.43,.12,.10,'#c8ba97');box(0,.35,.145,.47,.15,.025,'#6c8d86');for(const x of [-.13,0,.13])box(x,.284,.08,.07,.005,.047,'#527978');
   tree(-.41,.39,.26);bench(.25,.4);
  }
+
+ if(type==='largePark'){
+  // Crossing walks, flower beds and a shaded picnic pavilion.
+  box(0,0,.045,.13,.91,.006,'#d2c3a0');box(0,0,.045,.91,.13,.006,'#d2c3a0');
+  ring(0,0,.051,.16,.008,.16,'#ded1b0',24);
+  for(const x of [-.30,.30])for(const y of [-.30,.30]){
+   tree(x,y,.26+(x+y+.6)*.08);tree(x*.64,y*1.20,.23);
+  }
+  for(const x of [-.23,.23]){box(x,.15,.049,.17,.06,.025,'#b5a38a');for(let i=0;i<5;i++)ring(x-.065+i*.033,.15,.074,.016,.016,.01,i%2?'#dbb55d':'#bc7185',6);}
+  for(const x of [-.10,.10])for(const y of [-.34,-.16])box(x,y,.051,.014,.014,.19,'#b0a37e');
+  box(0,-.25,.23,.25,.23,.015,'#d6c19a');ring(0,-.25,.245,.18,.13,.005,'#728c78',4);
+  box(0,-.25,.10,.14,.08,.014,'#bca37b');bench(-.17,.02,true);bench(.17,.02,true);bench(.02,.30);
+ }else if(type==='pond'){
+  // Low stone edging follows an irregular, planted waterline.
+  const outline=Array.from({length:32},(_,i)=>{const a=i/32*Math.PI*2,r=.30+.035*Math.sin(a*3);return[Math.cos(a)*r,Math.sin(a)*r,.055];});
+  add(outline,'#aaa78f');add(outline.map(([x,y])=>[x*.91,y*.91,.058]),'#639f9e');
+  for(let i=0;i<18;i++){const a=i/18*Math.PI*2,r=.30+.035*Math.sin(a*3);ring(Math.cos(a)*r,Math.sin(a)*r,.056,.022,.016,.018,'#c0bba2',6);}
+  for(const [x,y] of [[-.13,-.12],[.12,.09],[.08,.17]]){ring(x,y,.060,.029,.002,.029,'#72976c',10);ring(x+.006,y,.063,.009,.009,.004,'#e2cbb1',6);}
+  for(const [x,y] of [[-.26,.18],[-.28,.13],[.20,-.25]])for(let i=0;i<5;i++){const xx=x+(i-2)*.012;beam([xx,y,.06],[xx+.018,y+.01,.13+i%2*.02],.003,'#658264');}
+  box(.30,.02,.044,.13,.30,.007,'#c7bc9f');bench(.32,.01,true);tree(-.32,-.31,.25);tree(.30,.34,.24);
+ }else if(type==='marina'){
+  // A miniature sheltered basin; surrounding city water still controls placement.
+  box(-.03,.04,.045,.80,.77,.005,'#559397');box(0,-.35,.052,.89,.16,.008,'#c7ba99');
+  box(-.33,.01,.052,.09,.67,.014,'#b79b76');box(.33,.01,.052,.09,.67,.014,'#b79b76');box(0,-.18,.052,.66,.065,.014,'#b79b76');
+  for(const x of [-.15,.15])box(x,.045,.052,.045,.45,.014,'#b79b76');
+  for(const x of [-.35,-.15,.15,.35])for(const y of [-.17,.24])ring(x,y,.052,.009,.045,.009,'#e1d4b1',6);
+  for(const [x,y,color] of [[-.23,.03,'#d3d3be'],[-.07,.13,'#c7d5cf'],[.07,.02,'#c9b59c'],[.23,.17,'#cad0bb']]){
+   const hull=[[x-.032,y-.07,.062],[x+.032,y-.07,.062],[x+.038,y+.03,.062],[x,y+.09,.062],[x-.038,y+.03,.062]];
+   add(hull,color);box(x,y-.015,.065,.045,.065,.022,'#738c87');beam([x,y,.07],[x,y,.29],.0025,'#bfcbbd');
+   add([[x,y,.285],[x,y+.07,.10],[x,y,.10]],'#eee4c8');add([[x,y,.10],[x,y+.07,.10],[x,y,.285]],'#ddd3b7');
+  }
+  box(-.18,-.35,.06,.24,.12,.12,'#d5c19c');box(-.18,-.35,.18,.27,.15,.02,'#6d8782');for(const x of [-.25,-.17])box(x,-.285,.10,.045,.005,.04,'#5c7e82');
+  bench(.18,-.35);tree(.38,-.37,.21);
+ }else if(type==='zoo'){
+  // Distinct habitats and entrance pavilion make the footprint readable in all views.
+  box(0,0,.045,.12,.88,.005,'#c6b793');box(0,.22,.045,.88,.10,.005,'#c6b793');
+  const fence=(x,y,w,d)=>{for(const yy of [y-d/2,y+d/2]){beam([x-w/2,yy,.10],[x+w/2,yy,.10],.005,'#8d927d');for(let i=0;i<=6;i++)box(x-w/2+i*w/6,yy,.05,.008,.008,.085,'#7e8878');}for(const xx of [x-w/2,x+w/2]){beam([xx,y-d/2,.10],[xx,y+d/2,.10],.005,'#8d927d');for(let i=0;i<=6;i++)box(xx,y-d/2+i*d/6,.05,.008,.008,.085,'#7e8878');}};
+  box(-.25,-.13,.051,.33,.49,.003,'#bdab7f');fence(-.25,-.13,.33,.49);
+  box(.25,-.13,.051,.33,.49,.003,'#72916f');fence(.25,-.13,.33,.49);ring(.27,-.23,.055,.095,.002,.085,'#689c9b',16);
+  // Low-poly animals, sized for the miniature habitats rather than city traffic.
+  for(const [x,y] of [[-.28,-.24],[-.20,-.02]]){for(const dx of [-.028,.028])for(const dy of [-.025,.025])box(x+dx,y+dy,.055,.012,.012,.052,'#b29263');box(x,y,.105,.085,.07,.043,'#c2a274');box(x+.025,y-.03,.14,.022,.025,.105,'#c2a274');box(x+.025,y-.044,.245,.036,.048,.026,'#ccb282');}
+  box(.22,.02,.074,.11,.065,.055,'#9a9e92');for(const dx of [-.035,.035])for(const dy of [-.02,.02])box(.22+dx,.02+dy,.055,.018,.018,.025,'#898f88');ring(.29,.015,.08,.025,.045,.026,'#9ba095',8);beam([.315,.015,.095],[.33,.015,.062],.009,'#969b90');
+  for(const x of [-.30,.30]){tree(x,.34,.25);tree(x,-.36,.25);}
+  box(0,.36,.052,.26,.14,.12,'#c5b591');box(0,.36,.172,.30,.18,.025,'#73876b');box(0,.283,.06,.07,.005,.09,'#617568');bench(-.22,.22);bench(.22,.22);
+ }
+
  return faces;
 }
 export function projectRecreation(point,rotation=0){let [x,y,z]=point;[x,y]=rotation===0?[x,y]:rotation===1?[-y,x]:rotation===2?[-x,-y]:[y,-x];return[256+(x-y)*230,320+(x+y)*115-z*230];}
