@@ -1,4 +1,4 @@
-import {escapeAnnouncement} from './scenario-announcements.js?v=power-grids-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=concurrent-disasters-1';
 export const ADVISOR_PORTRAIT='assets/scenario-advisor.png';
 export const MAX_PORTRAIT_BYTES=300000;
 export function validatePortrait(value){
