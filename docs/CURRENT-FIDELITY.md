@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 168 regression suites, save schema 110. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 172 regression suites, save schema 111. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -681,3 +681,10 @@ The manual requires replacement tile-size matching (pp.73–74) and Building Arc
 Source checkpoint:168 suites, schema110. Form-authored routines now support ordered action blocks, nested If/Else, reusable nonrecursive subroutine calls and repeated scheduled entries. Conditions read city state when reached; chosen paths survive popup/emergency suspension. Actual primitive actions share dispatch with existing events. Program history, city-file and named saves, worker execution, goal provenance and starting-city replay are integrated.
 
 Manual pp.188–189 specify If/If Else action blocks, Subroutine and Repeat Regular. Runtime bounds, completion-relative repeat timing and the structured browser format are reconstruction choices. Binary original scenario files, unrestricted recursion and the full original instruction catalog remain unsupported. The routine popup form supports advisor presentation; custom portrait files can be preserved from imported routines but new file selection uses the existing standalone popup editor. Browser acceptance and Sites publication after v150 remain pending. See SCENARIO-PROGRAMS-MILESTONE.md.
+
+
+## Multi-neighbor contracts
+
+Source checkpoint:172 suites, schema111. Cities can sign one contract per resource with each neighbor (four power, four water and five garbage pairs). Utility imports combine finite supplier surplus only on the connected network; exports use local surplus, with older contracts attempted first. Garbage shipments retain route-local conservation. Lower-priced imports/disposal are used first, but every idle backup contract retains its minimum fee. Renewals cannot silently break another existing deal.
+
+Manual pp.119–120 supports multiple neighbor connections, network-local deficit supply, minimum fees and fixed export obligations. Allocation priorities and one-resource-per-neighbor limits are explicit reconstruction tuning. Tests cover real networks, monthly garbage ledgers, penalties, separate neighbor budgets, save/replay/worker, UI handlers and strict contract bounds. Full neighboring tile cities and browser acceptance remain incomplete; Sites publication afterv150 is pending approval. See MULTI-NEIGHBOR-TRADE-MILESTONE.md.
