@@ -1,24 +1,25 @@
-import {stationAreas} from './service-areas.js?v=service-precincts-1';
-import {cityGrid,visibleTileBounds} from './city-grid.js?v=service-precincts-1';
-import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=service-precincts-1';
-import {designForTile,drawDesignedBuilding} from './building-designs.js?v=service-precincts-1';
-import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=service-precincts-1';
-import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=service-precincts-1';
-import {inScenarioArea} from './scenario-area.js?v=service-precincts-1';
-import {railVehicles} from './rail-visuals.js?v=service-precincts-1';
-import {zonedSprite} from './building-art.js?v=service-precincts-1';
-import {trafficVehicles} from './traffic-visuals.js?v=service-precincts-1';
-import {tunnelAt} from './tunnels.js?v=service-precincts-1';
-import {STRUCTURES} from './structures.js?v=service-precincts-1';
-import {LANDSCAPE} from './landscape.js?v=service-precincts-1';
-import {POWER_PLANTS} from './power.js?v=service-precincts-1';
-import {WATER_STRUCTURES} from './utilities.js?v=service-precincts-1';
-import {FACILITIES} from './facilities.js?v=service-precincts-1';
-import {rampCrossings} from './highway.js?v=service-precincts-1';
-import {STATIONS} from './rail.js?v=service-precincts-1';
-import {roadNeighbors} from './transport.js?v=service-precincts-1';
-import {SERVICES} from './civic.js?v=service-precincts-1';
-import {ZONES,selection,planBuild} from './engine.js?v=service-precincts-1';
+import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=recreation-models-1';
+import {stationAreas} from './service-areas.js?v=recreation-models-1';
+import {cityGrid,visibleTileBounds} from './city-grid.js?v=recreation-models-1';
+import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=recreation-models-1';
+import {designForTile,drawDesignedBuilding} from './building-designs.js?v=recreation-models-1';
+import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=recreation-models-1';
+import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=recreation-models-1';
+import {inScenarioArea} from './scenario-area.js?v=recreation-models-1';
+import {railVehicles} from './rail-visuals.js?v=recreation-models-1';
+import {zonedSprite} from './building-art.js?v=recreation-models-1';
+import {trafficVehicles} from './traffic-visuals.js?v=recreation-models-1';
+import {tunnelAt} from './tunnels.js?v=recreation-models-1';
+import {STRUCTURES} from './structures.js?v=recreation-models-1';
+import {LANDSCAPE} from './landscape.js?v=recreation-models-1';
+import {POWER_PLANTS} from './power.js?v=recreation-models-1';
+import {WATER_STRUCTURES} from './utilities.js?v=recreation-models-1';
+import {FACILITIES} from './facilities.js?v=recreation-models-1';
+import {rampCrossings} from './highway.js?v=recreation-models-1';
+import {STATIONS} from './rail.js?v=recreation-models-1';
+import {roadNeighbors} from './transport.js?v=recreation-models-1';
+import {SERVICES} from './civic.js?v=recreation-models-1';
+import {ZONES,selection,planBuild} from './engine.js?v=recreation-models-1';
 const COLORS={residential:'#81b96b',commercial:'#79baca',industrial:'#d9ba6b'};
 export class CityRenderer{
  constructor(canvas,getCity){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.rotation=0;this.layer='city';this.tool='road';this.density=1;this.hover=null;this.drag=null;this.sprites=[];this.assetReady=false;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');this.time=0;this.vehicleTime=0;this.previousFrame=null;this.dirty=true;this.w=0;this.h=0;this.resize=new ResizeObserver(()=>{const first=this.w===0;this.w=canvas.clientWidth;this.h=canvas.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);canvas.width=this.w*this.dpr;canvas.height=this.h*this.dpr;if(first)this.center();this.dirty=true;});this.resize.observe(canvas);this.loadSprites();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);}
@@ -102,7 +103,7 @@ export class CityRenderer{
  if(t.rubble)this.sprite(28,p.x,p.y+u,u*2,fade);
  else if(STRUCTURES[t.type]){
  const def=STRUCTURES[t.type],size=def.size,root=city.tiles[t.root],corners=[[root.x,root.y],[root.x+size-1,root.y],[root.x,root.y+size-1],[root.x+size-1,root.y+size-1]];const end=corners.map(([x,y])=>({x,y,r:this.transform(x,y)})).sort((a,b)=>(b.r[0]+b.r[1])-(a.r[0]+a.r[1]))[0];
- if(t.x===end.x&&t.y===end.y){const center=this.project(root.x+(size-1)/2,root.y+(size-1)/2);if(def.model)drawCityLandmark(c,t.type,this.rotation,center.x,center.y+u/2,u*size*2.1,fade);else this.sprite(def.sprite,center.x,center.y+u*(size===1?1:size*.65),u*size*1.875,fade);}
+ if(t.x===end.x&&t.y===end.y){const center=this.project(root.x+(size-1)/2,root.y+(size-1)/2);if(MODELED_RECREATION.has(t.type))drawCityRecreation(c,t.type,this.rotation,center.x,center.y+u/2,u*size*2.1,fade,this.layer==='city'&&!this.reducedMotion.matches?this.vehicleTime:0,!root.fire&&!root.rubble&&!root.radiation);else if(def.model)drawCityLandmark(c,t.type,this.rotation,center.x,center.y+u/2,u*size*2.1,fade);else this.sprite(def.sprite,center.x,center.y+u*(size===1?1:size*.65),u*size*1.875,fade);}
  }else if(t.type==='pump')this.sprite(11,p.x,p.y+u,u*1.9,this.layer==='water'?1:fade);
  else if(['waterTower','desalination','waterTreatment'].includes(t.type))this.sprite(29+['waterTower','desalination','waterTreatment'].indexOf(t.type),p.x,p.y+u,u*1.95,this.layer==='water'?.8:fade);
  else if(['recycling','incinerator','wasteEnergy'].includes(t.type))this.sprite(32+['recycling','incinerator','wasteEnergy'].indexOf(t.type),p.x,p.y+u,u*1.95,fade);
