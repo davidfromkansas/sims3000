@@ -493,3 +493,12 @@ This exposes existing service calculations rather than changing eligibility, all
 Tests exercise real connected homes and isolated residents, funding-sensitive hospital coverage, education demand, overlapping coverage, strikes, road closure, emergency-service radius, jail adequacy and save reconstruction. Full regression coverage is 124 suites. Browser acceptance remains pending.
 
 Feedback exercise: inspect a hospital, lower healthcare funding, and inspect it again. Compare its contribution with combined coverage, then inspect a school or library to see how demand differs by age. Use the department link to address a reported shortfall.
+
+
+### Scenario calculation editor correction — milestone 6
+
+Variable events now reveal the correct fields when switching among Set, Add, Copy metric and Calculate. The event-type handler previously replaced the operation handler, leaving calculation operands hidden and copy/value fields stale. Refreshing the operation fields from the shared handler restores authoring across all four event rows and preserves selected operands when switching event types.
+
+The regression harness runs the real editor setup and assigned handlers, submits a multiplication challenge, advances its simulation and checks save reconstruction. It reproduces the old failure when the fix is removed. All 125 regression suites pass. This is a correction to the existing calculation milestone; save schema 95 and simulation formulas are unchanged. Node control tests do not establish browser layout or native input acceptance, which remains pending.
+
+Feedback exercise: create a challenge, choose a Variable event, then Calculate. Select a live metric or constant for each operand, switch through Copy and Add, and return to Calculate before beginning the challenge.
