@@ -1,4 +1,4 @@
-import {escapeAnnouncement} from './scenario-announcements.js?v=business-site-analysis-2';
+import {escapeAnnouncement} from './scenario-announcements.js?v=playtest-checkpoints-2';
 export const ADVISOR_PORTRAIT='assets/scenario-advisor.png';
 export const MAX_PORTRAIT_BYTES=300000;
 export function validatePortrait(value){

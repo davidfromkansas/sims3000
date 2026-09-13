@@ -1,11 +1,11 @@
-import {dialogTextTarget} from './scenario-dialog-text.js?v=business-site-analysis-2';
-import {tornadoSettingsLabel} from './tornado-settings.js?v=business-site-analysis-2';
-import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=business-site-analysis-2';
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=business-site-analysis-2';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=business-site-analysis-2';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=business-site-analysis-2';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=business-site-analysis-2';
-import {escapeAnnouncement} from './scenario-announcements.js?v=business-site-analysis-2';
+import {dialogTextTarget} from './scenario-dialog-text.js?v=playtest-checkpoints-2';
+import {tornadoSettingsLabel} from './tornado-settings.js?v=playtest-checkpoints-2';
+import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=playtest-checkpoints-2';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=playtest-checkpoints-2';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=playtest-checkpoints-2';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=playtest-checkpoints-2';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=playtest-checkpoints-2';
+import {escapeAnnouncement} from './scenario-announcements.js?v=playtest-checkpoints-2';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';

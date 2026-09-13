@@ -1,5 +1,5 @@
-import {projectedBuildingSurfaces,pickBuildingSurface,paintPickedSurfaces,samplePickedSurface} from './building-surface-picking.js?v=business-site-analysis-2';
-import {BUILDING_MATERIALS,SURFACE_NAMES} from './building-materials.js?v=business-site-analysis-2';
+import {projectedBuildingSurfaces,pickBuildingSurface,paintPickedSurfaces,samplePickedSurface} from './building-surface-picking.js?v=playtest-checkpoints-2';
+import {BUILDING_MATERIALS,SURFACE_NAMES} from './building-materials.js?v=playtest-checkpoints-2';
 export function mountBuildingPreviewPaint(canvas,{get,camera,apply,render,mode,material,status}){
  const base=Object.fromEntries(['onpointerdown','onpointermove','onpointerup','onpointercancel','onkeydown','onwheel'].map(k=>[k,canvas[k]]));let hover=null,stroke=null,geometry=null;
  const point=e=>{const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};};

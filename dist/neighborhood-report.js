@@ -1,4 +1,4 @@
-import {occupancy} from './utilities.js?v=business-site-analysis-2';
+import {occupancy} from './utilities.js?v=playtest-checkpoints-2';
 export const NEIGHBORHOOD_RADII=[2,4,8,16];
 const fields=['policeCoverage','fireCoverage','healthCoverage','childEducationCoverage','collegeEducationCoverage','adultEducationCoverage','airPollution','waterPollution','crime','landValue'];
 export function neighborhoodSnapshot(city,center,radius=4){
