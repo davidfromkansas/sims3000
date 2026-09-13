@@ -502,3 +502,14 @@ Variable events now reveal the correct fields when switching among Set, Add, Cop
 The regression harness runs the real editor setup and assigned handlers, submits a multiplication challenge, advances its simulation and checks save reconstruction. It reproduces the old failure when the fix is removed. All 125 regression suites pass. This is a correction to the existing calculation milestone; save schema 95 and simulation formulas are unchanged. Node control tests do not establish browser layout or native input acceptance, which remains pending.
 
 Feedback exercise: create a challenge, choose a Variable event, then Calculate. Select a live metric or constant for each operand, switch through Copy and Add, and return to Calculate before beginning the challenge.
+
+
+### Use data maps while building — milestones 2, 4 and 5
+
+The report map table now offers separate Show in city and Use as map actions. Use as map opens the navigation map with the selected layer while retaining the main city layer, construction tool and camera position. This implements the manual p.66 navigation-map workflow. Tunnels remain a city-view-only reconstruction layer.
+
+Navigation now includes approval/aura, built density, flammability, rail usage and subway usage alongside existing utility, pollution and service maps. Empty or nonresidential land is neutral on the approval map. Density distinguishes empty zoning from built levels. Rail/subway maps distinguish used and unused tracks and operating/inactive stations, including routes beneath water. Water pollution remains visible on water tiles instead of being replaced by their ordinary blue color. Legends retain navigation instructions and explain each scale.
+
+Tests run the actual report actions and installed navigation controller, check that selecting layers opens a collapsed map without changing city state, camera or construction tools, and verify the new data encodings. The full regression set has 126 suites. Browser/native-input and visual acceptance remain pending. Save schema 95 and simulation rules are unchanged.
+
+Feedback exercise: open City data, use Flammability as the navigation map, then return to construction in the normal city view. Compare risk areas with Fire coverage. Switch to Rail or Subway usage to locate inactive stations and unused routes.
