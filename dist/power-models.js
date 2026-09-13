@@ -1,7 +1,7 @@
-import {rasterizeMiniature} from './miniature-raster.js?v=power-models-1';
+import {projectMiniature,rasterizeMiniature} from './miniature-raster.js?v=wind-motion-1';
 export const MODELED_POWER=new Set(['coal','oil','gas','nuclear','wind','solar','microwave','fusion']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
-export function powerGeometry(type){
+export function powerGeometry(type,includeRotor=true){
  if(!MODELED_POWER.has(type))throw Error('Unknown power model.');
  const faces=[],add=(points,color)=>faces.push({points,color});
  const box=(x,y,z,w,d,h,color)=>{const a=[[x-w/2,y-d/2,z],[x+w/2,y-d/2,z],[x+w/2,y+d/2,z],[x-w/2,y+d/2,z]],b=a.map(([xx,yy])=>[xx,yy,z+h]);for(let i=0;i<4;i++)add([a[i],a[(i+1)%4],b[(i+1)%4],b[i]],shade(color,[.72,.84,.96,.78][i]));add(b,shade(color,1.06));};
@@ -24,7 +24,7 @@ export function powerGeometry(type){
   hall(0,.23,.64,.29,.18,'#adbcae');substation(.34,.27);
  }else if(type==='wind'){
   tank(0,0,.045,.12,.045,'#c7c7af');vessel(0,0,[[.09,.038],[.79,.019]],'#c7d1bd');box(0,0,.76,.10,.16,.075,'#a4bdb2');
-  for(let blade=0;blade<3;blade++){const a=blade*2*Math.PI/3,points=[[.035,-.02],[.13,-.025],[.32,.0],[.30,.023],[.09,.03]].map(([r,t])=>[Math.sin(a)*r+Math.cos(a)*t,-.086,.80+Math.cos(a)*r-Math.sin(a)*t]);add(points,'#dce1c9');add([...points].reverse(),'#bdcfc1');}box(0,-.09,.775,.045,.038,.045,'#a7bbb3');hall(-.23,.25,.20,.18,.12,'#a2ae96');
+  if(includeRotor)for(const points of windRotorGeometry(0)){add(points,'#dce1c9');add([...points].reverse(),'#bdcfc1');}box(0,-.09,.775,.045,.038,.045,'#a7bbb3');hall(-.23,.25,.20,.18,.12,'#a2ae96');
  }else if(type==='solar'){
   for(let row=0;row<3;row++)for(let col=0;col<4;col++){const x=-.32+col*.21,y=-.30+row*.23;box(x,y,.05,.025,.10,.055,'#adb69e');const p=[[x-.085,y-.08,.13],[x+.085,y-.08,.13],[x+.085,y+.08,.09],[x-.085,y+.08,.09]];add(p,'#466c88');add([...p].reverse(),'#758b8a');for(let k=1;k<3;k++){const xx=x-.085+k*.17/3;add([[xx-.002,y-.08,.131],[xx+.002,y-.08,.131],[xx+.002,y+.08,.091],[xx-.002,y+.08,.091]],'#9eb7bb');}add([[x-.085,y-.002,.1106],[x+.085,y-.002,.1106],[x+.085,y+.002,.1096],[x-.085,y+.002,.1096]],'#9eb7bb');}
   hall(.23,.34,.34,.18,.12,'#b1bca8');
@@ -36,5 +36,14 @@ export function powerGeometry(type){
  return faces;
 }
 export const rasterizePower=(type,rotation=0)=>rasterizeMiniature(powerGeometry(type),rotation);
+// Continuous rigid rotation, independent of electricity output. The existing
+// simulation-held scenery clock controls pause, dialogs and background tabs.
+export const WIND_REVOLUTION_SECONDS=8;
+export function windRotorGeometry(time){const angle=(time%WIND_REVOLUTION_SECONDS)*Math.PI*2/WIND_REVOLUTION_SECONDS;return Array.from({length:3},(_,blade)=>{const a=angle+blade*2*Math.PI/3;return [[.035,-.02],[.13,-.025],[.32,0],[.30,.023],[.09,.03]].map(([r,t])=>[Math.sin(a)*r+Math.cos(a)*t,-.086,.80+Math.cos(a)*r-Math.sin(a)*t]);});}
+export const windSceneryTime=(renderer,root)=>renderer.preferences?.sceneryAnimations!==false&&renderer.layer==='city'&&!renderer.reducedMotion.matches&&!root.fire&&!root.rubble&&!root.radiation?renderer.vehicleTime:null;
+export function drawWindRotor(ctx,rotation,x,y,width,time){for(const points of windRotorGeometry(time)){const p=points.map(v=>projectMiniature(v,rotation)),area=p.reduce((sum,v,i)=>{const q=p[(i+1)%p.length];return sum+v[0]*q[1]-q[0]*v[1];},0);ctx.fillStyle=area>0?'#dce1c9':'#bdcfc1';ctx.beginPath();for(let i=0;i<p.length;i++){const xx=x+(p[i][0]-256)*width/512,yy=y+(p[i][1]-320)*width/512;if(i===0)ctx.moveTo(xx,yy);else ctx.lineTo(xx,yy);}ctx.closePath();ctx.fill();}}
 const cache=new Map();
-export function drawCityPower(ctx,type,rotation,x,y,width,alpha=1){const key=type+':'+rotation;let canvas=cache.get(key);if(!canvas){canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;const c=canvas.getContext('2d'),raster=rasterizePower(type,rotation),image=c.createImageData(512,512);image.data.set(raster.data);c.putImageData(image,0,0);cache.set(key,canvas);}ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(canvas,x-width/2,y-320*width/512,width,width);ctx.restore();}
+export function drawCityPower(ctx,type,rotation,x,y,width,alpha=1,time=null){const moving=type==='wind'&&Number.isFinite(time),key=type+':'+rotation+(moving?':base':'');let canvas=cache.get(key);if(!canvas){canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;const c=canvas.getContext('2d'),raster=rasterizeMiniature(powerGeometry(type,!moving),rotation),image=c.createImageData(512,512);image.data.set(raster.data);c.putImageData(image,0,0);cache.set(key,canvas);}ctx.save();ctx.globalAlpha=alpha;
+ // Rotor plane lies behind the nacelle/tower in views 0 and 3 and in front
+ // in views 1 and 2. No animated bitmap frames or per-frame depth buffers.
+ const behind=rotation===0||rotation===3;if(moving&&behind)drawWindRotor(ctx,rotation,x,y,width,time);ctx.drawImage(canvas,x-width/2,y-320*width/512,width,width);if(moving&&!behind)drawWindRotor(ctx,rotation,x,y,width,time);ctx.restore();}

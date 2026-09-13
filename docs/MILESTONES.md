@@ -611,3 +611,7 @@ Build the four water facilities and rotate the map. Compare their silhouettes, i
 ### Recognize your energy mix from every direction (source checkpoint; publication pending)
 
 Place the available power technologies, rotate the map and compare plant silhouettes at normal zoom. Inspect capacity and age, then switch to the power overlay to find their grids. Feedback target: can you distinguish each technology and understand its footprint without opening a query? Preview: previews/power-plant-models.png.
+
+### Watch the wind farm operate (source checkpoint; publication pending)
+
+Build wind turbines and run the city. Rotate the view, pause and resume, then toggle scenery animation or reduced motion. Feedback target: does rotor motion make the wind farm feel active without distracting from construction or data overlays? Offline motion preview: previews/wind-turbine-motion.gif.
