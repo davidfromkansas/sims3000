@@ -1,8 +1,8 @@
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=multi-neighbor-trade-1';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=multi-neighbor-trade-1';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=multi-neighbor-trade-1';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=multi-neighbor-trade-1';
-import {escapeAnnouncement} from './scenario-announcements.js?v=multi-neighbor-trade-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=building-set-import-1';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=building-set-import-1';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=building-set-import-1';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=building-set-import-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=building-set-import-1';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';

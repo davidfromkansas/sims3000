@@ -1,5 +1,5 @@
-import {createCityAmbience,showAmbienceSettings} from './city-ambience.js?v=multi-neighbor-trade-1';
-import {createGameMusic,showMusicSettings} from './game-music.js?v=multi-neighbor-trade-1';
+import {createCityAmbience,showAmbienceSettings} from './city-ambience.js?v=building-set-import-1';
+import {createGameMusic,showMusicSettings} from './game-music.js?v=building-set-import-1';
 const KEY='sims3000-audio';
 export const AUDIO_CUES={notice:[[523.25,523.25,.45,0],[783.99,783.99,.65,.16],[1046.5,1046.5,.8,.32]],achievement:[[261.63,261.63,.32,0],[329.63,329.63,.32,.15],[392,392,.32,.3],[523.25,523.25,.9,.48],[659.25,659.25,.9,.48],[783.99,783.99,.9,.48]],tension:[[220,196,.28,0],[220,196,.28,.38],[164.81,146.83,.55,.8]],build:[[180,260,.1,0],[320,400,.12,.07]],bulldoze:[[110,45,.24,0]],error:[[130,100,.12,0],[100,80,.1,.15]],alert:[[440,660,.35,0],[660,440,.35,.38],[440,660,.35,.76]]};
 export function createGameAudio(){
