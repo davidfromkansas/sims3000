@@ -1,8 +1,8 @@
-import {allocateUtilityContracts,disposalContractOrder} from './regional-allocation.js?v=water-grid-report-1';
-import {contractQuote,contractRate,PRICE_BANDS} from './regional-pricing.js?v=water-grid-report-1';
-import {freshNeighborEconomies,validateNeighborEconomies,neighborSupply,advanceNeighborEconomies} from './neighbor-economies.js?v=water-grid-report-1';
-import {tunnelEdges} from './tunnels.js?v=water-grid-report-1';
-import {streetGraph} from './highway.js?v=water-grid-report-1';
+import {surfaceRailGroups} from './rail-freight.js?v=landfill-rail-freight-1';
+import {allocateUtilityContracts,disposalContractOrder} from './regional-allocation.js?v=landfill-rail-freight-1';
+import {contractQuote,contractRate,PRICE_BANDS} from './regional-pricing.js?v=landfill-rail-freight-1';
+import {freshNeighborEconomies,validateNeighborEconomies,neighborSupply,advanceNeighborEconomies} from './neighbor-economies.js?v=landfill-rail-freight-1';
+import {streetGraph} from './highway.js?v=landfill-rail-freight-1';
 export const freshRegion=(month=0)=>({neighbors:freshNeighborEconomies(month),connections:[],deals:[],nextId:1,totalPenalties:0});
 export const NEIGHBORS={north:'Northvale',east:'Eastborough',south:'Southport',west:'Westhaven',sea:'Overseas ports'};
 export function connectionCandidates(c){const n=Math.sqrt(c.tiles.length),out=[];for(let i=0;i<c.tiles.length;i++){const t=c.tiles[i];if(t.terrain==='water')continue;const side=t.y===0?'north':t.x===n-1?'east':t.y===n-1?'south':t.x===0?'west':null;if(!side)continue;for(const [kind,yes]of [['power',t.type==='powerline'],['water',t.pipe],['road',t.type==='road'],['highway',t.highway],['rail',t.rail]])if(yes)out.push({tile:i,kind,side});}for(const p of c.stats?.facilityPlots||[])if(p.type==='seaport'&&p.operating)out.push({tile:p.root,kind:'seaport',side:'sea'});return out;}
@@ -16,9 +16,7 @@ export function tradeCapacity(c,kind,nodes,capacity,demand){const nodeSet=new Se
 
 export function connectionRoadGroups(c,con){const graph=streetGraph(c),N=c.tiles.length;if(con.kind==='road')return new Set([graph.groups[con.tile]]);if(con.kind==='highway')return new Set([graph.groups[con.tile+N]]);if(con.kind==='seaport'){const p=c.stats.facilityPlots.find(p=>p.root===con.tile&&p.operating);return new Set((p?.ids||[]).flatMap(i=>c.tiles[i].roadIds));}
  return new Set(connectionRailStations(c,con).flatMap(t=>t.roadIds));}
-export function connectionRailStations(c,con){const N=c.tiles.length;
- // Freight can transfer to local roads at stations along connected surface rail.
- const seen=new Set([con.tile]),q=[con.tile],n=Math.sqrt(N);for(let k=0;k<q.length;k++){const t=c.tiles[q[k]];for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy,j=y*n+x;if(x<0||y<0||x>=n||y>=n||!c.tiles[j].rail||seen.has(j))continue;const u=c.tiles[j],axis=dx?'x':'y';if(t.terrain==='water'&&t.railAxis!==axis||u.terrain==='water'&&u.railAxis!==axis)continue;seen.add(j);q.push(j);}for(const [a,b]of tunnelEdges(c,'rail')){const other=q[k]===a?b:q[k]===b?a:null;if(other!==null&&!seen.has(other)){seen.add(other);q.push(other);}}}return c.tiles.filter(t=>['trainStation','railTransfer'].includes(t.type)&&t.stationActive&&t.stationNodes.some(i=>i<N&&seen.has(i)));}
+export function connectionRailStations(c,con){const N=c.tiles.length,{groups}=surfaceRailGroups(c),group=groups[con.tile];if(group===undefined||group<0)return[];return c.tiles.filter(t=>['trainStation','railTransfer'].includes(t.type)&&t.stationActive&&t.stationNodes.some(i=>i<N&&groups[i]===group));}
 function garbageRoads(c,d){return connectionRoadGroups(c,c.region.connections[d.connection]);}
 export function importGarbage(c){for(const d of c.region.deals){if(d.kind!=='garbage'||d.direction!=='import'||d.failed)continue;const t=c.tiles[c.region.connections[d.connection].tile];d.delivered=Math.min(d.amount,c.region.neighbors[c.region.connections[d.connection].side].wasteStored);t.waste+=d.delivered;t.roadIds=[...garbageRoads(c,d)];}}
 export function exportGarbage(c){for(const d of disposalContractOrder(c.region.deals)){if(d.kind!=='garbage'||d.direction!=='export'||d.failed)continue;const ids=garbageRoads(c,d);let remaining=neighborSupply(c,c.region.connections[d.connection].side,'garbage');d.delivered=0;for(const t of c.tiles)if(t.roadIds.some(id=>ids.has(id))){const moved=Math.min(t.waste,remaining);d.delivered+=moved;t.waste-=moved;remaining-=moved;}}}
