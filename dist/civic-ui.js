@@ -1,10 +1,10 @@
-import {activePolicyPetitions} from './petitions.js?v=scenario-programs-1';
-import {showPolicyPetitions} from './petitions-ui.js?v=scenario-programs-1';
-import {conservationReport} from './conservation.js?v=scenario-programs-1';
-import {educationReport,educationServiceDemand} from './education.js?v=scenario-programs-1';
-import {healthReport} from './health.js?v=scenario-programs-1';
-import {SERVICES,DEPARTMENTS,ORDINANCES,changeCivic,civicSpending,ordinanceCost,ordinanceRevenue} from './civic.js?v=scenario-programs-1';
-import {recompute} from './engine.js?v=scenario-programs-1';
+import {activePolicyPetitions} from './petitions.js?v=multi-neighbor-trade-1';
+import {showPolicyPetitions} from './petitions-ui.js?v=multi-neighbor-trade-1';
+import {conservationReport} from './conservation.js?v=multi-neighbor-trade-1';
+import {educationReport,educationServiceDemand} from './education.js?v=multi-neighbor-trade-1';
+import {healthReport} from './health.js?v=multi-neighbor-trade-1';
+import {SERVICES,DEPARTMENTS,ORDINANCES,changeCivic,civicSpending,ordinanceCost,ordinanceRevenue} from './civic.js?v=multi-neighbor-trade-1';
+import {recompute} from './engine.js?v=multi-neighbor-trade-1';
 const teachingGap=(c,type)=>{const d=educationServiceDemand(c,type);return d.share>0&&(c.stats[d.field]||0)<50;};
 export function civicAdvice(c){const s=c.stats;if(s.strikes.length)return `${s.strikes.map(k=>DEPARTMENTS[k]).join(', ')} workers are on strike. Restore funding to 100% and run one month to resume service.`;if(s.population&&s.healthCoverage<60)return 'Residents need healthcare. Build a powered hospital on their road network and fund Healthcare in Civic services.';if(s.population&&teachingGap(c,'school'))return 'Children lack school places. Add powered schools on their road networks and check education funding.';if(s.population&&teachingGap(c,'college'))return 'Young adults lack college places. Schools cannot replace colleges; connect and fund a college.';if(s.population&&educationServiceDemand(c,'library').share>0&&s.adultEducationCoverage<50)return 'Adults need places to retain their education. Connect and fund libraries or museums on their neighborhood roads.';if(s.averageCrime>25)return 'Crime is troubling residents. Place police near homes, check jail capacity, or fund neighborhood watch.';if(s.population&&s.fireCoverage<50)return 'Fire coverage is weak. Add fire stations near homes and maintain their funding. Water lowers flammability.';return 'Service coverage is improving. Watch the budget while education and life expectancy change over time.';}
 export function showCivic(ui){

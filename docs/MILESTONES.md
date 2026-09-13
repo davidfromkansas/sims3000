@@ -625,3 +625,8 @@ Zone a serviced 2×2 medium-density or 3×3 dense area and let it develop. Inspe
 ### Author branching city challenges (source checkpoint; publication pending)
 
 Create a routine that increments a variable, chooses an If/Else path, shows a popup and calls a second routine to activate a goal or offer a reward. Schedule it to repeat. Save while the popup is pending, reload and continue; inspect Routine history to see the saved branch choice. Copy routines from the current challenge into a new draft. Feedback target: are action order, branch choices, routine calls and pauses understandable without writing code?
+
+
+### Diversify supply and trade with several neighbors (source checkpoint; publication pending)
+
+Connect two neighbors to a power or water network and sign import contracts with both. Inspect each delivery and minimum fee, then interrupt one supplier or separate a district from the grid. Sell genuine surplus through another network, or combine disposal contracts for excess garbage. Feedback target: can you distinguish supplier shortages from missing local connections, understand backup costs and review one contract without affecting the others?

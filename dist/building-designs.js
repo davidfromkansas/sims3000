@@ -1,7 +1,7 @@
-import {parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=scenario-programs-1';
-import {validateBuildingMaterials} from './building-materials.js?v=scenario-programs-1';
-import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=scenario-programs-1';
-import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=scenario-programs-1';
+import {parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=multi-neighbor-trade-1';
+import {validateBuildingMaterials} from './building-materials.js?v=multi-neighbor-trade-1';
+import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=multi-neighbor-trade-1';
+import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=multi-neighbor-trade-1';
 export function defaultBuildingDesign(key=2){const {source,footprint}=parseBuildingSlot(key);return{name:REPLACEABLE_STYLES[source]?.level===1?'My neighborhood building':'My building',floors:[0,2,6,12][REPLACEABLE_STYLES[source]?.level||3],width:8,depth:8,roof:'step',facade:'#b6c4bd',windows:'#3c6b79',accent:'#dab572',...(footprint.width!==1||footprint.height!==1?{footprint}:{})};}
 // Original procedural artwork for larger lots; style swaps select a matching
 // footprint model, never enlarge a legacy single-tile image.
