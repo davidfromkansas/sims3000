@@ -815,3 +815,5 @@ Vertical building construction checkpoint: edit either vertical cross-section to
 Building edit guidance checkpoint: selected cross-sections and pending blocks now appear on the rotating model preview. See [3D edit guides](BUILDING-PLANE-GUIDES-MILESTONE.md). All 213 suites passed; source only, publication pending.
 
 Building inspection checkpoint: zoom and pan close-ups, rotate both directions, and reset the preview while preserving model data. See [preview navigation](BUILDING-PREVIEW-NAVIGATION-MILESTONE.md). All 214 suites passed; source only, publication pending.
+
+First-town guidance checkpoint: eight live construction and service checks with tools and report shortcuts. See [first-town services](FIRST-TOWN-SERVICES-MILESTONE.md). All 215 suites passed; source only, publication pending.
