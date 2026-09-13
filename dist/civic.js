@@ -1,12 +1,13 @@
-import {advanceEducation,initialAgeEducation,educationWeights,refreshEducationAverages} from './education.js?v=navigation-data-1';
-import {healthOutlook} from './health.js?v=navigation-data-1';
-import {casinoCrime,businessRoots} from './business.js?v=navigation-data-1';
-import {occupancy} from './utilities.js?v=navigation-data-1';
+import {advanceEducation,initialAgeEducation,educationWeights,refreshEducationAverages} from './education.js?v=service-precincts-1';
+import {healthOutlook} from './health.js?v=service-precincts-1';
+import {casinoCrime,businessRoots} from './business.js?v=service-precincts-1';
+import {occupancy} from './utilities.js?v=service-precincts-1';
 // Manual pp.106–113 describes relationships; radii, capacities and rates below are calibration approximations.
 export const SERVICES={police:{name:'Police station',department:'police',cost:500,upkeep:25,radius:9},fire:{name:'Fire station',department:'fire',cost:500,upkeep:25,radius:9},hospital:{name:'Hospital',department:'health',cost:1000,upkeep:40,capacity:1000},school:{name:'School',department:'education',cost:500,upkeep:20,capacity:300},jail:{name:'Jail',department:'police',cost:1500,upkeep:35,capacity:200},college:{name:'College',department:'education',cost:1000,upkeep:35,capacity:500},library:{name:'Library',department:'education',cost:500,upkeep:10,capacity:1000},museum:{name:'Museum',department:'education',cost:1500,upkeep:20,capacity:1500}};
+export function serviceRadius(c,t){const d=SERVICES[t.type];return t.serviceActive&&d?.radius?d.radius*Math.sqrt(c.civic.funding[d.department]/100):0;}
 export const DEPARTMENTS={police:'Police',fire:'Fire',health:'Healthcare',education:'Education'};
-import {ORDINANCES} from './ordinances.js?v=navigation-data-1';
-export {ORDINANCES} from './ordinances.js?v=navigation-data-1';
+import {ORDINANCES} from './ordinances.js?v=service-precincts-1';
+export {ORDINANCES} from './ordinances.js?v=service-precincts-1';
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 export const freshCivic=()=>({funding:Object.fromEntries(Object.keys(DEPARTMENTS).map(k=>[k,100])),underfunded:Object.fromEntries(Object.keys(DEPARTMENTS).map(k=>[k,0])),ageEducation:initialAgeEducation(),education:40,youthEducation:40,adultEducation:40,lifeExpectancy:59,ordinances:Object.fromEntries(Object.keys(ORDINANCES).map(k=>[k,false]))});
 export function changeCivic(c,funding,ordinances){if(!funding||Object.keys(DEPARTMENTS).some(k=>!Number.isInteger(funding[k])||funding[k]<0||funding[k]>150)||!ordinances||Object.keys(ORDINANCES).some(k=>typeof ordinances[k]!=='boolean'))return{ok:false,error:'Service funding must be 0–150%; choose valid ordinance settings.'};c.civic.funding=Object.fromEntries(Object.keys(DEPARTMENTS).map(k=>[k,funding[k]]));c.civic.ordinances=Object.fromEntries(Object.keys(ORDINANCES).map(k=>[k,ordinances[k]]));return{ok:true};}
@@ -19,7 +20,7 @@ export function recomputeCivic(c){
  const strikes=Object.keys(DEPARTMENTS).filter(k=>state.underfunded[k]>=6);
  for(const t of tiles){t.aura=0;t.policeCoverage=0;t.fireCoverage=0;t.healthCoverage=0;t.educationCoverage=0;t.schoolCoverage=0;t.adultEducationCoverage=0;t.serviceActive=false;t.crime=0;t.flammability=t.type?(t.type==='industrial'?80:60)*(t.watered?.35:1)*(state.ordinances.fireCode?.8:1):0;const s=SERVICES[t.type];if(!s)continue;counts[t.type]++;t.serviceActive=t.powered&&t.roadIds.length>0&&c.finance.roadCondition>20&&state.funding[s.department]>0&&!strikes.includes(s.department);if(t.serviceActive){active[t.type]++;capacities[t.type]+=(s.capacity||0)*state.funding[s.department]/100;}}
  const jailNeed=Math.ceil(population*.01),jailAdequacy=jailNeed?Math.min(1,capacities.jail/jailNeed):1;
- for(const t of tiles){const s=SERVICES[t.type];if(!s||!t.serviceActive||!s.radius)continue;const funding=state.funding[s.department]/100,r=s.radius*Math.sqrt(funding),field=t.type==='police'?'policeCoverage':'fireCoverage';for(let y=Math.max(0,Math.floor(t.y-r));y<=Math.min(n-1,Math.ceil(t.y+r));y++)for(let x=Math.max(0,Math.floor(t.x-r));x<=Math.min(n-1,Math.ceil(t.x+r));x++){const d=Math.hypot(x-t.x,y-t.y);if(d<r)tiles[y*n+x][field]+=100*funding*(1-d/r)*(t.type==='police'?.6+.4*jailAdequacy:1);}}
+ for(const t of tiles){const s=SERVICES[t.type];if(!s||!t.serviceActive||!s.radius)continue;const funding=state.funding[s.department]/100,r=serviceRadius(c,t),field=t.type==='police'?'policeCoverage':'fireCoverage';for(let y=Math.max(0,Math.floor(t.y-r));y<=Math.min(n-1,Math.ceil(t.y+r));y++)for(let x=Math.max(0,Math.floor(t.x-r));x<=Math.min(n-1,Math.ceil(t.x+r));x++){const d=Math.hypot(x-t.x,y-t.y);if(d<r)tiles[y*n+x][field]+=100*funding*(1-d/r)*(t.type==='police'?.6+.4*jailAdequacy:1);}}
  // Capacity is shared among homes reached on the same road component, not credited to disconnected neighborhoods.
  for(const t of tiles){const s=SERVICES[t.type];if(!s||!t.serviceActive||!['hospital','school','college','library','museum'].includes(t.type))continue;const served=homes.filter(h=>h.roadIds.some(id=>t.roadIds.includes(id))),people=served.reduce((v,h)=>v+occupancy(h.level)*8,0);if(!people)continue;const share=s.capacity*state.funding[s.department]/100/people;for(const h of served){if(t.type==='hospital')h.healthCoverage+=100*share;else if(['school','college'].includes(t.type)){if(educationMix.youth)h.schoolCoverage+=100*share*({school:.65,college:.35}[t.type])/educationMix.youth;}else if(educationMix.adult)h.adultEducationCoverage+=100*share/educationMix.adult;}}
  // Restore environmental values so repeated civic recomputation cannot compound penalties.
