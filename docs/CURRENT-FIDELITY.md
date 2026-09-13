@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 217 regression suites, save schema 120. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 218 regression suites, save schema 120. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -821,3 +821,5 @@ First-town guidance checkpoint: eight live construction and service checks with 
 Neighborhood inspection checkpoint: compare resident-weighted service conditions around any queried tile, resize the area, and open local maps or planning reports. See [neighborhood services](NEIGHBORHOOD-SERVICES-MILESTONE.md). All 216 suites passed; source only, publication pending.
 
 Large-map navigation checkpoint: cached terrain and service rings remove repeated full-map tile painting; whole-pixel backing maps avoid fractional raster seams. See [navigation rendering](NAVIGATION-CACHE-MILESTONE.md). All 217 suites passed; browser benchmark and interactive checks passed; source only, publication pending.
+
+Dense-city geometry checkpoint: stationary frames reuse projected tile positions and depth ordering, with camera and terrain invalidation. See [frame geometry](SCENE-GEOMETRY-MILESTONE.md). All 218 suites passed; actual-renderer browser comparisons matched pixels; source only, publication pending.

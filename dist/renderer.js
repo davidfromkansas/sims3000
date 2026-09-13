@@ -1,40 +1,41 @@
-import {waterViewColor} from './water-view.js?v=navigation-cache-1';
-import {drawGarbageBacklog} from './garbage-visuals.js?v=navigation-cache-1';
-import {MODELED_WASTE,drawCityWaste,wastePlumeOutput} from './waste-models.js?v=navigation-cache-1';
-import {quakeBands} from './earthquake-settings.js?v=navigation-cache-1';
-import {MODELED_REWARDS,drawCityReward} from './reward-models.js?v=navigation-cache-1';
-import {landscapePalette,landscapeGround} from './city-appearance.js?v=navigation-cache-1';
-import {drawCityTrees} from './tree-models.js?v=navigation-cache-1';
-import {EDUCATION_LAYERS,educationLayerProfile,educationLayerColor} from './education-layers.js?v=navigation-cache-1';
-import {buildingLotPlacement} from './building-lot-view.js?v=navigation-cache-1';
-import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=navigation-cache-1';
-import {drawCityWater} from './water-models.js?v=navigation-cache-1';
-import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=navigation-cache-1';
-import {drawCityCivic} from './civic-models.js?v=navigation-cache-1';
-import {drawBridgeStructure} from './bridge-structures.js?v=navigation-cache-1';
-import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=navigation-cache-1';
-import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=navigation-cache-1';
-import {stationAreas} from './service-areas.js?v=navigation-cache-1';
-import {cityGrid,visibleTileBounds} from './city-grid.js?v=navigation-cache-1';
-import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=navigation-cache-1';
-import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=navigation-cache-1';
-import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=navigation-cache-1';
-import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=navigation-cache-1';
-import {inScenarioArea} from './scenario-area.js?v=navigation-cache-1';
-import {railPaths,railVehicles} from './rail-visuals.js?v=navigation-cache-1';
-import {baseZonedSprite,zonedSprite} from './building-art.js?v=navigation-cache-1';
-import {trafficPaths,trafficVehicles} from './traffic-visuals.js?v=navigation-cache-1';
-import {tunnelAt} from './tunnels.js?v=navigation-cache-1';
-import {STRUCTURES} from './structures.js?v=navigation-cache-1';
-import {LANDSCAPE} from './landscape.js?v=navigation-cache-1';
-import {POWER_PLANTS} from './power.js?v=navigation-cache-1';
-import {WATER_STRUCTURES} from './utilities.js?v=navigation-cache-1';
-import {FACILITIES} from './facilities.js?v=navigation-cache-1';
-import {rampCrossings} from './highway.js?v=navigation-cache-1';
-import {STATIONS} from './rail.js?v=navigation-cache-1';
-import {roadNeighbors} from './transport.js?v=navigation-cache-1';
-import {SERVICES} from './civic.js?v=navigation-cache-1';
-import {ZONES,selection,planBuild} from './engine.js?v=navigation-cache-1';
+import {visibleSceneGeometry} from './scene-geometry.js?v=scene-geometry-1';
+import {waterViewColor} from './water-view.js?v=scene-geometry-1';
+import {drawGarbageBacklog} from './garbage-visuals.js?v=scene-geometry-1';
+import {MODELED_WASTE,drawCityWaste,wastePlumeOutput} from './waste-models.js?v=scene-geometry-1';
+import {quakeBands} from './earthquake-settings.js?v=scene-geometry-1';
+import {MODELED_REWARDS,drawCityReward} from './reward-models.js?v=scene-geometry-1';
+import {landscapePalette,landscapeGround} from './city-appearance.js?v=scene-geometry-1';
+import {drawCityTrees} from './tree-models.js?v=scene-geometry-1';
+import {EDUCATION_LAYERS,educationLayerProfile,educationLayerColor} from './education-layers.js?v=scene-geometry-1';
+import {buildingLotPlacement} from './building-lot-view.js?v=scene-geometry-1';
+import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=scene-geometry-1';
+import {drawCityWater} from './water-models.js?v=scene-geometry-1';
+import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=scene-geometry-1';
+import {drawCityCivic} from './civic-models.js?v=scene-geometry-1';
+import {drawBridgeStructure} from './bridge-structures.js?v=scene-geometry-1';
+import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=scene-geometry-1';
+import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=scene-geometry-1';
+import {stationAreas} from './service-areas.js?v=scene-geometry-1';
+import {cityGrid,visibleTileBounds} from './city-grid.js?v=scene-geometry-1';
+import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=scene-geometry-1';
+import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=scene-geometry-1';
+import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=scene-geometry-1';
+import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=scene-geometry-1';
+import {inScenarioArea} from './scenario-area.js?v=scene-geometry-1';
+import {railPaths,railVehicles} from './rail-visuals.js?v=scene-geometry-1';
+import {baseZonedSprite,zonedSprite} from './building-art.js?v=scene-geometry-1';
+import {trafficPaths,trafficVehicles} from './traffic-visuals.js?v=scene-geometry-1';
+import {tunnelAt} from './tunnels.js?v=scene-geometry-1';
+import {STRUCTURES} from './structures.js?v=scene-geometry-1';
+import {LANDSCAPE} from './landscape.js?v=scene-geometry-1';
+import {POWER_PLANTS} from './power.js?v=scene-geometry-1';
+import {WATER_STRUCTURES} from './utilities.js?v=scene-geometry-1';
+import {FACILITIES} from './facilities.js?v=scene-geometry-1';
+import {rampCrossings} from './highway.js?v=scene-geometry-1';
+import {STATIONS} from './rail.js?v=scene-geometry-1';
+import {roadNeighbors} from './transport.js?v=scene-geometry-1';
+import {SERVICES} from './civic.js?v=scene-geometry-1';
+import {ZONES,selection,planBuild} from './engine.js?v=scene-geometry-1';
 const COLORS={residential:'#81b96b',commercial:'#79baca',industrial:'#d9ba6b'};
 export class CityRenderer{
  constructor(canvas,getCity){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.rotation=0;this.layer='city';this.tool='road';this.density=1;this.hover=null;this.drag=null;this.sprites=[];this.assetReady=false;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');this.time=0;this.vehicleTime=0;this.previousFrame=null;this.dirty=true;this.w=0;this.h=0;this.resize=new ResizeObserver(()=>{const first=this.w===0;this.w=canvas.clientWidth;this.h=canvas.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);canvas.width=this.w*this.dpr;canvas.height=this.h*this.dpr;if(first)this.center();this.dirty=true;});this.resize.observe(canvas);this.loadSprites();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);}
@@ -97,7 +98,7 @@ export class CityRenderer{
  const trains=new Map();if(showVehicles&&['city','rail'].includes(this.layer)){if(this.trainCity!==city||this.trainStats!==city.stats){this.trainCity=city;this.trainStats=city.stats;this.trainRoutes=railPaths(city);}for(const v of railVehicles(city,this.vehicleTime,72,this.trainRoutes,visiblePosition)){if(!trains.has(v.tile))trains.set(v.tile,[]);trains.get(v.tile).push(v);}}
  const vehicles=new Map();if(showVehicles&&this.layer==='city'){const viewKey=[this.rotation,this.zoom,this.pan.x,this.pan.y,this.w,this.h].join(':');if(this.trafficCity!==city||this.trafficStats!==city.stats||this.trafficViewKey!==viewKey){this.trafficCity=city;this.trafficStats=city.stats;this.trafficViewKey=viewKey;this.trafficRoutes=trafficPaths(city,180,{bounds,contains:visiblePosition});}for(const v of trafficVehicles(city,this.vehicleTime,180,this.trafficRoutes)){if(!vehicles.has(v.tile))vehicles.set(v.tile,[]);vehicles.get(v.tile).push(v);}}
  const walkers=new Map();if(showTransportation&&this.layer==='city'&&this.preferences?.pedestriansVisible!==false&&this.zoom>=(this.preferences?.pedestrianMinZoom??1)&&!city.emergency.active){if(this.pedestrianStats!==city.stats){this.pedestrianStats=city.stats;this.walkingRoutes=pedestrianRoutes(city);}for(const walker of pedestrians(city,this.vehicleTime,this.walkingRoutes)){if(this.reducedMotion.matches)walker.gait=0;if(!walkers.has(walker.tile))walkers.set(walker.tile,[]);walkers.get(walker.tile).push(walker);}}
- this.updateGoalAreaIndicator?.();const visible=[];for(let y=bounds.y0;y<=bounds.y1;y++)for(let x=bounds.x0;x<=bounds.x1;x++)visible.push(city.tiles[idx(x,y)]);let sorted=visible.map(t=>({t,p:this.project(t.x,t.y),r:this.transform(t.x,t.y)})).sort((a,b)=>(a.r[0]+a.r[1])-(b.r[0]+b.r[1])||a.r[0]-b.r[0]);
+ this.updateGoalAreaIndicator?.();const sorted=visibleSceneGeometry(this,bounds);
  for(const {t,p} of sorted){if(p.x<-u*4||p.x>this.w+u*4||p.y>this.h+u*3||p.y<-u*8)continue;const water=t.terrain==='water';let fill=water?`hsl(172, ${24+(t.x+t.y)%3}%, ${57+(t.x*3+t.y)%3}%)`:landscapeGround(t,landscapeStyle);
  if(!water&&t.x>0&&city.tiles[idx(t.x-1,t.y)].terrain==='water')fill=palette.bank;
  if(ZONES.includes(t.type)){if(showZones&&(!t.level||this.layer==='zones'))fill=COLORS[t.type];if(this.layer==='power')fill=t.powered?'#95d6b2':'#c08879';}
