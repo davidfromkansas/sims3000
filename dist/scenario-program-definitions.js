@@ -1,7 +1,7 @@
-import {compileScenarioPrograms} from './scenario-programs.js?v=playtest-checkpoints-2';
-import {validateEventDefinitions,validateEventCondition} from './scenario-events.js?v=playtest-checkpoints-2';
-import {validateGoalStatusReferences} from './scenario-goal-status.js?v=playtest-checkpoints-2';
-import {MAP_SIZES} from './city-grid.js?v=playtest-checkpoints-2';
+import {compileScenarioPrograms} from './scenario-programs.js?v=loan-calendar-1';
+import {validateEventDefinitions,validateEventCondition} from './scenario-events.js?v=loan-calendar-1';
+import {validateGoalStatusReferences} from './scenario-goal-status.js?v=loan-calendar-1';
+import {MAP_SIZES} from './city-grid.js?v=loan-calendar-1';
 // Program leaves have no clocks or private conditions: schedule the entry call,
 // and put conditional behavior in an explicit If / Else block.
 export function compileGameScenarioPrograms(value,{size=48,objectives=[]}={}){
