@@ -1,7 +1,7 @@
-import {ORDINANCES,changeCivic,ordinanceCost} from './civic.js?v=earthquake-magnitude-1';
-import {recompute,validateSave} from './engine.js?v=earthquake-magnitude-1';
-import {serializeCity} from './save.js?v=earthquake-magnitude-1';
-import {healthOutlook} from './health.js?v=earthquake-magnitude-1';
+import {ORDINANCES,changeCivic,ordinanceCost} from './civic.js?v=tornado-controls-1';
+import {recompute,validateSave} from './engine.js?v=tornado-controls-1';
+import {serializeCity} from './save.js?v=tornado-controls-1';
+import {healthOutlook} from './health.js?v=tornado-controls-1';
 export const POLICY_PETITIONS={
  freeClinics:{who:'Residents’ health committee',why:'Hospital access is limited. Help residents with free clinics while expanding care.',enact:true,needed:c=>c.stats.healthCoverage<60},
  reading:{who:'Parents and readers association',why:'Education remains low. Support a reading campaign alongside schools and libraries.',enact:true,needed:c=>c.civic.education<50},
