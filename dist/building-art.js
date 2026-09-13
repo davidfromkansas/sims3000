@@ -1,4 +1,4 @@
-import {tileIndex} from './city-grid.js?v=recreation-collection-1';
+import {tileIndex} from './city-grid.js?v=age-teaching-1';
 // Variants depend only on the lot and city seed, so saved and historical buildings keep their appearance.
 export function baseZonedSprite(t,seed){
  const level=t.historicalLevel||t.abandonedLevel||t.level;
