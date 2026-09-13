@@ -741,3 +741,5 @@ Scenario inspection checkpoint: preview actual prepared-city layouts, starting f
 Camera inspection checkpoint: rotate both directions while keeping the panned neighborhood in view. See [anchored camera rotation](CAMERA-ROTATION-MILESTONE.md). Source only; publication pending.
 
 Visible sanitation checkpoint: rubbish piles now reveal uncollected waste in City view and disappear with actual collection. See [visible garbage](VISIBLE-GARBAGE-MILESTONE.md). Source only; publication pending.
+
+Disposal planning checkpoint: locate aging recycling and incineration facilities, compare current and future capacity, and inspect them directly. See [disposal maintenance](DISPOSAL-MAINTENANCE-MILESTONE.md). Source only; publication pending.
