@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 145 regression suites, save schema 103. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 146 regression suites, save schema 104. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -617,3 +617,7 @@ Derived network summaries are computed during normal simulation and only retaine
 ### Scenario background rules — source checkpoint (publication pending)
 
 Manual p.186 motivates author control of unscripted disasters and business deals. The editor now has separate rules for random disaster generation and future automatic business proposals, applied while a custom challenge is playing. Scripted events bypass these gates; saved random preferences, existing offers, accepted permits and income remain intact. Manual disaster tools and infrastructure failures remain available. The rules persist through save/import/restart and release on victory or loss. This is a bounded authoring feature, not complete DisableBusinessDeals / EnableDisableDisasters VM command fidelity. It does not revoke pre-existing unscripted offers or disable individual neighbor contracts. Schema 103; 145 suites. Browser testing and publication remain pending authorization.
+
+### Neighborhood building customization — source checkpoint (publication pending)
+
+The manual pp.78–81 describes citywide building replacement across building types. The supported library expands from four tower slots to all 14 existing non-farm RCI art styles: four residential, four commercial and six dirty/clean industrial styles. Custom models, block layouts and surface paints work in every slot; parametric floors now range 1–24. Replacement artwork stays within the zone family and does not change simulation inputs. Historical and abandoned buildings retain applicable designs; farms, empty lots, rubble and radiation are excluded. Schema 104; 146 suites. Actual draw commands rendered offline in `previews/neighborhood-building-designer.png` cover three sample low-rise designs in all rotations. This does not establish browser acceptance, provide original building-file compatibility or complete the original building/lot-size catalogs. Publication remains pending.

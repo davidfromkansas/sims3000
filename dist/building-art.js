@@ -1,4 +1,4 @@
-import {tileIndex} from './city-grid.js?v=scenario-background-1';
+import {tileIndex} from './city-grid.js?v=neighborhood-designs-1';
 // Variants depend only on the lot and city seed, so saved and historical buildings keep their appearance.
 export function baseZonedSprite(t,seed){
  const level=t.historicalLevel||t.abandonedLevel||t.level;
@@ -8,7 +8,12 @@ export function baseZonedSprite(t,seed){
  return t.industry==='farm'?(t.farmRoot===tileIndex(t)?52:53):t.industry==='clean'?[54,54,55,56][level]:[6,6,7,8][level];
 }
 
-export const REPLACEABLE_STYLES={2:{name:'Classic apartment tower',group:'residential'},74:{name:'Terraced apartment tower',group:'residential'},5:{name:'Classic office tower',group:'commercial'},75:{name:'Stepped glass office',group:'commercial'}};
+export const REPLACEABLE_STYLES={
+ 0:{name:'Detached homes',group:'residential',level:1},1:{name:'Residential mid-rise',group:'residential',level:2},2:{name:'Classic apartment tower',group:'residential',level:3},74:{name:'Terraced apartment tower',group:'residential',level:3},
+ 3:{name:'Neighborhood shops',group:'commercial',level:1},4:{name:'Commercial mid-rise',group:'commercial',level:2},5:{name:'Classic office tower',group:'commercial',level:3},75:{name:'Stepped glass office',group:'commercial',level:3},
+ 6:{name:'Small factory',group:'industrial',level:1},7:{name:'Industrial works',group:'industrial',level:2},8:{name:'Heavy industrial complex',group:'industrial',level:3},54:{name:'Small clean-industry workshop',group:'industrial',level:1},55:{name:'Clean-industry campus',group:'industrial',level:2},56:{name:'High-tech industrial complex',group:'industrial',level:3}
+};
+export function canReplaceBuilding(t){return !t.rubble&&!t.radiation&&['residential','commercial','industrial'].includes(t.type)&&t.industry!=='farm'&&[1,2,3].includes(t.historicalLevel||t.abandonedLevel||t.level);}
 export function zonedSprite(t,seed,replacements={}){const base=baseZonedSprite(t,seed);return replacements[base]??base;}
 export function validateBuildingReplacements(value){if(!value||typeof value!=='object'||Array.isArray(value))throw Error('Invalid building replacements.');const out={};for(const [source,target]of Object.entries(value)){if(!Object.hasOwn(REPLACEABLE_STYLES,source)||!Number.isInteger(target)||!Object.hasOwn(REPLACEABLE_STYLES,target)||REPLACEABLE_STYLES[source].group!==REPLACEABLE_STYLES[target].group)throw Error('Invalid building replacement style.');if(Number(source)!==target)out[source]=target;}return out;}
 export function replaceBuildingStyle(c,source,target){const next=validateBuildingReplacements({...c.buildingReplacements,[source]:target});c.buildingReplacements=next;if(c.buildingDesigns)delete c.buildingDesigns[source];}
