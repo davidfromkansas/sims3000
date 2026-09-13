@@ -1,9 +1,9 @@
-import {landfillRailFreight} from './rail-freight.js?v=direct-model-paint-2';
-import {waterBaseNeed} from './utility-demand.js?v=direct-model-paint-2';
-import {pipeCoverage} from './water-coverage.js?v=direct-model-paint-2';
-import {conservationDemand} from './conservation.js?v=direct-model-paint-2';
-import {industrialJobs} from './industry.js?v=direct-model-paint-2';
-import {tradeCapacity} from './region.js?v=direct-model-paint-2';
+import {landfillRailFreight} from './rail-freight.js?v=business-site-analysis-2';
+import {waterBaseNeed} from './utility-demand.js?v=business-site-analysis-2';
+import {pipeCoverage} from './water-coverage.js?v=business-site-analysis-2';
+import {conservationDemand} from './conservation.js?v=business-site-analysis-2';
+import {industrialJobs} from './industry.js?v=business-site-analysis-2';
+import {tradeCapacity} from './region.js?v=business-site-analysis-2';
 // Manual pp. 16–17, 103, 115, 117–118. Capacities/rates are explicit model approximations.
 export const WATER_CAPACITY=500,LANDFILL_CAPACITY=200,LANDFILL_DECAY=.5;
 export const occupancy=level=>[0,1,3,8][level]||0;

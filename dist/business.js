@@ -1,4 +1,4 @@
-import {scenarioAllowsBackground} from './scenario-background-rules.js?v=direct-model-paint-2';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=business-site-analysis-2';
 // Manual pp.90,92,106: petitioner offers, stipend while standing, and casino crime.
 // Eligibility, size, stipend and crime falloff are original calibration.
 export const BUSINESSES={casino:{name:'Casino',size:3,cost:0,upkeep:0,sprite:64,stipend:150},toxicWaste:{name:'Toxic Waste Conversion Plant',size:3,cost:0,upkeep:0,sprite:70,stipend:300}};
