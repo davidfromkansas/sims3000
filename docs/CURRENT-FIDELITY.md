@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 214 regression suites, save schema 120. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 216 regression suites, save schema 120. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -817,3 +817,5 @@ Building edit guidance checkpoint: selected cross-sections and pending blocks no
 Building inspection checkpoint: zoom and pan close-ups, rotate both directions, and reset the preview while preserving model data. See [preview navigation](BUILDING-PREVIEW-NAVIGATION-MILESTONE.md). All 214 suites passed; source only, publication pending.
 
 First-town guidance checkpoint: eight live construction and service checks with tools and report shortcuts. See [first-town services](FIRST-TOWN-SERVICES-MILESTONE.md). All 215 suites passed; source only, publication pending.
+
+Neighborhood inspection checkpoint: compare resident-weighted service conditions around any queried tile, resize the area, and open local maps or planning reports. See [neighborhood services](NEIGHBORHOOD-SERVICES-MILESTONE.md). All 216 suites passed; source only, publication pending.

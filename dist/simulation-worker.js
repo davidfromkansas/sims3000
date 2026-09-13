@@ -1,4 +1,4 @@
-import {tick} from './engine.js?v=first-town-services-1';
+import {tick} from './engine.js?v=neighborhood-services-2';
 self.onmessage=({data})=>{
  try{const result=tick(data.city);self.postMessage({id:data.id,city:data.city,result});}
  catch(error){self.postMessage({id:data.id,error:error.message||'Simulation failed.'});}
