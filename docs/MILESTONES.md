@@ -595,3 +595,7 @@ Choose Calendar date for a goal or event/rank condition, or Calendar month for a
 ### Build roads and neighborhoods with the keyboard (source checkpoint; publication pending)
 
 Focus the map, choose R or a zone hotkey, and move with arrows. Press Shift + Enter to start a range, extend it with arrows, and press Enter to build. Try this near a map edge and after rotating; Escape cancels without spending. Feedback target: can you confidently lay out roads and zoning rectangles without switching to a mouse?
+
+### Create tax and debt challenges (source checkpoint; publication pending)
+
+Author a challenge requiring all loan payments to clear while keeping residential taxes below a chosen rate. Add a land-value objective or announce remaining debt in a scheduled message. Save and replay it. Feedback target: are the financial targets clear, and can you distinguish remaining loan obligations from available treasury funds?
