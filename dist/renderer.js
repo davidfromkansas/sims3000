@@ -1,38 +1,39 @@
-import {MODELED_WASTE,drawCityWaste,wastePlumeOutput} from './waste-models.js?v=anchored-camera-rotation-1';
-import {quakeBands} from './earthquake-settings.js?v=anchored-camera-rotation-1';
-import {MODELED_REWARDS,drawCityReward} from './reward-models.js?v=anchored-camera-rotation-1';
-import {landscapePalette,landscapeGround} from './city-appearance.js?v=anchored-camera-rotation-1';
-import {drawCityTrees} from './tree-models.js?v=anchored-camera-rotation-1';
-import {EDUCATION_LAYERS,educationLayerProfile,educationLayerColor} from './education-layers.js?v=anchored-camera-rotation-1';
-import {buildingLotPlacement} from './building-lot-view.js?v=anchored-camera-rotation-1';
-import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=anchored-camera-rotation-1';
-import {drawCityWater} from './water-models.js?v=anchored-camera-rotation-1';
-import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=anchored-camera-rotation-1';
-import {drawCityCivic} from './civic-models.js?v=anchored-camera-rotation-1';
-import {drawBridgeStructure} from './bridge-structures.js?v=anchored-camera-rotation-1';
-import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=anchored-camera-rotation-1';
-import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=anchored-camera-rotation-1';
-import {stationAreas} from './service-areas.js?v=anchored-camera-rotation-1';
-import {cityGrid,visibleTileBounds} from './city-grid.js?v=anchored-camera-rotation-1';
-import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=anchored-camera-rotation-1';
-import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=anchored-camera-rotation-1';
-import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=anchored-camera-rotation-1';
-import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=anchored-camera-rotation-1';
-import {inScenarioArea} from './scenario-area.js?v=anchored-camera-rotation-1';
-import {railPaths,railVehicles} from './rail-visuals.js?v=anchored-camera-rotation-1';
-import {baseZonedSprite,zonedSprite} from './building-art.js?v=anchored-camera-rotation-1';
-import {trafficPaths,trafficVehicles} from './traffic-visuals.js?v=anchored-camera-rotation-1';
-import {tunnelAt} from './tunnels.js?v=anchored-camera-rotation-1';
-import {STRUCTURES} from './structures.js?v=anchored-camera-rotation-1';
-import {LANDSCAPE} from './landscape.js?v=anchored-camera-rotation-1';
-import {POWER_PLANTS} from './power.js?v=anchored-camera-rotation-1';
-import {WATER_STRUCTURES} from './utilities.js?v=anchored-camera-rotation-1';
-import {FACILITIES} from './facilities.js?v=anchored-camera-rotation-1';
-import {rampCrossings} from './highway.js?v=anchored-camera-rotation-1';
-import {STATIONS} from './rail.js?v=anchored-camera-rotation-1';
-import {roadNeighbors} from './transport.js?v=anchored-camera-rotation-1';
-import {SERVICES} from './civic.js?v=anchored-camera-rotation-1';
-import {ZONES,selection,planBuild} from './engine.js?v=anchored-camera-rotation-1';
+import {drawGarbageBacklog} from './garbage-visuals.js?v=visible-garbage-backlog-1';
+import {MODELED_WASTE,drawCityWaste,wastePlumeOutput} from './waste-models.js?v=visible-garbage-backlog-1';
+import {quakeBands} from './earthquake-settings.js?v=visible-garbage-backlog-1';
+import {MODELED_REWARDS,drawCityReward} from './reward-models.js?v=visible-garbage-backlog-1';
+import {landscapePalette,landscapeGround} from './city-appearance.js?v=visible-garbage-backlog-1';
+import {drawCityTrees} from './tree-models.js?v=visible-garbage-backlog-1';
+import {EDUCATION_LAYERS,educationLayerProfile,educationLayerColor} from './education-layers.js?v=visible-garbage-backlog-1';
+import {buildingLotPlacement} from './building-lot-view.js?v=visible-garbage-backlog-1';
+import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=visible-garbage-backlog-1';
+import {drawCityWater} from './water-models.js?v=visible-garbage-backlog-1';
+import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=visible-garbage-backlog-1';
+import {drawCityCivic} from './civic-models.js?v=visible-garbage-backlog-1';
+import {drawBridgeStructure} from './bridge-structures.js?v=visible-garbage-backlog-1';
+import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=visible-garbage-backlog-1';
+import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=visible-garbage-backlog-1';
+import {stationAreas} from './service-areas.js?v=visible-garbage-backlog-1';
+import {cityGrid,visibleTileBounds} from './city-grid.js?v=visible-garbage-backlog-1';
+import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=visible-garbage-backlog-1';
+import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=visible-garbage-backlog-1';
+import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=visible-garbage-backlog-1';
+import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=visible-garbage-backlog-1';
+import {inScenarioArea} from './scenario-area.js?v=visible-garbage-backlog-1';
+import {railPaths,railVehicles} from './rail-visuals.js?v=visible-garbage-backlog-1';
+import {baseZonedSprite,zonedSprite} from './building-art.js?v=visible-garbage-backlog-1';
+import {trafficPaths,trafficVehicles} from './traffic-visuals.js?v=visible-garbage-backlog-1';
+import {tunnelAt} from './tunnels.js?v=visible-garbage-backlog-1';
+import {STRUCTURES} from './structures.js?v=visible-garbage-backlog-1';
+import {LANDSCAPE} from './landscape.js?v=visible-garbage-backlog-1';
+import {POWER_PLANTS} from './power.js?v=visible-garbage-backlog-1';
+import {WATER_STRUCTURES} from './utilities.js?v=visible-garbage-backlog-1';
+import {FACILITIES} from './facilities.js?v=visible-garbage-backlog-1';
+import {rampCrossings} from './highway.js?v=visible-garbage-backlog-1';
+import {STATIONS} from './rail.js?v=visible-garbage-backlog-1';
+import {roadNeighbors} from './transport.js?v=visible-garbage-backlog-1';
+import {SERVICES} from './civic.js?v=visible-garbage-backlog-1';
+import {ZONES,selection,planBuild} from './engine.js?v=visible-garbage-backlog-1';
 const COLORS={residential:'#81b96b',commercial:'#79baca',industrial:'#d9ba6b'};
 export class CityRenderer{
  constructor(canvas,getCity){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.rotation=0;this.layer='city';this.tool='road';this.density=1;this.hover=null;this.drag=null;this.sprites=[];this.assetReady=false;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');this.time=0;this.vehicleTime=0;this.previousFrame=null;this.dirty=true;this.w=0;this.h=0;this.resize=new ResizeObserver(()=>{const first=this.w===0;this.w=canvas.clientWidth;this.h=canvas.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);canvas.width=this.w*this.dpr;canvas.height=this.h*this.dpr;if(first)this.center();this.dirty=true;});this.resize.observe(canvas);this.loadSprites();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);}
@@ -139,6 +140,7 @@ export class CityRenderer{
  else if(t.type==='powerline'){const top={x:p.x,y:p.y-u*.9};this.line([{x:p.x,y:p.y+u*.5},top],'#4e665e',Math.max(1,this.zoom*1.5));this.line([{x:top.x-u*.24,y:top.y+u*.08},{x:top.x+u*.24,y:top.y-u*.08}],'#3f5854',this.zoom*1.6);for(const [dx,dy]of [[1,0],[0,1]]){const x=t.x+dx,y=t.y+dy;if(inside(x,y)&&city.tiles[idx(x,y)].type==='powerline'){const q=this.project(x,y);this.line([top,{x:q.x,y:q.y-u*.9}],t.powered?'#719259':'#627b70',this.zoom*.8);}}}
  else if(!t.type&&!t.rail&&t.nature&&t.terrain!=='water'){if(city.appearance?.trees&&city.appearance.trees!=='classic')drawCityTrees(this,t,city.appearance.trees);else this.sprite(42+Math.max(0,(t.treeLevel||1)-1),p.x,p.y+u,u*1.75,.96);}
  }
+ if(t.waste>=1&&(this.layer==='city'||this.layer==='garbage'))drawGarbageBacklog(c,t,p,u);
  const portal=(city.tunnels||[]).find(tunnel=>tunnel.a===idx(t.x,t.y)||tunnel.b===idx(t.x,t.y));if(showTransportation&&portal)this.sprite(60+['road','rail','highway'].indexOf(portal.mode),p.x,p.y+u,u*1.9);
  }
 

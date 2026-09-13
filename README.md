@@ -293,3 +293,5 @@ Water recovery challenge: restore a broken utility connection and sustain six mo
 Scenario inspection checkpoint: preview actual prepared-city layouts, starting figures and utility/rail service before loading a challenge. See [starting-town previews](docs/SCENARIO-START-PREVIEW-MILESTONE.md). Source only; publication pending.
 
 Camera inspection checkpoint: rotate both directions while keeping the panned neighborhood in view. See [anchored camera rotation](docs/CAMERA-ROTATION-MILESTONE.md). Source only; publication pending.
+
+Visible sanitation checkpoint: rubbish piles now reveal uncollected waste in City view and disappear with actual collection. See [visible garbage](docs/VISIBLE-GARBAGE-MILESTONE.md). Source only; publication pending.
