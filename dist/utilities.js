@@ -1,7 +1,8 @@
-import {pipeCoverage} from './water-coverage.js?v=scenario-dialog-text-1';
-import {conservationDemand} from './conservation.js?v=scenario-dialog-text-1';
-import {industrialJobs} from './industry.js?v=scenario-dialog-text-1';
-import {tradeCapacity} from './region.js?v=scenario-dialog-text-1';
+import {waterBaseNeed} from './utility-demand.js?v=scenario-building-utilities-1';
+import {pipeCoverage} from './water-coverage.js?v=scenario-building-utilities-1';
+import {conservationDemand} from './conservation.js?v=scenario-building-utilities-1';
+import {industrialJobs} from './industry.js?v=scenario-building-utilities-1';
+import {tradeCapacity} from './region.js?v=scenario-building-utilities-1';
 // Manual pp. 16–17, 103, 115, 117–118. Capacities/rates are explicit model approximations.
 export const WATER_CAPACITY=500,LANDFILL_CAPACITY=200,LANDFILL_DECAY=.5;
 export const occupancy=level=>[0,1,3,8][level]||0;
@@ -13,7 +14,7 @@ export function advanceWater(c){for(const t of c.tiles)if(WATER_STRUCTURES[t.typ
 export function recomputeWater(c){
  const n=Math.sqrt(c.tiles.length),tiles=c.tiles,rawPollution=tiles.map(t=>t.waterPollution||0),seen=new Set();let pumps=0,activePumps=0,waterCapacity=0,waterUsed=0,pipes=0,waterUpkeep=0,treatmentPlants=0,activeTreatment=0;
  for(const t of tiles){t.watered=false;t.waterCovered=false;t.pipeWet=false;t.waterNetwork=-1;t.pumpCapacity=0;t.unpollutedCapacity=0;t.pollutionCapacityLoss=0;t.treatmentBenefit=0;t.freshwater=false;t.saltwater=false;t.treatmentActive=false;t.waterEfficiency=WATER_STRUCTURES[t.type]?waterEfficiency(t):1;if(t.pipe)pipes++;if(WATER_STRUCTURES[t.type]){waterUpkeep+=WATER_STRUCTURES[t.type].upkeep;if(t.type==='waterTreatment')treatmentPlants++;else pumps++;nearby(c,t,2,u=>{if(u.terrain==='water'&&u.waterKind!=='salt')t.freshwater=true;if(u.terrain==='water'&&u.waterKind==='salt'&&Math.max(Math.abs(u.x-t.x),Math.abs(u.y-t.y))<=1)t.saltwater=true;});}}
- const baseNeed=t=>isZone(t)?1+occupancy(t.level)*3:['airport','seaport'].includes(t.type)?3:0;const needFor=t=>conservationDemand(c,'water',baseNeed(t));const waterDemand=tiles.reduce((sum,t)=>sum+needFor(t),0),waterConserved=tiles.reduce((sum,t)=>sum+baseNeed(t)-needFor(t),0);
+ const baseNeed=waterBaseNeed;const needFor=t=>conservationDemand(c,'water',baseNeed(t));const waterDemand=tiles.reduce((sum,t)=>sum+needFor(t),0),waterConserved=tiles.reduce((sum,t)=>sum+baseNeed(t)-needFor(t),0);
  const networks=[],coverageScratch=new Uint8Array(tiles.length).fill(255);
  for(let i=0;i<tiles.length;i++){
   if(seen.has(i)||(!tiles[i].pipe&&!WATER_STRUCTURES[tiles[i].type]))continue;
