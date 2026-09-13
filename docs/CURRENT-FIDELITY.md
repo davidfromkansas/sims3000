@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current release: 135 regression suites, save schema 98. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current release: 136 regression suites, save schema 99. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -518,3 +518,14 @@ Schema 98 stores first activation months separately from immutable goal definiti
 The 135-suite regression set covers real editor submission, sparse-row targeting, timed and conditional activation, grouped variable→goal actions, repeated activation, delayed victory, empty-list deadline loss, sequential waits, save/load, replay and legacy migration. Browser acceptance remains pending.
 
 Feedback exercise: create a funds goal active at startup and a population goal initially inactive. Add the second goal in month 3, save during the attempt, and inspect Scenario status before and after activation. Restart the challenge and verify the second goal begins hidden again.
+
+
+### Exact and strict scenario comparisons — milestone 6
+
+Numeric conditions now offer at least, at most, greater than, less than, exactly and not equal to. Named states offer Is and Is not. These comparisons work in event conditions, compound AND/OR groups and outcome-rank conditions, including Add Goal event conditions. They extend the manual’s equality, Greater Than and Not Equal command behavior (printed pp.186–188) through the existing condition editor. They do not implement arbitrary nested blocks or a general script interpreter.
+
+Comparisons use unrounded simulation values. An unavailable/nonfinite metric never satisfies a condition, including not-equal. Event reports retain the selected operator; state inequalities use readable labels. Schema 99 prevents earlier clients from silently interpreting newly supported operators as inclusive thresholds. Earlier saved conditions retain their semantics.
+
+Tests cover every operator below/at/above a boundary, fractional values, unavailable values, real grouped exact/strict announcements, outcome ranks, saved continuation and state inequalities. The existing real editor harness also verifies operator menus on primary, secondary and rank condition rows. All 136 suites pass; browser acceptance remains pending.
+
+Feedback exercise: increment a scenario variable each month, announce when it is exactly 2, and add a second announcement when it is greater than 2. Check that the messages arrive in different months and retain their conditions after export/import.

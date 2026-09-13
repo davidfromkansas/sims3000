@@ -1,9 +1,9 @@
-import {censusReport} from './demographics.js?v=goal-activation-1';
-import {annualPower} from './power-accounting.js?v=goal-activation-1';
-import {workforceOutlook,workforceAgeTable} from './workforce.js?v=goal-activation-1';
-import {wasteBreakdown} from './waste-accounting.js?v=goal-activation-1';
-import {POWER_PLANTS,plantCapacity} from './power.js?v=goal-activation-1';
-import {wastePower} from './utilities.js?v=goal-activation-1';
+import {censusReport} from './demographics.js?v=scenario-comparisons-1';
+import {annualPower} from './power-accounting.js?v=scenario-comparisons-1';
+import {workforceOutlook,workforceAgeTable} from './workforce.js?v=scenario-comparisons-1';
+import {wasteBreakdown} from './waste-accounting.js?v=scenario-comparisons-1';
+import {POWER_PLANTS,plantCapacity} from './power.js?v=scenario-comparisons-1';
+import {wastePower} from './utilities.js?v=scenario-comparisons-1';
 export function populationBreakdown(c){const s=c.stats,total=s.population,workers=s.commuters,employed=workers-s.unemployed;return{total,workers,share:total?workers/total*100:0,rows:[{name:'Workers with reachable jobs',people:employed},{name:'Workers without reachable jobs',people:s.unemployed},{name:'Other residents',people:Math.max(0,total-workers)}].map(r=>({...r,percent:total?r.people/total*100:0}))};}
 export function powerBreakdown(c){const n=Math.sqrt(c.tiles.length),rows=Object.entries(POWER_PLANTS).map(([kind,d])=>{const roots=c.tiles.filter(t=>t.type===kind&&t.root===t.y*n+t.x);return{kind,name:d.name,plants:roots.length,capacity:roots.reduce((sum,t)=>sum+plantCapacity(t),0)};});const burners=c.tiles.filter(t=>t.type==='wasteEnergy');if(burners.length)rows.push({kind:'wasteEnergy',name:'Waste-to-energy',plants:burners.length,capacity:burners.reduce((sum,t)=>sum+wastePower(t),0)});const total=rows.reduce((sum,r)=>sum+r.capacity,0);return{total,rows:rows.filter(r=>r.plants).map(r=>({...r,percent:total?r.capacity/total*100:0}))};}
 export function breakdownCharts(c){const annual=annualPower(c),workforce=workforceOutlook(c),waste=wasteBreakdown(c),pop=populationBreakdown(c),power=powerBreakdown(c),fmt=n=>n.toLocaleString('en-US',{maximumFractionDigits:1}),colors=['#c4ed89','#ffc483','#8ddce8','#a9a2ec','#d8bd92','#79cbb3','#f1a9b0','#d4e2af','#b0c9ce'];
