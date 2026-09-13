@@ -1,10 +1,11 @@
-import {CALENDAR_MONTHS,calendarMonthIndex} from './scenario-calendar.js?v=keyboard-construction-1';
-import {tileIndex} from './city-grid.js?v=keyboard-construction-1';
-import {STRUCTURE_METRICS} from './scenario-structures.js?v=keyboard-construction-1';
-import {inScenarioArea} from './scenario-area.js?v=keyboard-construction-1';
-import {ORDINANCES} from './ordinances.js?v=keyboard-construction-1';
-import {LANDMARKS,landmarkRoots} from './landmarks.js?v=keyboard-construction-1';
-import {businessRoots} from './business.js?v=keyboard-construction-1';
+import {outstandingLoanPayments} from './loan-debt.js?v=scenario-economy-1';
+import {CALENDAR_MONTHS,calendarMonthIndex} from './scenario-calendar.js?v=scenario-economy-1';
+import {tileIndex} from './city-grid.js?v=scenario-economy-1';
+import {STRUCTURE_METRICS} from './scenario-structures.js?v=scenario-economy-1';
+import {inScenarioArea} from './scenario-area.js?v=scenario-economy-1';
+import {ORDINANCES} from './ordinances.js?v=scenario-economy-1';
+import {LANDMARKS,landmarkRoots} from './landmarks.js?v=scenario-economy-1';
+import {businessRoots} from './business.js?v=scenario-economy-1';
 export const CUSTOM_METRICS={population:{name:'Population',direction:'at least',max:1000000,initial:400,read:c=>c.stats.population},funds:{name:'Treasury',direction:'at least',min:-1000000000,max:1000000000,initial:50000,read:c=>c.funds},education:{name:'Education',direction:'at least',max:100,initial:60,read:c=>c.civic.education},crime:{name:'Crime',direction:'at most',max:100,initial:20,read:c=>c.stats.averageCrime},pollution:{name:'Air pollution',direction:'at most',max:100,initial:10,read:c=>c.stats.averagePollution},roadCondition:{name:'Road condition',direction:'at least',max:100,initial:80,read:c=>c.finance.roadCondition},aura:{name:'Resident wellbeing',direction:'at least',max:100,initial:60,read:c=>c.stats.aura},lifeExpectancy:{name:'Life expectancy',direction:'at least',min:45,max:90,initial:70,read:c=>c.civic.lifeExpectancy}};
 
 const homesWithout=(c,utility,area)=>c.tiles.filter(t=>inScenarioArea(t,area)&&t.type==='residential'&&t.level>0&&!t.rubble&&!t[utility]).length;
@@ -56,4 +57,12 @@ Object.assign(CUSTOM_METRICS,{
  date:{name:'Calendar date',direction:'at least',integer:true,date:true,min:1900*12,max:2050*12+120000,initial:1950*12,read:calendarMonthIndex},
  year:{name:'Calendar year',direction:'at least',integer:true,format:'year',min:1900,max:12050,initial:2000,read:c=>Math.floor(calendarMonthIndex(c)/12)},
  monthOfYear:{name:'Calendar month',direction:'equals',integer:true,format:'month',states:CALENDAR_MONTHS,min:0,max:11,initial:0,read:c=>calendarMonthIndex(c)%12}
+});
+
+// Manual p. 187 economic queries. Debt uses the same remaining principal and
+// interest obligations reported by the Budget window, not the treasury balance.
+Object.assign(CUSTOM_METRICS,{
+ landValue:{name:'Average land value',direction:'at least',min:0,max:100,initial:60,read:c=>c.stats.averageLandValue},
+ totalDebt:{name:'Remaining loan payments (principal + interest)',direction:'at most',min:0,max:375000,integer:true,initial:0,read:outstandingLoanPayments},
+ ...Object.fromEntries(['residential','commercial','industrial'].map(sector=>[sector+'Tax',{name:sector[0].toUpperCase()+sector.slice(1)+' tax rate (%)',direction:'at most',min:0,max:20,initial:7,read:c=>c.finance.taxes[sector]}]))
 });

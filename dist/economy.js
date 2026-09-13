@@ -1,9 +1,10 @@
-import {REWARDS,rewardRoots,rewardActive} from './rewards.js?v=keyboard-construction-1';
-import {industrialJobs,industryPollution} from './industry.js?v=keyboard-construction-1';
-import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=keyboard-construction-1';
-import {POWER_PLANTS} from './power.js?v=keyboard-construction-1';
-import {civicSpending,ordinanceRevenue} from './civic.js?v=keyboard-construction-1';
-import {occupancy} from './utilities.js?v=keyboard-construction-1';
+import {outstandingLoanPayments} from './loan-debt.js?v=scenario-economy-1';
+import {REWARDS,rewardRoots,rewardActive} from './rewards.js?v=scenario-economy-1';
+import {industrialJobs,industryPollution} from './industry.js?v=scenario-economy-1';
+import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=scenario-economy-1';
+import {POWER_PLANTS} from './power.js?v=scenario-economy-1';
+import {civicSpending,ordinanceRevenue} from './civic.js?v=scenario-economy-1';
+import {occupancy} from './utilities.js?v=scenario-economy-1';
 // Loan terms from manual p. 91. Tax formula from p. 88; calibration constants are original approximations.
 export const SECTORS=['residential','commercial','industrial'];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -49,7 +50,7 @@ export function budgetForecast(c,taxes=c.finance.taxes,roadFunding=c.finance.roa
  const ordinanceIncome=Object.values(ordinanceRevenue(c)).reduce((a,b)=>a+b,0),revenues=taxRevenue(c,taxes),income=(c.stats.businessIncome||0)+ordinanceIncome+Object.values(revenues).reduce((a,b)=>a+b,0)+(c.stats.transitFare||0)+(c.stats.regionIncome||0),s=c.stats;
  const spending={rewards:s.rewardUpkeep||0,neighbors:c.stats.regionExpense||0,...civicSpending(c),facilities:c.stats.facilityUpkeep||0,transit:(c.stats.transitExpense||0)+(s.railTunnelTiles||0)*.2*c.transport.funding/100,roads:Math.round(((s.roads+(s.roadTunnelTiles||0))*.4+((s.highwayTiles||0)+(s.highwayTunnelTiles||0))*.8+(s.ramps||0))*roadFunding/100),parks:s.parks+(s.recreationUpkeep||0),power:s.powerUpkeep??s.plants*60,water:Math.round((s.waterUpkeep??s.pumps*15)+s.pipes*.02),garbage:Math.round(s.landfillTiles*.3+(s.wasteUpkeep||0))};
  const expenses=Object.values(spending).reduce((a,b)=>a+b,0),balance=income-expenses,monthsLeft=12-c.month%12,yearDebtDue=loanPaymentsBetween(c,c.month,c.month+monthsLeft);
- return{ordinanceIncome,revenues,income,spending,expenses,balance,monthsLeft,yearDebtDue,projectedYearEnd:c.funds+balance*monthsLeft-yearDebtDue,annualOperatingBalance:balance*12,nextYearDebtDue:loanPaymentsBetween(c,c.month,c.month+12),totalOutstandingPayments:c.finance.loans.reduce((a,l)=>a+l.principal*.15*(10-l.paymentsMade),0)};
+ return{ordinanceIncome,revenues,income,spending,expenses,balance,monthsLeft,yearDebtDue,projectedYearEnd:c.funds+balance*monthsLeft-yearDebtDue,annualOperatingBalance:balance*12,nextYearDebtDue:loanPaymentsBetween(c,c.month,c.month+12),totalOutstandingPayments:outstandingLoanPayments(c)};
 }
 export function validateFinance(f,month,version=23){
  if(!f||!f.taxes||SECTORS.some(s=>!Number.isFinite(f.taxes[s])||f.taxes[s]<0||f.taxes[s]>20)||!Number.isInteger(f.roadFunding)||f.roadFunding<0||f.roadFunding>150||!Number.isFinite(f.roadCondition)||f.roadCondition<0||f.roadCondition>100||!Array.isArray(f.loans)||f.loans.length>10||!Number.isInteger(f.nextLoanId)||f.nextLoanId<1||!Number.isFinite(f.totalLoanPaid)||f.totalLoanPaid<0||!Number.isFinite(f.lastLoanPayment)||f.lastLoanPayment<0||!Number.isInteger(f.monthsInSurplus)||f.monthsInSurplus<0)throw Error('Invalid budget or loan data.');
