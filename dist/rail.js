@@ -1,5 +1,5 @@
-import {tunnelEdges,routeLength} from './tunnels.js?v=local-city-ambience-1';
-import {MinQueue} from './highway.js?v=local-city-ambience-1';
+import {tunnelEdges,routeLength} from './tunnels.js?v=station-inspection-1';
+import {MinQueue} from './highway.js?v=station-inspection-1';
 export const STATIONS={trainStation:{name:'Train station',cost:500,upkeep:10},subwayStation:{name:'Subway station',cost:500,upkeep:10},railTransfer:{name:'Rail–subway connection',cost:1000,upkeep:20}};
 export function railNetwork(c){
  const tiles=c.tiles,N=tiles.length,n=Math.sqrt(N),enabled=c.transport.funding>0&&c.transport.condition>20&&c.transport.underfunded<6,edges=Array.from({length:N*2},()=>[]),present=i=>i<N?tiles[i].rail:tiles[i-N].subway;
@@ -8,9 +8,12 @@ export function railNetwork(c){
  for(const [a,b]of tunnelEdges(c,'rail')){edges[a].push(b);edges[b].push(a);}
  const transfers=new Map();
  const stations=tiles.filter(t=>STATIONS[t.type]);
- for(const t of tiles){t.railRiders=0;t.subwayRiders=0;t.stationRiders=0;t.stationActive=false;t.railAccess=false;}
+ for(const t of tiles){t.railRiders=0;t.subwayRiders=0;t.stationRiders=0;t.stationActive=false;t.stationGroups=[];t.railAccess=false;}
  for(const s of stations){const rail=nearby(s,'rail'),subway=nearby(s,'subway',true);s.stationNodes=s.type==='trainStation'?rail:s.type==='subwayStation'?subway:rail.length&&subway.length?[...rail,...subway]:[];s.stationActive=enabled&&s.stationNodes.length>0;if(s.type==='railTransfer'&&s.stationActive){for(const a of rail)for(const b of subway){edges[a].push(b);edges[b].push(a);transfers.set(a+':'+b,s);transfers.set(b+':'+a,s);}}}
  const groups=new Int32Array(N*2).fill(-1);let g=0;for(let i=0;i<N*2;i++){if(!present(i)||groups[i]>=0)continue;const q=[i];groups[i]=g;for(let k=0;k<q.length;k++)for(const j of edges[q[k]])if(groups[j]<0){groups[j]=g;q.push(j);}g++;}
+ const railNetworks={};
+ for(const s of stations){s.stationGroups=[...new Set(s.stationNodes.map(i=>groups[i]).filter(id=>id>=0))];for(const id of s.stationGroups){railNetworks[id]??={id,railTiles:0,subwayTiles:0,stations:[]};railNetworks[id].stations.push(s.y*n+s.x);}}
+ if(stations.length)for(let i=0;i<N*2;i++){const group=railNetworks[groups[i]];if(group)group[i<N?'railTiles':'subwayTiles']++;}
  const nearStations=t=>stations.filter(s=>s.stationActive&&Math.max(Math.abs(s.x-t.x),Math.abs(s.y-t.y))<=3),zoneGroups=new Map(),uses=Array.from({length:g},()=>new Set());
  for(const t of tiles.filter(t=>['residential','commercial','industrial'].includes(t.type))){const gs=new Set(nearStations(t).flatMap(s=>s.stationNodes.map(i=>groups[i])));zoneGroups.set(t,gs);for(const id of gs)uses[id].add(t.type);}
  for(const [t,gs]of zoneGroups){t.railAccess=[...gs].some(id=>uses[id].has('residential')&&(uses[id].has('commercial')||uses[id].has('industrial')));t.access=t.access||t.railAccess;}
@@ -19,5 +22,5 @@ export function railNetwork(c){
  while(q.length&&passengers<maxPassengers){const item=q.pop(),i=item.node;if(item.cost!==distance[i])continue;for(const {work,station}of destinations.get(i)||[]){const from=origin.get(i);if(from===station)continue;const count=Math.min(maxPassengers-passengers,remaining.get(work)||0);if(count<=0)continue;const path=[];for(let j=i;j>=0;j=prev[j])path.push(j);for(const j of path){if(j<N)tiles[j].railRiders+=count;else tiles[j-N].subwayRiders+=count;}for(let k=1;k<path.length;k++){const transfer=transfers.get(path[k-1]+':'+path[k]);if(transfer)transfer.stationRiders+=count;}from.stationRiders+=count;station.stationRiders+=count;remaining.set(work,remaining.get(work)-count);passengers+=count;travel+=count*routeLength(c,path);}
  for(const j of edges[i]){const a=tiles[i%N],b=tiles[j%N],next=distance[i]+Math.max(1,Math.abs(a.x-b.x)+Math.abs(a.y-b.y));if(next<distance[j]){distance[j]=next;prev[j]=i;origin.set(j,origin.get(i));q.push(j,next);}}}
  return{passengers,travel};}
- return{allocate,stats:()=>({railTiles:tiles.filter(t=>t.rail).length,subwayTiles:tiles.filter(t=>t.subway).length,stations:stations.length,activeStations:stations.filter(s=>s.stationActive).length,stationExpense:Math.round(stations.reduce((v,s)=>v+STATIONS[s.type].upkeep,0)*c.transport.funding/100),trackExpense:Math.round(tiles.reduce((v,t)=>v+(t.rail?.2:0)+(t.subway?.4:0),0)*c.transport.funding/100)})};
+ return{allocate,stats:()=>({railNetworks,railTiles:tiles.filter(t=>t.rail).length,subwayTiles:tiles.filter(t=>t.subway).length,stations:stations.length,activeStations:stations.filter(s=>s.stationActive).length,stationExpense:Math.round(stations.reduce((v,s)=>v+STATIONS[s.type].upkeep,0)*c.transport.funding/100),trackExpense:Math.round(tiles.reduce((v,t)=>v+(t.rail?.2:0)+(t.subway?.4:0),0)*c.transport.funding/100)})};
 }
