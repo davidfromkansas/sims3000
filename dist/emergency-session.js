@@ -1,6 +1,7 @@
-import {freshEmergencyOrder} from './emergency-order.js?v=neighborhood-designs-1';
+import {beginReliefAssessment} from './disaster-relief.js?v=disaster-relief-1';
+import {freshEmergencyOrder} from './emergency-order.js?v=disaster-relief-1';
 // One response session can contain several different major hazards and fire areas.
-export function beginEmergencySession(e){if(!e.active){e.navigationOrder=freshEmergencyOrder();e.started++;e.units=[];e.nextUnit=0;e.policeUnits=[];e.nextPolice=0;e.shelter=0;}e.active=true;}
+export function beginEmergencySession(c){const e=c.emergency;if(!e.active){e.navigationOrder=freshEmergencyOrder();e.started++;beginReliefAssessment(c);e.units=[];e.nextUnit=0;e.policeUnits=[];e.nextPolice=0;e.shelter=0;}e.active=true;}
 export function pendingWarnings(e){return[e.tornado,e.ufo].filter(s=>s&&s.warningSteps>0&&!s.warned);}
 export function refreshShelter(e){e.shelter=Math.max(e.tornado?.shelter||0,e.ufo?.shelter||0);}
 export function validateHazardWarning(s,e,version){

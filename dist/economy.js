@@ -1,9 +1,9 @@
-import {REWARDS,rewardRoots,rewardActive} from './rewards.js?v=neighborhood-designs-1';
-import {industrialJobs,industryPollution} from './industry.js?v=neighborhood-designs-1';
-import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=neighborhood-designs-1';
-import {POWER_PLANTS} from './power.js?v=neighborhood-designs-1';
-import {civicSpending,ordinanceRevenue} from './civic.js?v=neighborhood-designs-1';
-import {occupancy} from './utilities.js?v=neighborhood-designs-1';
+import {REWARDS,rewardRoots,rewardActive} from './rewards.js?v=disaster-relief-1';
+import {industrialJobs,industryPollution} from './industry.js?v=disaster-relief-1';
+import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=disaster-relief-1';
+import {POWER_PLANTS} from './power.js?v=disaster-relief-1';
+import {civicSpending,ordinanceRevenue} from './civic.js?v=disaster-relief-1';
+import {occupancy} from './utilities.js?v=disaster-relief-1';
 // Loan terms from manual p. 91. Tax formula from p. 88; calibration constants are original approximations.
 export const SECTORS=['residential','commercial','industrial'];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -68,6 +68,6 @@ export function queueBudgetReview(c){
 export function annualAccounts(c,month=c.finance.pendingBudgetReview){
  if(!month)return null;
  const rows=c.history.filter(h=>h.month>month-12&&h.month<=month);
- return{year:(c.startYear||1950)+month/12-1,months:rows.length,income:rows.reduce((s,h)=>s+h.income,0),expenses:rows.reduce((s,h)=>s+h.expenses,0),loanPayments:rows.reduce((s,h)=>s+(h.loanPayment||0),0),penalties:rows.reduce((s,h)=>s+(h.regionalPenalty||0),0),funds:rows.at(-1)?.funds??c.funds};
+ return{year:(c.startYear||1950)+month/12-1,months:rows.length,disasterRelief:rows.reduce((sum,h)=>sum+(h.disasterRelief||0),0),income:rows.reduce((s,h)=>s+h.income,0),expenses:rows.reduce((s,h)=>s+h.expenses,0),loanPayments:rows.reduce((s,h)=>s+(h.loanPayment||0),0),penalties:rows.reduce((s,h)=>s+(h.regionalPenalty||0),0),funds:rows.at(-1)?.funds??c.funds};
 }
 export function setAutoBudget(c,value){if(typeof value!=='boolean')return{ok:false,error:'Choose a valid Auto Budget setting.'};c.finance.autoBudget=value;return{ok:true};}
