@@ -1,7 +1,8 @@
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=surface-fill-1';
-import {projectBuildingPoint} from './building-footprints.js?v=surface-fill-1';
-import {buildingShapeCells} from './building-shapes.js?v=surface-fill-1';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=surface-fill-1';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=surface-details-1';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=surface-details-1';
+import {projectBuildingPoint} from './building-footprints.js?v=surface-details-1';
+import {buildingShapeCells} from './building-shapes.js?v=surface-details-1';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=surface-details-1';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;
@@ -32,5 +33,5 @@ export function buildingVoxelFaces(voxels,rotation=0,footprint={width:1,height:1
 }
 export function drawBuildingVoxels(ctx,design,rotation=0){
  const project=p=>projectBuildingPoint(p,rotation,design.footprint),tint=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join(''),polygon=(points,color)=>{ctx.beginPath();points.map(project).forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fillStyle=color;ctx.fill();};
- for(const face of buildingVoxelFaces(design.voxels,rotation,design.footprint)){const material=floorSurfaceMaterial(design,face);polygon(face.points,tint(materialSurfaceColor(material,design),face.side===4?1.08:face.side%2?.72:.9));drawMaterialDetail(face,material,design,polygon);if(face.side===4||material===3||material===4)continue;const a=face.points[0],b=face.points[1],point=(f,z)=>[a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,z],low=.12+(face.from+.23)*.14,high=.12+(face.from+.7)*.14;polygon([point(.23,low),point(.77,low),point(.77,high),point(.23,high)],(face.from*7+face.x*3+face.y+face.side)%9===0?design.accent:design.windows);}
+ for(const face of buildingVoxelFaces(design.voxels,rotation,design.footprint)){const material=floorSurfaceMaterial(design,face);polygon(face.points,tint(materialSurfaceColor(material,design),face.side===4?1.08:face.side%2?.72:.9));drawMaterialDetail(face,material,design,polygon);const detail=buildingSurfaceDetail(design,face);if(detail){drawBuildingSurfaceDetail(face,detail,design,polygon);continue;}if(face.side===4||material===3||material===4)continue;const a=face.points[0],b=face.points[1],point=(f,z)=>[a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,z],low=.12+(face.from+.23)*.14,high=.12+(face.from+.7)*.14;polygon([point(.23,low),point(.77,low),point(.77,high),point(.23,high)],(face.from*7+face.x*3+face.y+face.side)%9===0?design.accent:design.windows);}
 }
