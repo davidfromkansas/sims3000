@@ -1,5 +1,5 @@
-import {isBuildingLotRoot,updateBuildingLot} from './building-lots.js?v=utility-usage-trends-1';
-import {tileIndex} from './city-grid.js?v=utility-usage-trends-1';
+import {isBuildingLotRoot,updateBuildingLot} from './building-lots.js?v=water-recovery-scenario-1';
+import {tileIndex} from './city-grid.js?v=water-recovery-scenario-1';
 // Manual pp.99,124: agricultural land and education-driven industrial change.
 export const industrialJobs=t=>t.industry==='farm'?(t.farmRoot===tileIndex(t)&&t.level?12+Math.floor((Math.max(9,t.farmSize||9)-9)/3):0):([0,1,3,8][t.level]||0)*12;
 export const industryPollution=t=>t.industry==='clean'?.1:t.industry==='farm'?.03:1;

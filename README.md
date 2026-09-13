@@ -287,3 +287,5 @@ Waste artwork checkpoint: recycling, incineration and waste-to-energy now use di
 Employment trends checkpoint: compare actual filled Commerce and Industry jobs with workforce unemployment over time. See [employment trends](docs/EMPLOYMENT-TRENDS-MILESTONE.md). Source only; publication pending.
 
 Utility planning checkpoint: compare power/water usage, available supply, demand and actual unmet demand over time, with report shortcuts. See [utility usage trends](docs/UTILITY-USAGE-TRENDS-MILESTONE.md). Source only; publication pending.
+
+Water recovery challenge: restore a broken utility connection and sustain six months of supply, population and cash stability. See [Water under pressure](docs/WATER-RECOVERY-SCENARIO-MILESTONE.md). Source only; publication pending.

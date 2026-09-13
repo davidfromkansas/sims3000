@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {createScenario} from '../dist/scenario-setup.js';
+import {scenarioGoals,waterRecoveryReady,advanceScenario} from '../dist/scenarios.js';
+import {build,tick,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {waterGridData} from '../dist/water-grid-report.js';
+const c=createScenario('waterRecovery');assert.equal(c.stats.population,224);assert.equal(c.funds,10000);assert.equal(c.stats.waterCapacity,530);assert.equal(c.stats.waterDemand,179);assert.equal(c.stats.waterUsed,91);assert.ok(c.stats.waterCapacity>c.stats.waterDemand,'global reserve conceals the local outage');assert.ok(waterGridData(c).networks.some(g=>g.status==='Supply shortage'));assert.ok(c.tiles.some(t=>t.waterEstablished&&!t.watered));assert.equal(c.emergency.randomFires,false);assert.equal(waterRecoveryReady(c),false);assert.deepEqual(scenarioGoals(c)[1].area,{x:24,y:16,radius:4});assert.equal(serializeCity(createScenario('waterRecovery')),serializeCity(c));assert.deepEqual(validateSave(JSON.parse(serializeCity(c))).scenario,c.scenario);
+assert.ok(build(c,'pipe',[{x:24,y:16}]).ok);assert.equal(waterRecoveryReady(c),true);assert.ok(scenarioGoals(c)[1].done);
+for(let i=0;i<3;i++)tick(c);assert.equal(c.scenario.streak,3);advanceScenario(c);assert.equal(c.scenario.streak,3,'reopening status does not advance the streak');
+const restored=validateSave(JSON.parse(serializeCity(c)));for(let i=0;i<3;i++){tick(c);tick(restored);}assert.equal(c.scenario.status,'won');assert.equal(c.scenario.endedMonth,6);assert.equal(c.scenario.streak,6);assert.ok(c.stats.population>=224&&c.funds>=5000);assert.equal(serializeCity(c),serializeCity(restored),'mid-recovery save preserves the exact winning result');
+const neglected=createScenario('waterRecovery');for(let i=0;i<24&&neglected.scenario.status==='playing';i++)tick(neglected);assert.equal(neglected.scenario.status,'lost');assert.ok(neglected.stats.population<224);assert.ok(neglected.tiles.some(t=>t.abandonedLevel&&t.waterEstablished));
+const interrupted=createScenario('waterRecovery');build(interrupted,'pipe',[{x:24,y:16}]);for(let i=0;i<3;i++)tick(interrupted);build(interrupted,'removePipe',[{x:24,y:16}]);tick(interrupted);assert.equal(interrupted.scenario.streak,0);assert.equal(interrupted.scenario.status,'playing');build(interrupted,'pipe',[{x:24,y:16}]);for(let i=0;i<6;i++)tick(interrupted);assert.equal(interrupted.scenario.status,'won');assert.equal(interrupted.scenario.endedMonth,10);
+const cash=createScenario('waterRecovery');build(cash,'pipe',[{x:24,y:16}]);cash.funds=4999;assert.equal(waterRecoveryReady(cash),false);cash.funds=5000;assert.equal(waterRecoveryReady(cash),true);
+console.log('PASS: prepared local water outage despite global reserve, normal-game six-month solution, uninterrupted save/replay, actual neglect loss, repair interruption reset, treasury boundary and goal location.');
