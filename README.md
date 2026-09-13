@@ -257,3 +257,5 @@ Latest source milestone: select landscape/grove artwork and inherit the current 
 Latest source milestone: require specific neighbor connections and import/export deals in scenario goals, conditions and routines. See [neighbor status challenges](docs/SCENARIO-NEIGHBOR-STATUS-MILESTONE.md). All 183 suites pass; not yet hosted.
 
 Scripted neighbor-contract checkpoint: scenario events and routines can create or end real agreements, recording results and normal termination fees with save/load continuity. See [neighbor contract milestone](docs/SCENARIO-NEIGHBOR-DEALS-MILESTONE.md). Schema114; 184 regression suites passed. Manual parameter/fee semantics are an explicit interpretation. Not yet hosted.
+
+Reward inspection checkpoint: rotate previews of the Mayor’s House, Stadium and University before placement, with matching four-sided models in the city. See [reward building inspection](docs/REWARD-MODELS-MILESTONE.md). All 186 regression suites passed; schema114, cache reward-building-models-1. Not yet hosted.

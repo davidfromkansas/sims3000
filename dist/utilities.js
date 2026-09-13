@@ -1,7 +1,7 @@
-import {pipeCoverage} from './water-coverage.js?v=scenario-neighbor-deals-1';
-import {conservationDemand} from './conservation.js?v=scenario-neighbor-deals-1';
-import {industrialJobs} from './industry.js?v=scenario-neighbor-deals-1';
-import {tradeCapacity} from './region.js?v=scenario-neighbor-deals-1';
+import {pipeCoverage} from './water-coverage.js?v=reward-building-models-1';
+import {conservationDemand} from './conservation.js?v=reward-building-models-1';
+import {industrialJobs} from './industry.js?v=reward-building-models-1';
+import {tradeCapacity} from './region.js?v=reward-building-models-1';
 // Manual pp. 16–17, 103, 115, 117–118. Capacities/rates are explicit model approximations.
 export const WATER_CAPACITY=500,LANDFILL_CAPACITY=200,LANDFILL_DECAY=.5;
 export const occupancy=level=>[0,1,3,8][level]||0;
