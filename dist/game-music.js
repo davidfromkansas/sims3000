@@ -1,4 +1,4 @@
-import {MUSIC_TRACKS,musicScore} from './music-score.js?v=water-models-1';
+import {MUSIC_TRACKS,musicScore} from './music-score.js?v=power-models-1';
 export {MUSIC_TRACKS};
 const KEY='sims3000-music',ids=Object.keys(MUSIC_TRACKS);
 export function createGameMusic(){

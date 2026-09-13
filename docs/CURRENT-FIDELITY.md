@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 155 regression suites, save schema 108. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 156 regression suites, save schema 108. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -659,3 +659,7 @@ Manual p.187 surplus power/water, traffic density and water-pollution queries no
 ### Water facility models — milestone 2 presentation follow-up
 
 All four water utilities replace fixed-view sprites with original geometry: brick pump houses and equipment, elevated storage towers, desalination halls and tanks, and circular treatment basins with access bridges. Each rotates in the city and uses a cached transparent depth raster. The shared rasterizer also preserves all eight civic model outputs; tests cover bounds, deterministic distinct rotations, caching, actual renderer placement/fading, construction, save continuity and simulation. The offline 16-view contact sheet is docs/previews/water-facility-models.png. Existing one-tile footprints, water capacities, operation rules and overlay alpha values remain. These models are static and do not establish AAA or browser performance acceptance. 155 suites; schema 108 unchanged. Browser acceptance and publication remain pending.
+
+### Power plant models — milestone 2 presentation follow-up
+
+All eight power technologies replace fixed-view sprites with original procedural models and 32 cached depth rasters. Models scale to the existing 1×1, 3×3 and 4×4 footprints and render once at the footprint center from the correct depth-order tile in each map orientation. Original geometry includes coal yards, oil storage, gas equipment, cooling towers, wind rotors, inclined solar panels, concave microwave receivers and fusion domes. The inspected offline contact sheet is docs/previews/power-plant-models.png. Tests cover geometry bounds, distinct transparent views, caching, real plant construction, saved simulation/aging continuity and the actual multi-tile renderer branch across all footprint tiles/rotations. These models are static; costs, pollution, capacities, technology dates and failure rules are unchanged. 156 suites, schema 108 unchanged. Browser visual/performance acceptance and publication remain pending.
