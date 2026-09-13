@@ -384,3 +384,12 @@ Only monthly simulation moves to the worker. Emergency response steps, construct
 Actual worker-thread regression checks compare three background months with foreground results, statistics and serialized state, along with single-flight operation, visible-state isolation, cancellation and error/fallback behavior. A Node synthetic dense 256 × 256 run took about 3.2 seconds including worker startup and data copying; the main thread executed 137 timer callbacks while waiting, with a longest observed timer gap of 114 ms. These are Node coordination measurements, not browser frame rates. Copying city data adds time/memory and can still cause short pauses; browser/mobile acceptance remains unfinished. Repeat with `node benchmarks/background-month.mjs 256`.
 
 Full regression coverage is 122 suites. Feedback exercise: run a developed 96 × 96 or larger city and pan/zoom during Calculating next month. Request Pause and verify that the in-flight month completes once, then construction becomes available. Compare camera responsiveness with earlier releases.
+
+
+### Background-update keyboard correction — milestone 1 follow-up
+
+The background calculation lock now permits Tab focus traversal, native Enter/Space activation on camera and speed controls, and the navigation map’s summary, select and keyboard jump controls. Mutating clicks and construction shortcuts remain blocked. Space on a native button or summary keeps its native activation instead of also toggling global simulation speed. Map Space retains the existing pause/pan gesture.
+
+This corrects an accessibility regression in the background-simulation milestone; it does not add another save format or simulation rule. Policy tests cover allowed camera/pause/navigation interaction and blocked construction actions, with 123 regression suites in total. Browser interaction testing has been requested from the user and remains pending authorization.
+
+Feedback exercise: during a large-city calculation, use Tab to focus Pause or a zoom button and activate it with Enter/Space. Open the navigation map and use its arrow/Enter controls to move the view.
