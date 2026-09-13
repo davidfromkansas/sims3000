@@ -1,0 +1,112 @@
+{
+  "before": {
+    "runtime": "v22.19.0",
+    "platform": "darwin",
+    "results": [
+      {
+        "size": 96,
+        "width": 48,
+        "population": 30720,
+        "recomputeMs": 46,
+        "monthMs": 109,
+        "samples": [
+          {
+            "recomputeMs": 117.889375,
+            "monthMs": 259.60629199999994,
+            "population": 30720
+          },
+          {
+            "recomputeMs": 45.983791999999994,
+            "monthMs": 109.41862500000002,
+            "population": 30720
+          },
+          {
+            "recomputeMs": 21.02724999999998,
+            "monthMs": 101.33629200000007,
+            "population": 30720
+          }
+        ]
+      },
+      {
+        "size": 256,
+        "width": 96,
+        "population": 122880,
+        "recomputeMs": 344,
+        "monthMs": 1747,
+        "samples": [
+          {
+            "recomputeMs": 376.03766700000006,
+            "monthMs": 1508.865417,
+            "population": 122880
+          },
+          {
+            "recomputeMs": 297.1970000000001,
+            "monthMs": 1754.7786659999997,
+            "population": 122880
+          },
+          {
+            "recomputeMs": 343.91116599999987,
+            "monthMs": 1747.4030000000002,
+            "population": 122880
+          }
+        ]
+      }
+    ]
+  },
+  "after": {
+    "runtime": "v22.19.0",
+    "platform": "darwin",
+    "results": [
+      {
+        "size": 96,
+        "width": 48,
+        "population": 30720,
+        "recomputeMs": 53,
+        "monthMs": 115,
+        "samples": [
+          {
+            "recomputeMs": 102.039667,
+            "monthMs": 258.166625,
+            "population": 30720
+          },
+          {
+            "recomputeMs": 53.43633300000005,
+            "monthMs": 110.414625,
+            "population": 30720
+          },
+          {
+            "recomputeMs": 19.656875000000014,
+            "monthMs": 115.17162500000006,
+            "population": 30720
+          }
+        ]
+      },
+      {
+        "size": 256,
+        "width": 96,
+        "population": 122880,
+        "recomputeMs": 238,
+        "monthMs": 1116,
+        "samples": [
+          {
+            "recomputeMs": 312.7962909999999,
+            "monthMs": 1222.9297499999998,
+            "population": 122880
+          },
+          {
+            "recomputeMs": 237.65708300000006,
+            "monthMs": 1109.575625,
+            "population": 122880
+          },
+          {
+            "recomputeMs": 223.86270800000057,
+            "monthMs": 1116.1266669999995,
+            "population": 122880
+          }
+        ]
+      }
+    ]
+  },
+  "beforeCommit": "1b0e018f6c6ff548a9d07f9db91cbb3dbd666a2e",
+  "method": "Sequential independent Node processes, same synthetic fixture, three samples per map; median. No browser frame-rate claim."
+}

@@ -1,10 +1,10 @@
-import {JobCapacity} from './job-capacity.js?v=water-service-continuity-1';
-import {workforceShare} from './workforce.js?v=water-service-continuity-1';
-import {routeLength} from './tunnels.js?v=water-service-continuity-1';
-import {industrialJobs} from './industry.js?v=water-service-continuity-1';
-import {streetGraph,MinQueue} from './highway.js?v=water-service-continuity-1';
-import {railNetwork,STATIONS} from './rail.js?v=water-service-continuity-1';
-import {occupancy} from './utilities.js?v=water-service-continuity-1';
+import {JobCapacity} from './job-capacity.js?v=available-job-targets-1';
+import {workforceShare} from './workforce.js?v=available-job-targets-1';
+import {routeLength} from './tunnels.js?v=available-job-targets-1';
+import {industrialJobs} from './industry.js?v=available-job-targets-1';
+import {streetGraph,MinQueue} from './highway.js?v=available-job-targets-1';
+import {railNetwork,STATIONS} from './rail.js?v=available-job-targets-1';
+import {occupancy} from './utilities.js?v=available-job-targets-1';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const freshTransport=()=>({funding:100,condition:100,underfunded:0});
 export function changeTransit(c,value){if(!Number.isInteger(value)||value<0||value>150)return{ok:false,error:'Transit funding must be 0–150%.'};c.transport.funding=value;return{ok:true};}
@@ -19,7 +19,7 @@ export function recomputeTransport(c){
  for(const s of stops){s.stopRoads=[];for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=s.x+dx,y=s.y+dy;if(x>=0&&y>=0&&x<n&&y<n&&tiles[y*n+x].type==='road'&&tiles[y*n+x].terrain==='land')s.stopRoads.push(y*n+x);}s.stopActive=s.stopRoads.length>0&&transit.funding>0&&transit.condition>20&&!strike&&c.finance.roadCondition>20;}
  const street=streetGraph(c),groups=street.groups,N=tiles.length;
  const network=railNetwork(c);
- const workplaces=tiles.filter(t=>['commercial','industrial'].includes(t.type)&&t.level&&t.access),targets=new Map(),workplaceGroups=new Map();for(const w of workplaces){const reachable=new Set();for(const i of roadsNear(w,4)){if(!targets.has(i))targets.set(i,[]);targets.get(i).push(w);if(groups[i]>=0)reachable.add(groups[i]);}workplaceGroups.set(w,reachable);}const remaining=new JobCapacity(workplaces.map(t=>[t,t.type==='commercial'?occupancy(t.level)*6:industrialJobs(t)]),workplaceGroups);
+ const workplaces=tiles.filter(t=>['commercial','industrial'].includes(t.type)&&t.level&&t.access),targets=new Map(),workplaceGroups=new Map(),workplaceRoads=new Map();for(const w of workplaces){const reachable=new Set(),near=roadsNear(w,4);workplaceRoads.set(w,near);for(const i of near){if(!targets.has(i))targets.set(i,new Set());targets.get(i).add(w);if(groups[i]>=0)reachable.add(groups[i]);}workplaceGroups.set(w,reachable);}const remaining=new JobCapacity(workplaces.map(t=>[t,t.type==='commercial'?occupancy(t.level)*6:industrialJobs(t)]),workplaceGroups,w=>{for(const i of workplaceRoads.get(w))targets.get(i).delete(w);});
  let commuters=0,busRiders=0,trainRiders=0,unemployed=0,travel=0,carpoolVehiclesSaved=0;
  const homes=tiles.filter(t=>t.type==='residential'&&t.level),participation=workforceShare(c,homes.reduce((sum,t)=>sum+occupancy(t.level)*8,0));
  const prev=new Int32Array(N*2),distance=new Float64Array(N*2),visited=new Uint32Array(N*2);let search=0;
