@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 174 regression suites, save schema 111. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 177 regression suites, save schema 111. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -685,7 +685,7 @@ Manual pp.188–189 specify If/If Else action blocks, Subroutine and Repeat Regu
 
 ## Multi-neighbor contracts
 
-Source checkpoint:174 suites, schema111. Cities can sign one contract per resource with each neighbor (four power, four water and five garbage pairs). Utility imports combine finite supplier surplus only on the connected network; exports use local surplus, with older contracts attempted first. Garbage shipments retain route-local conservation. Lower-priced imports/disposal are used first, but every idle backup contract retains its minimum fee. Renewals cannot silently break another existing deal.
+Source checkpoint:177 suites, schema111. Cities can sign one contract per resource with each neighbor (four power, four water and five garbage pairs). Utility imports combine finite supplier surplus only on the connected network; exports use local surplus, with older contracts attempted first. Garbage shipments retain route-local conservation. Lower-priced imports/disposal are used first, but every idle backup contract retains its minimum fee. Renewals cannot silently break another existing deal.
 
 Manual pp.119–120 supports multiple neighbor connections, network-local deficit supply, minimum fees and fixed export obligations. Allocation priorities and one-resource-per-neighbor limits are explicit reconstruction tuning. Tests cover real networks, monthly garbage ledgers, penalties, separate neighbor budgets, save/replay/worker, UI handlers and strict contract bounds. Full neighboring tile cities and browser acceptance remain incomplete; Sites publication afterv150 is pending approval. See MULTI-NEIGHBOR-TRADE-MILESTONE.md.
 
@@ -699,3 +699,16 @@ Manual printed pp.81–82 describes importing a saved city's complete Building S
 Two new regression suites verify atomic/deep-copy imports, complete resets, malformed-file rejection, legacy migration, save/monthly continuation and actual dialog handlers for preview, backup, cancellation, oversized files, stale asynchronous reads and one-time application. Full source regression count: 174. Browser layout and user acceptance remain unverified. Publication remains pending explicit Sites source-export approval; this checkpoint is not live.
 
 Feedback exercise: customize two styles in one city and export it. In another city with its own model, import the first city's building set. Review the restored and imported styles, cancel once, reopen and apply, then save/load. Assess whether the preview makes the extent of the city makeover clear.
+
+
+## Education service planning checkpoint — milestones 4 and 5
+
+School access (ages 0–14), College access (15–24), and Adult learning access (25+) now have separate city and navigation maps. The maps use the existing per-home road-connected capacity coverage; schools cannot mask college shortages, and library/museum capacity remains separate from youth teaching. Occupied homes show red-to-green service coverage. Nonresidential tiles and age groups with no current demand are gray. Operating/inactive facility markers identify the relevant schools, colleges, libraries and museums; these capacity services have no invented radial service rings.
+
+Players can open the maps from Civic services, City data or City view layers, keeping their construction tool. Navigation retains City as its default. These maps show access to places, not attained EQ. Demand uses the current citywide age mix distributed across homes, so this does not claim neighborhood-specific demographics. The manual pp.112–114 describes separate education services and diagnostic views; the three named layers are an authored browser adaptation, not a recovered original map catalog.
+
+This release also corrects civic and station inspections to count each multi-tile home/workplace once when any member is reached. Resident/job totals still include only reached members, matching simulation allocation. A lot whose origin is outside the catchment is still counted when its edge is reached.
+
+Feedback exercise: provide schools to a neighborhood but leave colleges absent. Compare the separate maps, build a connected college, then compare the adult map and add a library or museum. Reduce education funding, observe coverage and facility markers, then restore it. Inspect a station beside a multi-tile building and assess whether building counts and partial service totals are understandable.
+
+Validation: three new suites cover real construction and coverage, disconnected homes, funding/strikes, zero-age demand, exact navigation/city colors through all four renderer rotations, relevant facility markers, actual Civic/City data/City view handlers, partial larger-lot catchments, read-only behavior and save restoration. Schema remains 111; no simulation inputs or save fields change. Browser visual acceptance and player feedback remain pending. Not published to Sites; source-export approval remains pending.

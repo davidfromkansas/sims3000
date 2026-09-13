@@ -1,7 +1,9 @@
-import {serviceRadius} from './civic.js?v=building-set-import-1';
+import {EDUCATION_LAYERS} from './education-layers.js?v=education-service-maps-1';
+import {serviceRadius} from './civic.js?v=education-service-maps-1';
 export const PRECINCT_LAYERS={police:'police',crime:'police',fire:'fire',flammability:'fire'};
 export const PRECINCT_LEGEND='Station dots: operating white, inactive orange · Rings: current service limit; strength falls toward the edge';
 export function stationAreas(city,layer){
+ const education=EDUCATION_LAYERS[layer];if(education)return city.tiles.filter(t=>education.facilities.includes(t.type)).map(t=>({x:t.x,y:t.y,type:t.type,active:!!t.serviceActive,radius:0,label:t.type==='library'?'L':t.type==='museum'?'M':education.marker}));
  const type=PRECINCT_LAYERS[layer];if(!type)return[];
  return city.tiles.filter(t=>t.type===type).map(t=>({x:t.x,y:t.y,type,active:!!t.serviceActive,radius:serviceRadius(city,t)}));
 }

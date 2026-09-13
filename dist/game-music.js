@@ -1,4 +1,4 @@
-import {MUSIC_TRACKS,musicScore} from './music-score.js?v=building-set-import-1';
+import {MUSIC_TRACKS,musicScore} from './music-score.js?v=education-service-maps-1';
 export {MUSIC_TRACKS};
 const KEY='sims3000-music',ids=Object.keys(MUSIC_TRACKS);
 export function createGameMusic(){

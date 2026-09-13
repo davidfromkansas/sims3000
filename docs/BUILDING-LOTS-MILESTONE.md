@@ -77,3 +77,13 @@ Footprint-scoped style keys preserve legacy numeric 1×1 slots and use explicit 
 Larger lots now draw original procedural residential/commercial models and block-based industrial complexes once from the depth-order member, centered over the footprint. Shared projection scales the two ground axes independently and preserves physical floor height. Rectangular block columns sort by projected depth. Legacy custom models are never silently enlarged. Cache remains capped at 64 canvases. These are authored models, not the original game's building collection.
 
 All 161 suites passed after renderer integration. Subsequent targeted checks also pass for actual replacement handlers and a real outage/recovery playthrough: demolishing the power source abandons the entire building after four months; rebuilding it permits coherent recovery. Existing saves, worker transfer, challenge replay, disaster displacement, any-member historical designation and demolition are covered. The offline 20-view contact sheet `previews/building-lot-models.png` was inspected. No browser test or live publication is claimed.
+
+
+## Working follow-up: service and station building counts
+
+Local source now counts a multi-tile occupied residential building or workplace once in civic-facility and station inspection reports. Any reached member identifies the building, including when its origin is outside the station walking range. Resident/job totals still include only the reached members, preserving the actual service and transport simulation. Report text explains this distinction. This corrects presentation inherited from single-tile zoning; it does not alter routing, capacity or simulation coefficients.
+
+Validated with the new lot-service-counts suite (48/96 maps, full and partial catchments, origins outside the range, disconnected and abandoned lots, read-only reports and save restoration), plus the existing civic-facility-inspection and station-inspection suites. These three suites pass. The release command now contains 175 suites; the most recent full release run remains 174. This follow-up is uncommitted and not live; retain it for the next milestone-sized release.
+
+
+The working service-count follow-up above is now included in the education service planning release. See [education service maps](EDUCATION-SERVICE-MAPS-MILESTONE.md) for the combined milestone and acceptance exercise.
