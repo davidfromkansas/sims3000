@@ -1,26 +1,27 @@
-import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=original-music-1';
-import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=original-music-1';
-import {stationAreas} from './service-areas.js?v=original-music-1';
-import {cityGrid,visibleTileBounds} from './city-grid.js?v=original-music-1';
-import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=original-music-1';
-import {designForTile,drawDesignedBuilding} from './building-designs.js?v=original-music-1';
-import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=original-music-1';
-import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=original-music-1';
-import {inScenarioArea} from './scenario-area.js?v=original-music-1';
-import {railVehicles} from './rail-visuals.js?v=original-music-1';
-import {zonedSprite} from './building-art.js?v=original-music-1';
-import {trafficVehicles} from './traffic-visuals.js?v=original-music-1';
-import {tunnelAt} from './tunnels.js?v=original-music-1';
-import {STRUCTURES} from './structures.js?v=original-music-1';
-import {LANDSCAPE} from './landscape.js?v=original-music-1';
-import {POWER_PLANTS} from './power.js?v=original-music-1';
-import {WATER_STRUCTURES} from './utilities.js?v=original-music-1';
-import {FACILITIES} from './facilities.js?v=original-music-1';
-import {rampCrossings} from './highway.js?v=original-music-1';
-import {STATIONS} from './rail.js?v=original-music-1';
-import {roadNeighbors} from './transport.js?v=original-music-1';
-import {SERVICES} from './civic.js?v=original-music-1';
-import {ZONES,selection,planBuild} from './engine.js?v=original-music-1';
+import {drawBridgeStructure} from './bridge-structures.js?v=bridge-structures-1';
+import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=bridge-structures-1';
+import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=bridge-structures-1';
+import {stationAreas} from './service-areas.js?v=bridge-structures-1';
+import {cityGrid,visibleTileBounds} from './city-grid.js?v=bridge-structures-1';
+import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=bridge-structures-1';
+import {designForTile,drawDesignedBuilding} from './building-designs.js?v=bridge-structures-1';
+import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=bridge-structures-1';
+import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=bridge-structures-1';
+import {inScenarioArea} from './scenario-area.js?v=bridge-structures-1';
+import {railVehicles} from './rail-visuals.js?v=bridge-structures-1';
+import {zonedSprite} from './building-art.js?v=bridge-structures-1';
+import {trafficVehicles} from './traffic-visuals.js?v=bridge-structures-1';
+import {tunnelAt} from './tunnels.js?v=bridge-structures-1';
+import {STRUCTURES} from './structures.js?v=bridge-structures-1';
+import {LANDSCAPE} from './landscape.js?v=bridge-structures-1';
+import {POWER_PLANTS} from './power.js?v=bridge-structures-1';
+import {WATER_STRUCTURES} from './utilities.js?v=bridge-structures-1';
+import {FACILITIES} from './facilities.js?v=bridge-structures-1';
+import {rampCrossings} from './highway.js?v=bridge-structures-1';
+import {STATIONS} from './rail.js?v=bridge-structures-1';
+import {roadNeighbors} from './transport.js?v=bridge-structures-1';
+import {SERVICES} from './civic.js?v=bridge-structures-1';
+import {ZONES,selection,planBuild} from './engine.js?v=bridge-structures-1';
 const COLORS={residential:'#81b96b',commercial:'#79baca',industrial:'#d9ba6b'};
 export class CityRenderer{
  constructor(canvas,getCity){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.rotation=0;this.layer='city';this.tool='road';this.density=1;this.hover=null;this.drag=null;this.sprites=[];this.assetReady=false;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');this.time=0;this.vehicleTime=0;this.previousFrame=null;this.dirty=true;this.w=0;this.h=0;this.resize=new ResizeObserver(()=>{const first=this.w===0;this.w=canvas.clientWidth;this.h=canvas.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);canvas.width=this.w*this.dpr;canvas.height=this.h*this.dpr;if(first)this.center();this.dirty=true;});this.resize.observe(canvas);this.loadSprites();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);}
@@ -144,9 +145,9 @@ export class CityRenderer{
  drawTrain(v){const c=this.ctx,u=this.unit,p=this.project(v.x,v.y),q=this.project(v.x+v.dx,v.y+v.dy);if(p.x<-u||p.x>this.w+u||p.y<-u||p.y>this.h+u)return;c.save();c.translate(p.x,p.y+u*.46);c.rotate(Math.atan2(q.y-p.y,q.x-p.x));c.fillStyle='#19334066';c.fillRect(-u*.16,u*.015,u*.32,u*.15);c.fillStyle='#296779';c.fillRect(-u*.15,-u*.07,u*.3,u*.17);c.fillStyle='#d5ddd7';c.fillRect(-u*.15,-u*.105,u*.3,u*.14);c.fillStyle='#547883';for(const x of [-.09,-.015,.06])c.fillRect(u*x,-u*.085,u*.035,u*.08);if(v.cab){c.fillStyle='#f6e4ac';c.fillRect(u*.12,-u*.08,u*.025,u*.09);}c.restore();}
  drawVehicle(v){const c=this.ctx,u=this.unit,p=this.project(v.x,v.y),q=this.project(v.x+v.dx,v.y+v.dy),angle=Math.atan2(q.y-p.y,q.x-p.x);if(p.x<-u||p.x>this.w+u||p.y<-u||p.y>this.h+u)return;c.save();c.translate(p.x,p.y+u*(v.elevated?-.15:.5));c.rotate(angle);c.fillStyle='#18333555';c.fillRect(-u*.18,u*.015,u*.36,u*.17);c.fillStyle='#263c40';c.fillRect(-u*.17,-u*.09,u*.34,u*.18);c.fillStyle=v.color;c.fillRect(-u*.16,-u*.12,u*.32,u*.17);c.fillStyle='#466d78';c.fillRect(-u*.07,-u*.105,u*.12,u*.14);c.fillStyle='#f3e6b7';c.fillRect(u*.12,-u*.09,u*.035,u*.04);c.fillRect(u*.12,u*.015,u*.035,u*.04);c.restore();}
  drawRoad(t,p){const {SIZE,idx,inside}=cityGrid(this.getCity());const u=this.unit,c=this.ctx,trafficColor=`hsl(${Math.max(0,120-t.traffic*3)},55%,45%)`,roadColor=this.layer==='traffic'?trafficColor:'#5d6e68';this.diamond(p.x,p.y,u,t.terrain==='water'?'#bac4c0':'#8f9c8d');this.diamond(p.x,p.y+u*.12,u*.76,this.layer==='traffic'?trafficColor:this.getCity().finance.roadCondition<40?'#826953':roadColor);const center={x:p.x,y:p.y+u/2};let neighbors=[];for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy;if(!inside(x,y)||!roadNeighbors(this.getCity().tiles,idx(t.x,t.y)).includes(idx(x,y)))continue;const q=this.project(x,y),edge={x:(p.x+q.x)/2,y:(p.y+q.y)/2+u/2};neighbors.push(edge);this.line([center,edge],roadColor,u*.58);}
- for(const edge of neighbors)this.line([center,edge],'#c7c2a066',.75*this.zoom,[3*this.zoom,4*this.zoom]);}
- drawHighway(t,p){const {SIZE,idx,inside}=cityGrid(this.getCity());const u=this.unit,city=this.getCity(),center={x:p.x,y:p.y-u*.15},color=this.layer==='traffic'?`hsl(${Math.max(0,120-t.highwayTraffic*.75)},55%,45%)`:'#637079';this.line([{x:p.x,y:p.y+u*.65},center],'#879592',u*.12);let count=0;for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy;if(!inside(x,y)||!city.tiles[idx(x,y)].highway)continue;const next=city.tiles[idx(x,y)],axis=dx?'x':'y';if(t.terrain==='water'&&t.highwayAxis!==axis||next.terrain==='water'&&next.highwayAxis!==axis)continue;const q=this.project(x,y),end={x:(p.x+q.x)/2,y:(p.y+q.y)/2-u*.15};this.line([center,end],'#c4cac2',u*.64);this.line([center,end],color,u*.5);this.line([center,end],'#d4d5b6',u*.025,[u*.13,u*.1]);count++;}if(!count)this.diamond(p.x,p.y-u*.5,u*.65,color,'#c4cac2');}
- drawTrack(t,p,underground){const {SIZE,idx,inside}=cityGrid(this.getCity());const u=this.unit,city=this.getCity(),center={x:p.x,y:p.y+u/2},field=underground?'subway':'rail',count=underground?t.subwayRiders:t.railRiders,color=underground?count?'#a5eef5':'#859798':this.layer==='rail'&&count?'#e5de93':'#48504b';let drawn=false;for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy;if(!inside(x,y)||!city.tiles[idx(x,y)][field])continue;if(!underground){const next=city.tiles[idx(x,y)],axis=dx?'x':'y';if(t.terrain==='water'&&t.railAxis!==axis||next.terrain==='water'&&next.railAxis!==axis)continue;}const q=this.project(x,y),end={x:(p.x+q.x)/2,y:(p.y+q.y)/2+u/2};this.line([center,end],underground?'#263b41':'#958d76',u*.25);this.line([center,end],color,u*.1);drawn=true;}if(!drawn)this.line([{x:p.x-u*.35,y:p.y+u*.3},{x:p.x+u*.35,y:p.y+u*.65}],color,u*.16);}
+ for(const edge of neighbors)this.line([center,edge],'#c7c2a066',.75*this.zoom,[3*this.zoom,4*this.zoom]);drawBridgeStructure(this,t,'road');}
+ drawHighway(t,p){const {SIZE,idx,inside}=cityGrid(this.getCity());const u=this.unit,city=this.getCity(),center={x:p.x,y:p.y-u*.15},color=this.layer==='traffic'?`hsl(${Math.max(0,120-t.highwayTraffic*.75)},55%,45%)`:'#637079';if(t.terrain!=='water')this.line([{x:p.x,y:p.y+u*.65},center],'#879592',u*.12);let count=0;for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy;if(!inside(x,y)||!city.tiles[idx(x,y)].highway)continue;const next=city.tiles[idx(x,y)],axis=dx?'x':'y';if(t.terrain==='water'&&t.highwayAxis!==axis||next.terrain==='water'&&next.highwayAxis!==axis)continue;const q=this.project(x,y),end={x:(p.x+q.x)/2,y:(p.y+q.y)/2-u*.15};this.line([center,end],'#c4cac2',u*.64);this.line([center,end],color,u*.5);this.line([center,end],'#d4d5b6',u*.025,[u*.13,u*.1]);count++;}if(!count)this.diamond(p.x,p.y-u*.5,u*.65,color,'#c4cac2');drawBridgeStructure(this,t,'highway');}
+ drawTrack(t,p,underground){const {SIZE,idx,inside}=cityGrid(this.getCity());const u=this.unit,city=this.getCity(),center={x:p.x,y:p.y+u/2},field=underground?'subway':'rail',count=underground?t.subwayRiders:t.railRiders,color=underground?count?'#a5eef5':'#859798':this.layer==='rail'&&count?'#e5de93':'#48504b';let drawn=false;for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy;if(!inside(x,y)||!city.tiles[idx(x,y)][field])continue;if(!underground){const next=city.tiles[idx(x,y)],axis=dx?'x':'y';if(t.terrain==='water'&&t.railAxis!==axis||next.terrain==='water'&&next.railAxis!==axis)continue;}const q=this.project(x,y),end={x:(p.x+q.x)/2,y:(p.y+q.y)/2+u/2};if(!underground&&t.terrain==='water')this.line([center,end],'#aebcaf',u*.48);this.line([center,end],underground?'#263b41':'#958d76',u*.25);this.line([center,end],color,u*.1);drawn=true;}if(!drawn)this.line([{x:p.x-u*.35,y:p.y+u*.3},{x:p.x+u*.35,y:p.y+u*.65}],color,u*.16);if(!underground)drawBridgeStructure(this,t,'rail');}
  setZoom(value){this.zoom=Math.max(.4,Math.min(2.5,value));this.dirty=true;}
  center(){this.pan={x:0,y:0};this.setZoom(Math.min(1.2,Math.max(.65,this.w/950)));const city=this.getCity(),homes=city?.starter?city.tiles.filter(t=>t.type==='residential'&&t.level):[];if(homes.length){const x=homes.reduce((s,t)=>s+t.x,0)/homes.length,y=homes.reduce((s,t)=>s+t.y,0)/homes.length,p=this.project(x,y);this.pan.x+=this.w/2-p.x;this.pan.y+=this.h/2-p.y-this.unit/2;}}
 }
