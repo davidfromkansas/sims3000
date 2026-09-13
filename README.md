@@ -277,3 +277,5 @@ Sanitation health checkpoint: uncollected garbage now directly lowers exposed re
 Water diagnostics checkpoint: Utilities now identifies shortages by pipe network, locates uncovered zones, and opens source maintenance queries. See [water network diagnostics](docs/WATER-GRID-DIAGNOSTICS-MILESTONE.md). Source only; publication pending.
 
 Rail landfill checkpoint: garbage can reach remote landfill sidings through surface rail from road-connected stations or rail imports. See [rail landfill delivery](docs/LANDFILL-RAIL-FREIGHT-MILESTONE.md). Source only; publication pending.
+
+Water continuity checkpoint: previously supplied buildings retain their water requirement through shrinkage and abandonment, with saved interruption progress and repair/reoccupation behavior. See [water-service continuity](docs/WATER-SERVICE-CONTINUITY-MILESTONE.md). Source only; publication pending.
