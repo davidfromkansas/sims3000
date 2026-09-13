@@ -1,6 +1,6 @@
-import {scenarioAllowsBackground} from './scenario-background-rules.js?v=water-recovery-scenario-1';
-import {recordHazard} from './emergency-order.js?v=water-recovery-scenario-1';
-import {beginEmergencySession} from './emergency-session.js?v=water-recovery-scenario-1';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=scenario-start-preview-1';
+import {recordHazard} from './emergency-order.js?v=scenario-start-preview-1';
+import {beginEmergencySession} from './emergency-session.js?v=scenario-start-preview-1';
 export const freshWhirlpool=()=>({randomWhirlpools:false,whirlpool:null,whirlpools:0});
 export function startWhirlpool(c,x,y){const n=Math.sqrt(c.tiles.length),e=c.emergency;if(e.whirlpool)return{ok:false,error:'This disaster type is already active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n||c.tiles[y*n+x].terrain!=='water')return{ok:false,error:'Choose a water tile for the whirlpool.'};beginEmergencySession(c);recordHazard(e,'whirlpool');Object.assign(e,{whirlpool:{x,y,age:0}});e.whirlpools++;return{ok:true};}
 // Four expanding pulses; only connected surface water and its immediate shore are exposed.

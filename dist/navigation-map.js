@@ -1,6 +1,7 @@
-import {EDUCATION_LAYERS,EDUCATION_LAYER_LEGEND,educationLayerProfile,educationLayerColor} from './education-layers.js?v=water-recovery-scenario-1';
-import {drawNavigationPrecincts,PRECINCT_LAYERS,PRECINCT_LEGEND} from './service-areas.js?v=water-recovery-scenario-1';
-import {mapSize} from './city-grid.js?v=water-recovery-scenario-1';
+import {powerBaseNeed,waterBaseNeed} from './utility-demand.js?v=scenario-start-preview-1';
+import {EDUCATION_LAYERS,EDUCATION_LAYER_LEGEND,educationLayerProfile,educationLayerColor} from './education-layers.js?v=scenario-start-preview-1';
+import {drawNavigationPrecincts,PRECINCT_LAYERS,PRECINCT_LEGEND} from './service-areas.js?v=scenario-start-preview-1';
+import {mapSize} from './city-grid.js?v=scenario-start-preview-1';
 export const NAV_LAYERS={city:'City',zones:'Zones',aura:'Approval / aura',density:'Built density',flammability:'Flammability',power:'Power',water:'Water',traffic:'Road traffic',rail:'Rail usage',subway:'Subway usage',pollution:'Air pollution',waterPollution:'Water pollution',crime:'Crime',landValue:'Land value',police:'Police coverage',fire:'Fire coverage',health:'Health coverage',education:'Education coverage',garbage:'Uncollected waste',...Object.fromEntries(Object.entries(EDUCATION_LAYERS).map(([key,value])=>[key,value.name]))};
 export function navigationLegend(layer){return EDUCATION_LAYERS[layer]?EDUCATION_LAYER_LEGEND:['rail','subway'].includes(layer)?'Used track bright · Unused track gray · Stations: operating gold, inactive orange':layer==='aura'?'Occupied homes: low approval red → high green · Other tiles gray':layer==='density'?'Built density: pale low → dark dense · Empty zones gray':layer==='flammability'?'Fire risk: low green → high red':['city','zones'].includes(layer)?'Homes green · Shops blue · Industry gold':['power','water'].includes(layer)?'Served teal · Unserved orange':['landValue','police','fire','health','education'].includes(layer)?'Low red → High green':'Low green → High red';}
 const heat=(value,good=false)=>`hsl(${Math.max(0,Math.min(120,(good?value:100-value)*1.2))},55%,48%)`;
@@ -11,7 +12,7 @@ export function navigationColor(t,layer,profile){
  if(t.terrain==='water')return '#32677f';
  if(layer==='aura')return t.type==='residential'&&t.level?heat(t.aura||0,true):'#6a7770';
  if(layer==='density')return ['residential','commercial','industrial'].includes(t.type)?(t.level?`hsl(155,40%,${80-t.level*18}%)`:'#929b95'):'#536a65';
- if(layer==='power'||layer==='water')return t.type&&!['road','powerline','landfill','park'].includes(t.type)?(t[layer==='power'?'powered':'watered']?'#82cfbe':'#ce855e'):'#344c42';
+ if(layer==='power'||layer==='water')return (layer==='power'?powerBaseNeed(t):waterBaseNeed(t))>0?(t[layer==='power'?'powered':'watered']?'#82cfbe':'#ce855e'):'#344c42';
  const field={flammability:'flammability',traffic:'traffic',pollution:'airPollution',waterPollution:'waterPollution',crime:'crime',landValue:'landValue',police:'policeCoverage',fire:'fireCoverage',health:'healthCoverage',education:'educationCoverage',garbage:'waste'}[layer];
  if(field)return heat(layer==='traffic'?Math.max(t.traffic||0,(t.highwayTraffic||0)/4)*2.5:t[field]||0,['landValue','police','fire','health','education'].includes(layer));
  if(t.fire)return '#ff7656';if(t.rubble)return '#7b7067';if(t.highway||t.rail||t.type==='road')return '#d0d3bd';
