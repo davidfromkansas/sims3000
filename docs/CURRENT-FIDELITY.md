@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 177 regression suites, save schema 111. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 180 regression suites, save schema 112. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -712,3 +712,18 @@ This release also corrects civic and station inspections to count each multi-til
 Feedback exercise: provide schools to a neighborhood but leave colleges absent. Compare the separate maps, build a connected college, then compare the adult map and add a library or museum. Reduce education funding, observe coverage and facility markers, then restore it. Inspect a station beside a multi-tile building and assess whether building counts and partial service totals are understandable.
 
 Validation: three new suites cover real construction and coverage, disconnected homes, funding/strikes, zero-age demand, exact navigation/city colors through all four renderer rotations, relevant facility markers, actual Civic/City data/City view handlers, partial larger-lot catchments, read-only behavior and save restoration. Schema remains 111; no simulation inputs or save fields change. Browser visual acceptance and player feedback remain pending. Not published to Sites; source-export approval remains pending.
+
+
+## Saved landscape and tree appearance checkpoint — milestone 5
+
+City desk → Landscape & trees offers four landscape palettes (classic, lush grassland, dry grassland and cool highlands), the original grove artwork, and three original modeled tree families: broadleaf, evergreen and palm. Each modeled family has three planting densities and four distinct camera views. The preview rotates, changes remain a draft until applied, and restoring the original appearance is also previewed before application. The actual city renderer uses the chosen ground/coast/water/elevation colors and grove models, while the flora visibility preference still works.
+
+Schema 112 saves the two appearance choices with each city, including custom challenge starting snapshots. Schema111 and earlier migrate to the original appearance. All tree-cover, environmental, demographic, building and utility simulation inputs remain unchanged. The actual large-map worker retains the selected appearance through monthly continuation. The current New City setup keeps the original visual defaults; players change appearance after accepting the terrain. Navigation remains a schematic map with its existing diagnostic colors.
+
+Manual p.29 describes saved landscape/tree/building graphics choices and changing them during play. These palettes and botanical models are original artwork, not recovered original graphics sets; custom building choices remain in the separate designer and replacement workflow. The full original building/landmark catalog and browser visual/performance acceptance remain unfinished.
+
+Validation: all 180 regression suites pass. New tests cover 36 distinct finite bounded tree views, deterministic transparent rasterization, actual four-view renderer integration, visibility controls, preview/apply/cancel/default handlers, bounded reusable 256px tree sprites, all appearance combinations, strict save validation, legacy migration, exact unchanged simulation, scenario starting snapshots and real worker continuation. The offline art sheet was rendered and visually inspected: [tree styles](previews/tree-styles.png). This is not a browser screenshot or browser acceptance result.
+
+Feedback exercise: open Landscape & trees, compare a palm grove on dry grassland with evergreens in cool highlands, rotate the preview, then apply. Rotate the city, hide/show flora, save and reload, and restore the original appearance. Assess tree scale, readability and whether the visual settings feel coherent with the rest of the city.
+
+This source milestone is not live. Explicit Sites source-export authorization remains pending after automatic approval review blocked publication.

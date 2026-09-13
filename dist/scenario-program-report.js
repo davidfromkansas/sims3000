@@ -1,8 +1,8 @@
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=education-service-maps-1';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=education-service-maps-1';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=education-service-maps-1';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=education-service-maps-1';
-import {escapeAnnouncement} from './scenario-announcements.js?v=education-service-maps-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=city-landscape-styles-1';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=city-landscape-styles-1';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=city-landscape-styles-1';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=city-landscape-styles-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=city-landscape-styles-1';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';
