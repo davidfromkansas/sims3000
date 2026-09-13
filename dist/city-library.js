@@ -1,4 +1,4 @@
-import {serializeCity} from './save.js?v=scene-geometry-1';
+import {serializeCity} from './save.js?v=direct-model-paint-2';
 export const MANUAL_SLOT='sims3000.manual.v1',AUTO_SLOT='sims3000.autosave.v1',CITY_LIMIT=20;
 export function cityRecord(city,label=city.name||'Untitled city'){return{size:city.size,label:label.trim(),name:city.name,mayor:city.mayorName,month:city.month,startYear:city.startYear,population:city.stats.population,funds:city.funds,savedAt:Date.now(),raw:serializeCity(city)};}
 const libraryId=id=>typeof id==='string'&&/^city:[a-zA-Z0-9-]{1,64}$/.test(id);

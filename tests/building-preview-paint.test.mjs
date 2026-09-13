@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {mountBuildingPreviewPaint} from '../dist/building-preview-paint.js';
+import {projectedBuildingSurfaces} from '../dist/building-surface-picking.js';
+import {defaultBuildingDesign} from '../dist/building-designs.js';
+let draft={...defaultBuildingDesign(2),rotation:0,blocks:Array(100).fill(0)},writes=0,pans=0;draft.blocks[44]=8;
+const canvas={width:256,height:384,style:{},getBoundingClientRect:()=>({left:10,top:20,width:512,height:768}),focus(){},setPointerCapture(){},onpointerdown:()=>pans++},mode={value:'paint'},material={value:'2'},status={};
+const controller=mountBuildingPreviewPaint(canvas,{get:()=>draft,camera:()=>({zoom:1,x:0,y:0}),apply:m=>{draft={...draft,materials:m};writes++;},render(){},mode,material,status});
+const face=projectedBuildingSurfaces(draft).at(-1),x=face.polygon.reduce((s,p)=>s+p[0],0)/4,y=face.polygon.reduce((s,p)=>s+p[1],0)/4,event={button:0,pointerId:1,clientX:10+x*2,clientY:20+y*2,preventDefault(){}};
+canvas.onpointerdown(event);assert.equal(writes,0,'paint is pending until release');canvas.onpointerup({...event,shiftKey:true});assert.equal(writes,0);canvas.onpointerdown(event);canvas.onpointercancel(event);assert.equal(writes,0);canvas.onpointerdown(event);canvas.onpointerup(event);assert.equal(writes,1);assert.equal(draft.materials[face.index*5+face.side],2);
+mode.value='sample';mode.onchange();material.value='1';canvas.onpointerdown(event);assert.equal(material.value,'2');assert.equal(writes,1,'eyedropper never edits');assert.match(status.textContent,/unchanged/);
+mode.value='paint';mode.onchange();canvas.onpointermove(event);material.value='3';canvas.onkeydown({key:'Enter',preventDefault(){},stopPropagation(){}});assert.equal(writes,2);assert.equal(draft.materials[face.index*5+face.side],3);
+canvas.onpointerdown(event);draft={...draft,blocks:[...draft.blocks]};canvas.onpointerup(event);assert.equal(writes,2,'model switch cancels an in-flight stroke');canvas.onpointerdown(event);canvas.onkeydown({key:'Escape',preventDefault(){},stopPropagation(){}});canvas.onpointerup(event);assert.equal(writes,2);
+canvas.onpointerdown(event);draft={...draft,rotation:1};canvas.onpointerup(event);assert.equal(writes,2,'rotation interrupts a pending stroke');
+mode.value='pan';mode.onchange();canvas.onpointerdown(event);assert.equal(pans,1);controller.reset();
+console.log('PASS: direct paint stroke commit/cancel, scaled pointer coordinates, read-only material sampling, keyboard painting, model replacement cancellation and camera delegation.');
