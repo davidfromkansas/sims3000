@@ -1,7 +1,7 @@
-import {disasterReliefReport} from './disaster-relief.js?v=building-plane-guides-1';
-import {businessIncomeReport} from './business.js?v=building-plane-guides-1';
-import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=building-plane-guides-1';
-import {applyBudget,borrow} from './engine.js?v=building-plane-guides-1';
+import {disasterReliefReport} from './disaster-relief.js?v=building-preview-navigation-2';
+import {businessIncomeReport} from './business.js?v=building-preview-navigation-2';
+import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=building-preview-navigation-2';
+import {applyBudget,borrow} from './engine.js?v=building-preview-navigation-2';
 const names={residential:'Residential',commercial:'Commercial',industrial:'Industrial'};
 export function showFinance(ui){
  const {city,dialog,close,update,save,clearUndo,notify,review}=ui,c=city(),fmt=n=>'§'+Math.round(n).toLocaleString(),$=s=>document.querySelector(s),f=c.finance;

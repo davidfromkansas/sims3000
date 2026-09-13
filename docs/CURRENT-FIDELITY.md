@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 213 regression suites, save schema 120. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 214 regression suites, save schema 120. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -813,3 +813,5 @@ Independent building layers checkpoint: construct arches and overhangs on 24 edi
 Vertical building construction checkpoint: edit either vertical cross-section to create tall walls or openings in one operation, with shared occupancy and history. See [vertical edit planes](BUILDING-VERTICAL-PLANES-MILESTONE.md). All 212 suites passed; source only, publication pending.
 
 Building edit guidance checkpoint: selected cross-sections and pending blocks now appear on the rotating model preview. See [3D edit guides](BUILDING-PLANE-GUIDES-MILESTONE.md). All 213 suites passed; source only, publication pending.
+
+Building inspection checkpoint: zoom and pan close-ups, rotate both directions, and reset the preview while preserving model data. See [preview navigation](BUILDING-PREVIEW-NAVIGATION-MILESTONE.md). All 214 suites passed; source only, publication pending.

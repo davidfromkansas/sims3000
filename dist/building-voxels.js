@@ -1,6 +1,6 @@
-import {projectBuildingPoint} from './building-footprints.js?v=building-plane-guides-1';
-import {buildingShapeCells} from './building-shapes.js?v=building-plane-guides-1';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=building-plane-guides-1';
+import {projectBuildingPoint} from './building-footprints.js?v=building-preview-navigation-2';
+import {buildingShapeCells} from './building-shapes.js?v=building-preview-navigation-2';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=building-preview-navigation-2';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;
