@@ -1,7 +1,7 @@
-import {LANDMARKS} from './landmarks.js?v=garbage-health-1';
-import {BUSINESSES} from './business.js?v=garbage-health-1';
-import {REWARDS} from './rewards.js?v=garbage-health-1';
-import {POWER_PLANTS} from './power.js?v=garbage-health-1';
-import {RECREATION} from './recreation.js?v=garbage-health-1';
+import {LANDMARKS} from './landmarks.js?v=water-grid-report-1';
+import {BUSINESSES} from './business.js?v=water-grid-report-1';
+import {REWARDS} from './rewards.js?v=water-grid-report-1';
+import {POWER_PLANTS} from './power.js?v=water-grid-report-1';
+import {RECREATION} from './recreation.js?v=water-grid-report-1';
 // Fixed-footprint ploppable structures share construction, damage and save validation.
 export const STRUCTURES={...LANDMARKS,...POWER_PLANTS,...RECREATION,...REWARDS,...BUSINESSES};

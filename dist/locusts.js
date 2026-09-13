@@ -1,6 +1,6 @@
-import {scenarioAllowsBackground} from './scenario-background-rules.js?v=garbage-health-1';
-import {recordHazard} from './emergency-order.js?v=garbage-health-1';
-import {beginEmergencySession} from './emergency-session.js?v=garbage-health-1';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=water-grid-report-1';
+import {recordHazard} from './emergency-order.js?v=water-grid-report-1';
+import {beginEmergencySession} from './emergency-session.js?v=water-grid-report-1';
 const food=t=>t.nature||t.type==='industrial'&&t.industry==='farm'&&t.level>0;
 export const freshLocusts=()=>({randomLocusts:false,locust:null,cropDusters:[],nextDuster:0,locustPlagues:0,vegetationLost:0});
 export function startLocusts(c,x,y){const n=Math.sqrt(c.tiles.length),e=c.emergency;if(e.locust)return{ok:false,error:'This disaster type is already active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n)return{ok:false,error:'Choose a tile inside the city.'};if(!c.tiles.some(food))return{ok:false,error:'There are no trees or farm crops for locusts to eat.'};beginEmergencySession(c);recordHazard(e,'locust');Object.assign(e,{locust:{x,y,age:0,strength:100},cropDusters:[],nextDuster:0});e.locustPlagues++;return{ok:true};}
