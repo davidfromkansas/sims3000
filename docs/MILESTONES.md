@@ -462,3 +462,14 @@ The manual refers to a separate original city file that is not supplied by the P
 Tests cover the serviced rail-only start, actual two-year continuation and victory, road loss including at the deadline, terminal results after demolition, removal before a check, saved continuation, transit funding dependence, migration and the correct early-loss explanation. Full regression coverage is 121 suites; browser acceptance remains pending.
 
 Feedback exercise: choose Roadless Paradise from Scenarios. Inspect rail commuting and utilities, run the town for a few months, and try expanding around stations. In a separate attempt, place a road and advance a month to assess whether the loss rule is clear.
+
+
+### Background monthly simulation — milestone 1
+
+Maps of 96 × 96 or larger calculate normal simulation months in a module worker. The visible city stays at its last complete month until a complete result arrives, then its data is replaced while preserving city identity. The map can pan/zoom/rotate during calculation; left-drag temporarily pans, and speed/pause requests remain available. Construction and other mutating commands wait for the month to finish so they cannot be overwritten. A month already in progress completes after Pause. The time display identifies calculation in progress. No new month starts during a construction drag or while another month is running.
+
+Only monthly simulation moves to the worker. Emergency response steps, construction recomputation, saving and rendering still run on the main thread. Compact maps keep the original foreground path. Worker startup/transport failures fall back to foreground calculation; a reported simulation error pauses without applying partial worker state. A result for a replaced city is discarded. Save schema remains 95.
+
+Actual worker-thread regression checks compare three background months with foreground results, statistics and serialized state, along with single-flight operation, visible-state isolation, cancellation and error/fallback behavior. A Node synthetic dense 256 × 256 run took about 3.2 seconds including worker startup and data copying; the main thread executed 137 timer callbacks while waiting, with a longest observed timer gap of 114 ms. These are Node coordination measurements, not browser frame rates. Copying city data adds time/memory and can still cause short pauses; browser/mobile acceptance remains unfinished. Repeat with `node benchmarks/background-month.mjs 256`.
+
+Full regression coverage is 122 suites. Feedback exercise: run a developed 96 × 96 or larger city and pan/zoom during Calculating next month. Request Pause and verify that the in-flight month completes once, then construction becomes available. Compare camera responsiveness with earlier releases.
