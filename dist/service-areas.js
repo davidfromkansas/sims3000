@@ -1,5 +1,5 @@
-import {EDUCATION_LAYERS} from './education-layers.js?v=city-landscape-styles-1';
-import {serviceRadius} from './civic.js?v=city-landscape-styles-1';
+import {EDUCATION_LAYERS} from './education-layers.js?v=new-city-artwork-1';
+import {serviceRadius} from './civic.js?v=new-city-artwork-1';
 export const PRECINCT_LAYERS={police:'police',crime:'police',fire:'fire',flammability:'fire'};
 export const PRECINCT_LEGEND='Station dots: operating white, inactive orange · Rings: current service limit; strength falls toward the edge';
 export function stationAreas(city,layer){

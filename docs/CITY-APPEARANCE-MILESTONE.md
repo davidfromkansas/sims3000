@@ -16,3 +16,6 @@ Feedback exercise: open Landscape & trees, compare a palm grove on dry grassland
 This source milestone is not live. Explicit Sites source-export authorization remains pending after automatic approval review blocked publication.
 
 Release cache graph: city-landscape-styles-1.
+
+
+The original release limitation about choosing appearance only after terrain acceptance is superseded by [new-city artwork](NEW-CITY-ARTWORK-MILESTONE.md), which adds preview and selection during setup.

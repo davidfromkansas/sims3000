@@ -2,7 +2,7 @@
 
 Playable browser city-builder reconstruction guided by the SimCity 3000 Unlimited manual. Six feedback milestones cover founding a city, utilities, finance, civic services, transport, and scenarios/disasters. Current gameplay includes city growth, service networks, budgets, transit, airports/ports, nine disaster types, five prepared challenges, a custom scenario editor, saved cities, photos, and original generated and procedural art. This is substantial work in progress, not verified full parity with the original game.
 
-[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 180 suites; save schema is 112.
+[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 181 suites; save schema is 112.
 
 Run `npm start` and open http://127.0.0.1:4387. The website has no runtime npm dependencies or build step. Run `npm ci` before regression tests; IndexedDB tests use the development-only `fake-indexeddb` emulator. The authored static website is in `dist/`.
 
@@ -251,3 +251,5 @@ Latest source milestone: import another exported city’s complete building set 
 Latest source milestone: separate school, college and adult learning service maps, with larger-building service counts. See [education service planning](docs/EDUCATION-SERVICE-MAPS-MILESTONE.md). All 177 regression suites pass; this source release is not yet hosted.
 
 Latest source milestone: saved landscape and grove artwork choices, including 36 original modeled tree views. See [city appearance](docs/CITY-APPEARANCE-MILESTONE.md). All 180 suites pass. Not yet hosted.
+
+Latest source milestone: select landscape/grove artwork and inherit the current building set while founding a city. See [new-city artwork](docs/NEW-CITY-ARTWORK-MILESTONE.md). The full 181-suite regression run passed; not yet hosted.

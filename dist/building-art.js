@@ -1,5 +1,5 @@
-import {buildingSlot,parseBuildingSlot,tileBuildingFootprint} from './building-footprints.js?v=city-landscape-styles-1';
-import {tileIndex} from './city-grid.js?v=city-landscape-styles-1';
+import {buildingSlot,parseBuildingSlot,tileBuildingFootprint} from './building-footprints.js?v=new-city-artwork-1';
+import {tileIndex} from './city-grid.js?v=new-city-artwork-1';
 // Variants depend only on the lot and city seed, so saved and historical buildings keep their appearance.
 export function baseZonedSprite(t,seed){
  const level=t.historicalLevel||t.abandonedLevel||t.level;

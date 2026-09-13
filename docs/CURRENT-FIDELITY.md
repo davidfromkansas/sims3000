@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 180 regression suites, save schema 112. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 181 regression suites, save schema 112. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -727,3 +727,18 @@ Validation: all 180 regression suites pass. New tests cover 36 distinct finite b
 Feedback exercise: open Landscape & trees, compare a palm grove on dry grassland with evergreens in cool highlands, rotate the preview, then apply. Rotate the city, hide/show flora, save and reload, and restore the original appearance. Assess tree scale, readability and whether the visual settings feel coherent with the rest of the city.
 
 This source milestone is not live. Explicit Sites source-export authorization remains pending after automatic approval review blocked publication.
+
+
+## New-city artwork checkpoint — milestones 1 and 5
+
+New City now includes landscape and grove choices with the same rotating artwork preview as City desk. Players can also reuse their current city's complete custom building set when founding either an empty city or a prepared starter town. The set applies to matching style/footprint variants immediately and to future growth. It is copied independently; the source city's simulation and artwork remain untouched.
+
+Changing visual choices or toggling building-set reuse preserves terrain sculpting and starting funds. Regenerating the terrain retains the selected artwork, while deliberately rebuilding the terrain as before. Unchecking reuse returns the draft to original building artwork. Export current city remains available before accepting; Cancel discards the whole draft. The top-down terrain preview uses the selected landscape palette and continues to mark woodland schematically. The separate isometric sample previews actual grove models.
+
+Manual p.29 places graphics and user-made building choices in New City Options; pp.81–82 describes carrying building sets between cities. This checkpoint extends the prior saved-appearance and building-set milestones to city creation. Reuse in the new-city window uses the currently open city; importing another exported city remains available through City desk. No new save fields or simulation coefficients are introduced (schema112).
+
+The new regression suite covers empty/starter cities on 48/96 maps, matching terrain/population/capacity/funds against default generation, isolated model copies, save restoration, invalid option rejection, and actual setup controls for sculpting, artwork selection, rotation, reuse, regeneration, unchecking, backup, acceptance and cancellation. Browser visual acceptance and user feedback remain pending. These original graphics choices are not the full original game catalog.
+
+Feedback exercise: customize a building in your current city, open New City, select a landscape/tree style and enable building-set reuse. Sculpt a hill, change the artwork and verify the hill remains. Accept and inspect the new city's appearance, then save/load. Assess whether the distinction between visual choices, terrain regeneration and the current city's data is clear.
+
+Not published to Sites; explicit source-export authorization remains pending.

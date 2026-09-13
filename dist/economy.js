@@ -1,10 +1,10 @@
-import {outstandingLoanPayments} from './loan-debt.js?v=city-landscape-styles-1';
-import {REWARDS,rewardRoots,rewardActive} from './rewards.js?v=city-landscape-styles-1';
-import {industrialJobs,industryPollution} from './industry.js?v=city-landscape-styles-1';
-import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=city-landscape-styles-1';
-import {POWER_PLANTS} from './power.js?v=city-landscape-styles-1';
-import {civicSpending,ordinanceRevenue} from './civic.js?v=city-landscape-styles-1';
-import {occupancy} from './utilities.js?v=city-landscape-styles-1';
+import {outstandingLoanPayments} from './loan-debt.js?v=new-city-artwork-1';
+import {REWARDS,rewardRoots,rewardActive} from './rewards.js?v=new-city-artwork-1';
+import {industrialJobs,industryPollution} from './industry.js?v=new-city-artwork-1';
+import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=new-city-artwork-1';
+import {POWER_PLANTS} from './power.js?v=new-city-artwork-1';
+import {civicSpending,ordinanceRevenue} from './civic.js?v=new-city-artwork-1';
+import {occupancy} from './utilities.js?v=new-city-artwork-1';
 // Loan terms from manual p. 91. Tax formula from p. 88; calibration constants are original approximations.
 export const SECTORS=['residential','commercial','industrial'];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
