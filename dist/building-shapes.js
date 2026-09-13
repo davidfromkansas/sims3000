@@ -1,6 +1,6 @@
 // Integer footprint selections. Lines use a bounded raster path; planes fill a rectangle.
-export function buildingShapeCells(kind,start,end){
- if(!['line','plane'].includes(kind)||![start,end].every(i=>Number.isInteger(i)&&i>=0&&i<100))throw Error('Choose a line or plane within the building footprint.');
+export function buildingShapeCells(kind,start,end,rows=10){
+ if(!Number.isInteger(rows)||rows<1||rows>24||!['line','plane'].includes(kind)||![start,end].every(i=>Number.isInteger(i)&&i>=0&&i<10*rows))throw Error('Choose a line or plane within the building footprint.');
  let x=start%10,y=Math.floor(start/10);const x1=end%10,y1=Math.floor(end/10),cells=[];
  if(kind==='plane'){for(let row=Math.min(y,y1);row<=Math.max(y,y1);row++)for(let col=Math.min(x,x1);col<=Math.max(x,x1);col++)cells.push(row*10+col);return cells;}
  const dx=Math.abs(x1-x),dy=-Math.abs(y1-y),sx=x<x1?1:-1,sy=y<y1?1:-1;let error=dx+dy;
