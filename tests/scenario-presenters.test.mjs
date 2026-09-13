@@ -1,0 +1,25 @@
+import assert from 'node:assert/strict';
+import {createCity,tick,validateSave,VERSION} from '../dist/engine.js';
+import {attachCustomScenario} from '../dist/custom-scenarios.js';
+import {serializeCity} from '../dist/save.js';
+import {restartCustomScenario} from '../dist/scenario-replay.js';
+import {pendingScenarioPopup,showPendingScenarioPopup} from '../dist/scenario-popups.js';
+import {validatePresenter,presenterMarkup,validatePortrait} from '../dist/scenario-presenters.js';
+import {installPresenterEditor} from '../dist/scenario-presenter-editor.js';
+const png='data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAwMCAO+a9S0AAAAASUVORK5CYII=';
+const presenter={name:'Morgan <Planner>',role:'Planning & development',portrait:png};
+assert.deepEqual(validatePresenter(presenter),presenter);assert.equal(validatePresenter(undefined),null);
+for(const bad of [{...presenter,name:''},{...presenter,role:'x'.repeat(81)},{...presenter,name:'bad\nname'},{...presenter,portrait:'https://example.com/p.png'},{...presenter,portrait:'data:image/svg+xml;base64,PHN2Zz4='}])assert.throws(()=>validatePresenter(bad));
+assert.throws(()=>validatePortrait('data:image/png;base64,AAAA'));const tooWide=Buffer.from(png.slice(22),'base64');tooWide.writeUInt32BE(513,16);assert.throws(()=>validatePortrait('data:image/png;base64,'+tooWide.toString('base64')));
+assert.match(presenterMarkup(presenter),/Morgan &lt;Planner&gt;/);assert.doesNotMatch(presenterMarkup(presenter),/<Planner>/);assert.match(presenterMarkup({...presenter,portrait:'advisor'}),/assets\/scenario-advisor.png/);
+const c=createCity('Presenter test',false);attachCustomScenario(c,{title:'A personal briefing',months:24,objectives:[{metric:'population',target:99999}],events:[{type:'popup',month:1,message:'Hello, Mayor. Population: {population}',presenter,repeatCount:2,repeatEvery:1}]});tick(c);assert.deepEqual(pendingScenarioPopup(c).definition.presenter,presenter);
+let loaded=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(pendingScenarioPopup(loaded).definition.presenter,presenter);assert.deepEqual(restartCustomScenario(loaded).scenario.definition.events[0].presenter,presenter);
+let html='',saved=0,closed=0;const buttons={'#dismissScenarioPopup':{},'#popupScenarioStatus':{}},element={addEventListener(){},querySelector:s=>buttons[s]};
+assert.ok(showPendingScenarioPopup({city:()=>loaded,dialog:(title,body)=>{html=body;},element,save:()=>saved++,close:()=>closed++,status:()=>{}}));assert.match(html,/Morgan &lt;Planner&gt;/);assert.match(html,/data:image\/png;base64/);buttons['#dismissScenarioPopup'].onclick();assert.equal(saved,1);assert.equal(closed,1);assert.equal(pendingScenarioPopup(loaded),null);tick(loaded);assert.deepEqual(pendingScenarioPopup(loaded).definition.presenter,presenter);
+const old=JSON.parse(serializeCity(c));old.version=92;delete old.scenario.definition.events[0].presenter;const migrated=validateSave(old);assert.equal(migrated.version,VERSION);assert.equal(pendingScenarioPopup(migrated).definition.presenter,null);
+// Upload completion cannot replace a later reset, and malformed input retains the current image.
+const controls=new Map(),$=s=>{if(!controls.has(s))controls.set(s,{value:'',checked:false,textContent:'',files:[]});return controls.get(s);};$('#presenterName0').value='Advisor';$('#presenterRole0').value='Planning';$('#presenterEnabled0').checked=true;const read=installPresenterEditor(0,$);assert.equal(read().portrait,'advisor');
+let resolve,bitmapClosed=0;globalThis.createImageBitmap=()=>new Promise(r=>{resolve=r;});$('#presenterFile0').files=[{type:'image/png',size:100}];const uploading=$('#presenterFile0').onchange();assert.throws(read,/finish loading/);$('#presenterReset0').onclick();resolve({close:()=>bitmapClosed++});await uploading;assert.equal(read().portrait,'advisor');assert.equal(bitmapClosed,1);
+$('#presenterFile0').files=[{type:'image/svg+xml',size:100}];await $('#presenterFile0').onchange();assert.equal(read().portrait,'advisor');assert.match($('#presenterError0').textContent,/Previous portrait retained/);
+let crop;globalThis.createImageBitmap=async()=>({width:640,height:320,close:()=>bitmapClosed++});globalThis.document={createElement:()=>({getContext:()=>({drawImage:(...args)=>{crop=args.slice(1);}}),toDataURL:()=>png})};$('#presenterFile0').files=[{type:'image/jpeg',size:100}];await $('#presenterFile0').onchange();assert.deepEqual(crop,[160,0,320,320,0,0,256,256]);assert.equal(read().portrait,png);assert.equal($('#presenterEnabled0').checked,true);
+console.log('PASS: named and custom-raster presenters, escaped popup rendering, actual delivery/acknowledgement/repetition, saved/replayed portraits, legacy migration, portrait validation and stale-upload/reset protection.');
