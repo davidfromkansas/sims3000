@@ -492,3 +492,16 @@ Show vehicles controls decorative road cars, surface trains, ships and aircraft 
 Preferences persist separately from city files and apply across cities in the same browser. Storage failures still apply changes for the session and report that they could not be saved. The tests run real dialog handlers and Canvas renderer dispatch, check visible cars/trains versus hidden sampling, static/animated fountain draws, essential alien graphics, reduced motion, clock holds and unchanged serialized city data. All 132 regression suites pass; browser interaction and visual acceptance remain pending. Save schema 97 is unchanged. The original full animation/sound catalog is still incomplete.
 
 Feedback exercise: open City desk → Play preferences, hide vehicles and stop decorative scenery, then restore them. Disable Auto Go To Disasters before a scripted emergency and compare the retained camera view with manually choosing Next emergency location.
+
+
+### Neighborhood pedestrians — milestones 1 and 5
+
+Original procedural pedestrians now walk along usable streets near occupied, accessible homes. Up to 96 short routes are sampled across the map, with at most 180 visible people distributed among them. Paths follow adjacent dry-land roads at the same elevation; they exclude fire, rubble, radiation and highways. Residents walk out and back with a short endpoint pause. These are decorative activity samples, not extra residents, individual schedules or additional commute demand.
+
+Route geometry is cached until city statistics change, while current road/home safety is checked before drawing. Street-edge paths preserve continuous movement through turns and endpoint reversals. Head, torso, arms, legs and shadows are drawn procedurally with the city camera; limb motion follows the projected travel direction at all four orientations. The offline magnified pose sheet is `docs/previews/pedestrians.png`. It was inspected for silhouette and pose legibility; browser compositing and normal-zoom visual acceptance remain pending.
+
+Play preferences adds Show pedestrians and a separate zoom threshold (100% and closer by default). Pedestrians clear during emergency response so they do not obscure dispatch indicators. They share the existing scene clock, freezing on pause, hidden tabs, dialogs and reduced motion; reduced motion also uses a neutral limb pose. The scene clock may now run for pedestrians even when vehicles and fountains are disabled. This expands the manual p.35 Sims Visible presentation area without claiming a complete original crowd or riot-animation catalog.
+
+Tests exercise real starter-town routes, blocked roads/elevation changes, empty towns, large-map sampling/caps, continuous motion over turns, all camera orientations, actual renderer visibility and cache refresh, saved continuation and unchanged city state. The full regression set has 133 suites; schema 97 is unchanged.
+
+Feedback exercise: zoom into the starter town’s occupied residential streets, pause and resume, then rotate the camera. Hide vehicles while leaving pedestrians on, and compare the separate zoom thresholds under City desk → Play preferences.

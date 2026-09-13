@@ -10,7 +10,7 @@ const copy=preferences.settings;copy.vehicleAnimations=false;assert.equal(prefer
 assert.ok(preferences.set('autoGoToDisasters',false));assert.equal(createPlayPreferences(storage).settings.autoGoToDisasters,false);
 assert.throws(()=>preferences.set('__proto__',true));assert.throws(()=>preferences.set('vehicleAnimations','false'));
 raw='{"autoGoToDisasters":false,"vehicleAnimations":"false","sceneryAnimations":false,"unknown":true}';
-assert.deepEqual(createPlayPreferences(storage).settings,{autoGoToDisasters:false,vehicleAnimations:true,sceneryAnimations:false,trafficMinZoom:.4});
+assert.deepEqual(createPlayPreferences(storage).settings,{autoGoToDisasters:false,vehicleAnimations:true,sceneryAnimations:false,trafficMinZoom:.4,pedestriansVisible:true,pedestrianMinZoom:1});
 raw='invalid';assert.deepEqual(createPlayPreferences(storage).settings,PLAY_DEFAULTS);
 const unavailable=createPlayPreferences({getItem(){throw Error();},setItem(){throw Error();}});assert.equal(unavailable.set('vehicleAnimations',false),false);assert.equal(unavailable.settings.vehicleAnimations,false);
 let focused=0;const focus=()=>focused++;assert.equal(automaticDisasterFocus(preferences,focus),false);assert.equal(focused,0);
@@ -24,11 +24,12 @@ const saved=serializeCity(city),renderer=Object.create(CityRenderer.prototype);l
 const canvasContext=new Proxy(ctx(),{get:(o,k)=>k==='arc'?(...v)=>arcs.push(v):o[k]});
 Object.assign(renderer,{ctx:canvasContext,getCity:()=>city,w:1000,h:800,dpr:1,zoom:1,rotation:0,pan:{x:0,y:0},layer:'city',sprites:[],vehicleTime:4,hover:null,drag:null,tool:'query',reducedMotion:{matches:false},drawVehicle:()=>cars++,drawTrain:()=>trains++,sprite:(id)=>icons.push(id)});renderer.center();
 showPlayPreferences({preferences,renderer,dialog:(title,html)=>{assert.equal(title,'Play preferences');for(const m of html.matchAll(/id="(pref-[^"]+)"/g))nodes['#'+m[1]]={};},notify:m=>messages.push(m)});
-assert.equal(Object.keys(nodes).length,4);
+assert.equal(Object.keys(nodes).length,6);
 const set=(k,v)=>nodes['#pref-'+k].onchange({target:{checked:v}});
-set('vehicleAnimations',false);set('sceneryAnimations',false);assert.equal(renderer.dirty,true);
+set('vehicleAnimations',false);set('sceneryAnimations',false);set('pedestriansVisible',false);assert.equal(renderer.dirty,true);
 renderer.draw();assert.equal(cars,0);assert.equal(trains,0);assert.equal(renderer.harborStats,undefined,'hidden vehicles skip shipping route generation');
 const staticArcs=arcs;arcs=[];renderer.vehicleTime=12;renderer.draw();assert.deepEqual(arcs,staticArcs,'scenery-off fountain has a stable pose');
+set('pedestriansVisible',true);arcs=[];renderer.draw();assert.deepEqual(arcs,staticArcs,'enabling pedestrians must not override the independent scenery preference');set('pedestriansVisible',false);
 set('vehicleAnimations',true);renderer.draw();assert.ok(cars>0&&trains>0,'actual draw dispatches road and rail samples when enabled');assert.equal(renderer.harborStats,city.stats);
 nodes['#pref-trafficMinZoom'].onchange({target:{value:'1.5'}});cars=0;trains=0;renderer.draw();assert.equal(cars+trains,0,'100% view hides vehicles below chosen close-view threshold');
 renderer.setZoom(1.5);renderer.draw();assert.ok(cars+trains>0,'threshold is inclusive');
@@ -37,7 +38,7 @@ set('sceneryAnimations',true);arcs=[];renderer.draw();assert.notDeepEqual(arcs,s
 renderer.reducedMotion.matches=true;arcs=[];renderer.draw();assert.deepEqual(arcs,staticArcs,'system reduced motion overrides decorative animation');
 assert.equal(serializeCity(city),saved,'all preferences and draws leave portable city state unchanged');
 // Essential emergency graphics remain present with both decorative categories off.
-startUfo(city,24,24);set('vehicleAnimations',false);set('sceneryAnimations',false);icons=[];renderer.draw();assert.ok(icons.includes(71));
+startUfo(city,24,24);set('vehicleAnimations',false);set('sceneryAnimations',false);set('pedestriansVisible',false);icons=[];renderer.draw();assert.ok(icons.includes(71));
 // Exercise the real frame clock and refresh scheduling, without a browser.
 globalThis.requestAnimationFrame=()=>{};city.emergency.ufo=null;city.emergency.active=false;
 Object.assign(renderer,{draw(){},running:true,vehicleTime:0,previousFrame:null,time:0,dirty:false});
