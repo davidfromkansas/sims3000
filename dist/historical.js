@@ -1,4 +1,4 @@
-import {buildingLotMembers,updateBuildingLot} from './building-lots.js?v=business-site-analysis-2';
+import {buildingLotMembers,updateBuildingLot} from './building-lots.js?v=playtest-checkpoints-2';
 const zones=['residential','commercial','industrial'];
 export const canPreserve=t=>zones.includes(t.type)&&t.industry!=='farm'&&!t.rubble&&!t.fire&&(t.level>0||t.historicalLevel>0);
 export function designateHistorical(c,index,value){

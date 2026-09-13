@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 221 regression suites, save schema 120. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 222 regression suites, save schema 120. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -24,7 +24,7 @@ The manual describes behavior but does not expose all simulation formulas. Numer
 
 The regression suites prove specific invariants, not complete manual fidelity. The earlier baseline run passed 116 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
 
-Player acceptance is still pending. No silence or automatic continuation has been treated as positive feedback. The six in-game milestones provide exercises and locally saved notes; notes are not automatically transmitted.
+Player acceptance is still pending. No silence or automatic continuation has been treated as positive feedback. The eight in-game checkpoints provide exercises and locally saved notes; notes are not automatically transmitted.
 
 ## Next substantial fidelity priorities
 
@@ -827,3 +827,5 @@ Dense-city geometry checkpoint: stationary frames reuse projected tile positions
 Direct-model painting checkpoint: paint or sample visible building surfaces with camera-aware picking, pending stroke outlines and shared construction undo/redo. See [direct model paint](DIRECT-MODEL-PAINT-MILESTONE.md). All 220 suites passed; source only, publication pending.
 
 Business planning checkpoint: compare two sites using actual detached construction, projected budget and resident-weighted local impacts before accepting a deal. See [business site analysis](BUSINESS-SITE-ANALYSIS-MILESTONE.md). All 221 suites passed; source only, publication pending.
+
+Feedback workflow checkpoint: eight capability-based playtests with concrete tasks, game-tool shortcuts, preserved legacy notes and optional saved checkmarks. See [playtest checkpoints](PLAYTEST-CHECKPOINTS-MILESTONE.md). All 222 suites passed; source only, publication pending.

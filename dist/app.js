@@ -1,82 +1,83 @@
-import {installNeighborhoodLink} from './neighborhood-report.js?v=business-site-analysis-2';
-import {townGoals,showTownGuide} from './town-guide.js?v=business-site-analysis-2';
-import {WATER_VIEW_LEGEND} from './water-view.js?v=business-site-analysis-2';
-import {wasteFacilityReport,installWasteFacilityLinks} from './waste-facility-report.js?v=business-site-analysis-2';
-import {rotateCityView} from './camera-rotation.js?v=business-site-analysis-2';
-import {waterServiceWarning} from './water-service.js?v=business-site-analysis-2';
-import {landfillRailFreight} from './rail-freight.js?v=business-site-analysis-2';
-import {waterGridReport,installWaterGridLinks} from './water-grid-report.js?v=business-site-analysis-2';
-import {showCityAppearance} from './city-appearance-ui.js?v=business-site-analysis-2';
-import {EDUCATION_LAYERS,EDUCATION_LAYER_LEGEND} from './education-layers.js?v=business-site-analysis-2';
-import {showBuildingSetImport} from './building-set-ui.js?v=business-site-analysis-2';
-import {buildingLotReport} from './building-lot-view.js?v=business-site-analysis-2';
-import {moveKeyboardCursor,startKeyboardRange,takeKeyboardSelection,cancelKeyboardRange} from './keyboard-construction.js?v=business-site-analysis-2';
-import {installToolbarView} from './toolbar-view.js?v=business-site-analysis-2';
-import {createCityViewOptions,showCityViewOptions} from './city-view-options.js?v=business-site-analysis-2';
-import {stationReport} from './station-inspection.js?v=business-site-analysis-2';
-import {bridgeProposalReport,bridgeInspection} from './bridge-structures.js?v=business-site-analysis-2';
-import {createPlayPreferences,showPlayPreferences,automaticDisasterFocus} from './play-preferences.js?v=business-site-analysis-2';
-import {powerGridReport,installPowerGridLinks,powerGridSummary} from './power-grid-report.js?v=business-site-analysis-2';
-import {civicFacilityReport} from './civic-service-report.js?v=business-site-analysis-2';
-import {backgroundInteractionAllowed,nativeSpaceTarget} from './background-controls.js?v=business-site-analysis-2';
-import {createSimulationRunner} from './simulation-runner.js?v=business-site-analysis-2';
-import {createEmergencyNavigator,focusEmergencyLocation,fireLocationAt} from './emergency-navigation.js?v=business-site-analysis-2';
-import {MAX_CITY_FILE_BYTES} from './city-grid.js?v=business-site-analysis-2';
-import {cityLibrary,cityRecord} from './city-library.js?v=business-site-analysis-2';
-import {showCityLibrary} from './city-library-ui.js?v=business-site-analysis-2';
-import {marketAccessDescription} from './regional-market-access.js?v=business-site-analysis-2';
-import {restartCustomScenario} from './scenario-replay.js?v=business-site-analysis-2';
-import {showBuildingDesigner} from './building-designer-ui.js?v=business-site-analysis-2';
-import {scenarioEventPresentation} from './scenario-events.js?v=business-site-analysis-2';
-import {moveScenarioCamera} from './scenario-camera.js?v=business-site-analysis-2';
-import {SCENARIO_SOUNDS,deliverScenarioSound} from './scenario-sounds.js?v=business-site-analysis-2';
-import {allowedSpeed,scenarioSpeed,resumeScenarioSpeed} from './scenario-speed.js?v=business-site-analysis-2';
-import {showPendingScenarioPopup} from './scenario-popups.js?v=business-site-analysis-2';
-import {installScenarioAreaView} from './scenario-area-view.js?v=business-site-analysis-2';
-import {canReplaceBuilding,showBuildingReplacement} from './building-replacement-ui.js?v=business-site-analysis-2';
-import {createGameAudio,showAudioSettings} from './game-audio.js?v=business-site-analysis-2';
+import {showPlaytestRoadmap,showPlaytestFeedback} from './playtest-checkpoints.js?v=playtest-checkpoints-2';
+import {installNeighborhoodLink} from './neighborhood-report.js?v=playtest-checkpoints-2';
+import {townGoals,showTownGuide} from './town-guide.js?v=playtest-checkpoints-2';
+import {WATER_VIEW_LEGEND} from './water-view.js?v=playtest-checkpoints-2';
+import {wasteFacilityReport,installWasteFacilityLinks} from './waste-facility-report.js?v=playtest-checkpoints-2';
+import {rotateCityView} from './camera-rotation.js?v=playtest-checkpoints-2';
+import {waterServiceWarning} from './water-service.js?v=playtest-checkpoints-2';
+import {landfillRailFreight} from './rail-freight.js?v=playtest-checkpoints-2';
+import {waterGridReport,installWaterGridLinks} from './water-grid-report.js?v=playtest-checkpoints-2';
+import {showCityAppearance} from './city-appearance-ui.js?v=playtest-checkpoints-2';
+import {EDUCATION_LAYERS,EDUCATION_LAYER_LEGEND} from './education-layers.js?v=playtest-checkpoints-2';
+import {showBuildingSetImport} from './building-set-ui.js?v=playtest-checkpoints-2';
+import {buildingLotReport} from './building-lot-view.js?v=playtest-checkpoints-2';
+import {moveKeyboardCursor,startKeyboardRange,takeKeyboardSelection,cancelKeyboardRange} from './keyboard-construction.js?v=playtest-checkpoints-2';
+import {installToolbarView} from './toolbar-view.js?v=playtest-checkpoints-2';
+import {createCityViewOptions,showCityViewOptions} from './city-view-options.js?v=playtest-checkpoints-2';
+import {stationReport} from './station-inspection.js?v=playtest-checkpoints-2';
+import {bridgeProposalReport,bridgeInspection} from './bridge-structures.js?v=playtest-checkpoints-2';
+import {createPlayPreferences,showPlayPreferences,automaticDisasterFocus} from './play-preferences.js?v=playtest-checkpoints-2';
+import {powerGridReport,installPowerGridLinks,powerGridSummary} from './power-grid-report.js?v=playtest-checkpoints-2';
+import {civicFacilityReport} from './civic-service-report.js?v=playtest-checkpoints-2';
+import {backgroundInteractionAllowed,nativeSpaceTarget} from './background-controls.js?v=playtest-checkpoints-2';
+import {createSimulationRunner} from './simulation-runner.js?v=playtest-checkpoints-2';
+import {createEmergencyNavigator,focusEmergencyLocation,fireLocationAt} from './emergency-navigation.js?v=playtest-checkpoints-2';
+import {MAX_CITY_FILE_BYTES} from './city-grid.js?v=playtest-checkpoints-2';
+import {cityLibrary,cityRecord} from './city-library.js?v=playtest-checkpoints-2';
+import {showCityLibrary} from './city-library-ui.js?v=playtest-checkpoints-2';
+import {marketAccessDescription} from './regional-market-access.js?v=playtest-checkpoints-2';
+import {restartCustomScenario} from './scenario-replay.js?v=playtest-checkpoints-2';
+import {showBuildingDesigner} from './building-designer-ui.js?v=playtest-checkpoints-2';
+import {scenarioEventPresentation} from './scenario-events.js?v=playtest-checkpoints-2';
+import {moveScenarioCamera} from './scenario-camera.js?v=playtest-checkpoints-2';
+import {SCENARIO_SOUNDS,deliverScenarioSound} from './scenario-sounds.js?v=playtest-checkpoints-2';
+import {allowedSpeed,scenarioSpeed,resumeScenarioSpeed} from './scenario-speed.js?v=playtest-checkpoints-2';
+import {showPendingScenarioPopup} from './scenario-popups.js?v=playtest-checkpoints-2';
+import {installScenarioAreaView} from './scenario-area-view.js?v=playtest-checkpoints-2';
+import {canReplaceBuilding,showBuildingReplacement} from './building-replacement-ui.js?v=playtest-checkpoints-2';
+import {createGameAudio,showAudioSettings} from './game-audio.js?v=playtest-checkpoints-2';
 const gameAudio=createGameAudio();
-import {installNavigation} from './navigation-map.js?v=business-site-analysis-2';
-import {showSnapshots} from './snapshots-ui.js?v=business-site-analysis-2';
-import {conservationReport} from './conservation.js?v=business-site-analysis-2';
-import {LANDMARKS} from './landmarks.js?v=business-site-analysis-2';
-import {showLandmarks} from './landmarks-ui.js?v=business-site-analysis-2';
-import {startUfo} from './ufo.js?v=business-site-analysis-2';
-import {startWhirlpool} from './whirlpool.js?v=business-site-analysis-2';
-import {startToxicCloud} from './toxic-cloud.js?v=business-site-analysis-2';
-import {startSpaceJunk} from './space-junk.js?v=business-site-analysis-2';
-import {startRiot,dispatchPolice} from './riots.js?v=business-site-analysis-2';
-import {startLocusts,dispatchCropDuster} from './locusts.js?v=business-site-analysis-2';
-import {BUSINESSES} from './business.js?v=business-site-analysis-2';
-import {showBusiness} from './business-ui.js?v=business-site-analysis-2';
-import {canPreserve,designateHistorical} from './historical.js?v=business-site-analysis-2';
-import {TECHNOLOGY,available,cityYear,newlyAvailable,showTechnology} from './technology.js?v=business-site-analysis-2';
-import {tunnelAt,tunnelTiles} from './tunnels.js?v=business-site-analysis-2';
-import {REWARDS,rewardActive} from './rewards.js?v=business-site-analysis-2';
-import {showRewards} from './rewards-ui.js?v=business-site-analysis-2';
-import {industrialJobs,cleanThreshold} from './industry.js?v=business-site-analysis-2';
-import {RECREATION,recreationActive} from './recreation.js?v=business-site-analysis-2';
-import {showReports} from './reports-ui.js?v=business-site-analysis-2';
-import {showNewCity} from './new-city-ui.js?v=business-site-analysis-2';
-import {LANDSCAPE} from './landscape.js?v=business-site-analysis-2';
-import {POWER_PLANTS,plantCapacity} from './power.js?v=business-site-analysis-2';
-import {serializeCity} from './save.js?v=business-site-analysis-2';
-import {SCENARIOS,scenarioGoals,scenarioDefinition} from './scenarios.js?v=business-site-analysis-2';
-import {createScenario} from './scenario-setup.js?v=business-site-analysis-2';
-import {showScenarios} from './scenario-ui.js?v=business-site-analysis-2';
-import {ignite,startEarthquake,startTornado,dispatchFire,stepFire} from './emergency.js?v=business-site-analysis-2';
-import {showEmergency} from './emergency-ui.js?v=business-site-analysis-2';
-import {showRegion} from './region-ui.js?v=business-site-analysis-2';
-import {FACILITIES} from './facilities.js?v=business-site-analysis-2';
-import {STATIONS} from './rail.js?v=business-site-analysis-2';
-import {showTransport} from './transport-ui.js?v=business-site-analysis-2';
-import {SERVICES} from './civic.js?v=business-site-analysis-2';
-import {showCivic,civicAdvice} from './civic-ui.js?v=business-site-analysis-2';
-import {showFinance} from './finance-ui.js?v=business-site-analysis-2';
-import {landDensityLimit} from './economy.js?v=business-site-analysis-2';
-import {WASTE_STRUCTURES,wasteCapacity,wasteActive,wastePower,WATER_STRUCTURES,occupancy} from './utilities.js?v=business-site-analysis-2';
-import {createCity,recompute,build,tick,selection as gridSelection,planBuild,validateSave,idx as gridIndex,inside as gridInside,ZONES,LABEL,COST} from './engine.js?v=business-site-analysis-2';
-import {CityRenderer} from './renderer.js?v=business-site-analysis-2';
+import {installNavigation} from './navigation-map.js?v=playtest-checkpoints-2';
+import {showSnapshots} from './snapshots-ui.js?v=playtest-checkpoints-2';
+import {conservationReport} from './conservation.js?v=playtest-checkpoints-2';
+import {LANDMARKS} from './landmarks.js?v=playtest-checkpoints-2';
+import {showLandmarks} from './landmarks-ui.js?v=playtest-checkpoints-2';
+import {startUfo} from './ufo.js?v=playtest-checkpoints-2';
+import {startWhirlpool} from './whirlpool.js?v=playtest-checkpoints-2';
+import {startToxicCloud} from './toxic-cloud.js?v=playtest-checkpoints-2';
+import {startSpaceJunk} from './space-junk.js?v=playtest-checkpoints-2';
+import {startRiot,dispatchPolice} from './riots.js?v=playtest-checkpoints-2';
+import {startLocusts,dispatchCropDuster} from './locusts.js?v=playtest-checkpoints-2';
+import {BUSINESSES} from './business.js?v=playtest-checkpoints-2';
+import {showBusiness} from './business-ui.js?v=playtest-checkpoints-2';
+import {canPreserve,designateHistorical} from './historical.js?v=playtest-checkpoints-2';
+import {TECHNOLOGY,available,cityYear,newlyAvailable,showTechnology} from './technology.js?v=playtest-checkpoints-2';
+import {tunnelAt,tunnelTiles} from './tunnels.js?v=playtest-checkpoints-2';
+import {REWARDS,rewardActive} from './rewards.js?v=playtest-checkpoints-2';
+import {showRewards} from './rewards-ui.js?v=playtest-checkpoints-2';
+import {industrialJobs,cleanThreshold} from './industry.js?v=playtest-checkpoints-2';
+import {RECREATION,recreationActive} from './recreation.js?v=playtest-checkpoints-2';
+import {showReports} from './reports-ui.js?v=playtest-checkpoints-2';
+import {showNewCity} from './new-city-ui.js?v=playtest-checkpoints-2';
+import {LANDSCAPE} from './landscape.js?v=playtest-checkpoints-2';
+import {POWER_PLANTS,plantCapacity} from './power.js?v=playtest-checkpoints-2';
+import {serializeCity} from './save.js?v=playtest-checkpoints-2';
+import {SCENARIOS,scenarioGoals,scenarioDefinition} from './scenarios.js?v=playtest-checkpoints-2';
+import {createScenario} from './scenario-setup.js?v=playtest-checkpoints-2';
+import {showScenarios} from './scenario-ui.js?v=playtest-checkpoints-2';
+import {ignite,startEarthquake,startTornado,dispatchFire,stepFire} from './emergency.js?v=playtest-checkpoints-2';
+import {showEmergency} from './emergency-ui.js?v=playtest-checkpoints-2';
+import {showRegion} from './region-ui.js?v=playtest-checkpoints-2';
+import {FACILITIES} from './facilities.js?v=playtest-checkpoints-2';
+import {STATIONS} from './rail.js?v=playtest-checkpoints-2';
+import {showTransport} from './transport-ui.js?v=playtest-checkpoints-2';
+import {SERVICES} from './civic.js?v=playtest-checkpoints-2';
+import {showCivic,civicAdvice} from './civic-ui.js?v=playtest-checkpoints-2';
+import {showFinance} from './finance-ui.js?v=playtest-checkpoints-2';
+import {landDensityLimit} from './economy.js?v=playtest-checkpoints-2';
+import {WASTE_STRUCTURES,wasteCapacity,wasteActive,wastePower,WATER_STRUCTURES,occupancy} from './utilities.js?v=playtest-checkpoints-2';
+import {createCity,recompute,build,tick,selection as gridSelection,planBuild,validateSave,idx as gridIndex,inside as gridInside,ZONES,LABEL,COST} from './engine.js?v=playtest-checkpoints-2';
+import {CityRenderer} from './renderer.js?v=playtest-checkpoints-2';
 const idx=(x,y)=>gridIndex(x,y,city.size),inside=(x,y)=>gridInside(x,y,city.size),selection=(tool,a,b=a)=>gridSelection(tool,a,b,city.size);
 const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)],money=n=>'§'+Math.round(n).toLocaleString(),escapeHTML=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const SAVE='sims3000.manual.v1',AUTO='sims3000.autosave.v1';
@@ -133,15 +134,10 @@ function commit(points,bridgeApproved=false){const alreadyEmergency=city.emergen
 function undoBuild(){if(city.emergency.active)return notify('Construction undo is unavailable during a disaster.');if(speed)return notify('Pause the simulation before undoing construction.');if(!undo.length)return notify('No construction to undo. History resets when time advances.');city=validateSave(JSON.parse(undo.pop()));update();persist(AUTO,true);notify('Last construction undone.');}
 function dialog(title,html){if(!city.emergency.active)setSpeed(0);$('#dialogTitle').textContent=title;$('#dialogBody').innerHTML=html;if(!$('#dialog').open)$('#dialog').showModal();}
 function closeDialog(){$('#dialog').close();}
-const roadmap=[
- ['Found a town','Playable · ready for feedback','Create terrain, lay roads, zone RCI and connect power. Navigate the city, inspect lots, undo paused construction and save or export.','Build a neighborhood from empty land, diagnose a stalled zone and restore an exported city.'],
- ['Run essential utilities','Playable · ready for feedback','Connect fresh or salt-water supply, pipes and treatment. Manage landfills, recycling, incineration, waste-to-energy and conservation policies.','Grow dense housing, recover a dry district and compare recycling with disposal capacity.'],
- ['Balance the city','Playable · balance refinement remains','Set taxes and service funding, manage loans and annual budgets, negotiate utility trades and weigh casino or toxic-waste income against harm.','Create a surplus, recover from a deficit and explain the cost of a policy or business deal.'],
- ['Serve residents','Playable · demographic depth remains','Fund civic services and recreation, compare coverage, respond to advisors, reduce crime and support education and health.','Improve a struggling neighborhood, then explain the changes using maps and reports.'],
- ['Connect and customize a metropolis','Playable · catalog expansion remains','Build bus, rail, subway, highway, bridge and tunnel networks. Develop ports and airports, customize tower styles, and capture or share city albums.','Improve a busy route, compare passenger traffic, customize a skyline and export a captioned album.'],
- ['Face and author challenges','Playable · full scripting remains','Respond to fire, earthquakes, tornadoes, locusts, riots, space junk, toxic clouds, whirlpools and aliens. Play prepared challenges or author goals, conditional events and live messages.','Finish a disaster recovery, then create and export a challenge with a measurable goal and an event.']];
-function showRoadmap(){dialog('The road to a metropolis',`<p>Six playable milestones. Each adds a new set of mayoral decisions and a focused feedback checkpoint.</p>${roadmap.map((r,i)=>`<div class="milestone"><small>0${i+1} · ${r[1]}</small><h3>${r[0]}</h3><p>${r[2]}</p><p><strong>Try it:</strong> ${r[3]}</p><button data-review="${i+1}">Give milestone ${i+1} feedback</button></div>`).join('')}<p>All six milestones have playable systems; this is not full manual parity. Remaining work includes detailed age cohorts, the complete building, landmark, reward, business and ordinance catalogs, building-file import, the full scenario scripting language and shipped scenarios, independently simulated neighbors, four-direction artwork and a complete music/sound library. Simulation formulas, capacities and many prices remain reconstruction tuning.</p><div class="actions"><button class="primary" id="reviewM6">Review challenges</button><button id="reviewM5">Review transport</button><button id="reviewM4">Review civic services</button><button id="reviewM3">Review finances</button><button id="reviewM2">Review utilities</button><button id="reviewM1">Review milestone 1</button><a href="https://excalet.com/technology/game_manuals/simcity_3000_unlimited.pdf" target="_blank" rel="noreferrer">Read the source manual ↗</a></div>`);$$('[data-review]').forEach(button=>button.onclick=()=>showReview(Number(button.dataset.review)));$('#reviewM1').onclick=()=>showReview(1);$('#reviewM2').onclick=()=>showReview(2);$('#reviewM3').onclick=()=>showReview(3);$('#reviewM4').onclick=()=>showReview(4);$('#reviewM5').onclick=()=>showReview(5);$('#reviewM6').onclick=()=>showReview(6);}
-function showReview(milestone=1){dialog(`Milestone ${milestone} · your feedback`,`<p>Play the ${milestone===6?'disaster response and scenario':milestone===5?'transport and customization':milestone===4?'civic services':milestone===3?'finance':milestone===2?'utilities':'first-town'} checklist, then share your notes in this task. These prompts are saved only on this browser.</p><ol><li><strong>Controls:</strong> ${milestone===6?'Can you dispatch units, recover from damage, and author a goal that appears later?':milestone===5?'Can you build a useful transit route, replace a tower style and share an album?':milestone===4?'Can you place and fund services, compare coverage, and respond to a petition?':milestone===3?'Can you understand the tax preview, operating balance, and loan commitments?':milestone===2?'Can you connect pipes and manage landfills without damaging surface buildings?':'Were roads and zones easy to place, cancel, and remove?'}</li><li><strong>Simulation:</strong> ${milestone===6?'Do disaster warnings, response tools, recovery and scenario goal activation make sense?':milestone===5?'Do traffic, passenger counts, and transit funding help you improve routes?':milestone===4?'Can you explain changes in crime, education, and life expectancy?':milestone===3?'Do tax rates, road funding, parks, and pollution create understandable tradeoffs?':milestone===2?'Can you diagnose dry lots, overloaded pumps, and uncollected garbage?':'Was it clear why a zone developed or stayed empty?'}</li><li><strong>${milestone===3?'Challenge':'Art'}:</strong> ${milestone===3?'Can you build a surplus and recover from a deficit without guessing?':'Do the scale, isometric perspective, and building detail feel right?'}</li></ol><label>Your notes<textarea id="reviewNotes" rows="5" placeholder="What feels right? Which behavior should change next?"></textarea></label><div class="actions"><button class="primary" id="saveReview">Save feedback notes</button><button id="exportReview">Download notes</button></div><p class="fine">Notes are not sent automatically. Paste or attach them in the Codex task when you are ready.</p>`);try{$('#reviewNotes').value=localStorage.getItem(`sims3000.feedback.m${milestone}`)||'';}catch{}$('#saveReview').onclick=()=>{try{localStorage.setItem(`sims3000.feedback.m${milestone}`,$('#reviewNotes').value);notify('Feedback notes saved on this browser.');}catch{notify('Storage unavailable. Download your notes instead.');}};$('#exportReview').onclick=()=>download(`sims3000-milestone-${milestone}-feedback.txt`,$('#reviewNotes').value,'text/plain');}
+function feedbackUI(){return{storage:{getItem:key=>localStorage.getItem(key),setItem:(key,value)=>localStorage.setItem(key,value)},dialog,notify,download,review:showReview,roadmap:showRoadmap,launch:id=>{const open={1:showGuide,2:showUtilities,3:showBudget,4:showServices,5:showTransit,6:emergencyPanel,7:()=>$('#buildingDesignerBtn').click(),8:scenarioPanel};open[id]?.();}};}
+function showRoadmap(){showPlaytestRoadmap(feedbackUI());}
+function showReview(milestone=1){showPlaytestFeedback(feedbackUI(),milestone);}
+
 function showGuide(){if(city.scenario)return scenarioPanel();showTownGuide({city:()=>city,dialog,close:closeDialog,tool:setTool,utilities:showUtilities,transport:showTransit,budget:showBudget,play:()=>{closeDialog();setSpeed(1);},review:()=>showReview(1)});}
 function showHelp(){dialog('Welcome, Mayor.',`<p>Build roads, zone neighborhoods, supply electricity, and let residents bring your city to life.</p><ul><li><strong>Build:</strong> Choose a tool and drag on the map. Roads, pipes, and power lines stay straight; zones fill rectangles. Cost appears before you release.</li><li><strong>Cancel:</strong> Hold Shift when releasing, or press Escape.</li><li><strong>Move:</strong> Right-drag, hold Space and drag, or choose Pan. On touchscreens, choose Pan before dragging.</li><li><strong>View:</strong> Scroll or use + / − to zoom. Rotate with ↻ or [ / ] and center with Home. Press H to hide/show the toolbars; Escape or Show controls restores them. Hotkeys and Space to pause remain available. Hiding cancels an unfinished construction drag.</li><li><strong>Keyboard:</strong> R road, 1 / 2 / 3 zones, E coal, L power lines, W pump, U pipes, X remove pipes, G landfill, D de-zone, B bulldoze, P park, Q inspect. Arrow keys move a tile cursor with the current map rotation and scroll it into view; Enter builds. For roads or area tools, Shift + Enter starts a range, arrows extend it, and Enter builds it. Escape cancels.</li><li><strong>Time:</strong> Space toggles pause/play when not dragging. Construction undo (Ctrl/Cmd + Z) is available until time advances.</li><li><strong>Save:</strong> Automatic saves stay in this browser. Save city creates a manual snapshot. Use Export / Import in the menu to keep a portable copy.</li></ul><p>Choose a density in Zones. Medium and dense development needs water. Place a pump near fresh water, power it, and join it to pipes underground. Zone road-connected landfill to collect garbage. Budget & taxes lets you adjust revenue, maintain roads, and borrow with scheduled repayments. Civic services lets you fund police, fire, healthcare, and education; respond to service petitions; and enact ordinances. Use Transport for commuting, Emergency for fires, and Scenarios for challenges.</p><div class="actions"><button id="startGuide" class="primary">First-town checklist</button></div>`);$('#startGuide').onclick=showGuide;}
 function showQuery(p){showTileQuery(p);installNeighborhoodLink({city:()=>city,dialog,close:closeDialog,center:p=>{const point=renderer.project(p.x,p.y);renderer.pan.x+=renderer.w/2-point.x;renderer.pan.y+=renderer.h/2-point.y-renderer.unit/2;renderer.hover=null;renderer.dirty=true;},layer:setLayer,civic:showServices,utilities:showUtilities,back:()=>showQuery(p)},p);}

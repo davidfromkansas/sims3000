@@ -1,7 +1,7 @@
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=business-site-analysis-2';
-import {PROGRAM_LIMITS} from './scenario-programs.js?v=business-site-analysis-2';
-import {startProgramInvocation,advanceProgramInvocation,programInvocationFinished,pendingProgramMessage,programActionSources} from './scenario-program-history.js?v=business-site-analysis-2';
-import {activeProgramInvocation} from './scenario-program-invocations.js?v=business-site-analysis-2';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=playtest-checkpoints-2';
+import {PROGRAM_LIMITS} from './scenario-programs.js?v=playtest-checkpoints-2';
+import {startProgramInvocation,advanceProgramInvocation,programInvocationFinished,pendingProgramMessage,programActionSources} from './scenario-program-history.js?v=playtest-checkpoints-2';
+import {activeProgramInvocation} from './scenario-program-invocations.js?v=playtest-checkpoints-2';
 export const hasProgramPopup=s=>s?.programInvocations?.some(run=>pendingProgramMessage(run)>=0)||false;
 export function runProgramEvent(c,index){
  const s=c.scenario,e=s.definition.events[index],programs=compileGameScenarioPrograms(s.definition.programs,{size:s.definition.mapSize,objectives:s.definition.objectives});let run=activeProgramInvocation(s);
