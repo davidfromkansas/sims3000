@@ -17,7 +17,7 @@ const map={width:192,height:192,getContext:()=>ctx,addEventListener(){}};
 const select={value:'city'},legend={textContent:''};
 const panel={open:false,querySelector:s=>s==='canvas'?map:s==='select'?select:legend,addEventListener(){}};
 globalThis.matchMedia=()=>({matches:true});
-globalThis.document={createElement:()=>panel,activeElement:null};
+globalThis.document={createElement:tag=>tag==='canvas'?{width:0,height:0,getContext:()=>ctx}:panel,activeElement:null};
 const renderer={canvas:{parentElement:{append(){}}},getCity:()=>city,transform:(x,y)=>[x,y],w:800,h:600,pan:{x:17,y:-20},unit:30,layer:'city',tool:'residential'};
 const before=serializeCity(city);installNavigation(renderer);assert.equal(panel.open,false);
 for(const layer of Object.keys(NAV_LAYERS)){
