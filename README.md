@@ -2,7 +2,7 @@
 
 Playable browser city-builder reconstruction guided by the SimCity 3000 Unlimited manual. Six feedback milestones cover founding a city, utilities, finance, civic services, transport, and scenarios/disasters. Current gameplay includes city growth, service networks, budgets, transit, airports/ports, nine disaster types, five prepared challenges, a custom scenario editor, saved cities, photos, and original generated and procedural art. This is substantial work in progress, not verified full parity with the original game.
 
-[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 145 suites; save schema is 103.
+[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 146 suites; save schema is 104.
 
 Run `npm start` and open http://127.0.0.1:4387. The website has no runtime npm dependencies or build step. Run `npm ci` before regression tests; IndexedDB tests use the development-only `fake-indexeddb` emulator. The authored static website is in `dist/`.
 
@@ -219,3 +219,5 @@ Building replacement: Inspect high-density residential/commercial towers to prev
 Current scope and evidence: [docs/CURRENT-FIDELITY.md](docs/CURRENT-FIDELITY.md) is the current fidelity audit. Older entries in the manual-fidelity and milestone journals are historical. The in-game Roadmap now reflects all six playable checkpoints and links each card directly to its feedback form. Full manual parity remains incomplete.
 
 Scenario background rules: custom challenge authors can suspend random disasters and new automatic business proposals until the outcome. Scripted events, existing offers/permits/income, manual disaster tools and infrastructure failures continue. Random preferences are preserved and restored to effect after the challenge. Save schema 103 retains these rules through import and replay; older definitions default to allowing both. This checkpoint is merged source work; publication after live version 150 remains pending authorization.
+
+Neighborhood building designer: all 14 existing non-farm RCI styles now support custom models and same-zone-family artwork replacement, including homes, shops and dirty/clean industrial buildings. Parametric designs allow 1–24 floors; block designs and surface paints work across the expanded library. Historical and abandoned buildings retain their models. Schema 104 saves the expanded library. This source checkpoint is not yet published.

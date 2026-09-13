@@ -565,3 +565,7 @@ Feedback exercise: start a fire, dispatch firefighters, then add a tornado from 
 ### Author-controlled background events (source checkpoint; publication pending)
 
 Create a custom challenge and turn off random disasters, automatic business offers, or both. Scheduled hazards and proposals remain playable, and the rules survive replay. After the outcome the normal city settings take effect again. Feedback target: do these controls make your authored challenge predictable, and is it clear that existing business permits and manually started disasters remain available?
+
+### Customize a whole neighborhood (source checkpoint; publication pending)
+
+City desk → Building designer now targets homes, shops and industrial buildings across all 14 existing non-farm RCI styles. Create a one-floor shop, a block-built courtyard or a factory, apply it citywide, export it and restore the original artwork. Feedback target: does the expanded library let you establish a recognizable neighborhood style, and are the citywide scope and unchanged simulation values clear?

@@ -1,4 +1,4 @@
-import {tunnelEdges} from './tunnels.js?v=scenario-background-1';
+import {tunnelEdges} from './tunnels.js?v=neighborhood-designs-1';
 export function rampCrossings(tiles,t){const n=Math.sqrt(tiles.length),out=[];for(const dx of [-1,1])for(const dy of [-1,1]){const x=t.x+dx,y=t.y+dy;if(x<0||y<0||x>=n||y>=n)continue;const i=y*n+x,u=tiles[i];if(u.type==='road'&&u.highway&&u.terrain==='land')out.push(i);}return out;}
 export function streetGraph(c){const tiles=c.tiles,N=tiles.length,n=Math.sqrt(N),edges=Array.from({length:N*2},()=>[]),present=i=>i<N?tiles[i].type==='road':tiles[i-N].highway;
  for(let i=0;i<N*2;i++){if(!present(i))continue;const t=tiles[i%N],elevated=i>=N;for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy;if(x<0||y<0||x>=n||y>=n)continue;const j=y*n+x+(elevated?N:0);if(!present(j))continue;const u=tiles[j%N],axis=dx?'x':'y',a=elevated?t.highwayAxis:t.bridgeAxis,b=elevated?u.highwayAxis:u.bridgeAxis;if(t.terrain==='water'&&a!==axis||u.terrain==='water'&&b!==axis)continue;edges[i].push(j);}}

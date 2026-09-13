@@ -1,5 +1,5 @@
-import {createCity,recompute,build,planBuild,selection,idx} from './engine.js?v=scenario-background-1';
-import {SCENARIOS,freshScenario} from './scenarios.js?v=scenario-background-1';
+import {createCity,recompute,build,planBuild,selection,idx} from './engine.js?v=neighborhood-designs-1';
+import {SCENARIOS,freshScenario} from './scenarios.js?v=neighborhood-designs-1';
 export function createScenario(id){const definition=SCENARIOS[id];if(!definition)throw Error('Unknown scenario.');const c=createCity(definition.title,!['growth','roadless'].includes(id));c.scenario=freshScenario(id);c.emergency.randomFires=false;if(id==='pollution'){c.business.toxicWaste={offered:0,accepted:true,declinedUntil:0};const site=[...c.tiles].sort((a,b)=>Math.hypot(a.x-25,a.y-20)-Math.hypot(b.x-25,b.y-20)).find(t=>planBuild(c,'toxicWaste',[t]).ok);if(!site||!build(c,'toxicWaste',[site]).ok)throw Error('Could not prepare the pollution challenge.');c.funds=10000;}if(id==='roadless')prepareRoadless(c);if(id==='harbor')prepareHarbor(c);if(id==='streets'){c.finance.roadCondition=15;c.finance.roadFunding=25;c.funds=20000;}recompute(c);return c;}
 
 function prepareHarbor(c){
