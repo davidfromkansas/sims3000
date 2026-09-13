@@ -1,4 +1,4 @@
-import {educationServiceDemand} from './education.js?v=scenario-neighbor-deals-1';
+import {educationServiceDemand} from './education.js?v=reward-building-models-1';
 export const EDUCATION_LAYERS={
  schoolAccess:{name:'School access · ages 0–14',type:'school',field:'childEducationCoverage',facilities:['school'],marker:'S'},
  collegeAccess:{name:'College access · ages 15–24',type:'college',field:'collegeEducationCoverage',facilities:['college'],marker:'C'},

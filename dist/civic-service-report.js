@@ -1,6 +1,6 @@
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=scenario-neighbor-deals-1';
-import {occupancy} from './utilities.js?v=scenario-neighbor-deals-1';
-import {educationServiceDemand} from './education.js?v=scenario-neighbor-deals-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=reward-building-models-1';
+import {occupancy} from './utilities.js?v=reward-building-models-1';
+import {educationServiceDemand} from './education.js?v=reward-building-models-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  const definition=SERVICES[t.type];if(!definition)return null;

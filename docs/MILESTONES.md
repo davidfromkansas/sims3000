@@ -703,3 +703,5 @@ Local preview update: the installed Sites 0.1.62 portable workflow permits local
 Not published to Sites. The separate automatic approval rejection of repository source export still requires explicit user authorization and has not been retried.
 
 Scripted neighbor-contract checkpoint: scenario events and routines can create or end real agreements, recording results and normal termination fees with save/load continuity. See [neighbor contract milestone](SCENARIO-NEIGHBOR-DEALS-MILESTONE.md). Schema114; 184 regression suites passed. Manual parameter/fee semantics are an explicit interpretation. Not yet hosted.
+
+Reward inspection checkpoint: rotate previews of the Mayor’s House, Stadium and University before placement, with matching four-sided models in the city. See [reward building inspection](REWARD-MODELS-MILESTONE.md). All 186 regression suites passed; schema114, cache reward-building-models-1. Not yet hosted.

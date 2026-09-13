@@ -1,9 +1,9 @@
-import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=scenario-neighbor-deals-1';
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=scenario-neighbor-deals-1';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=scenario-neighbor-deals-1';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=scenario-neighbor-deals-1';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=scenario-neighbor-deals-1';
-import {escapeAnnouncement} from './scenario-announcements.js?v=scenario-neighbor-deals-1';
+import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=reward-building-models-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=reward-building-models-1';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=reward-building-models-1';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=reward-building-models-1';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=reward-building-models-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=reward-building-models-1';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';
