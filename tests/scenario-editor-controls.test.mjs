@@ -10,7 +10,7 @@ function element(id,attrs='') {
  const label={hidden:false};
  return {id,hidden:false,disabled:/\sdisabled(?:\s|$)/.test(attrs),checked:/\schecked(?:\s|$)/.test(attrs),
  get value(){return value;},set value(v){value=String(v);},textContent:'',files:[],closest:()=>label,
- set outerHTML(html){parse(html);},set innerHTML(html){const options=[...html.matchAll(/<option\b([^>]*)>/g)];if(options.length)this.value=(options.find(m=>/selected/.test(m[1]))||options[0])[1].match(/value="([^"]*)"/)?.[1]||'';}};
+ set outerHTML(html){parse(html);},set innerHTML(html){this.optionsHTML=html;const options=[...html.matchAll(/<option\b([^>]*)>/g)];if(options.length)this.value=(options.find(m=>/selected/.test(m[1]))||options[0])[1].match(/value="([^"]*)"/)?.[1]||'';}};
 }
 function parse(html){
  for(const m of html.matchAll(/<\w+\b([^>]*\bid="([^"]+)"[^>]*)>/g))controls.set(m[2],element(m[2],m[1]));
@@ -39,6 +39,11 @@ for(let i=0;i<4;i++){
  change('customEvent'+i,'popup');assert.equal($('eventVariableFields'+i).hidden,true);
  change('customEvent'+i,'variable');assert.equal($('eventCalculationFields'+i).hidden,false);
  if(i)change('customEvent'+i,'');
+}
+for(const id of ['0','0_1','rank0','rank0_1']){
+ change('eventCondition'+id,'funds');for(const op of ['gte','lte','gt','lt','eq','ne'])assert.ok($('eventOperator'+id).optionsHTML.includes('value="'+op+'"'));
+ change('eventCondition'+id,'ordinanceFireCode');assert.ok($('eventOperator'+id).optionsHTML.includes('value="ne"'));assert.ok(!$('eventOperator'+id).optionsHTML.includes('value="gt"'));
+ change('eventCondition'+id,'');
 }
 $('customTitle').value='Calculation from the editor';$('customTarget0').value=999999;
 $('eventMonth0').value=1;$('eventCalculation0').value='multiply';

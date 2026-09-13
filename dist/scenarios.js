@@ -1,10 +1,10 @@
-import {validateGoalActivations} from './scenario-goal-activation.js?v=goal-activation-1';
-import {validateScenarioStart} from './scenario-replay.js?v=goal-activation-1';
-import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=goal-activation-1';
-import {validateVariableValues} from './scenario-variables.js?v=goal-activation-1';
-import {businessRoots} from './business.js?v=goal-activation-1';
-import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=goal-activation-1';
-import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=goal-activation-1';
+import {validateGoalActivations} from './scenario-goal-activation.js?v=scenario-comparisons-1';
+import {validateScenarioStart} from './scenario-replay.js?v=scenario-comparisons-1';
+import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=scenario-comparisons-1';
+import {validateVariableValues} from './scenario-variables.js?v=scenario-comparisons-1';
+import {businessRoots} from './business.js?v=scenario-comparisons-1';
+import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=scenario-comparisons-1';
+import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=scenario-comparisons-1';
 // Original challenges using the manual's scenario/status model; not shipped SC3KU scenarios.
 export const SCENARIOS={
  roadless:{title:'Roadless Paradise',months:24,manualAdaptation:true,description:'Keep a rail-served town free of roads for two years. Adapted from the manual’s Scenario Creator tutorial.',briefing:'This original prepared town uses rail stations to connect homes and workplaces. Power, pipes and water towers are supplied. Keep the road count at zero for 24 months; any road present at a monthly check ends the challenge. Expand around stations and watch transit funding, utilities and the budget. Highway tiles do not count as roads in this tutorial rule. Waste collection still requires road access in this reconstruction, so monitor the resulting pollution as you plan. The manual checks weekly; this adaptation checks monthly and uses a new town layout because the original city file is not included in the manual.'},

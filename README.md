@@ -2,7 +2,7 @@
 
 Playable browser city-builder reconstruction guided by the SimCity 3000 Unlimited manual. Six feedback milestones cover founding a city, utilities, finance, civic services, transport, and scenarios/disasters. Current gameplay includes city growth, service networks, budgets, transit, airports/ports, nine disaster types, five prepared challenges, a custom scenario editor, saved cities, photos, and original generated and procedural art. This is substantial work in progress, not verified full parity with the original game.
 
-[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 135 suites; save schema is 98.
+[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 136 suites; save schema is 99.
 
 Run `npm start` and open http://127.0.0.1:4387. The website has no runtime npm dependencies or build step. Run `npm ci` before regression tests; IndexedDB tests use the development-only `fake-indexeddb` emulator. The authored static website is in `dist/`.
 

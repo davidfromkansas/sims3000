@@ -26,6 +26,6 @@ assert.equal(runScenarioEvents(threat),null);threat.civic.ordinances.fireCode=fa
 assert.equal(runScenarioEvents(threat).status,'triggered');assert.ok(threat.emergency.active);
 assert.match(eventConditionLabel(condition),/is repealed/);
 assert.ok(eventConditionMet(c,{metric:'ordinancePowerConservation',operator:'gte',target:1}));
-assert.throws(()=>validateEventCondition({metric:'population',operator:'eq',target:1}));
+assert.deepEqual(validateEventCondition({metric:'population',operator:'eq',target:1}),{metric:'population',operator:'eq',target:1});
 const bad=JSON.parse(serializeCity(c));bad.scenario.definition.objectives[0].target=.5;assert.throws(()=>validateSave(bad));
 console.log('PASS: all ordinance state metrics, enact/repeal goals, sustained-goal reset and saved victory, policy-gated fire, explicit state labels and invalid fractional targets.');
