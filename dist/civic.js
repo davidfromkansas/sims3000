@@ -1,13 +1,13 @@
-import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=visible-city-traffic-1';
-import {healthOutlook} from './health.js?v=visible-city-traffic-1';
-import {casinoCrime,businessRoots} from './business.js?v=visible-city-traffic-1';
-import {occupancy} from './utilities.js?v=visible-city-traffic-1';
+import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=scenario-dialog-text-1';
+import {healthOutlook} from './health.js?v=scenario-dialog-text-1';
+import {casinoCrime,businessRoots} from './business.js?v=scenario-dialog-text-1';
+import {occupancy} from './utilities.js?v=scenario-dialog-text-1';
 // Manual pp.106–113 describes relationships; radii, capacities and rates below are calibration approximations.
 export const SERVICES={police:{name:'Police station',department:'police',cost:500,upkeep:25,radius:9},fire:{name:'Fire station',department:'fire',cost:500,upkeep:25,radius:9},hospital:{name:'Hospital',department:'health',cost:1000,upkeep:40,capacity:1000},school:{name:'School',department:'education',cost:500,upkeep:20,capacity:300},jail:{name:'Jail',department:'police',cost:1500,upkeep:35,capacity:200},college:{name:'College',department:'education',cost:1000,upkeep:35,capacity:500},library:{name:'Library',department:'education',cost:500,upkeep:10,capacity:1000},museum:{name:'Museum',department:'education',cost:1500,upkeep:20,capacity:1500}};
 export function serviceRadius(c,t){const d=SERVICES[t.type];return t.serviceActive&&d?.radius?d.radius*Math.sqrt(c.civic.funding[d.department]/100):0;}
 export const DEPARTMENTS={police:'Police',fire:'Fire',health:'Healthcare',education:'Education'};
-import {ORDINANCES} from './ordinances.js?v=visible-city-traffic-1';
-export {ORDINANCES} from './ordinances.js?v=visible-city-traffic-1';
+import {ORDINANCES} from './ordinances.js?v=scenario-dialog-text-1';
+export {ORDINANCES} from './ordinances.js?v=scenario-dialog-text-1';
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 export const freshCivic=()=>({funding:Object.fromEntries(Object.keys(DEPARTMENTS).map(k=>[k,100])),underfunded:Object.fromEntries(Object.keys(DEPARTMENTS).map(k=>[k,0])),ageEducation:initialAgeEducation(),education:40,youthEducation:40,adultEducation:40,lifeExpectancy:59,ordinances:Object.fromEntries(Object.keys(ORDINANCES).map(k=>[k,false]))});
 export function changeCivic(c,funding,ordinances){if(!funding||Object.keys(DEPARTMENTS).some(k=>!Number.isInteger(funding[k])||funding[k]<0||funding[k]>150)||!ordinances||Object.keys(ORDINANCES).some(k=>typeof ordinances[k]!=='boolean'))return{ok:false,error:'Service funding must be 0–150%; choose valid ordinance settings.'};c.civic.funding=Object.fromEntries(Object.keys(DEPARTMENTS).map(k=>[k,funding[k]]));c.civic.ordinances=Object.fromEntries(Object.keys(ORDINANCES).map(k=>[k,ordinances[k]]));return{ok:true};}

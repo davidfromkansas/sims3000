@@ -1,12 +1,12 @@
-import {defaultTornadoSettings,TORNADO_DIRECTIONS,TORNADO_SPEEDS} from './tornado-settings.js?v=visible-city-traffic-1';
-import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=visible-city-traffic-1';
-import {CUSTOM_METRICS} from './scenario-metrics.js?v=visible-city-traffic-1';
-import {CALCULATIONS} from './scenario-variables.js?v=visible-city-traffic-1';
-import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=visible-city-traffic-1';
-import {BUSINESSES} from './business.js?v=visible-city-traffic-1';
-import {REWARDS} from './rewards.js?v=visible-city-traffic-1';
-import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=visible-city-traffic-1';
-import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=visible-city-traffic-1';
+import {defaultTornadoSettings,TORNADO_DIRECTIONS,TORNADO_SPEEDS} from './tornado-settings.js?v=scenario-dialog-text-1';
+import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=scenario-dialog-text-1';
+import {CUSTOM_METRICS} from './scenario-metrics.js?v=scenario-dialog-text-1';
+import {CALCULATIONS} from './scenario-variables.js?v=scenario-dialog-text-1';
+import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=scenario-dialog-text-1';
+import {BUSINESSES} from './business.js?v=scenario-dialog-text-1';
+import {REWARDS} from './rewards.js?v=scenario-dialog-text-1';
+import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=scenario-dialog-text-1';
+import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=scenario-dialog-text-1';
 const leaf=()=>({metric:'population',operator:'gte',target:100});
 const optionsOf=items=>Object.entries(items).map(([value,label])=>[value,typeof label==='string'?label:label.name]);
 const primitiveOptions=optionsOf(SCENARIO_EVENTS).filter(([key])=>key!=='program');
@@ -15,13 +15,15 @@ export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[]
  let routines=structuredClone(initial);const status=document.createElement('p');status.setAttribute('role','status');
  const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
  const button=(parent,text,handler)=>{const b=el('button',text);b.type='button';b.onclick=()=>{try{handler();status.textContent='Draft updated. Start the challenge to apply it.';}catch(e){status.textContent=e.message;}};parent.append(b);return b;};
- function field(parent,label,value,set,{type='text',choices,min,max,step='1',multiline=false}={}){const wrap=el('label',label),input=el(choices?'select':multiline?'textarea':'input');if(choices)for(const [v,name]of choices){const option=el('option',name);option.value=String(v);input.append(option);}else input.type=type;input.value=String(value??'');if(min!==undefined)input.min=min;if(max!==undefined)input.max=max;input.step=step;if(multiline)input.maxLength=500;const change=()=>set(choices?input.value:type==='number'?(input.value.trim()===''?NaN:Number(input.value)):input.value);if(choices)input.onchange=change;else input.oninput=change;wrap.append(input);parent.append(wrap);return input;}
+ function field(parent,label,value,set,{type='text',choices,min,max,step='1',multiline=false,maxLength=500}={}){const wrap=el('label',label),input=el(choices?'select':multiline?'textarea':'input');if(choices)for(const [v,name]of choices){const option=el('option',name);option.value=String(v);input.append(option);}else input.type=type;input.value=String(value??'');if(min!==undefined)input.min=min;if(max!==undefined)input.max=max;input.step=step;if(multiline)input.maxLength=maxLength;const change=()=>set(choices?input.value:type==='number'?(input.value.trim()===''?NaN:Number(input.value)):input.value);if(choices)input.onchange=change;else input.oninput=change;wrap.append(input);parent.append(wrap);return input;}
  function check(parent,label,value,set){const wrap=el('label',label),input=el('input');input.type='checkbox';input.checked=value;input.onchange=()=>set(input.checked);wrap.append(input);parent.append(wrap);}
  const changed=removed=>onChange(structuredClone(routines),removed);
- function defaultAction(type){const a={type};if(['announcement','popup','ending'].includes(type))a.message='Mayor, review the latest city report.';if(type==='ending')a.outcome='won';if(type==='popup'){a.showStatus=true;a.presenter=null;}if(type==='variable')Object.assign(a,{variable:0,operation:'add',value:1});if(['markGoal','addGoal'].includes(type))a.goal=0;if(type==='markGoal')a.goalStatus='satisfied';if(type==='sound')a.sound='notice';if(type==='reward')a.reward='university';if(type==='business')a.business='casino';if(type==='neighborDeal')Object.assign(a,{operation:'enable',neighbor:'east',resource:'power',direction:'import',amount:50});if(!['announcement','popup','ending','variable','markGoal','addGoal','sound','reward','business','neighborDeal'].includes(type))Object.assign(a,{x:Math.floor(size/2),y:Math.floor(size/2)});if(type==='tornado')a.tornado=defaultTornadoSettings();if(type==='earthquake')a.magnitude=50;if(type==='camera')a.zoom=1;return a;}
+ function defaultAction(type){const a={type};if(['announcement','popup','ending','dialogText','resultText'].includes(type))a.message='Mayor, review the latest city report.';if(type==='resultText')a.outcome='both';if(type==='ending')a.outcome='won';if(type==='popup'){a.showStatus=true;a.presenter=null;}if(type==='variable')Object.assign(a,{variable:0,operation:'add',value:1});if(['markGoal','addGoal'].includes(type))a.goal=0;if(type==='markGoal')a.goalStatus='satisfied';if(type==='sound')a.sound='notice';if(type==='reward')a.reward='university';if(type==='business')a.business='casino';if(type==='neighborDeal')Object.assign(a,{operation:'enable',neighbor:'east',resource:'power',direction:'import',amount:50});if(!['announcement','popup','ending','variable','markGoal','addGoal','sound','reward','business','neighborDeal','dialogText','resultText'].includes(type))Object.assign(a,{x:Math.floor(size/2),y:Math.floor(size/2)});if(type==='tornado')a.tornado=defaultTornadoSettings();if(type==='earthquake')a.magnitude=50;if(type==='camera')a.zoom=1;return a;}
  function actionFields(parent,a){
   const text=(label,key,extra={})=>field(parent,label,a[key],v=>{a[key]=v;},extra);
-  if(['announcement','popup','ending'].includes(a.type))text('Message text','message',{multiline:true});
+  if(['announcement','popup','ending','dialogText','resultText'].includes(a.type))text('Message text','message',{multiline:true,maxLength:['dialogText','resultText'].includes(a.type)?1500:500});
+  if(a.type==='resultText')text('Result message for','outcome',{choices:[['both','Victory and loss'],['won','Victory'],['lost','Loss']]});
+  if(['dialogText','resultText'].includes(a.type))parent.append(el('p','Replaces saved dialog text without a popup. Live values are captured now, up to 4,000 expanded characters. Restart restores the original messages.'));
   if(a.type==='popup'){check(parent,'Include Scenario status button',a.showStatus!==false,v=>a.showStatus=v);check(parent,'Show advisor presenter',!!a.presenter,v=>{a.presenter=v?{name:'City advisor',role:'City council',portrait:'advisor'}:null;render();});if(a.presenter){field(parent,'Presenter name',a.presenter.name,v=>a.presenter.name=v);field(parent,'Presenter role',a.presenter.role,v=>a.presenter.role=v);}}
   if(a.type==='ending')text('Scenario result','outcome',{choices:[['won','Victory'],['lost','Loss']]});
   if(['addGoal','markGoal'].includes(a.type))field(parent,'Goal row',a.goal,v=>a.goal=Number(v),{choices:[0,1,2,3].map(i=>[i,'Goal '+(i+1)])});
