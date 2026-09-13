@@ -98,3 +98,6 @@ body.toolbars-hidden .play-area{min-height:0}
 /* Keep camera actions clear of the navigation map at the lower left. */
 .view-controls{left:16px;top:16px;bottom:auto;max-width:calc(100% - 32px);flex-wrap:wrap;z-index:3}
 @media(max-width:600px){.view-controls{left:12px;top:12px;max-width:calc(100% - 24px)}}
+
+/* Scroll the toolkit without compressing instructions into following controls. */
+aside > *{flex-shrink:0}
