@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current release: 137 regression suites, save schema 100. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current release: 138 regression suites, save schema 101. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -542,3 +542,16 @@ Status queries are condition-only and cannot become objective criteria, preventi
 The 137-suite regression set covers live and retained statuses, activation followed by status checks, goal-conditioned announcements and ranks, saved continuation, undefined/self-referential rejection, and actual editor submission with sparse goal rows. Browser acceptance remains pending.
 
 Feedback exercise: make an Add Goal event conditional on the first goal being Satisfied. In a sequential challenge, add an announcement for the first stage’s Satisfied status and compare its arrival with the stage-completion month.
+
+
+### Scripted goal status and all-goal checks — milestone 6
+
+The creator now exposes Mark Goal Status with Satisfied and Unsatisfied actions, plus the All active goals satisfied condition. These extend the manual’s Mark Goal Status and All Goals Met commands (printed pp.188 and 185). A mark overrides an objective’s live metric result until another mark changes it; status details identify that override. Marking does not activate a hidden goal. Add Goal remains the separate activation action.
+
+Explicit marks are visible to subsequent actions in the same group, so a script can mark a goal and immediately evaluate an ending condition. All active goals satisfied excludes inactive goals and returns false when none is active. Explicit satisfaction is distinct from the reconstruction’s stage-order/hold requirements: automatic victory still waits for required stage progress, hold time, timed events and emergency response; an explicit End scenario action retains its existing override behavior. Marking a completed sequential stage unsatisfied reopens it and clears later stage completion. Repeating the same satisfied mark updates event history without restarting its hold.
+
+Schema 101 saves marked status and the last mark month, validates them against triggered Mark Goal events, rejects completed stages that remain explicitly unsatisfied, and restores older metric-driven challenges with no overrides. Replay clears marks to the initial state. The condition-only goal queries cannot become self-referential objective metrics. The full original scripting language and unbounded block execution remain incomplete.
+
+Tests cover reopening and re-completing a sequence, repeated marks, all-goal checks, same-batch scripted endings, hidden marks, save continuation, replay, legacy migration and malformed history. The real editor harness verifies mark-action controls and target mapping with sparse rows. All 138 suites pass; browser acceptance remains pending.
+
+Feedback exercise: mark an objective unsatisfied after an initial achievement, then satisfy it through another event. In a scripted-ending challenge, place an End scenario event after Mark Goal Status and condition it on All active goals satisfied.
