@@ -1,5 +1,5 @@
-import {powerBaseNeed,waterBaseNeed} from './utility-demand.js?v=underground-water-reading-2';
-import {inScenarioArea} from './scenario-area.js?v=underground-water-reading-2';
+import {powerBaseNeed,waterBaseNeed} from './utility-demand.js?v=utility-petition-analysis-1';
+import {inScenarioArea} from './scenario-area.js?v=utility-petition-analysis-1';
 // Group missing service by the building's origin. Empty zoning consumes a small
 // planning allowance but does not yet represent a building. Existing abandoned
 // buildings still need restoration and remain eligible.

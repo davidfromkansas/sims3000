@@ -1,7 +1,7 @@
-import {parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=underground-water-reading-2';
-import {validateBuildingMaterials} from './building-materials.js?v=underground-water-reading-2';
-import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=underground-water-reading-2';
-import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=underground-water-reading-2';
+import {parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=utility-petition-analysis-1';
+import {validateBuildingMaterials} from './building-materials.js?v=utility-petition-analysis-1';
+import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=utility-petition-analysis-1';
+import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=utility-petition-analysis-1';
 export function defaultBuildingDesign(key=2){const {source,footprint}=parseBuildingSlot(key);return{name:REPLACEABLE_STYLES[source]?.level===1?'My neighborhood building':'My building',floors:[0,2,6,12][REPLACEABLE_STYLES[source]?.level||3],width:8,depth:8,roof:'step',facade:'#b6c4bd',windows:'#3c6b79',accent:'#dab572',...(footprint.width!==1||footprint.height!==1?{footprint}:{})};}
 // Original procedural artwork for larger lots; style swaps select a matching
 // footprint model, never enlarge a legacy single-tile image.
