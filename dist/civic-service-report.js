@@ -1,6 +1,6 @@
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=playtest-checkpoints-2';
-import {occupancy} from './utilities.js?v=playtest-checkpoints-2';
-import {educationServiceDemand} from './education.js?v=playtest-checkpoints-2';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=loan-calendar-1';
+import {occupancy} from './utilities.js?v=loan-calendar-1';
+import {educationServiceDemand} from './education.js?v=loan-calendar-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  const definition=SERVICES[t.type];if(!definition)return null;

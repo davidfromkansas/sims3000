@@ -1,4 +1,4 @@
-import {tick} from './engine.js?v=playtest-checkpoints-2';
+import {tick} from './engine.js?v=loan-calendar-1';
 self.onmessage=({data})=>{
  try{const result=tick(data.city);self.postMessage({id:data.id,city:data.city,result});}
  catch(error){self.postMessage({id:data.id,error:error.message||'Simulation failed.'});}

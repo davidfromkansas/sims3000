@@ -1,5 +1,5 @@
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=playtest-checkpoints-2';
-import {validateProgramInvocation,programActionSources,programInvocationFinished,pendingProgramMessage} from './scenario-program-history.js?v=playtest-checkpoints-2';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=loan-calendar-1';
+import {validateProgramInvocation,programActionSources,programInvocationFinished,pendingProgramMessage} from './scenario-program-history.js?v=loan-calendar-1';
 // The enclosing scenario validator must validate event definitions first. Event
 // runs count started occurrences; active invocations separately block victory.
 export function validateProgramInvocations(value,definition,eventStates,startMonth,month){
