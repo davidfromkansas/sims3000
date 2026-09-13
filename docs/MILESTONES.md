@@ -482,3 +482,14 @@ The background calculation lock now permits Tab focus traversal, native Enter/Sp
 This corrects an accessibility regression in the background-simulation milestone; it does not add another save format or simulation rule. Policy tests cover allowed camera/pause/navigation interaction and blocked construction actions, with 123 regression suites in total. Browser interaction testing has been requested from the user and remains pending authorization.
 
 Feedback exercise: during a large-city calculation, use Tab to focus Pause or a zoom button and activate it with Enter/Space. Open the navigation map and use its arrow/Enter controls to move the view.
+
+
+### Individual civic-service inspection — milestone 4
+
+Querying a hospital, school, college, library or museum now reports its operating conditions, department funding, upkeep contribution, connected occupied homes/residents, age-weighted demand, funded operating capacity contribution and combined local coverage. The report distinguishes the building’s contribution from coverage supplied by overlapping facilities and explains inactive power/road/funding/strike conditions. Police/fire queries show their funding-scaled response radius; jail queries show citywide capacity adequacy. Each panel links to department funding and services.
+
+This exposes existing service calculations rather than changing eligibility, allocation, prices or save schema (95). School and college capacity contributions use the existing 65%/35% weighting; young/adult local demand is estimated using the city’s age mix, not a new per-neighborhood census. Capacity is coverage support, not tracked appointments or actual student enrollments. Upkeep contributions are aggregated and rounded at department level. The manual pp.112–114 and p.125 recommends querying service effectiveness; exact original grades/algorithms are not claimed.
+
+Tests exercise real connected homes and isolated residents, funding-sensitive hospital coverage, education demand, overlapping coverage, strikes, road closure, emergency-service radius, jail adequacy and save reconstruction. Full regression coverage is 124 suites. Browser acceptance remains pending.
+
+Feedback exercise: inspect a hospital, lower healthcare funding, and inspect it again. Compare its contribution with combined coverage, then inspect a school or library to see how demand differs by age. Use the department link to address a reported shortfall.
