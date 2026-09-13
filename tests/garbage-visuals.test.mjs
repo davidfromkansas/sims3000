@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {createCity,build,tick,recompute} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {CityRenderer} from '../dist/renderer.js';
+import {garbagePileCount,garbageProps,drawGarbageBacklog} from '../dist/garbage-visuals.js';
+const tile={x:20,y:23,terrain:'land',waste:0};for(const [waste,count]of [[0,0],[.9,0],[1,1],[4.9,1],[5,2],[15,3],[40,4],[1e9,4]])assert.equal(garbagePileCount({...tile,waste}),count);for(const key of ['fire','rubble','radiation'])assert.equal(garbagePileCount({...tile,waste:100,[key]:1}),0);assert.equal(garbagePileCount({...tile,waste:100,terrain:'water'}),0);assert.equal(garbagePileCount({...tile,waste:NaN}),0);assert.deepEqual(garbageProps({...tile,waste:100}),garbageProps({...tile,waste:100}));
+let shadows=0;const ctx=new Proxy({ellipse(){shadows++;},createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}}),measureText:()=>({width:0})},{get:(o,k)=>o[k]??(()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
+for(const unit of [8,20,40]){const before=shadows;drawGarbageBacklog(ctx,{...tile,waste:100},{x:0,y:0},unit);assert.equal(shadows-before,4);}
+globalThis.document={createElement:()=>({getContext:()=>ctx}),hidden:false,querySelector:()=>null};
+const city=createCity('Litter',false);city.funds=100000;for(const t of city.tiles){t.terrain='land';t.nature=false;t.elevation=0;}
+for(const [type,points]of [['road',[{x:20,y:24},{x:21,y:24},{x:22,y:24}]],['residential',[{x:20,y:23}]],['industrial',[{x:21,y:23}]],['coal',[{x:24,y:20}]]])assert.ok(build(city,type,points).ok);for(const t of city.tiles)if(['residential','industrial'].includes(t.type))t.level=1;recompute(city);for(let i=0;i<12;i++)tick(city);assert.ok(city.tiles.some(t=>garbagePileCount(t)>0));
+const scene=Object.assign(Object.create(CityRenderer.prototype),{getCity:()=>city,ctx,dpr:1,w:1800,h:1200,rotation:0,zoom:1,pan:{x:0,y:0},sprites:[],layer:'city',reducedMotion:{matches:true},vehicleTime:0,preferences:{vehicleAnimations:false,pedestriansVisible:false,sceneryAnimations:false},hover:null,tool:'query'}),beforeSave=serializeCity(city),expected=city.tiles.reduce((n,t)=>n+garbagePileCount(t),0);
+for(const layer of ['city','garbage','water','power','zones'])for(let rotation=0;rotation<4;rotation++){scene.layer=layer;scene.rotation=rotation;shadows=0;scene.draw();assert.equal(shadows,['city','garbage'].includes(layer)?expected:0,layer+' '+rotation);}
+assert.equal(serializeCity(city),beforeSave);assert.ok(build(city,'landfill',[{x:22,y:23}]).ok);tick(city);assert.equal(city.tiles.reduce((n,t)=>n+garbagePileCount(t),0),0,'real collection removes visible backlog');scene.layer='city';shadows=0;scene.draw();assert.equal(shadows,0);
+console.log('PASS: bounded deterministic rubbish props, meaningful thresholds and hazard suppression, real monthly accumulation/collection, all four renderer views, diagnostic layer gating and unchanged simulation state.');
