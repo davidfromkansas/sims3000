@@ -573,3 +573,7 @@ City desk → Building designer now targets homes, shops and industrial building
 ### Recover with disaster assistance (source checkpoint; publication pending)
 
 Respond to a destructive emergency, then review the recovery grant in Emergency or Budget. Overlapping hazards receive one combined assessment. Compare a city with established fire/water protection against an unprepared city, rebuild using the one-time funds, and check the separate recovery-grant line in year-end accounts. Feedback target: does the payment help recovery without obscuring the ongoing cost of running the city, and is the assessment understandable?
+
+### Read civic districts from every direction (source checkpoint; publication pending)
+
+Build a civic district and rotate the map: all eight service buildings now show their actual sides, roofs and grounds. Compare the fire-engine bays, hospital wing, school courtyard and jail perimeter, then inspect their operating status. Feedback target: can you recognize each service at normal play zoom and keep your bearings as you rotate the city?
