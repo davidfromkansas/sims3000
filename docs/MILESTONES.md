@@ -717,3 +717,5 @@ Viewed-neighborhood traffic checkpoint: camera-local car/highway sampling and vi
 Scenario storytelling checkpoint: timed events and routines can replace current instructions and victory/loss messages with captured live values. Saves preserve the updates; restart restores original text. See [changing scenario dialogs](SCENARIO-DIALOG-TEXT-MILESTONE.md). All 191 regression suites passed; schema117, cache scenario-dialog-text-1. Not yet hosted.
 
 Building utility checkpoint: scenario goals now count unpowered and unwatered buildings across eligible workplaces, facilities and services, once per footprint. See [building utility goals](BUILDING-UTILITY-GOALS-MILESTONE.md). Source only; publication pending.
+
+Sanitation health checkpoint: uncollected garbage now directly lowers exposed residents’ health target, and the Population report explains the penalty and recovery through collection. See [garbage and health](GARBAGE-HEALTH-MILESTONE.md). Source only; publication pending.
