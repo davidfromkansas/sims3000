@@ -8,7 +8,7 @@ const controls=new Map();
 function element(id,attrs='') {
  let value=attrs.match(/value="([^"]*)"/)?.[1]||'';
  const label={hidden:false};
- return {id,type:attrs.match(/type="([^"]*)"/)?.[1]||'',hidden:false,disabled:/\sdisabled(?:\s|$)/.test(attrs),checked:/\schecked(?:\s|$)/.test(attrs),
+ return {children:[],append(...nodes){this.children.push(...nodes);},replaceChildren(...nodes){this.children=nodes;},setAttribute(){},id,type:attrs.match(/type="([^"]*)"/)?.[1]||'',hidden:false,disabled:/\sdisabled(?:\s|$)/.test(attrs),checked:/\schecked(?:\s|$)/.test(attrs),
  get value(){return value;},set value(v){value=String(v);},textContent:'',files:[],closest:()=>label,
  set outerHTML(html){parse(html);},set innerHTML(html){this.optionsHTML=html;const options=[...html.matchAll(/<option\b([^>]*)>/g)];if(options.length)this.value=(options.find(m=>/selected/.test(m[1]))||options[0])[1].match(/value="([^"]*)"/)?.[1]||'';}};
 }
@@ -17,7 +17,7 @@ function parse(html){
  for(const m of html.matchAll(/<select\b[^>]*id="([^"]+)"[^>]*>([\s\S]*?)<\/select>/g))controls.get(m[1]).innerHTML=m[2];
 }
 const $=id=>{const e=controls.get(id.replace(/^#/,''));assert.ok(e,'Missing rendered control '+id);return e;};
-globalThis.document={querySelector:$,getElementById:$,querySelectorAll:selector=>[...controls.values()].filter(e=>[...selector.matchAll(/\[id\^=([^\]]+)\]/g)].some(m=>e.id.startsWith(m[1])))};
+globalThis.document={createElement:tag=>({...element(''),tagName:tag}),querySelector:$,getElementById:$,querySelectorAll:selector=>[...controls.values()].filter(e=>[...selector.matchAll(/\[id\^=([^\]]+)\]/g)].some(m=>e.id.startsWith(m[1])))};
 const city=createCity('Editor controls',false);let saved=0,started=0;
 showCustomScenarioEditor({city:()=>city,dialog:(_,html)=>parse(html),exportCity(){},save(){saved++;},update(){},beginCustom(){started++;}},()=>{});
 const change=(id,value)=>{$(id).value=value;$(id).onchange();};
@@ -64,4 +64,7 @@ change('customEvent0','announcement');$('eventMonth0').value=1;$('eventMessage0'
 $('rankName0').value='Tax reform';change('eventConditionrank0','commercialTax');$('eventThresholdrank0').value='7';$('startCustom').onclick();assert.equal($('customError').textContent,'');assert.equal(city.scenario.definition.objectives[0].target,7.1);assert.equal(city.scenario.definition.ranks[0].condition.conditions[0].metric,'commercialTax');tick(city);assert.equal(city.scenario.status,'won');assert.equal(city.scenario.events[0].message,'Debt 0');
 showCustomScenarioEditor({city:()=>city,dialog:(_,html)=>parse(html),exportCity(){},save(){saved++;},update(){},beginCustom(){started++;}},()=>{});
 change('customMetric0','surplusWater');assert.equal($('customTarget0').min,-1000000000);$('customTarget0').value='0';change('customEvent0','announcement');$('eventMonth0').value=1;$('eventMessage0').value='Garbage {uncollectedGarbage}';change('eventCondition0','waterPollution');assert.equal($('eventThreshold0').max,100);$('eventThreshold0').value='100';$('eventOperator0').value='lte';$('rankName0').value='Supply';change('eventConditionrank0','surplusPower');$('eventThresholdrank0').value='0';$('startCustom').onclick();assert.equal($('customError').textContent,'');assert.equal(city.scenario.definition.objectives[0].metric,'surplusWater');tick(city);assert.equal(city.scenario.status,'won');assert.equal(city.scenario.events[0].message,'Garbage 0');
+showCustomScenarioEditor({city:()=>city,dialog:(_,html)=>parse(html),exportCity(){},save(){saved++;},update(){},beginCustom(){started++;}},()=>{});
+const descendants=node=>[node,...(node.children||[]).flatMap(descendants)],programRoot=$('scenarioProgramEditor'),programButton=label=>descendants(programRoot).find(n=>n.tagName==='button'&&n.textContent===label),programField=label=>descendants(programRoot).find(n=>n.tagName==='label'&&n.textContent===label).children[0];
+programButton('Add routine').onclick();programField('Routine name').value='Council routine';programField('Routine name').oninput();programButton('Add action').onclick();programField('Action').value='popup';programField('Action').onchange();programField('Message text').value='Created through the full editor';programField('Message text').oninput();change('customMetric0','population');$('customTarget0').value=999999;change('customEvent0','program');assert.equal($('eventRoutine0').disabled,false);assert.equal($('eventX0').disabled,true);assert.match($('eventRoutine0').optionsHTML,/Council routine/);$('eventMonth0').value=1;$('startCustom').onclick();assert.equal($('customError').textContent,'');assert.equal(city.scenario.definition.programs[0].name,'Council routine');assert.equal(city.scenario.definition.events[0].routine,0);tick(city);assert.equal(city.scenario.programInvocations[0].text[0].message,'Created through the full editor');assert.equal(validateSave(JSON.parse(serializeCity(city))).scenario.programInvocations[0].receipts[0].acknowledged,false);
 console.log('PASS: actual scenario editor handlers expose calculation/copy/value controls across all rows, retain operand choices across event switches, and submit a working saved calculation challenge.');

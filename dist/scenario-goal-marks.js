@@ -8,14 +8,15 @@ export function markScenarioGoal(c,index,status){
  }else if(previous?.satisfied!==satisfied)s.streak=0;
  return{ok:true};
 }
-export function validateGoalMarks(value,definition,startMonth,month,events,completed=[]){
- if(value===undefined&&!definition.events.some(e=>e.type==='markGoal'))return initialGoalMarks(definition);
+export function validateGoalMarks(value,definition,startMonth,month,events,completed=[],programSources=[]){
+ if(value===undefined&&!definition.events.some(e=>e.type==='markGoal')&&!programSources.some(({e})=>e.type==='markGoal'))return initialGoalMarks(definition);
  if(!Array.isArray(value)||value.length!==definition.objectives.length)throw Error('Missing scripted goal status history.');
  return value.map((mark,index)=>{
-  const sources=definition.events.map((e,i)=>({e,state:events?.[i]})).filter(({e,state})=>e.type==='markGoal'&&e.goal===index&&state?.status==='triggered'&&state.runs>0);
+  const sources=[...definition.events.map((e,i)=>({e,state:events?.[i]})),...programSources].filter(({e,state})=>e.type==='markGoal'&&e.goal===index&&state?.status==='triggered'&&state.runs>0);
   if(mark===null){if(sources.length)throw Error('Missing marked goal status.');return null;}
   if(mark?.satisfied===false&&index<completed.length)throw Error('An unsatisfied stage cannot remain completed.');
   if(!mark||typeof mark.satisfied!=='boolean'||!Number.isInteger(mark.month)||mark.month<=startMonth||mark.month>month||!sources.length||mark.month!==Math.max(...sources.map(({state})=>state.month))||!sources.some(({e,state})=>state.month===mark.month&&(e.goalStatus==='satisfied')===mark.satisfied))throw Error('Invalid scripted goal status.');
+  const latest=sources.filter(({state})=>state.month===mark.month);if(latest.length&&latest.every(source=>source.program)&&latest.at(-1).e.goalStatus!==(mark.satisfied?'satisfied':'unsatisfied'))throw Error('Goal status does not match the last routine action.');
   return{satisfied:mark.satisfied,month:mark.month};
  });
 }

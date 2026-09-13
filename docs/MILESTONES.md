@@ -620,3 +620,8 @@ Build wind turbines and run the city. Rotate the view, pause and resume, then to
 ### Grow and customize whole city blocks (source checkpoint; publication pending)
 
 Zone a serviced 2×2 medium-density or 3×3 dense area and let it develop. Inspect an outside corner, preserve the whole building, interrupt and restore its utilities, then try footprint-matched artwork in the Building designer. Feedback target: are whole-building boundaries, service needs, historical protection and demolition clear? Can you customize one footprint without unexpectedly changing smaller buildings? Offline preview: previews/building-lot-models.png.
+
+
+### Author branching city challenges (source checkpoint; publication pending)
+
+Create a routine that increments a variable, chooses an If/Else path, shows a popup and calls a second routine to activate a goal or offer a reward. Schedule it to repeat. Save while the popup is pending, reload and continue; inspect Routine history to see the saved branch choice. Copy routines from the current challenge into a new draft. Feedback target: are action order, branch choices, routine calls and pauses understandable without writing code?
