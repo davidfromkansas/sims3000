@@ -1,0 +1,15 @@
+# Independent building layers and overhangs
+
+Players can construct arches and overhangs by placing or erasing blocks independently on 24 horizontal layers of a 10×10 footprint. Tower and height-field designs convert into occupied blocks without losing their original shape. Each construction method retains its own draft while switching methods; choosing another style or importing a design resets those temporary drafts. Only Apply to city changes the city's artwork.
+
+The layer editor provides single-block, line and plane placement, a yellow pending selection, erasure, Shift-release/Escape cancellation, keyboard shape construction, and 20-step Undo/Redo. Typing the layer number immediately refreshes its occupancy grid. The four-view renderer draws exposed walls and tops without inventing supports beneath suspended blocks. Existing painted materials remain assigned per column and side across all layers; they are not independent voxel-face paints.
+
+Persistence: individual layered building files use version 5. Legacy design versions 1–4 remain supported and reject layered data mislabeled as an older file. City schema 120 preserves the compact 100-column occupancy masks; older cities migrate, while a falsely old city containing new layered designs is rejected. Full building-set copying and importing also preserve the models. Worst-case layered files with all materials, a 4×4 footprint and a 40-character multibyte name fit the existing 8 KB upload limit. Population, jobs, demand and finances remain unchanged by applying artwork.
+
+Manual basis: Building Architect construction and edit-plane discussion, pp.143–145, and Undo/Redo p.152. This is a browser adaptation using cubic blocks and horizontal layers. The original fourteen block shapes, arbitrary vertical edit planes, independent per-face 3D detailing and original binary building-file compatibility remain incomplete; this does not claim full Building Architect parity.
+
+All 211 regression suites passed. Validation includes independent occupancy and gap erasure, strict masks, all four render orientations and footprint bounds, nonmutating previews, cancellation, history, layer refresh, existing design compatibility, individual files, complete building sets and city save/resume. Browser construction carved a six-layer opening below retained upper floors: 656 blocks became 368. Undo/Redo and switching tower/layer methods preserved the result. Applying, saving and reloading restored the 368-block layered design; no console errors were reported. The original local city was restored afterward, including its manual save. Production storage was untouched.
+
+Feedback exercise: start with a tower, switch to independent layers, erase the center of several lower layers to form an arch, rotate the preview, then save and reload the applied model. The existing lot's statistics should remain unchanged.
+
+Cache building-3d-layers-2. Source only; publishing remains blocked pending explicit Sites source-export authorization.
