@@ -1,7 +1,7 @@
-import {WATER_STRUCTURES} from './utilities.js?v=scene-geometry-1';
-import {waterBaseNeed} from './utility-demand.js?v=scene-geometry-1';
-import {conservationDemand} from './conservation.js?v=scene-geometry-1';
-import {pipeCoverage} from './water-coverage.js?v=scene-geometry-1';
+import {WATER_STRUCTURES} from './utilities.js?v=direct-model-paint-2';
+import {waterBaseNeed} from './utility-demand.js?v=direct-model-paint-2';
+import {conservationDemand} from './conservation.js?v=direct-model-paint-2';
+import {pipeCoverage} from './water-coverage.js?v=direct-model-paint-2';
 const number=n=>n.toLocaleString('en-US',{maximumFractionDigits:1});
 export function waterGridData(city){
  const groups=(city.stats.waterNetworks||[]).map((g,id)=>({...g,id,nodes:[],pipes:[],sources:[]})),uncovered=[];

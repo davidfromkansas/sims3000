@@ -1,6 +1,6 @@
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=scene-geometry-1';
-import {occupancy} from './utilities.js?v=scene-geometry-1';
-import {educationServiceDemand} from './education.js?v=scene-geometry-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=direct-model-paint-2';
+import {occupancy} from './utilities.js?v=direct-model-paint-2';
+import {educationServiceDemand} from './education.js?v=direct-model-paint-2';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  const definition=SERVICES[t.type];if(!definition)return null;
