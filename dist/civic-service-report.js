@@ -1,6 +1,6 @@
-import {SERVICES,DEPARTMENTS} from './civic.js?v=scenario-controls-1';
-import {occupancy} from './utilities.js?v=scenario-controls-1';
-import {educationWeights} from './education.js?v=scenario-controls-1';
+import {SERVICES,DEPARTMENTS} from './civic.js?v=navigation-data-1';
+import {occupancy} from './utilities.js?v=navigation-data-1';
+import {educationWeights} from './education.js?v=navigation-data-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  const definition=SERVICES[t.type];if(!definition)return null;
