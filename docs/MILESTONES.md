@@ -591,3 +591,7 @@ The [ and ] keys rotate the city counterclockwise and clockwise, including with 
 ### Author calendar-based challenges (source checkpoint; publication pending)
 
 Choose Calendar date for a goal or event/rank condition, or Calendar month for a seasonal rule. Use {date}, {year} and {monthOfYear} in messages; copy dates to variables when calculating elapsed months. Save and replay a challenge that crosses New Year. Feedback target: can you schedule dated objectives and understand which game month will trigger each condition?
+
+### Build roads and neighborhoods with the keyboard (source checkpoint; publication pending)
+
+Focus the map, choose R or a zone hotkey, and move with arrows. Press Shift + Enter to start a range, extend it with arrows, and press Enter to build. Try this near a map edge and after rotating; Escape cancels without spending. Feedback target: can you confidently lay out roads and zoning rectangles without switching to a mouse?
