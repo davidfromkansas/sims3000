@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current release: 139 regression suites, save schema 101. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current release: 140 regression suites, save schema 101. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -571,3 +571,11 @@ This replaces the old pooled 65% school / 35% college capacity weights. The manu
 Facility inspections now report the appropriate age-group demand and combined local coverage; the education report distinguishes school and college access. Civic advice and student petitions point to the missing type, without generating teaching requests for empty age groups. Save schema remains 101: new coverage fields are derived, and existing age education history persists. Loading an older city recalculates access under the new allocation rules.
 
 Validation: 139 suites, including independent age learning, repeated schools failing to replace colleges, funded capacity, strikes, disconnected homes, facility reports and actual monthly save continuation. Browser acceptance remains pending. Feedback exercise: serve a neighborhood with schools first, inspect the remaining college demand, then connect a college and follow the two youth EQ bands over time.
+
+
+## Original soundtrack and music choices checkpoint
+Sound settings now offer three original synthesized background scores: Morning permits, Riverside steps and After the last train. Each has a 32-bar arrangement with a quieter introduction/outro, chord progression, bass and melodic section; the first two include a filtered brush pulse. Keys, sine leads/bass and a lightly detuned pad use Web Audio with a short scheduling window. No original game recordings, copied melodies or external samples are used.
+
+Following manual p.36, players independently enable music, set its volume, preview a track and choose which tracks enter random playback. Immediate repeats are avoided when another selected track exists; a single selection repeats, and an empty selection stays silent. Previewing works with background music off. Finishing/stopping a preview returns to the enabled selection. Browser preferences persist separately from effects and city saves. Muted startup allocates no audio resources; saved enabled preferences require a click/key to unlock sound. Music continues during paused city planning and pauses on a hidden tab, retaining its position on return. Muting cancels pending previews as well as scheduled sound.
+
+Validation: 140 suites, including score bounds and conservative peak gain, randomized selection membership, one scheduler across track changes, hidden-tab voice cancellation/resume, preview completion, rapid preview/mute races, persistence and actual music-settings handlers. Existing effect regressions pass. Browser playback, subjective sound quality, ambient city audio, the original soundtrack catalog and hardware 3D sound remain unverified or incomplete. Feedback exercise: open City desk → Sound settings, preview all three tracks, then leave only your preferred selections enabled while building.
