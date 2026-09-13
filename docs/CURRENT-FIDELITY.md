@@ -833,3 +833,5 @@ Feedback workflow checkpoint: eight capability-based playtests with concrete tas
 Loan planning checkpoint: inspect all remaining annual repayments and preview a selected new loan alongside existing commitments. See [loan repayment calendar](LOAN-CALENDAR-MILESTONE.md). All 223 suites passed; source only, publication pending.
 
 Individual-floor paint checkpoint: paint and sample one floor surface, preserve it through undo/redo, construction drafts, city saves and building files. See [floor paint](FLOOR-PAINT-MILESTONE.md). All 224 suites passed; source only, publication pending.
+
+Connected-paint checkpoint: fill contiguous same-material wall or roof planes directly on the model, preview the affected tiles and undo the entire fill. See [connected surface fill](CONNECTED-SURFACE-FILL-MILESTONE.md). All 225 suites passed; source only, publication pending.

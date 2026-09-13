@@ -1,11 +1,11 @@
-import {dialogTextTarget} from './scenario-dialog-text.js?v=floor-paint-1';
-import {tornadoSettingsLabel} from './tornado-settings.js?v=floor-paint-1';
-import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=floor-paint-1';
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=floor-paint-1';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=floor-paint-1';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=floor-paint-1';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=floor-paint-1';
-import {escapeAnnouncement} from './scenario-announcements.js?v=floor-paint-1';
+import {dialogTextTarget} from './scenario-dialog-text.js?v=surface-fill-1';
+import {tornadoSettingsLabel} from './tornado-settings.js?v=surface-fill-1';
+import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=surface-fill-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=surface-fill-1';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=surface-fill-1';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=surface-fill-1';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=surface-fill-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=surface-fill-1';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';
