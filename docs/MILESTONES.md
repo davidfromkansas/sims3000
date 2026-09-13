@@ -721,3 +721,5 @@ Building utility checkpoint: scenario goals now count unpowered and unwatered bu
 Sanitation health checkpoint: uncollected garbage now directly lowers exposed residents’ health target, and the Population report explains the penalty and recovery through collection. See [garbage and health](GARBAGE-HEALTH-MILESTONE.md). Source only; publication pending.
 
 Water diagnostics checkpoint: Utilities now identifies shortages by pipe network, locates uncovered zones, and opens source maintenance queries. See [water network diagnostics](WATER-GRID-DIAGNOSTICS-MILESTONE.md). Source only; publication pending.
+
+Rail landfill checkpoint: garbage can reach remote landfill sidings through surface rail from road-connected stations or rail imports. See [rail landfill delivery](LANDFILL-RAIL-FREIGHT-MILESTONE.md). Source only; publication pending.
