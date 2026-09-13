@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 207 regression suites, save schema 119. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 208 regression suites, save schema 119. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -805,3 +805,5 @@ Disposal planning checkpoint: locate aging recycling and incineration facilities
 Underground planning checkpoint: distinguish road and zone development beneath water pipes, with actual delivered-water coloring and readable scrolling instructions. See [underground water planning](UNDERGROUND-WATER-VIEW-MILESTONE.md). Source only; publication pending.
 
 Utility petitioner checkpoint: detect actual unmet demand despite remote spare capacity and compare delivered supply before accepting conservation. See [utility petition analysis](UTILITY-PETITION-ANALYSIS-MILESTONE.md). All 207 suites passed; source only, publication pending.
+
+Building construction checkpoint: preview whole lines and planes, commit each as one edit, and redo layout/material history. See [building shape tools](BUILDING-SHAPE-TOOLS-MILESTONE.md). All 208 suites passed; source only, publication pending.
