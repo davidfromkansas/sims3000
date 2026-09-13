@@ -24,3 +24,5 @@ const reuseRoot=new Node('div'),original=[{name:'Existing',steps:[{kind:'call',r
 console.log('PASS: form-authored playable routine, nested branches, sparse goal mapping, draft preservation, action ordering, protected routine deletion and recursive-call rejection.');
 
 const trade=mountScenarioProgramEditor(root);click(root,'Add routine');click(box('Actions'),'Add action');change(box('Actions'),'Action','neighborDeal');assert.equal(trade.read()[0].steps[0].action.amount,50);change(box('Actions'),'Neighbor','sea');assert.equal(trade.read()[0].steps[0].action.resource,'garbage');change(box('Actions'),'Contract command','disable');assert.equal(trade.read()[0].steps[0].action.amount,undefined);change(box('Actions'),'Contract command','enable');change(box('Actions'),'Contract units',100);assert.equal(trade.read()[0].steps[0].action.amount,100);
+
+change(box('Actions'),'Action','earthquake');assert.equal(trade.read()[0].steps[0].action.magnitude,50);change(box('Actions'),'Earthquake magnitude (1–100)',100);assert.equal(trade.read()[0].steps[0].action.magnitude,100);change(box('Actions'),'Earthquake magnitude (1–100)',101);assert.throws(()=>trade.read(),/magnitude/);

@@ -1,36 +1,37 @@
-import {MODELED_REWARDS,drawCityReward} from './reward-models.js?v=reward-building-models-1';
-import {landscapePalette,landscapeGround} from './city-appearance.js?v=reward-building-models-1';
-import {drawCityTrees} from './tree-models.js?v=reward-building-models-1';
-import {EDUCATION_LAYERS,educationLayerProfile,educationLayerColor} from './education-layers.js?v=reward-building-models-1';
-import {buildingLotPlacement} from './building-lot-view.js?v=reward-building-models-1';
-import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=reward-building-models-1';
-import {drawCityWater} from './water-models.js?v=reward-building-models-1';
-import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=reward-building-models-1';
-import {drawCityCivic} from './civic-models.js?v=reward-building-models-1';
-import {drawBridgeStructure} from './bridge-structures.js?v=reward-building-models-1';
-import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=reward-building-models-1';
-import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=reward-building-models-1';
-import {stationAreas} from './service-areas.js?v=reward-building-models-1';
-import {cityGrid,visibleTileBounds} from './city-grid.js?v=reward-building-models-1';
-import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=reward-building-models-1';
-import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=reward-building-models-1';
-import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=reward-building-models-1';
-import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=reward-building-models-1';
-import {inScenarioArea} from './scenario-area.js?v=reward-building-models-1';
-import {railVehicles} from './rail-visuals.js?v=reward-building-models-1';
-import {baseZonedSprite,zonedSprite} from './building-art.js?v=reward-building-models-1';
-import {trafficVehicles} from './traffic-visuals.js?v=reward-building-models-1';
-import {tunnelAt} from './tunnels.js?v=reward-building-models-1';
-import {STRUCTURES} from './structures.js?v=reward-building-models-1';
-import {LANDSCAPE} from './landscape.js?v=reward-building-models-1';
-import {POWER_PLANTS} from './power.js?v=reward-building-models-1';
-import {WATER_STRUCTURES} from './utilities.js?v=reward-building-models-1';
-import {FACILITIES} from './facilities.js?v=reward-building-models-1';
-import {rampCrossings} from './highway.js?v=reward-building-models-1';
-import {STATIONS} from './rail.js?v=reward-building-models-1';
-import {roadNeighbors} from './transport.js?v=reward-building-models-1';
-import {SERVICES} from './civic.js?v=reward-building-models-1';
-import {ZONES,selection,planBuild} from './engine.js?v=reward-building-models-1';
+import {quakeBands} from './earthquake-settings.js?v=earthquake-magnitude-1';
+import {MODELED_REWARDS,drawCityReward} from './reward-models.js?v=earthquake-magnitude-1';
+import {landscapePalette,landscapeGround} from './city-appearance.js?v=earthquake-magnitude-1';
+import {drawCityTrees} from './tree-models.js?v=earthquake-magnitude-1';
+import {EDUCATION_LAYERS,educationLayerProfile,educationLayerColor} from './education-layers.js?v=earthquake-magnitude-1';
+import {buildingLotPlacement} from './building-lot-view.js?v=earthquake-magnitude-1';
+import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=earthquake-magnitude-1';
+import {drawCityWater} from './water-models.js?v=earthquake-magnitude-1';
+import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=earthquake-magnitude-1';
+import {drawCityCivic} from './civic-models.js?v=earthquake-magnitude-1';
+import {drawBridgeStructure} from './bridge-structures.js?v=earthquake-magnitude-1';
+import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=earthquake-magnitude-1';
+import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=earthquake-magnitude-1';
+import {stationAreas} from './service-areas.js?v=earthquake-magnitude-1';
+import {cityGrid,visibleTileBounds} from './city-grid.js?v=earthquake-magnitude-1';
+import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=earthquake-magnitude-1';
+import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=earthquake-magnitude-1';
+import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=earthquake-magnitude-1';
+import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=earthquake-magnitude-1';
+import {inScenarioArea} from './scenario-area.js?v=earthquake-magnitude-1';
+import {railVehicles} from './rail-visuals.js?v=earthquake-magnitude-1';
+import {baseZonedSprite,zonedSprite} from './building-art.js?v=earthquake-magnitude-1';
+import {trafficVehicles} from './traffic-visuals.js?v=earthquake-magnitude-1';
+import {tunnelAt} from './tunnels.js?v=earthquake-magnitude-1';
+import {STRUCTURES} from './structures.js?v=earthquake-magnitude-1';
+import {LANDSCAPE} from './landscape.js?v=earthquake-magnitude-1';
+import {POWER_PLANTS} from './power.js?v=earthquake-magnitude-1';
+import {WATER_STRUCTURES} from './utilities.js?v=earthquake-magnitude-1';
+import {FACILITIES} from './facilities.js?v=earthquake-magnitude-1';
+import {rampCrossings} from './highway.js?v=earthquake-magnitude-1';
+import {STATIONS} from './rail.js?v=earthquake-magnitude-1';
+import {roadNeighbors} from './transport.js?v=earthquake-magnitude-1';
+import {SERVICES} from './civic.js?v=earthquake-magnitude-1';
+import {ZONES,selection,planBuild} from './engine.js?v=earthquake-magnitude-1';
 const COLORS={residential:'#81b96b',commercial:'#79baca',industrial:'#d9ba6b'};
 export class CityRenderer{
  constructor(canvas,getCity){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.rotation=0;this.layer='city';this.tool='road';this.density=1;this.hover=null;this.drag=null;this.sprites=[];this.assetReady=false;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');this.time=0;this.vehicleTime=0;this.previousFrame=null;this.dirty=true;this.w=0;this.h=0;this.resize=new ResizeObserver(()=>{const first=this.w===0;this.w=canvas.clientWidth;this.h=canvas.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);canvas.width=this.w*this.dpr;canvas.height=this.h*this.dpr;if(first)this.center();this.dirty=true;});this.resize.observe(canvas);this.loadSprites();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);}
@@ -153,7 +154,7 @@ export class CityRenderer{
  const crowd=city.emergency.riot;if(crowd){const p=this.project(crowd.x,crowd.y);this.sprite(67,p.x,p.y+u,u*2.5);c.fillStyle='#fff2d4';c.font='bold 14px sans-serif';c.textAlign='center';c.fillText(`Riot · ${Math.ceil(crowd.anger)}%`,p.x,p.y-u*3);}
  const swarm=city.emergency.locust;if(swarm){const p=this.project(swarm.x,swarm.y);this.sprite(65,p.x,p.y+u,u*3);c.fillStyle='#fff2d4';c.font='bold 14px sans-serif';c.textAlign='center';c.fillText(`Locust swarm · ${swarm.strength}%`,p.x,p.y-u*3.5);}
  const storm=city.emergency.tornado;if(storm){const p=this.project(storm.x,storm.y);this.sprite(63,p.x,p.y+u,u*3.5,storm.warningSteps?.45:1);if(storm.warningSteps){c.fillStyle='#fff2d4';c.font='bold 14px sans-serif';c.textAlign='center';c.fillText('Tornado approaching',p.x,p.y-u*5);}}
- const quake=city.emergency.earthquake;if(quake){const p=this.project(quake.x,quake.y);c.fillStyle='#3b2419';c.font='bold 14px sans-serif';c.textAlign='center';c.fillText(`Earthquake · ${quake.ring+1}/8`,p.x,p.y-u*2);}
+ const quake=city.emergency.earthquake;if(quake){const p=this.project(quake.x,quake.y);c.fillStyle='#3b2419';c.font='bold 14px sans-serif';c.textAlign='center';c.fillText(`Earthquake · Magnitude ${quake.magnitude} · ${quake.ring+1}/${quakeBands(quake.magnitude)}`,p.x,p.y-u*2);}
 
  if(this.hover&&this.tool!=='pan'){let points=selection(this.tool,this.drag||this.hover,this.hover,SIZE);let plan=['query','ufo','whirlpool','toxicCloud','spaceJunk','riot','dispatchPolice','locust','dispatchCropDuster','tornado','earthquake','ignite','dispatchFire'].includes(this.tool)?{ok:true,cost:0}:planBuild(city,this.tool,points,this.density);if(LANDSCAPE[this.tool]&&plan.ok)points=plan.points;if(STRUCTURES[this.tool]){const size=STRUCTURES[this.tool].size;points=[];for(let y=this.hover.y;y<this.hover.y+size;y++)for(let x=this.hover.x;x<this.hover.x+size;x++)points.push({x,y});}for(const t of points){const p=this.project(t.x,t.y);this.diamond(p.x,p.y,u,plan.ok?'#e5ffd646':'#ed786755',plan.ok?'#eefed5':'#ef8773');}const p=this.project(this.hover.x,this.hover.y);if(!['query','ufo','whirlpool','toxicCloud','spaceJunk','riot','dispatchPolice','locust','dispatchCropDuster','tornado','earthquake','ignite','dispatchFire'].includes(this.tool)){const text=plan.ok?`§${plan.cost.toLocaleString()}${points.length>1?' · '+points.length+' tiles':''}`:plan.error;c.font='12px DM Sans, sans-serif';const tw=c.measureText(text).width;c.fillStyle='#17332deb';c.beginPath();c.roundRect(Math.max(8,Math.min(this.w-tw-25,p.x-tw/2-9)),p.y+u+12,tw+18,27,5);c.fill();c.fillStyle=plan.ok?'#e4f8ce':'#ffb8a4';c.textAlign='center';c.fillText(text,Math.max(tw/2+17,Math.min(this.w-tw/2-8,p.x)),p.y+u+30);}}
  }
