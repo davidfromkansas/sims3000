@@ -446,3 +446,14 @@ Fountain streams use the existing scene clock. Their droplets advance while the 
 A four-view contact sheet was rendered from the model polygons and inspected locally. That review caught and corrected ground surfaces covering the field and playground equipment. The preview is `docs/previews/recreation-models.png`; browser compositing and feel acceptance remain pending. Tests cover geometry bounds, distinct views, cache reuse, closed fountains, the real scene clock’s pause/reduced-motion policy and unchanged saved simulation continuation. All 128 regression suites pass; save schema remains 95.
 
 Feedback exercise: place the three recreation structures, rotate the city through all four views, and pause/resume beside a fountain. Compare whether the equipment, field and water remain legible at your usual zoom.
+
+
+### Electrical-grid diagnosis and replacement planning — milestone 2
+
+The utilities report now includes electrical grids with domestic capacity, delivered imports/exports, demand served, signed reserve margin and unpowered demand-bearing lots. View blackout centers the power map on an affected lot; other rows link to their grid. Grid membership is recorded from the actual power-allocation traversal, so disconnected surplus cannot disguise a local shortage. IDs are temporary derived values rebuilt after construction or loading.
+
+A plant table orders stressed and aging plants first, reports current/new capacity and a 12-month aging-only estimate, and links directly to each plant’s query. Plant queries include their grid’s local balance. The forecast holds elevation fixed and assumes survival; it does not predict demand, construction, fuel or trade changes. Waste-to-energy remains in grid totals based on actual recent throughput but is excluded from the plant aging forecast. Rebuild cost excludes demolition.
+
+This extends the manual p.116 query-based blackout and aging workflow. Allocation priorities, output curves and service rules are unchanged. Tests verify a real islanded blackout despite citywide surplus, connecting those grids, restoring an overloaded grid, capacity forecasts, imports/exports, report navigation and saved continuation. The 129-suite regression set passes. Save schema remains 95; network metadata is derived, not serialized. Browser acceptance remains pending.
+
+Feedback exercise: isolate a small plant and several developed homes from a larger plant. Use the report to locate the local blackout, join the grids with power lines, and confirm that the shortage disappears. Inspect an older plant from the replacement table before choosing where to add capacity.

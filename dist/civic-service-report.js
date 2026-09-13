@@ -1,6 +1,6 @@
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=recreation-models-1';
-import {occupancy} from './utilities.js?v=recreation-models-1';
-import {educationWeights} from './education.js?v=recreation-models-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=power-grids-1';
+import {occupancy} from './utilities.js?v=power-grids-1';
+import {educationWeights} from './education.js?v=power-grids-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  const definition=SERVICES[t.type];if(!definition)return null;

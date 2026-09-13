@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import {createCity,build,selection,recompute,validateSave,tick} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {plantCapacity} from '../dist/power.js';
+import {gridStatus,plantPlanning,powerGridReport,powerGridSummary,installPowerGridLinks} from '../dist/power-grid-report.js';
+import {connectionCandidates,addConnection,signDeal,cancelDeal} from '../dist/region.js';
+const close=(a,b)=>assert.ok(Math.abs(a-b)<1e-7,`${a} != ${b}`);
+function base(){const c=createCity('Grid diagnostics',false);c.funds=1000000;c.startYear=2050;for(const t of c.tiles){t.terrain='land';t.nature=false;t.elevation=0;}return c;}
+const place=(c,type,x,y,xx=x,yy=y)=>assert.ok(build(c,type,selection(type,{x,y},{x:xx,y:yy}),3).ok,type);
+const c=base();place(c,'coal',8,8);place(c,'wind',36,36);place(c,'residential',35,35,39,35);for(let x=35;x<=39;x++)c.tiles[35*48+x].level=3;recompute(c);
+assert.equal(c.stats.powerNetworks.length,2);assert.ok(c.stats.powerCapacity>c.stats.powerDemand);
+const wind=c.tiles[36*48+36];let grid=c.stats.powerNetworks[wind.powerNetwork];assert.ok(grid.unpowered>0);assert.equal(gridStatus(grid),'Blackout');assert.ok(grid.margin<0);assert.equal(c.tiles[grid.anchor].powered,false);
+wind.stress=4;recompute(c);grid=c.stats.powerNetworks[wind.powerNetwork];assert.equal(gridStatus(grid),'Failure risk');
+close(c.stats.powerNetworks.reduce((n,g)=>n+g.demand,0),c.stats.powerDemand);close(c.stats.powerNetworks.reduce((n,g)=>n+g.served,0),c.stats.powerServed);
+assert.match(powerGridReport(c),/View blackout/);assert.match(powerGridSummary(c,wind),/unpowered lots/);
+place(c,'powerline',13,13,36,13);place(c,'powerline',36,14,36,32);recompute(c);assert.equal(c.stats.powerNetworks.length,1);grid=c.stats.powerNetworks[0];assert.equal(grid.unpowered,0);assert.equal(gridStatus(grid),'Supplied','restored capacity is no longer an immediate failure risk');
+const coal=c.tiles[8*48+8];coal.age=480;recompute(c);const before=serializeCity(c),plan=plantPlanning(c).find(p=>p.tile===coal.root);assert.equal(plan.current,plantCapacity(coal));assert.equal(plan.nextYear,plantCapacity({...coal,age:492}));assert.ok(plan.nextYear<plan.current);assert.equal(serializeCity(c),before);
+assert.deepEqual(validateSave(JSON.parse(before)).stats.powerNetworks,c.stats.powerNetworks);
+assert.equal(JSON.parse(before).tiles[coal.root].powerNetwork,undefined,'derived network IDs are rebuilt, not persisted');
+const visits=[],location={getAttribute:()=>String(grid.anchor)},inspection={getAttribute:()=>String(coal.root)};installPowerGridLinks(c,(point,inspect)=>visits.push({point,inspect}),{querySelectorAll:s=>s==='[data-power-location]'?[location]:[inspection]});location.onclick();inspection.onclick();assert.deepEqual(visits[1],{point:{x:8,y:8},inspect:true});assert.equal(visits[0].inspect,false);assert.equal(serializeCity(c),before);
+const trade=base();place(trade,'powerline',42,20,47,20);place(trade,'residential',40,20);assert.ok(addConnection(trade,connectionCandidates(trade).find(p=>p.kind==='power')).ok);assert.ok(signDeal(trade,0,'power','import',50).ok);recompute(trade);grid=trade.stats.powerNetworks[0];close(grid.imported,1);close(grid.nativeCapacity,0);close(grid.available,1);close(grid.served,1);
+cancelDeal(trade,trade.region.deals[0].id);place(trade,'coal',35,18);assert.ok(signDeal(trade,0,'power','export',50).ok);recompute(trade);grid=trade.stats.powerNetworks[0];close(grid.exported,50);close(grid.available,450);close(grid.margin,449);
+const loaded=validateSave(JSON.parse(serializeCity(trade)));tick(trade);tick(loaded);assert.deepEqual(trade.stats,loaded.stats);
+console.log('PASS: islanded power shortages despite citywide surplus, blackout anchors, overload recovery, joined grids, aging forecasts, import/export reserve accounting, report navigation and derived-grid save reconstruction.');

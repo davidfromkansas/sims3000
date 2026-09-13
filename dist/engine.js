@@ -1,41 +1,41 @@
-import {cityGrid,MAP_SIZES} from './city-grid.js?v=recreation-models-1';
-import {regionalMarketAccess} from './regional-market-access.js?v=recreation-models-1';
-import {freshPetitions,validatePetitions} from './petitions.js?v=recreation-models-1';
-import {validateBuildingDesigns} from './building-designs.js?v=recreation-models-1';
-import {freshDemographics,advanceDemographics,validateDemographics} from './demographics.js?v=recreation-models-1';
-import {powerMonth} from './power-accounting.js?v=recreation-models-1';
-import {initialAgeEducation,advanceEducationCohorts} from './education.js?v=recreation-models-1';
-import {validateBuildingReplacements} from './building-art.js?v=recreation-models-1';
-import {conservationDemand} from './conservation.js?v=recreation-models-1';
-import {LANDMARKS,validateLandmarks} from './landmarks.js?v=recreation-models-1';
-import {maybeUfo} from './ufo.js?v=recreation-models-1';
-import {maybeWhirlpool} from './whirlpool.js?v=recreation-models-1';
-import {maybeToxicCloud} from './toxic-cloud.js?v=recreation-models-1';
-import {maybeSpaceJunk} from './space-junk.js?v=recreation-models-1';
-import {runScenarioEventBatch,scenarioEventPresentation,scenarioEnding} from './scenario-events.js?v=recreation-models-1';
-import {advanceUnrest} from './riots.js?v=recreation-models-1';
-import {maybeLocusts} from './locusts.js?v=recreation-models-1';
-import {wasteState,wasteMonth} from './waste-accounting.js?v=recreation-models-1';
-import {BUSINESSES,freshBusiness,advanceBusiness,businessStats,validateBusiness,businessRoots,businessOffer} from './business.js?v=recreation-models-1';
-import {TECHNOLOGY,available} from './technology.js?v=recreation-models-1';
-import {proposeTunnel,installTunnel,removeTunnels,tunnelStats,validateTunnels,tunnelAt} from './tunnels.js?v=recreation-models-1';
-import {REWARDS,freshRewards,advanceRewards,rewardStats,validateRewards} from './rewards.js?v=recreation-models-1';
-import {normalizeIndustry,advanceIndustry,industryStats,industrialJobs} from './industry.js?v=recreation-models-1';
-import {STRUCTURES} from './structures.js?v=recreation-models-1';
-import {RECREATION,recreationStats} from './recreation.js?v=recreation-models-1';
-import {reportSnapshot,HISTORY_LIMIT,cleanHistory} from './reports.js?v=recreation-models-1';
-import {LANDSCAPE,planLandscape} from './landscape.js?v=recreation-models-1';
-import {POWER_PLANTS,plantCapacity,advancePower,powerStats} from './power.js?v=recreation-models-1';
-import {advanceScenario,validateScenario} from './scenarios.js?v=recreation-models-1';
-import {explodePlant,ignite,freshEmergency,emergencyStats,maybeIgnite,maybeEarthquake,maybeTornado,validateEmergency} from './emergency.js?v=recreation-models-1';
-import {freshRegion,resetTrades,tradeCapacity,importGarbage,exportGarbage,regionBudget,settleRegion,validateRegion} from './region.js?v=recreation-models-1';
-import {FACILITIES,recomputeFacilities,advanceFacilities} from './facilities.js?v=recreation-models-1';
-import {streetGraph,rampCrossings} from './highway.js?v=recreation-models-1';
-import {STATIONS} from './rail.js?v=recreation-models-1';
-import {freshTransport,recomputeTransport,advanceTransit,validateTransport,roadNeighbors,bridgePlan} from './transport.js?v=recreation-models-1';
-import {SERVICES,freshCivic,recomputeCivic,advanceCivic,validateCivic} from './civic.js?v=recreation-models-1';
-import {queueBudgetReview,freshFinance,changeBudget,takeLoan,settleLoans,advanceRoads,recomputeEnvironment,landDensityLimit,budgetForecast,validateFinance} from './economy.js?v=recreation-models-1';
-import {WASTE_STRUCTURES,wastePower,advanceWaste,WATER_STRUCTURES,advanceWater,recomputeWater,garbageStats,processGarbage,occupancy,LANDFILL_CAPACITY} from './utilities.js?v=recreation-models-1';
+import {cityGrid,MAP_SIZES} from './city-grid.js?v=power-grids-1';
+import {regionalMarketAccess} from './regional-market-access.js?v=power-grids-1';
+import {freshPetitions,validatePetitions} from './petitions.js?v=power-grids-1';
+import {validateBuildingDesigns} from './building-designs.js?v=power-grids-1';
+import {freshDemographics,advanceDemographics,validateDemographics} from './demographics.js?v=power-grids-1';
+import {powerMonth} from './power-accounting.js?v=power-grids-1';
+import {initialAgeEducation,advanceEducationCohorts} from './education.js?v=power-grids-1';
+import {validateBuildingReplacements} from './building-art.js?v=power-grids-1';
+import {conservationDemand} from './conservation.js?v=power-grids-1';
+import {LANDMARKS,validateLandmarks} from './landmarks.js?v=power-grids-1';
+import {maybeUfo} from './ufo.js?v=power-grids-1';
+import {maybeWhirlpool} from './whirlpool.js?v=power-grids-1';
+import {maybeToxicCloud} from './toxic-cloud.js?v=power-grids-1';
+import {maybeSpaceJunk} from './space-junk.js?v=power-grids-1';
+import {runScenarioEventBatch,scenarioEventPresentation,scenarioEnding} from './scenario-events.js?v=power-grids-1';
+import {advanceUnrest} from './riots.js?v=power-grids-1';
+import {maybeLocusts} from './locusts.js?v=power-grids-1';
+import {wasteState,wasteMonth} from './waste-accounting.js?v=power-grids-1';
+import {BUSINESSES,freshBusiness,advanceBusiness,businessStats,validateBusiness,businessRoots,businessOffer} from './business.js?v=power-grids-1';
+import {TECHNOLOGY,available} from './technology.js?v=power-grids-1';
+import {proposeTunnel,installTunnel,removeTunnels,tunnelStats,validateTunnels,tunnelAt} from './tunnels.js?v=power-grids-1';
+import {REWARDS,freshRewards,advanceRewards,rewardStats,validateRewards} from './rewards.js?v=power-grids-1';
+import {normalizeIndustry,advanceIndustry,industryStats,industrialJobs} from './industry.js?v=power-grids-1';
+import {STRUCTURES} from './structures.js?v=power-grids-1';
+import {RECREATION,recreationStats} from './recreation.js?v=power-grids-1';
+import {reportSnapshot,HISTORY_LIMIT,cleanHistory} from './reports.js?v=power-grids-1';
+import {LANDSCAPE,planLandscape} from './landscape.js?v=power-grids-1';
+import {POWER_PLANTS,plantCapacity,advancePower,powerStats} from './power.js?v=power-grids-1';
+import {advanceScenario,validateScenario} from './scenarios.js?v=power-grids-1';
+import {explodePlant,ignite,freshEmergency,emergencyStats,maybeIgnite,maybeEarthquake,maybeTornado,validateEmergency} from './emergency.js?v=power-grids-1';
+import {freshRegion,resetTrades,tradeCapacity,importGarbage,exportGarbage,regionBudget,settleRegion,validateRegion} from './region.js?v=power-grids-1';
+import {FACILITIES,recomputeFacilities,advanceFacilities} from './facilities.js?v=power-grids-1';
+import {streetGraph,rampCrossings} from './highway.js?v=power-grids-1';
+import {STATIONS} from './rail.js?v=power-grids-1';
+import {freshTransport,recomputeTransport,advanceTransit,validateTransport,roadNeighbors,bridgePlan} from './transport.js?v=power-grids-1';
+import {SERVICES,freshCivic,recomputeCivic,advanceCivic,validateCivic} from './civic.js?v=power-grids-1';
+import {queueBudgetReview,freshFinance,changeBudget,takeLoan,settleLoans,advanceRoads,recomputeEnvironment,landDensityLimit,budgetForecast,validateFinance} from './economy.js?v=power-grids-1';
+import {WASTE_STRUCTURES,wastePower,advanceWaste,WATER_STRUCTURES,advanceWater,recomputeWater,garbageStats,processGarbage,occupancy,LANDFILL_CAPACITY} from './utilities.js?v=power-grids-1';
 // SIMS3000 milestone 3. Gameplay constants are explicit approximations; see docs/manual-fidelity.md.
 export const SIZE=48, VERSION=95;
 export const ZONES=['residential','commercial','industrial'];
@@ -67,9 +67,9 @@ export function createCity(name='New Haven',starter=true,size=48){if(!MAP_SIZES.
 function addPlant(c,x,y,type='coal'){const {SIZE,idx,inside,neighborhood}=cityGrid(c);const root=idx(x,y),size=STRUCTURES[type].size;for(let yy=y;yy<y+size;yy++)for(let xx=x;xx<x+size;xx++){const t=c.tiles[idx(xx,yy)];t.type=type;t.root=root;t.age=0;t.stress=0;t.nature=false;}}
 export function recompute(c){const {SIZE,idx,inside,neighborhood}=cityGrid(c);
  for(const t of c.tiles)if(t.level||t.rubble||!ZONES.includes(t.type))t.abandonedLevel=0;
- normalizeIndustry(c);resetTrades(c);const tiles=c.tiles;let roads=0,parks=0,plants=0,pop=0,jobs=0,shops=0,zoned=0,powered=0,developed=0,powerDemand=0,powerConserved=0,powerGenerated=0,powerImported=0,powerExported=0,powerServed=0;const powerGenerationByType={};
+ normalizeIndustry(c);resetTrades(c);const tiles=c.tiles;let roads=0,parks=0,plants=0,pop=0,jobs=0,shops=0,zoned=0,powered=0,developed=0,powerDemand=0,powerConserved=0,powerGenerated=0,powerImported=0,powerExported=0,powerServed=0;const powerGenerationByType={},powerNetworks=[];
  // Transport components require a connection between homes and workplaces. Access range is four tiles.
- for(const t of tiles){t.plantLoad=0;t.powered=false;t.access=false;t.roadAccess=false;t.roadIds=[];}
+ for(const t of tiles){t.plantLoad=0;t.powerNetwork=-1;t.powered=false;t.access=false;t.roadAccess=false;t.roadIds=[];}
  const streets=streetGraph(c),roadComponent=streets.groups.subarray(0,tiles.length),components=Array.from({length:streets.count},()=>new Set());
  for(const t of tiles)if(ZONES.includes(t.type)||BUSINESSES[t.type]||REWARDS[t.type]||FACILITIES[t.type]||STATIONS[t.type]||SERVICES[t.type]||WASTE_STRUCTURES[t.type]||t.type==='landfill'||t.waste>0){const ids=new Set();neighborhood(t,4,(x,y)=>{const id=roadComponent[idx(x,y)];if(id>=0)ids.add(id)});t.roadIds=[...ids];for(const id of ids)components[id].add(t.type);}
  for(const t of tiles)if(ZONES.includes(t.type))t.roadAccess=t.access=c.finance.roadCondition>20&&t.roadIds.some(id=>components[id].has('residential')&&(components[id].has('industrial')||components[id].has('commercial')));
@@ -78,6 +78,7 @@ export function recompute(c){const {SIZE,idx,inside,neighborhood}=cityGrid(c);
  const visited=new Uint8Array(tiles.length);
  for(let i=0;i<tiles.length;i++){if(visited[i]||!conductive(tiles[i]))continue;const queue=[i];visited[i]=1;let capacity=0;for(let q=0;q<queue.length;q++){const t=tiles[queue[q]];if(POWER_PLANTS[t.type]&&t.root===queue[q])capacity+=plantCapacity(t);capacity+=wastePower(t);neighborhood(t,5,(x,y)=>{const j=idx(x,y);if(!visited[j]&&conductive(tiles[j])){visited[j]=1;queue.push(j)}});}
   const baseNeed=t=>ZONES.includes(t.type)?1+occupancy(t.level):FACILITIES[t.type]||BUSINESSES[t.type]||REWARDS[t.type]?3:WATER_STRUCTURES[t.type]||SERVICES[t.type]||t.type==='recycling'?8:0;const needFor=t=>conservationDemand(c,'power',baseNeed(t));const nativeCapacity=capacity,demand=queue.reduce((sum,j)=>sum+needFor(tiles[j]),0);powerDemand+=demand;powerConserved+=queue.reduce((sum,j)=>sum+baseNeed(tiles[j])-needFor(tiles[j]),0);capacity=tradeCapacity(c,'power',queue,capacity,demand);const imported=Math.max(0,capacity-nativeCapacity),exported=Math.max(0,nativeCapacity-capacity);let served=0;const totalCapacity=nativeCapacity+Math.max(0,capacity-nativeCapacity),load=totalCapacity?(demand+Math.max(0,nativeCapacity-capacity))/totalCapacity:0;for(const j of queue)if(POWER_PLANTS[tiles[j].type])tiles[j].plantLoad=load;const sources=queue.filter(j=>(POWER_PLANTS[tiles[j].type]&&tiles[j].root===j)||wastePower(tiles[j])>0);for(const d of c.region.deals)if(d.kind==='power'&&d.direction==='import'&&d.delivered>0&&queue.includes(c.region.connections[d.connection].tile))sources.push(c.region.connections[d.connection].tile);if(capacity){queue.sort((a,b)=>Math.min(...sources.map(s=>Math.abs(tiles[a].x-tiles[s].x)+Math.abs(tiles[a].y-tiles[s].y)))-Math.min(...sources.map(s=>Math.abs(tiles[b].x-tiles[s].x)+Math.abs(tiles[b].y-tiles[s].y))));for(const j of queue){const t=tiles[j],need=needFor(t);if(capacity+1e-9>=need){t.powered=true;served+=need;capacity=Math.max(0,capacity-need);}}}
+  const network=powerNetworks.length;for(const j of queue)tiles[j].powerNetwork=network;const plantRoots=queue.filter(j=>POWER_PLANTS[tiles[j].type]&&tiles[j].root===j),unserved=queue.filter(j=>needFor(tiles[j])>0&&!tiles[j].powered);powerNetworks.push({id:network,anchor:unserved[0]??plantRoots[0]??queue[0],tiles:queue.length,plants:plantRoots,nativeCapacity,imported,exported,demand,served,available:nativeCapacity+imported-exported,margin:nativeCapacity+imported-exported-demand,unpowered:unserved.length,load,maxStress:plantRoots.reduce((max,j)=>Math.max(max,tiles[j].stress),0)});
   const generated=Math.max(0,served-imported)+exported;powerGenerated+=generated;powerImported+=imported;powerExported+=exported;powerServed+=served;for(const j of queue){const t=tiles[j],sourceCapacity=POWER_PLANTS[t.type]&&t.root===j?plantCapacity(t):wastePower(t);if(sourceCapacity&&nativeCapacity)powerGenerationByType[t.type]=(powerGenerationByType[t.type]||0)+generated*sourceCapacity/nativeCapacity;}
  }
  const transport=recomputeTransport(c);
@@ -88,7 +89,7 @@ export function recompute(c){const {SIZE,idx,inside,neighborhood}=cityGrid(c);
  const vacant={};for(const zone of ZONES)vacant[zone]=tiles.filter(t=>t.type===zone&&!t.level).length;
  const demand={residential:clamp(40+(jobs+shops)*.4-pop*.23-vacant.residential*.7,-80,100),commercial:clamp(18+pop*.2-shops*.8-vacant.commercial*1.4,-80,100),industrial:clamp(50+pop*.28-jobs*.6-vacant.industrial*1.1,-80,100)};
  for(const sector of ZONES)demand[sector]=clamp(demand[sector]+(7-c.finance.taxes[sector])*8,-100,100);
- c.stats={powerGenerated,powerImported,powerExported,powerServed,powerGenerationByType,powerDemand,powerConserved,...businessStats(c),...tunnelStats(c),...rewardStats(c),...industryStats(c),...recreationStats(c),...powerStats(c),...emergencyStats(c),...facilities,...transport,...environment,...water,...recomputeCivic(c),...garbageStats(c),population:pop,jobs:jobs+shops,industrialJobs:jobs,commercialJobs:shops,roads,parks,plants,zoned,powered,developed,demand};
+ c.stats={powerNetworks,powerGenerated,powerImported,powerExported,powerServed,powerGenerationByType,powerDemand,powerConserved,...businessStats(c),...tunnelStats(c),...rewardStats(c),...industryStats(c),...recreationStats(c),...powerStats(c),...emergencyStats(c),...facilities,...transport,...environment,...water,...recomputeCivic(c),...garbageStats(c),population:pop,jobs:jobs+shops,industrialJobs:jobs,commercialJobs:shops,roads,parks,plants,zoned,powered,developed,demand};
  if(!c.demographics)c.demographics=freshDemographics(pop,c.month);
  c.stats.demand.residential=clamp(c.stats.demand.residential+Math.min(30,c.stats.activeZoos*15)+(c.stats.activeStadium?20:0),-100,100);
  c.stats.demand.commercial=clamp(c.stats.demand.commercial+(c.stats.activeUniversity?10:0),-100,100);
