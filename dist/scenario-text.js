@@ -1,4 +1,4 @@
-import {CUSTOM_METRICS} from './scenario-metrics.js?v=emergency-order-1';
+import {CUSTOM_METRICS} from './scenario-metrics.js?v=play-preferences-1';
 export const STORY_VALUES={
  city:{name:'City name',read:c=>c.name},mayor:{name:'Mayor name',read:c=>c.mayorName},
  year:{name:'Calendar year',read:c=>c.startYear+Math.floor(c.month/12)},
