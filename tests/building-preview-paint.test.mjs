@@ -13,3 +13,10 @@ canvas.onpointerdown(event);draft={...draft,blocks:[...draft.blocks]};canvas.onp
 canvas.onpointerdown(event);draft={...draft,rotation:1};canvas.onpointerup(event);assert.equal(writes,2,'rotation interrupts a pending stroke');
 mode.value='pan';mode.onchange();canvas.onpointerdown(event);assert.equal(pans,1);controller.reset();
 console.log('PASS: direct paint stroke commit/cancel, scaled pointer coordinates, read-only material sampling, keyboard painting, model replacement cancellation and camera delegation.');
+
+// Floor scope paints exactly one level; column scope deliberately replaces all levels.
+const scope={value:'floor'};draft={...draft,rotation:0};
+mountBuildingPreviewPaint(canvas,{get:()=>draft,camera:()=>({zoom:1,x:0,y:0}),apply(){throw Error('Unexpected column callback');},applyFloor:p=>{draft={...draft,surfacePaint:p};},render(){},mode,material,status,scope});
+mode.value='paint';material.value='4';canvas.onpointerdown(event);canvas.onpointerup(event);assert.equal([...draft.surfacePaint].filter(c=>c!=='0').length,1);assert.match(status.textContent,/Floor 8/);
+scope.value='column';scope.onchange();material.value='1';canvas.onpointerdown(event);canvas.onpointerup(event);assert.equal([...draft.surfacePaint].filter(c=>c==='2').length,24);
+mode.value='sample';material.value='0';canvas.onpointerdown(event);assert.equal(material.value,'1');

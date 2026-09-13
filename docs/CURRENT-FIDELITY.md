@@ -831,3 +831,5 @@ Business planning checkpoint: compare two sites using actual detached constructi
 Feedback workflow checkpoint: eight capability-based playtests with concrete tasks, game-tool shortcuts, preserved legacy notes and optional saved checkmarks. See [playtest checkpoints](PLAYTEST-CHECKPOINTS-MILESTONE.md). All 222 suites passed; source only, publication pending.
 
 Loan planning checkpoint: inspect all remaining annual repayments and preview a selected new loan alongside existing commitments. See [loan repayment calendar](LOAN-CALENDAR-MILESTONE.md). All 223 suites passed; source only, publication pending.
+
+Individual-floor paint checkpoint: paint and sample one floor surface, preserve it through undo/redo, construction drafts, city saves and building files. See [floor paint](FLOOR-PAINT-MILESTONE.md). All 224 suites passed; source only, publication pending.

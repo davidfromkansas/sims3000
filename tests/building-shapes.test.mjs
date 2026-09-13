@@ -15,3 +15,7 @@ $('blockShape').value='plane';down(22);move(44);up(true);assert.deepEqual(draft,
 const key=(key,shiftKey=false)=>grid.onkeydown({key,shiftKey,target:cells[11],preventDefault(){}});down(11);up(true);key('Enter',true);key('ArrowDown');key('Enter');assert.equal(draft.blocks[21],8,'keyboard plane commits');$('blockUndo').onclick();assert.deepEqual(draft,painted);$('blockBrush').value='3';down(30);move(32);up();assert.equal($('blockRedo').disabled,true,'new editing discards redo');
 $('blockBrush').value='0';down(30);move(32);up();assert.equal(draft.blocks[31],0,'shapes erase with zero height');assert.deepEqual(importBuildingDesign(exportBuildingDesign(draft)),draft,'existing portable format preserves constructed shapes');
 console.log('PASS: line/plane geometry across the footprint, nonmutating previews, atomic undo/redo with materials, pointer and Shift cancellation, keyboard placement, redo invalidation, erase and portable design roundtrip.');
+
+const floorPaint='0'.repeat(100)+'4'+'0'.repeat(11899),beforeFloorPaint=JSON.stringify(draft);editor.applyFloorPaint(floorPaint);assert.equal(draft.surfacePaint,floorPaint);$('blockUndo').onclick();assert.equal(JSON.stringify(draft),beforeFloorPaint);$('blockRedo').onclick();assert.equal(draft.surfacePaint,floorPaint);
+
+$('blockMode').value='tower';$('blockMode').onchange();assert.equal(draft.surfacePaint,undefined);$('blockMode').value='blocks';$('blockMode').onchange();assert.equal(draft.surfacePaint,floorPaint,'height draft retains per-floor paint across mode changes');
