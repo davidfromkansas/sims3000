@@ -266,3 +266,10 @@ The manual (printed p.106) states that high crime lowers land value. Each develo
 
 ### Population and electricity charts
 The manual’s Charts section (printed p.68) describes workforce share and power-source breakdowns. City data now shows current employed workers, workers without reachable jobs, other residents, plant counts and each type’s share of domestic capacity. Counts come from current simulation state, with fixed-footprint roots counted once and waste-to-energy fuel output included. These snapshots do not invent age cohorts or annual production. Life-expectancy-driven workforce participation and education by age still require simulation work; annual utility production records remain unfinished.
+
+
+## Larger RCI lots and footprint-matched architecture
+
+Source checkpoint: 161 regression suites, schema 109. Vacant serviced medium/dense zoning can form 2×2 buildings; dense zoning first tries 3×3. Every member shares growth, abandonment, history and destruction, while occupancy and utility demand remain distributed across tiles. Any member opens the shared building query or whole-lot demolition. Scenario building counts use the northwest root; population remains the sum of occupants.
+
+The manual requires replacement tile-size matching (pp.73–74) and Building Architect tile-size selection (p.140). Style libraries and portable v4 designs now enforce this, preserving legacy 1×1 files. Original procedural models cover larger footprints in four views with constant physical floor height. Lot-selection probabilities, capacity tuning, footprint catalog and artwork are reconstruction choices rather than recovered original algorithms. See BUILDING-LOTS-MILESTONE.md for validation; full original fidelity and browser acceptance remain incomplete. Publication beyond v150 is still pending approval.
