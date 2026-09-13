@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {createCity,build,recompute,validateSave} from '../dist/engine.js';
+import {createScenario} from '../dist/scenario-setup.js';
+import {serializeCity} from '../dist/save.js';
+import {activePolicyPetitions,petitionImpact,respondToPetition} from '../dist/petitions.js';
+import {showPolicyPetitions} from '../dist/petitions-ui.js';
+const has=(c,id)=>activePolicyPetitions(c).some(p=>p.id===id);
+const water=createScenario('waterRecovery');assert.ok(water.stats.waterCapacity>water.stats.waterDemand);assert.ok(has(water,'waterConservation'),'a disconnected neighborhood requests help despite citywide reserve');
+const before=serializeCity(water),impact=petitionImpact(water,'waterConservation');assert.equal(serializeCity(water),before);assert.ok(impact.after.waterDemand<impact.before.waterDemand);assert.ok(impact.after.waterUnserved>0,'conservation does not repair the broken main');assert.equal(impact.before.waterUnserved,water.stats.waterDemand-water.stats.waterUsed);
+let html='';globalThis.document={querySelectorAll:()=>[],getElementById:()=>({})};showPolicyPetitions({city:()=>water,dialog:(_,body)=>html=body},()=>{},{id:'waterConservation',...impact});assert.match(html,/Unserved water demand/);assert.match(html,/Unmet demand remains after conservation/);
+respondToPetition(water,'waterConservation','accepted');assert.equal(water.stats.waterUsed,impact.after.waterDelivered);assert.equal(water.stats.waterDemand-water.stats.waterUsed,impact.after.waterUnserved);assert.ok(!has(water,'waterConservation'));assert.equal(validateSave(JSON.parse(serializeCity(water))).civic.ordinances.waterConservation,true);
+const repaired=createScenario('waterRecovery');assert.ok(build(repaired,'pipe',[{x:24,y:16}]).ok);assert.ok(!has(repaired,'waterConservation'),'restored water service removes the request');
+const power=createCity();const plant=power.tiles.find(t=>t.type==='coal');assert.ok(build(power,'bulldoze',[plant]).ok);for(const t of power.tiles)if(t.x>=39&&t.y>=39){t.terrain='land';t.nature=false;}assert.ok(build(power,'coal',[{x:40,y:40}]).ok);recompute(power);assert.equal(power.stats.overloadedPlants,0);assert.ok(power.stats.powerCapacity>power.stats.powerDemand);assert.ok(has(power,'powerConservation'),'isolated reserve and no overloaded plants must not suppress an outage petition');
+const pi=petitionImpact(power,'powerConservation');assert.ok(pi.after.powerUnserved>0);assert.ok(pi.after.powerDemand<pi.before.powerDemand);showPolicyPetitions({city:()=>power,dialog:(_,body)=>html=body},()=>{},{id:'powerConservation',...pi});assert.match(html,/Delivered power supply/);assert.match(html,/Unserved power demand/);assert.match(html,/broken connection/);
+assert.ok(!has(createCity(),'powerConservation'),'healthy starter grid does not solicit conservation for an outage');
+console.log('PASS: utility petitions detect disconnected supply with spare capacity, cloned impact predicts actual acceptance, unresolved shortages are explained, repaired service clears requests and decisions survive saves.');

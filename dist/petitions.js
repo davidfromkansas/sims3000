@@ -1,15 +1,16 @@
-import {ORDINANCES,changeCivic,ordinanceCost} from './civic.js?v=underground-water-reading-2';
-import {recompute,validateSave} from './engine.js?v=underground-water-reading-2';
-import {serializeCity} from './save.js?v=underground-water-reading-2';
-import {healthOutlook} from './health.js?v=underground-water-reading-2';
+import {utilityTrendSnapshot} from './utility-trends.js?v=utility-petition-analysis-1';
+import {ORDINANCES,changeCivic,ordinanceCost} from './civic.js?v=utility-petition-analysis-1';
+import {recompute,validateSave} from './engine.js?v=utility-petition-analysis-1';
+import {serializeCity} from './save.js?v=utility-petition-analysis-1';
+import {healthOutlook} from './health.js?v=utility-petition-analysis-1';
 export const POLICY_PETITIONS={
  freeClinics:{who:'Residents’ health committee',why:'Hospital access is limited. Help residents with free clinics while expanding care.',enact:true,needed:c=>c.stats.healthCoverage<60},
  reading:{who:'Parents and readers association',why:'Education remains low. Support a reading campaign alongside schools and libraries.',enact:true,needed:c=>c.civic.education<50},
  watch:{who:'Neighborhood council',why:'Residents are concerned about crime. Support a neighborhood watch program.',enact:true,needed:c=>c.stats.averageCrime>25},
  fireCode:{who:'Fire prevention council',why:'Station coverage is thin. Reduce building flammability while expanding fire protection.',enact:true,needed:c=>c.stats.fireCoverage<50},
  cleanAir:{who:'Clean air coalition',why:'Air pollution is troubling the city. Regulate traffic and industrial emissions.',enact:true,needed:c=>c.stats.averagePollution>20},
- powerConservation:{who:'Energy users association',why:'Power plants are overloaded. Reduce demand while adding reliable generation.',enact:true,needed:c=>c.stats.overloadedPlants>0},
- waterConservation:{who:'Water users association',why:'Water demand exceeds local capacity. Reduce demand while improving supply and connections.',enact:true,needed:c=>c.stats.waterDemand>c.stats.waterCapacity},
+ powerConservation:{who:'Energy users association',why:'Some electricity demand is not being served. Conservation can reduce demand, but disconnected districts still need power connections and overloaded networks may need more generation.',enact:true,needed:c=>utilityTrendSnapshot(c).powerUnserved>1e-7},
+ waterConservation:{who:'Water users association',why:'Some water demand is not being served. Conservation can reduce demand, but uncovered districts still need pipes and each connected network needs enough supply.',enact:true,needed:c=>utilityTrendSnapshot(c).waterUnserved>1e-7},
  parkingFines:{who:'Drivers association',why:'Resident wellbeing is low. Repeal parking fines to remove their aura penalty, at the cost of their revenue.',enact:false,needed:c=>c.stats.aura<45}
 };
 export const freshPetitions=()=>({});
@@ -17,5 +18,5 @@ export function validatePetitions(v,month){if(!v||typeof v!=='object'||Array.isA
 export const petitionReturnMonth=r=>r.month+(r.action==='rejected'?12:6);
 export function activePolicyPetitions(c){if(!c.stats.population)return[];return Object.entries(POLICY_PETITIONS).filter(([id,p])=>c.civic.ordinances[id]!==p.enact&&p.needed(c)&&(!c.petitions?.[id]||c.month>=petitionReturnMonth(c.petitions[id]))).map(([id,p])=>({id,...p,name:ORDINANCES[id].name,description:ORDINANCES[id].description,monthlyCost:ordinanceCost(c,id)}));}
 export function respondToPetition(c,id,action){const p=activePolicyPetitions(c).find(p=>p.id===id);if(!p||!['accepted','rejected','dismissed'].includes(action))throw Error('This petition is no longer awaiting a decision.');if(action==='accepted'){const r=changeCivic(c,c.civic.funding,{...c.civic.ordinances,[id]:p.enact});if(!r.ok)throw Error(r.error);recompute(c);}c.petitions[id]={action,month:c.month};return p;}
-const impactValues=c=>({balance:c.stats.balance,crime:c.stats.averageCrime,aura:c.stats.aura,healthTarget:healthOutlook(c).target,powerDemand:c.stats.powerDemand,waterDemand:c.stats.waterDemand});
+const impactValues=c=>({...utilityTrendSnapshot(c),powerDelivered:c.stats.powerServed,waterDelivered:c.stats.waterUsed,balance:c.stats.balance,crime:c.stats.averageCrime,aura:c.stats.aura,healthTarget:healthOutlook(c).target,powerDemand:c.stats.powerDemand,waterDemand:c.stats.waterDemand});
 export function petitionImpact(c,id){const p=activePolicyPetitions(c).find(p=>p.id===id);if(!p)throw Error('This petition is no longer active.');const projected=validateSave(JSON.parse(serializeCity(c)));changeCivic(projected,projected.civic.funding,{...projected.civic.ordinances,[id]:p.enact});recompute(projected);return{before:impactValues(c),after:impactValues(projected)};}

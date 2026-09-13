@@ -1,6 +1,6 @@
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=underground-water-reading-2';
-import {occupancy} from './utilities.js?v=underground-water-reading-2';
-import {educationServiceDemand} from './education.js?v=underground-water-reading-2';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=utility-petition-analysis-1';
+import {occupancy} from './utilities.js?v=utility-petition-analysis-1';
+import {educationServiceDemand} from './education.js?v=utility-petition-analysis-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  const definition=SERVICES[t.type];if(!definition)return null;

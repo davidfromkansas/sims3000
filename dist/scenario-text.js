@@ -1,5 +1,5 @@
-import {formatScenarioMetric} from './scenario-calendar.js?v=underground-water-reading-2';
-import {CUSTOM_METRICS} from './scenario-metrics.js?v=underground-water-reading-2';
+import {formatScenarioMetric} from './scenario-calendar.js?v=utility-petition-analysis-1';
+import {CUSTOM_METRICS} from './scenario-metrics.js?v=utility-petition-analysis-1';
 export const STORY_VALUES={
  city:{name:'City name',read:c=>c.name},mayor:{name:'Mayor name',read:c=>c.mayorName},
  year:{name:'Calendar year',read:c=>c.startYear+Math.floor(c.month/12)},
