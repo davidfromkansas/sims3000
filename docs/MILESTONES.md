@@ -427,3 +427,14 @@ This addresses the Go to Disaster navigation described on manual p.57. The curre
 Regression coverage includes scattered/diagonal fires beyond the original map boundary, wrapping/direct navigation, moving and extinguished targets, changed fire anchors, new city/incident reset, saved-city restoration and centering at all rotations and three zoom levels without changing saved gameplay state. The full suite now contains 118 suites; no browser visual acceptance claim is made.
 
 Feedback exercise: ignite two separated developed districts in a saved copy, open Emergency to select either area, then use Next emergency on the map while dispatching crews. Check whether you can keep track of both areas as fires spread and are contained.
+
+
+### Scenario message presenters — milestone 6
+
+Popup events can now include an authored presenter name and role, an original generated planning-advisor portrait, or an uploaded PNG/JPEG portrait. The editor previews the presenter with literal message text; normal live-value expansion still occurs at delivery. Image uploads are limited to 5 MB, decoded by the browser, center-cropped to 256 × 256 and encoded as PNG. Inline saved portraits are bounded to 300 KB and 512 × 512 with PNG header checks; remote image URLs and SVG are not accepted. Failed uploads retain the prior portrait, and a late upload cannot overwrite a later reset.
+
+Presenter data is retained with the event definition, included in downloaded/library cities, and preserved for unread/repeated popups and scenario replay. Dismissal and Scenario status retain their existing acknowledgement behavior. Author names/roles are escaped as text. Schema 93 accepts earlier cities, with missing presenters defaulting to plain messages. The default portrait is original Imagegen artwork, not an original-game advisor likeness.
+
+This advances the presenter/custom-bitmap workflow on manual pp.177–180. Each of the four available popup event rows defines its own presenter; a reusable presenter library, multiple moods/expressions, the full original advisor/petitioner cast and general scripting VM remain unfinished. No animation or voice is claimed. Tests cover real event delivery, repetition and acknowledgement, saved/unread/replayed portraits, legacy migration, input bounds/text escaping, upload crop arguments and stale-upload/reset behavior. Full regression coverage is 119 suites; no browser acceptance test was performed.
+
+Feedback exercise: author two popup messages with different names and roles, use the planning advisor on one and upload your own portrait for the other. Preview them, begin the challenge, save before reading a message, and reload to check its presentation and acknowledgement.

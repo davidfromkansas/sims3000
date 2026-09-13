@@ -1,0 +1,3 @@
+# Original scenario advisor portrait
+
+`dist/assets/scenario-advisor.png` was generated with built-in Imagegen for this game. The brief requested an original approachable middle-aged female city planning advisor with short dark curly hair, a teal blazer and ochre blouse, thoughtful attentive expression, a polished 3D-rendered character appearance, dark teal background and warm directional light, without text or logos. The selected square asset was inspected before integration and is shown as a cropped portrait beside authored popup messages. It is not a reconstruction of an original SimCity character.
