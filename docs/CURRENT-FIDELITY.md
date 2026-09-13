@@ -837,3 +837,5 @@ Individual-floor paint checkpoint: paint and sample one floor surface, preserve 
 Connected-paint checkpoint: fill contiguous same-material wall or roof planes directly on the model, preview the affected tiles and undo the entire fill. See [connected surface fill](CONNECTED-SURFACE-FILL-MILESTONE.md). All 225 suites passed; source only, publication pending.
 
 Building-detail checkpoint: place independent windows, doors, vents and ledges above paint, remove/undo details and preserve them in building files and cities. See [surface details](BUILDING-SURFACE-DETAILS-MILESTONE.md). All 226 suites passed; source only, publication pending.
+
+Freehand construction checkpoint: build and erase continuous bent strokes across all three layered edit planes, with matching previews and atomic undo/redo. See [freehand construction](FREEHAND-CONSTRUCTION-MILESTONE.md). All 227 suites passed; source only, publication pending.
