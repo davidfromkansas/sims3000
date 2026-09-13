@@ -581,3 +581,9 @@ Build a civic district and rotate the map: all eight service buildings now show 
 ### Build through a dense city (source checkpoint; publication pending)
 
 Open City view layers, hide zoned or other buildings, and inspect the ground and networks beneath them. Toggle roads, poles, trees, zone colors and the terrain grid independently; use Default View then Apply to restore the city. Hidden buildings still block occupied lots, and emergency indicators stay visible. Feedback target: do the controls make crowded areas easier to understand without making construction targets ambiguous?
+
+### Play with an unobstructed city view (source checkpoint; publication pending)
+
+Press H or choose Hide to expand the city across the game area. Pan, zoom, use construction hotkeys and pause with Space; restore the interface with Show controls, H or Escape. Hiding cancels an unfinished drag. Feedback target: can you comfortably play and inspect the city with the interface hidden, and is returning to the toolkit effortless?
+
+The [ and ] keys rotate the city counterclockwise and clockwise, including with toolbars hidden and during background monthly updates. Modified, editing and repeated key presses are guarded.

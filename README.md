@@ -2,7 +2,7 @@
 
 Playable browser city-builder reconstruction guided by the SimCity 3000 Unlimited manual. Six feedback milestones cover founding a city, utilities, finance, civic services, transport, and scenarios/disasters. Current gameplay includes city growth, service networks, budgets, transit, airports/ports, nine disaster types, five prepared challenges, a custom scenario editor, saved cities, photos, and original generated and procedural art. This is substantial work in progress, not verified full parity with the original game.
 
-[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 149 suites; save schema is 105.
+[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 150 suites; save schema is 105.
 
 Run `npm start` and open http://127.0.0.1:4387. The website has no runtime npm dependencies or build step. Run `npm ci` before regression tests; IndexedDB tests use the development-only `fake-indexeddb` emulator. The authored static website is in `dist/`.
 
@@ -227,3 +227,7 @@ Disaster relief: catastrophic response sessions now receive a single recovery gr
 Four-view civic buildings: police, fire, hospital, school, jail, college, library and museum now use distinct original procedural models that rotate with the city. Per-pixel depth resolves overlapping wings, roofs and details before caching each view as a sprite. Service footprints, funding, capacities and simulation behavior remain unchanged. All 32 views are documented in docs/previews/civic-building-models.png; this source checkpoint is not yet live.
 
 City view layers: the sidebar and City desk now open the manual’s six above-ground element controls, a terrain-grid toggle, view selector and Apply/Default View actions. Visibility settings persist in this browser across cities. Data and underground views retain their diagnostic content; hidden buildings still occupy their lots, and hazards, damage and construction previews remain visible. Save schema stays 105. This source checkpoint is not yet live.
+
+Unobstructed city view: Hide in the map controls, City desk → Hide toolbars, or H hides the header, toolkit, information bar and navigation controls. A persistent Show controls button, H or Escape restores them. Hotkeys remain usable, focus returns to the canvas, and active construction drags are cancelled before resizing. The camera center, zoom and rotation are retained. This is an in-page view, not browser fullscreen; it resets on reload and does not change city saves. This source checkpoint is not yet live.
+
+The [ and ] keys rotate the city counterclockwise and clockwise, including with toolbars hidden and during background monthly updates. Modified, editing and repeated key presses are guarded.
