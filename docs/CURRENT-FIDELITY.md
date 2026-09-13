@@ -424,3 +424,14 @@ Navigation now includes approval/aura, built density, flammability, rail usage a
 Tests run the actual report actions and installed navigation controller, check that selecting layers opens a collapsed map without changing city state, camera or construction tools, and verify the new data encodings. The full regression set has 126 suites. Browser/native-input and visual acceptance remain pending. Save schema 95 and simulation rules are unchanged.
 
 Feedback exercise: open City data, use Flammability as the navigation map, then return to construction in the normal city view. Compare risk areas with Fire coverage. Switch to Rail or Subway usage to locate inactive stations and unused routes.
+
+
+### Police and fire precinct maps — milestone 4
+
+Police/crime and fire/flammability navigation maps now show each station as a dot surrounded by its current operating service limit. The radius uses the same helper as the coverage simulation and facility query: the base radius times the square root of department funding. Underfunding strikes, lost power/roads, closed roads or zero funding remove the ring while keeping an orange inactive-station marker. Operating markers are pale white. The main city heatmaps show P/F station markers for inspection; precinct rings are on the navigation map.
+
+This implements the station-and-circle data-map presentation described on manual pp.66–67. The ring is the outer service limit, not uniform coverage: effectiveness falls toward its edge, overlapping contributions accumulate, and jail adequacy affects police strength. It does not show emergency dispatch-unit reach. Coverage coefficients remain reconstruction tuning.
+
+Tests compare every tile’s actual fire coverage with the displayed radius at 25%, 100% and 150% funding; verify rotated/scaled ring centers, inactive markers, strike/road/funding changes, unchanged city data and saved-state reconstruction. All 127 regression suites pass. Browser visual acceptance remains pending. Save schema 95 and service rules are unchanged.
+
+Feedback exercise: choose Fire coverage as the navigation map and change fire funding. Compare the changing precinct ring with the heatmap, then inspect an orange station to resolve its operating problem.
