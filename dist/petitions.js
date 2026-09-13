@@ -1,7 +1,7 @@
-import {ORDINANCES,changeCivic,ordinanceCost} from './civic.js?v=station-inspection-1';
-import {recompute,validateSave} from './engine.js?v=station-inspection-1';
-import {serializeCity} from './save.js?v=station-inspection-1';
-import {healthOutlook} from './health.js?v=station-inspection-1';
+import {ORDINANCES,changeCivic,ordinanceCost} from './civic.js?v=scenario-background-1';
+import {recompute,validateSave} from './engine.js?v=scenario-background-1';
+import {serializeCity} from './save.js?v=scenario-background-1';
+import {healthOutlook} from './health.js?v=scenario-background-1';
 export const POLICY_PETITIONS={
  freeClinics:{who:'Residents’ health committee',why:'Hospital access is limited. Help residents with free clinics while expanding care.',enact:true,needed:c=>c.stats.healthCoverage<60},
  reading:{who:'Parents and readers association',why:'Education remains low. Support a reading campaign alongside schools and libraries.',enact:true,needed:c=>c.civic.education<50},

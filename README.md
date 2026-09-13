@@ -2,7 +2,7 @@
 
 Playable browser city-builder reconstruction guided by the SimCity 3000 Unlimited manual. Six feedback milestones cover founding a city, utilities, finance, civic services, transport, and scenarios/disasters. Current gameplay includes city growth, service networks, budgets, transit, airports/ports, nine disaster types, five prepared challenges, a custom scenario editor, saved cities, photos, and original generated and procedural art. This is substantial work in progress, not verified full parity with the original game.
 
-[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 144 suites; save schema is 102.
+[Play the hosted game](https://sims3000-city-lab.davidfromkansas.chatgpt.site). See [current fidelity and remaining work](docs/CURRENT-FIDELITY.md), [feedback milestones](docs/MILESTONES.md), and [development workflow](docs/DEVELOPMENT.md). The current regression set contains 145 suites; save schema is 103.
 
 Run `npm start` and open http://127.0.0.1:4387. The website has no runtime npm dependencies or build step. Run `npm ci` before regression tests; IndexedDB tests use the development-only `fake-indexeddb` emulator. The authored static website is in `dist/`.
 
@@ -217,3 +217,5 @@ Rail motion: procedural three-car trains follow connected surface-track paths wi
 Building replacement: Inspect high-density residential/commercial towers to preview and apply a citywide replacement of their original style, including future occurrences. Revert restores that style; replacements do not chain into other mappings. The initial library offers two styles per sector. Schema 58 saves the citywide mapping; prior saves migrate to no overrides. Gameplay and simulation statistics are unchanged. This follows the manual’s query-driven replacement scope (pages 74–77); imported building files and the full catalog remain incomplete.
 
 Current scope and evidence: [docs/CURRENT-FIDELITY.md](docs/CURRENT-FIDELITY.md) is the current fidelity audit. Older entries in the manual-fidelity and milestone journals are historical. The in-game Roadmap now reflects all six playable checkpoints and links each card directly to its feedback form. Full manual parity remains incomplete.
+
+Scenario background rules: custom challenge authors can suspend random disasters and new automatic business proposals until the outcome. Scripted events, existing offers/permits/income, manual disaster tools and infrastructure failures continue. Random preferences are preserved and restored to effect after the challenge. Save schema 103 retains these rules through import and replay; older definitions default to allowing both. This checkpoint is merged source work; publication after live version 150 remains pending authorization.

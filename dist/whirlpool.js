@@ -1,5 +1,6 @@
-import {recordHazard} from './emergency-order.js?v=station-inspection-1';
-import {beginEmergencySession} from './emergency-session.js?v=station-inspection-1';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=scenario-background-1';
+import {recordHazard} from './emergency-order.js?v=scenario-background-1';
+import {beginEmergencySession} from './emergency-session.js?v=scenario-background-1';
 export const freshWhirlpool=()=>({randomWhirlpools:false,whirlpool:null,whirlpools:0});
 export function startWhirlpool(c,x,y){const n=Math.sqrt(c.tiles.length),e=c.emergency;if(e.whirlpool)return{ok:false,error:'This disaster type is already active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n||c.tiles[y*n+x].terrain!=='water')return{ok:false,error:'Choose a water tile for the whirlpool.'};beginEmergencySession(e);recordHazard(e,'whirlpool');Object.assign(e,{whirlpool:{x,y,age:0}});e.whirlpools++;return{ok:true};}
 // Four expanding pulses; only connected surface water and its immediate shore are exposed.
@@ -8,4 +9,4 @@ export function validateWhirlpool(v,tiles,version){if(version<50)return freshWhi
 
 export function setRandomWhirlpools(c,value){if(c.emergency.active)return{ok:false,error:'Finish the active emergency before changing disaster settings.'};if(typeof value!=='boolean')return{ok:false,error:'Choose a valid whirlpool setting.'};c.emergency.randomWhirlpools=value;return{ok:true};}
 const roll=(month,seed,salt)=>{let h=Math.imul(month+salt,374761393)^Math.imul(seed+131,668265263);h=Math.imul(h^(h>>>13),1274126177);return((h^(h>>>16))>>>0)/4294967296;};
-export function maybeWhirlpool(c){if(!c.emergency.randomWhirlpools||c.emergency.active||roll(c.month,c.seed,137)>=.003)return false;const water=c.tiles.filter(t=>t.terrain==='water');if(!water.length)return false;const t=water[Math.floor(roll(c.month,c.seed,139)*water.length)];return startWhirlpool(c,t.x,t.y).ok;}
+export function maybeWhirlpool(c){if(!scenarioAllowsBackground(c,'randomDisasters'))return false;if(!c.emergency.randomWhirlpools||c.emergency.active||roll(c.month,c.seed,137)>=.003)return false;const water=c.tiles.filter(t=>t.terrain==='water');if(!water.length)return false;const t=water[Math.floor(roll(c.month,c.seed,139)*water.length)];return startWhirlpool(c,t.x,t.y).ok;}

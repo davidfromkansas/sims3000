@@ -1,10 +1,11 @@
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=scenario-background-1';
 // Manual pp.90,92,106: petitioner offers, stipend while standing, and casino crime.
 // Eligibility, size, stipend and crime falloff are original calibration.
 export const BUSINESSES={casino:{name:'Casino',size:3,cost:0,upkeep:0,sprite:64,stipend:150},toxicWaste:{name:'Toxic Waste Conversion Plant',size:3,cost:0,upkeep:0,sprite:70,stipend:300}};
 const freshOffer=()=>({offered:null,accepted:false,declinedUntil:0});
 export const freshBusiness=()=>({...freshOffer(),toxicWaste:freshOffer()});
 export const businessOffer=(c,type='casino')=>type==='casino'?c.business:c.business.toxicWaste;
-export function advanceBusiness(c){let offered=false;for(const [type,months,pop]of [['casino',6,128],['toxicWaste',12,256]]){const b=businessOffer(c,type);if(b.offered!==null||b.accepted||c.month<b.declinedUntil||c.month<months||c.stats.population<pop||c.stats.balance>=0)continue;b.offered=c.month;offered=true;}return offered;}
+export function advanceBusiness(c){if(!scenarioAllowsBackground(c,'automaticBusiness'))return false;let offered=false;for(const [type,months,pop]of [['casino',6,128],['toxicWaste',12,256]]){const b=businessOffer(c,type);if(b.offered!==null||b.accepted||c.month<b.declinedUntil||c.month<months||c.stats.population<pop||c.stats.balance>=0)continue;b.offered=c.month;offered=true;}return offered;}
 export function answerBusiness(c,accept,type='casino'){if(!Object.hasOwn(BUSINESSES,type))return{ok:false,error:'Unknown business offer.'};const b=businessOffer(c,type);if(typeof accept!=='boolean'||b.offered===null||b.accepted)return{ok:false,error:'There is no pending business offer.'};if(accept)b.accepted=true;else{b.offered=null;b.declinedUntil=c.month+12;}return{ok:true};}
 export function businessRoots(c){const n=Math.sqrt(c.tiles.length);return c.tiles.filter(t=>BUSINESSES[t.type]&&t.root===t.y*n+t.x);}
 export function businessStats(c){const roots=businessRoots(c);return{businessBuildings:roots.length,businessIncome:roots.reduce((v,t)=>v+BUSINESSES[t.type].stipend,0)};}

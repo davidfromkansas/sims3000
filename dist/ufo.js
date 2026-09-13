@@ -1,6 +1,7 @@
-import {recordHazard} from './emergency-order.js?v=station-inspection-1';
-import {beginEmergencySession,refreshShelter,validateHazardWarning} from './emergency-session.js?v=station-inspection-1';
-import {landmarkRoots} from './landmarks.js?v=station-inspection-1';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=scenario-background-1';
+import {recordHazard} from './emergency-order.js?v=scenario-background-1';
+import {beginEmergencySession,refreshShelter,validateHazardWarning} from './emergency-session.js?v=scenario-background-1';
+import {landmarkRoots} from './landmarks.js?v=scenario-background-1';
 export const freshUfo=()=>({randomUfos:false,ufo:null,ufoAttacks:0,ufoStrikes:0});
 export function startUfo(c,x,y){const n=Math.sqrt(c.tiles.length),e=c.emergency;if(e.ufo)return{ok:false,error:'This disaster type is already active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n)return{ok:false,error:'Choose a tile inside the city.'};beginEmergencySession(e);recordHazard(e,'ufo');Object.assign(e,{ufo:{x,y,age:0,warningSteps:8,warned:false,shelter:0}});e.ufoAttacks++;return{ok:true};}
 export function stepUfo(c,strike){const e=c.emergency,s=e.ufo;if(!s)return 0;if(s.warningSteps){s.warningSteps--;return 0;}s.age++;let damage=0;if(s.age%4===0){damage=strike(c,s.x,s.y);e.ufoStrikes++;if(s.age>=24){e.ufo=null;refreshShelter(e);return damage;}const landmarks=landmarkRoots(c),targets=landmarks.length?landmarks:c.tiles.filter(t=>t.terrain==='land'&&!t.rubble&&t.type&&(t.level>0||t.root!==null)&&!['road','powerline','landfill'].includes(t.type));if(targets.length){let h=Math.imul(c.seed+e.ufoAttacks,1664525)^Math.imul(s.age,1013904223);const target=targets[(h>>>0)%targets.length];s.x=target.x;s.y=target.y;}}return damage;}
@@ -8,4 +9,4 @@ export function validateUfo(v,n,version){if(version<52)return freshUfo();if(vers
 
 export function setRandomUfos(c,value){if(c.emergency.active)return{ok:false,error:'Finish the active emergency before changing disaster settings.'};if(typeof value!=='boolean')return{ok:false,error:'Choose a valid alien attack setting.'};c.emergency.randomUfos=value;return{ok:true};}
 const roll=(month,seed,salt)=>{let h=Math.imul(month+salt,374761393)^Math.imul(seed+149,668265263);h=Math.imul(h^(h>>>13),1274126177);return((h^(h>>>16))>>>0)/4294967296;};
-export function maybeUfo(c){if(!c.emergency.randomUfos||c.emergency.active||roll(c.month,c.seed,151)>=.002)return false;const landmarks=landmarkRoots(c),targets=landmarks.length?landmarks:c.tiles.filter(t=>t.terrain==='land'&&!t.rubble&&t.type&&(t.level>0||t.root!==null)&&!['road','powerline','landfill'].includes(t.type));if(!targets.length)return false;const t=targets[Math.floor(roll(c.month,c.seed,157)*targets.length)];return startUfo(c,t.x,t.y).ok;}
+export function maybeUfo(c){if(!scenarioAllowsBackground(c,'randomDisasters'))return false;if(!c.emergency.randomUfos||c.emergency.active||roll(c.month,c.seed,151)>=.002)return false;const landmarks=landmarkRoots(c),targets=landmarks.length?landmarks:c.tiles.filter(t=>t.terrain==='land'&&!t.rubble&&t.type&&(t.level>0||t.root!==null)&&!['road','powerline','landfill'].includes(t.type));if(!targets.length)return false;const t=targets[Math.floor(roll(c.month,c.seed,157)*targets.length)];return startUfo(c,t.x,t.y).ok;}

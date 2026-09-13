@@ -561,3 +561,7 @@ This addresses the manual pp.56–57 multiple-disaster workflow. Save schema 96 
 The new regression runs all eight major types plus fires concurrently, preserves all three response-unit groups, validates saves through the response, compares deterministic continuation and checks final completion. It also tests duplicate rejection, staggered warnings, legacy migration and the actual panel’s add-hazard controls. All 130 regression suites pass; browser interaction acceptance remains pending.
 
 Feedback exercise: start a fire, dispatch firefighters, then add a tornado from Emergency. Sound the warning, switch between locations and verify your firefighters remain deployed. Add an alien attack later and confirm its warning can be sounded independently.
+
+### Author-controlled background events (source checkpoint; publication pending)
+
+Create a custom challenge and turn off random disasters, automatic business offers, or both. Scheduled hazards and proposals remain playable, and the rules survive replay. After the outcome the normal city settings take effect again. Feedback target: do these controls make your authored challenge predictable, and is it clear that existing business permits and manually started disasters remain available?

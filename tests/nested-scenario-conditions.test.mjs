@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {createCity,tick,validateSave} from '../dist/engine.js';
+import {createCity,tick,validateSave,VERSION} from '../dist/engine.js';
 import {serializeCity} from '../dist/save.js';
 import {attachCustomScenario} from '../dist/custom-scenarios.js';
 import {validateEventCondition,eventConditionMet,eventConditionLabel} from '../dist/scenario-events.js';
@@ -24,5 +24,5 @@ for(const formula of ['1 AND','1 OR (2','1 AND ()','1 2','1 AND 4','1 XOR 2','5'
 const wrap=value=>({match:'all',conditions:[value]});let deep=rows[0];for(let i=0;i<9;i++)deep=wrap(deep);assert.throws(()=>validateEventCondition(deep),/eight/);const cyclic=wrap(null);cyclic.conditions[0]=cyclic;assert.throws(()=>validateEventCondition(cyclic),/circular/);
 for(const bad of [wrap(null),{match:'any',conditions:[]},{match:'all',conditions:Array(17).fill(rows[0])},{match:'all',conditions:Array(4).fill({match:'any',conditions:Array(5).fill(rows[0])})},{match:'all',conditions:new Array(2)}])assert.throws(()=>validateEventCondition(bad));
 const bad=JSON.parse(serializeCity(c));bad.scenario.definition.ranks[0].condition.conditions[1].conditions[0]=row('goalStatus4',2,'eq');assert.throws(()=>validateSave(bad),/undefined goal/);
-const legacy=createCity();const old=JSON.parse(serializeCity(legacy));old.version=101;assert.equal(validateSave(old).version,102);
+const legacy=createCity();const old=JSON.parse(serializeCity(legacy));old.version=101;assert.equal(validateSave(old).version,VERSION);
 console.log('PASS: nested truth tables and precedence, actual repeated event/rank playthrough, saved continuation, recursive areas/goal references, formula errors, bounded trees/cycles and schema migration.');
