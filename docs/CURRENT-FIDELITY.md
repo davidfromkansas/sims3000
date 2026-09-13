@@ -470,3 +470,14 @@ This addresses the manual pp.56–57 multiple-disaster workflow. Save schema 96 
 The new regression runs all eight major types plus fires concurrently, preserves all three response-unit groups, validates saves through the response, compares deterministic continuation and checks final completion. It also tests duplicate rejection, staggered warnings, legacy migration and the actual panel’s add-hazard controls. All 130 regression suites pass; browser interaction acceptance remains pending.
 
 Feedback exercise: start a fire, dispatch firefighters, then add a tornado from Emergency. Sound the warning, switch between locations and verify your firefighters remain deployed. Add an alien attack later and confirm its warning can be sounded independently.
+
+
+### Emergency navigation in start order — milestone 6
+
+Go to Disaster now cycles through mixed hazards and separate fire areas in the order they began, following manual p.57. Starting another instance after its predecessor resolves puts it at the end. Removing the current and earlier threats does not skip the next remaining incident. Direct location buttons still follow moving hazards.
+
+Schema 97 records a session-local start sequence. Fire spread inherits its source sequence, so extinguishing the original ignition tile does not move the surviving fire front to the end of the list. Connected fire areas use the earliest remaining lineage and retain their existing oldest-burning-tile camera anchor. Per-tile records are bounded by map size and reset when a new response session starts. Older saves never recorded cross-hazard chronology; migration retains their former deterministic type/age order rather than inventing exact timestamps.
+
+Regression exercises real starts, a real seeded fire spread, resolved and repeated hazards, save/load continuation, invalid order metadata and response resets. The complete regression set has 131 suites. Browser interaction acceptance remains pending. Damage, warnings and response speed are unchanged.
+
+Feedback exercise: start a fire, then an earthquake, then a separate fire and an alien attack. Use Next emergency location to follow that sequence. Save and reload during the response and check the same ordering.
