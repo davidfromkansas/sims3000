@@ -1,9 +1,9 @@
-import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=reward-building-models-1';
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=reward-building-models-1';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=reward-building-models-1';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=reward-building-models-1';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=reward-building-models-1';
-import {escapeAnnouncement} from './scenario-announcements.js?v=reward-building-models-1';
+import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=earthquake-magnitude-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=earthquake-magnitude-1';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=earthquake-magnitude-1';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=earthquake-magnitude-1';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=earthquake-magnitude-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=earthquake-magnitude-1';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';
@@ -17,6 +17,7 @@ export function scenarioProgramReport(c){
    const index=Math.max(0,sources.length-24)+offset,text=run.text.find(t=>t.receipt===index)?.message;
    let detail='';if(e.type==='variable')detail=` · ${escape(s.definition.variables[e.variable].name)}: ${state.variableBefore.toLocaleString()} → ${state.variableAfter.toLocaleString()}`;
    if(['addGoal','markGoal'].includes(e.type))detail=` · Goal ${e.goal+1}${e.type==='markGoal'?' · '+e.goalStatus:''}`;
+   if(e.type==='earthquake')detail+=' · Magnitude '+e.magnitude;
    if(e.type==='neighborDeal')detail=' · '+escape(neighborDealLabel(e))+' · '+escape(neighborDealResultText(state.dealResult));
    if(e.type==='ending')detail=' · '+(e.outcome==='won'?'Victory':'Loss');
    const result=state.status==='skipped'?(state.calculationError?'Calculation failed; variable unchanged':'Skipped: no suitable target'):e.type==='popup'?(state.acknowledged?'Acknowledged':'Unread'):'Executed';

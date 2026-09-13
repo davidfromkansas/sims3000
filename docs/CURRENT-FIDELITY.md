@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 186 regression suites, save schema 114. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 187 regression suites, save schema 115. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -763,3 +763,5 @@ Not published to Sites. The separate automatic approval rejection of repository 
 Scripted neighbor-contract checkpoint: scenario events and routines can create or end real agreements, recording results and normal termination fees with save/load continuity. See [neighbor contract milestone](SCENARIO-NEIGHBOR-DEALS-MILESTONE.md). Schema114; 184 regression suites passed. Manual parameter/fee semantics are an explicit interpretation. Not yet hosted.
 
 Reward inspection checkpoint: rotate previews of the Mayor’s House, Stadium and University before placement, with matching four-sided models in the city. See [reward building inspection](REWARD-MODELS-MILESTONE.md). All 186 regression suites passed; schema114, cache reward-building-models-1. Not yet hosted.
+
+Earthquake scenario checkpoint: choose magnitude1–100 in timed events and routines, inspect the chosen strength during response, and preserve it across saves. Default50 retains previous behavior; other damage/radius scaling is explicit reconstruction tuning. See [earthquake magnitude](EARTHQUAKE-MAGNITUDE-MILESTONE.md). All 187 regression suites passed; schema115, cache earthquake-magnitude-1. Not yet hosted.

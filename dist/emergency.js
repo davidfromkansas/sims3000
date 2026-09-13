@@ -1,18 +1,19 @@
-import {dissolveBuildingLot} from './building-lots.js?v=reward-building-models-1';
-import {freshDisasterRelief,settleDisasterRelief,validateDisasterRelief} from './disaster-relief.js?v=reward-building-models-1';
-import {scenarioAllowsBackground} from './scenario-background-rules.js?v=reward-building-models-1';
-import {freshEmergencyOrder,recordHazard,recordFire,validateEmergencyOrder} from './emergency-order.js?v=reward-building-models-1';
-import {beginEmergencySession,pendingWarnings,refreshShelter,validateHazardWarning} from './emergency-session.js?v=reward-building-models-1';
-import {freshUfo,stepUfo,validateUfo} from './ufo.js?v=reward-building-models-1';
-import {freshWhirlpool,stepWhirlpool,validateWhirlpool} from './whirlpool.js?v=reward-building-models-1';
-import {freshToxicCloud,stepToxicCloud,validateToxicCloud} from './toxic-cloud.js?v=reward-building-models-1';
-import {freshSpaceJunk,stepSpaceJunk,validateSpaceJunk} from './space-junk.js?v=reward-building-models-1';
-import {freshRiots,stepRiot,validateRiots} from './riots.js?v=reward-building-models-1';
-import {freshLocusts,stepLocusts,validateLocusts} from './locusts.js?v=reward-building-models-1';
-import {tunnelTiles} from './tunnels.js?v=reward-building-models-1';
-import {STRUCTURES} from './structures.js?v=reward-building-models-1';
-import {POWER_PLANTS} from './power.js?v=reward-building-models-1';
-import {occupancy} from './utilities.js?v=reward-building-models-1';
+import {DEFAULT_QUAKE_MAGNITUDE,validateQuakeMagnitude,quakeBands,quakeDamageChance} from './earthquake-settings.js?v=earthquake-magnitude-1';
+import {dissolveBuildingLot} from './building-lots.js?v=earthquake-magnitude-1';
+import {freshDisasterRelief,settleDisasterRelief,validateDisasterRelief} from './disaster-relief.js?v=earthquake-magnitude-1';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=earthquake-magnitude-1';
+import {freshEmergencyOrder,recordHazard,recordFire,validateEmergencyOrder} from './emergency-order.js?v=earthquake-magnitude-1';
+import {beginEmergencySession,pendingWarnings,refreshShelter,validateHazardWarning} from './emergency-session.js?v=earthquake-magnitude-1';
+import {freshUfo,stepUfo,validateUfo} from './ufo.js?v=earthquake-magnitude-1';
+import {freshWhirlpool,stepWhirlpool,validateWhirlpool} from './whirlpool.js?v=earthquake-magnitude-1';
+import {freshToxicCloud,stepToxicCloud,validateToxicCloud} from './toxic-cloud.js?v=earthquake-magnitude-1';
+import {freshSpaceJunk,stepSpaceJunk,validateSpaceJunk} from './space-junk.js?v=earthquake-magnitude-1';
+import {freshRiots,stepRiot,validateRiots} from './riots.js?v=earthquake-magnitude-1';
+import {freshLocusts,stepLocusts,validateLocusts} from './locusts.js?v=earthquake-magnitude-1';
+import {tunnelTiles} from './tunnels.js?v=earthquake-magnitude-1';
+import {STRUCTURES} from './structures.js?v=earthquake-magnitude-1';
+import {POWER_PLANTS} from './power.js?v=earthquake-magnitude-1';
+import {occupancy} from './utilities.js?v=earthquake-magnitude-1';
 const zones=['residential','commercial','industrial'];
 const random=(i,step,seed)=>{let n=Math.imul(i+17,374761393)^Math.imul(step+31,668265263)^seed;return((Math.imul(n^(n>>>13),1274126177)^(n>>>16))>>>0)/4294967296;};
 export const freshEmergency=()=>({relief:freshDisasterRelief(),navigationOrder:freshEmergencyOrder(),...freshUfo(),...freshWhirlpool(),...freshToxicCloud(),...freshSpaceJunk(),...freshRiots(),...freshLocusts(),randomFires:false,randomEarthquakes:false,randomTornadoes:false,tornado:null,tornadoes:0,sirenTrust:100,sirenIncident:0,shelter:0,falseAlarms:0,earthquake:null,quakes:0,infrastructureLost:0,active:false,step:0,units:[],nextUnit:0,started:0,contained:0,destroyed:0,displaced:0,resumeSpeed:0});
@@ -29,7 +30,7 @@ export function stepFire(c){const e=c.emergency;if(!e.active)return{ended:false,
  for(const [j,order] of spread){const t=c.tiles[j];if(combustible(t)&&!t.fire){recordFire(c,j,order<e.navigationOrder.next?order:undefined);t.fire=30;t.fireAge=0;}}
  if(!e.earthquake&&!e.ufo&&!e.whirlpool&&!e.toxicCloud&&!e.spaceJunk&&!e.riot&&!e.locust&&!e.tornado&&!c.tiles.some(t=>t.fire>0)){e.active=false;e.policeUnits=[];e.nextPolice=0;e.units=[];e.nextUnit=0;e.contained++;const relief=settleDisasterRelief(c);return{ended:true,destroyed,relief};}return{ended:false,destroyed};}
 export function maybeIgnite(c){if(!scenarioAllowsBackground(c,'randomDisasters'))return false;if(!c.emergency.randomFires||c.emergency.active||random(c.month,17,c.seed)>.015)return false;const fuel=c.tiles.filter(combustible);if(!fuel.length)return false;const t=fuel[Math.floor(random(c.month,29,c.seed)*fuel.length)];return ignite(c,t.x,t.y).ok;}
-export function validateEmergency(v,tiles,version=34,month=120000){if(!v||typeof v.randomFires!=='boolean'||typeof v.active!=='boolean'||!Array.isArray(v.units)||v.units.length>tiles.length+1||!Number.isInteger(v.nextUnit)||v.nextUnit<0||![0,1,3,8].includes(v.resumeSpeed)||['step','started','contained','destroyed','displaced'].some(k=>!Number.isInteger(v[k])||v[k]<0||v[k]>1e9)||v.active!==(tiles.some(t=>t.fire>0)||!!(version>=22&&v.earthquake)||!!(version>=25&&v.tornado)||!!(version>=31&&v.locust)||!!(version>=33&&v.riot)||!!(version>=42&&v.spaceJunk)||!!(version>=44&&v.toxicCloud)||!!(version>=50&&v.whirlpool)||!!(version>=52&&v.ufo)))throw Error('Invalid emergency state.');const n=Math.sqrt(tiles.length);let earthquake=null;if(version>=22){if(typeof v.randomEarthquakes!=='boolean'||['quakes','infrastructureLost'].some(k=>!Number.isInteger(v[k])||v[k]<0||v[k]>1e9))throw Error('Invalid earthquake data.');if(v.earthquake!==null){const q=v.earthquake;if(!q||!Number.isInteger(q.x)||!Number.isInteger(q.y)||q.x<0||q.y<0||q.x>=n||q.y>=n||!Number.isInteger(q.ring)||q.ring<0||q.ring>=8||!v.active||!v.quakes)throw Error('Invalid earthquake state.');earthquake={x:q.x,y:q.y,ring:q.ring};}}let tornado=null;if(version>=25){if(typeof v.randomTornadoes!=='boolean'||!Number.isInteger(v.tornadoes)||v.tornadoes<0||v.tornadoes>1e9)throw Error('Invalid tornado data.');if(v.tornado!==null){const t=v.tornado;if(!t||version<96&&earthquake||!v.tornadoes||!Number.isInteger(t.x)||!Number.isInteger(t.y)||t.x<0||t.y<0||t.x>=n||t.y>=n||!Number.isInteger(t.dx)||!Number.isInteger(t.dy)||Math.abs(t.dx)+Math.abs(t.dy)!==1||!Number.isInteger(t.age)||t.age<0||t.age>=24)throw Error('Invalid tornado state.');if(version>=26&&(!Number.isInteger(t.warningSteps)||t.warningSteps<0||t.warningSteps>8||t.warningSteps>0&&t.age!==0))throw Error('Invalid tornado warning.');tornado={x:t.x,y:t.y,dx:t.dx,dy:t.dy,age:t.age,warningSteps:version>=26?t.warningSteps:0,...validateHazardWarning(t,v,version)};}}if(version>=26&&(!Number.isInteger(v.sirenTrust)||v.sirenTrust<0||v.sirenTrust>100||!Number.isInteger(v.sirenIncident)||v.sirenIncident<0||v.sirenIncident>v.started||!Number.isFinite(v.shelter)||v.shelter<0||v.shelter>.6||!Number.isInteger(v.falseAlarms)||v.falseAlarms<0||v.falseAlarms>1e9||v.shelter>0&&(!tornado&&!(version>=52&&v.ufo)||v.sirenIncident!==v.started)))throw Error('Invalid warning siren state.');if(version>=96&&v.shelter!==Math.max(v.tornado?.shelter||0,v.ufo?.shelter||0))throw Error('Inconsistent warning siren protection.');const units=v.units.map(u=>{if(!u||!Number.isInteger(u.x)||!Number.isInteger(u.y)||u.x<0||u.y<0||u.x>=n||u.y>=n)throw Error('Invalid firefighter dispatch.');return{x:u.x,y:u.y};});return{relief:validateDisasterRelief(v.relief,v,version,month),navigationOrder:validateEmergencyOrder(v,tiles,version),...validateUfo(v,n,version),...validateWhirlpool(v,tiles,version),...validateToxicCloud(v,n,version),...validateSpaceJunk(v,n,version),...validateRiots(v,n,version),...validateLocusts(v,n,version),randomFires:v.randomFires,randomEarthquakes:version>=22?v.randomEarthquakes:false,randomTornadoes:version>=25?v.randomTornadoes:false,tornado,tornadoes:version>=25?v.tornadoes:0,sirenTrust:version>=26?v.sirenTrust:100,sirenIncident:version>=26?v.sirenIncident:0,shelter:version>=26?v.shelter:0,falseAlarms:version>=26?v.falseAlarms:0,earthquake,quakes:version>=22?v.quakes:0,infrastructureLost:version>=22?v.infrastructureLost:0,active:v.active,step:v.step,units,nextUnit:v.nextUnit,started:v.started,contained:v.contained,destroyed:v.destroyed,displaced:v.displaced,resumeSpeed:v.resumeSpeed};}
+export function validateEmergency(v,tiles,version=34,month=120000){if(!v||typeof v.randomFires!=='boolean'||typeof v.active!=='boolean'||!Array.isArray(v.units)||v.units.length>tiles.length+1||!Number.isInteger(v.nextUnit)||v.nextUnit<0||![0,1,3,8].includes(v.resumeSpeed)||['step','started','contained','destroyed','displaced'].some(k=>!Number.isInteger(v[k])||v[k]<0||v[k]>1e9)||v.active!==(tiles.some(t=>t.fire>0)||!!(version>=22&&v.earthquake)||!!(version>=25&&v.tornado)||!!(version>=31&&v.locust)||!!(version>=33&&v.riot)||!!(version>=42&&v.spaceJunk)||!!(version>=44&&v.toxicCloud)||!!(version>=50&&v.whirlpool)||!!(version>=52&&v.ufo)))throw Error('Invalid emergency state.');const n=Math.sqrt(tiles.length);let earthquake=null;if(version>=22){if(typeof v.randomEarthquakes!=='boolean'||['quakes','infrastructureLost'].some(k=>!Number.isInteger(v[k])||v[k]<0||v[k]>1e9))throw Error('Invalid earthquake data.');if(v.earthquake!==null){const q=v.earthquake,magnitude=version>=115?validateQuakeMagnitude(q?.magnitude):DEFAULT_QUAKE_MAGNITUDE;if(version>=115&&q?.magnitude===undefined)throw Error('Invalid earthquake magnitude.');if(!q||!Number.isInteger(q.x)||!Number.isInteger(q.y)||q.x<0||q.y<0||q.x>=n||q.y>=n||!Number.isInteger(q.ring)||q.ring<0||q.ring>=quakeBands(magnitude)||!v.active||!v.quakes)throw Error('Invalid earthquake state.');earthquake={x:q.x,y:q.y,ring:q.ring,magnitude};}}let tornado=null;if(version>=25){if(typeof v.randomTornadoes!=='boolean'||!Number.isInteger(v.tornadoes)||v.tornadoes<0||v.tornadoes>1e9)throw Error('Invalid tornado data.');if(v.tornado!==null){const t=v.tornado;if(!t||version<96&&earthquake||!v.tornadoes||!Number.isInteger(t.x)||!Number.isInteger(t.y)||t.x<0||t.y<0||t.x>=n||t.y>=n||!Number.isInteger(t.dx)||!Number.isInteger(t.dy)||Math.abs(t.dx)+Math.abs(t.dy)!==1||!Number.isInteger(t.age)||t.age<0||t.age>=24)throw Error('Invalid tornado state.');if(version>=26&&(!Number.isInteger(t.warningSteps)||t.warningSteps<0||t.warningSteps>8||t.warningSteps>0&&t.age!==0))throw Error('Invalid tornado warning.');tornado={x:t.x,y:t.y,dx:t.dx,dy:t.dy,age:t.age,warningSteps:version>=26?t.warningSteps:0,...validateHazardWarning(t,v,version)};}}if(version>=26&&(!Number.isInteger(v.sirenTrust)||v.sirenTrust<0||v.sirenTrust>100||!Number.isInteger(v.sirenIncident)||v.sirenIncident<0||v.sirenIncident>v.started||!Number.isFinite(v.shelter)||v.shelter<0||v.shelter>.6||!Number.isInteger(v.falseAlarms)||v.falseAlarms<0||v.falseAlarms>1e9||v.shelter>0&&(!tornado&&!(version>=52&&v.ufo)||v.sirenIncident!==v.started)))throw Error('Invalid warning siren state.');if(version>=96&&v.shelter!==Math.max(v.tornado?.shelter||0,v.ufo?.shelter||0))throw Error('Inconsistent warning siren protection.');const units=v.units.map(u=>{if(!u||!Number.isInteger(u.x)||!Number.isInteger(u.y)||u.x<0||u.y<0||u.x>=n||u.y>=n)throw Error('Invalid firefighter dispatch.');return{x:u.x,y:u.y};});return{relief:validateDisasterRelief(v.relief,v,version,month),navigationOrder:validateEmergencyOrder(v,tiles,version),...validateUfo(v,n,version),...validateWhirlpool(v,tiles,version),...validateToxicCloud(v,n,version),...validateSpaceJunk(v,n,version),...validateRiots(v,n,version),...validateLocusts(v,n,version),randomFires:v.randomFires,randomEarthquakes:version>=22?v.randomEarthquakes:false,randomTornadoes:version>=25?v.randomTornadoes:false,tornado,tornadoes:version>=25?v.tornadoes:0,sirenTrust:version>=26?v.sirenTrust:100,sirenIncident:version>=26?v.sirenIncident:0,shelter:version>=26?v.shelter:0,falseAlarms:version>=26?v.falseAlarms:0,earthquake,quakes:version>=22?v.quakes:0,infrastructureLost:version>=22?v.infrastructureLost:0,active:v.active,step:v.step,units,nextUnit:v.nextUnit,started:v.started,contained:v.contained,destroyed:v.destroyed,displaced:v.displaced,resumeSpeed:v.resumeSpeed};}
 
 export function explodePlant(c,t){const type=t.type,def=POWER_PLANTS[type];if(!def)return null;const {x,y}=t,n=Math.sqrt(c.tiles.length),alreadyActive=c.emergency.active;beginEmergencySession(c);destroy(c,t);let fires=0;for(let yy=Math.max(0,y-1);yy<Math.min(n,y+def.size+1);yy++)for(let xx=Math.max(0,x-1);xx<Math.min(n,x+def.size+1);xx++){const u=c.tiles[yy*n+xx];if(combustible(u)&&!u.fire&&ignite(c,xx,yy).ok)fires++;}const contaminated=type==='nuclear'?contaminate(c,x+(def.size-1)/2,y+(def.size-1)/2):0;if(!fires&&!alreadyActive){c.emergency.active=false;c.emergency.contained++;settleDisasterRelief(c);}return{type,x,y,fires,contaminated};}
 
@@ -37,12 +38,13 @@ export function explodePlant(c,t){const type=t.type,def=POWER_PLANTS[type];if(!d
 // This reconstruction uses a five-tile radius with no player cleanup mechanism.
 export function contaminate(c,x,y){let affected=0;for(const t of c.tiles){if(Math.hypot(t.x-x,t.y-y)>5)continue;if(t.lotRoot!=null)destroy(c,t);if(!t.radiation)affected++;t.radiation=true;if(t.type==='residential')c.emergency.displaced+=occupancy(t.level)*8;if(zones.includes(t.type)||['airport','seaport'].includes(t.type)){t.level=0;t.age=0;t.stress=0;}}return affected;}
 
-// Eight outward damage bands are original tuning; the manual does not specify a formula.
-export function startEarthquake(c,x,y){
+// Default magnitude preserves eight damage bands. Strength and radius scaling are original tuning.
+export function startEarthquake(c,x,y,magnitude=DEFAULT_QUAKE_MAGNITUDE){
+ try{validateQuakeMagnitude(magnitude);}catch(error){return{ok:false,error:error.message};}
  const n=Math.sqrt(c.tiles.length),e=c.emergency;
  if(e.earthquake)return{ok:false,error:'An earthquake is already active.'};
  if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n||c.tiles[y*n+x].terrain!=='land')return{ok:false,error:'Choose a land tile for the earthquake epicenter.'};
- beginEmergencySession(c);recordHazard(e,'earthquake');e.quakes++;e.earthquake={x,y,ring:0};return{ok:true};
+ beginEmergencySession(c);recordHazard(e,'earthquake');e.quakes++;e.earthquake={x,y,ring:0,magnitude};return{ok:true};
 }
 export function setRandomEarthquakes(c,value){
  if(c.emergency.active)return{ok:false,error:'Finish the active disaster before changing this setting.'};
@@ -59,17 +61,17 @@ function stepEarthquake(c){
  for(let i=0;i<c.tiles.length;i++){
   const t=c.tiles[i],distance=Math.hypot(t.x-q.x,t.y-q.y);
   if(Math.max(1,Math.ceil(distance))!==q.ring)continue;
-  const roll=random(i,e.quakes*131,c.seed),chance=1-distance*.1;
+  const roll=random(i,e.quakes*131,c.seed),chance=quakeDamageChance(distance,q.magnitude);
   if(roll<chance){
    hit.add(i);
    for(const k of ['pipe','subway','rail','highway'])if(t[k]){t[k]=false;e.infrastructureLost++;}
    t.railAxis=null;t.highwayAxis=null;
    if(t.type==='road'||t.type==='powerline'){t.type=null;t.bridgeAxis=null;t.rubble=true;e.infrastructureLost++;}
    else if(combustible(t))destroy(c,t);
-  }else if(roll<chance+.15&&combustible(t)&&!t.fire)ignite(c,t.x,t.y);
+  }else if(roll<chance+.15*(q.magnitude/50)&&combustible(t)&&!t.fire)ignite(c,t.x,t.y);
  }
  c.tunnels=c.tunnels.filter(t=>{if(!tunnelTiles(c,t).some(i=>hit.has(i)))return true;e.infrastructureLost++;return false;});
- if(q.ring===8)e.earthquake=null;
+ if(q.ring===quakeBands(q.magnitude))e.earthquake=null;
  return e.destroyed-before;
 }
 

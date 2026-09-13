@@ -1,11 +1,11 @@
-import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=reward-building-models-1';
-import {CUSTOM_METRICS} from './scenario-metrics.js?v=reward-building-models-1';
-import {CALCULATIONS} from './scenario-variables.js?v=reward-building-models-1';
-import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=reward-building-models-1';
-import {BUSINESSES} from './business.js?v=reward-building-models-1';
-import {REWARDS} from './rewards.js?v=reward-building-models-1';
-import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=reward-building-models-1';
-import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=reward-building-models-1';
+import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=earthquake-magnitude-1';
+import {CUSTOM_METRICS} from './scenario-metrics.js?v=earthquake-magnitude-1';
+import {CALCULATIONS} from './scenario-variables.js?v=earthquake-magnitude-1';
+import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=earthquake-magnitude-1';
+import {BUSINESSES} from './business.js?v=earthquake-magnitude-1';
+import {REWARDS} from './rewards.js?v=earthquake-magnitude-1';
+import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=earthquake-magnitude-1';
+import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=earthquake-magnitude-1';
 const leaf=()=>({metric:'population',operator:'gte',target:100});
 const optionsOf=items=>Object.entries(items).map(([value,label])=>[value,typeof label==='string'?label:label.name]);
 const primitiveOptions=optionsOf(SCENARIO_EVENTS).filter(([key])=>key!=='program');
@@ -17,7 +17,7 @@ export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[]
  function field(parent,label,value,set,{type='text',choices,min,max,step='1',multiline=false}={}){const wrap=el('label',label),input=el(choices?'select':multiline?'textarea':'input');if(choices)for(const [v,name]of choices){const option=el('option',name);option.value=String(v);input.append(option);}else input.type=type;input.value=String(value??'');if(min!==undefined)input.min=min;if(max!==undefined)input.max=max;input.step=step;if(multiline)input.maxLength=500;const change=()=>set(choices?input.value:type==='number'?(input.value.trim()===''?NaN:Number(input.value)):input.value);if(choices)input.onchange=change;else input.oninput=change;wrap.append(input);parent.append(wrap);return input;}
  function check(parent,label,value,set){const wrap=el('label',label),input=el('input');input.type='checkbox';input.checked=value;input.onchange=()=>set(input.checked);wrap.append(input);parent.append(wrap);}
  const changed=removed=>onChange(structuredClone(routines),removed);
- function defaultAction(type){const a={type};if(['announcement','popup','ending'].includes(type))a.message='Mayor, review the latest city report.';if(type==='ending')a.outcome='won';if(type==='popup'){a.showStatus=true;a.presenter=null;}if(type==='variable')Object.assign(a,{variable:0,operation:'add',value:1});if(['markGoal','addGoal'].includes(type))a.goal=0;if(type==='markGoal')a.goalStatus='satisfied';if(type==='sound')a.sound='notice';if(type==='reward')a.reward='university';if(type==='business')a.business='casino';if(type==='neighborDeal')Object.assign(a,{operation:'enable',neighbor:'east',resource:'power',direction:'import',amount:50});if(!['announcement','popup','ending','variable','markGoal','addGoal','sound','reward','business','neighborDeal'].includes(type))Object.assign(a,{x:Math.floor(size/2),y:Math.floor(size/2)});if(type==='camera')a.zoom=1;return a;}
+ function defaultAction(type){const a={type};if(['announcement','popup','ending'].includes(type))a.message='Mayor, review the latest city report.';if(type==='ending')a.outcome='won';if(type==='popup'){a.showStatus=true;a.presenter=null;}if(type==='variable')Object.assign(a,{variable:0,operation:'add',value:1});if(['markGoal','addGoal'].includes(type))a.goal=0;if(type==='markGoal')a.goalStatus='satisfied';if(type==='sound')a.sound='notice';if(type==='reward')a.reward='university';if(type==='business')a.business='casino';if(type==='neighborDeal')Object.assign(a,{operation:'enable',neighbor:'east',resource:'power',direction:'import',amount:50});if(!['announcement','popup','ending','variable','markGoal','addGoal','sound','reward','business','neighborDeal'].includes(type))Object.assign(a,{x:Math.floor(size/2),y:Math.floor(size/2)});if(type==='earthquake')a.magnitude=50;if(type==='camera')a.zoom=1;return a;}
  function actionFields(parent,a){
   const text=(label,key,extra={})=>field(parent,label,a[key],v=>{a[key]=v;},extra);
   if(['announcement','popup','ending'].includes(a.type))text('Message text','message',{multiline:true});
@@ -37,6 +37,7 @@ export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[]
    parent.append(el('p','Enable creates an agreement at the current quote using a registered working route. Existing matching terms are kept. Disable ends the matching contract and charges its normal termination fee. Unavailable offers are skipped.'));
   }
   if(a.x!==undefined){for(const key of ['x','y'])field(parent,'Map '+key.toUpperCase(),a[key]+1,v=>a[key]=v-1,{type:'number',min:1,max:size});}
+  if(a.type==='earthquake')text('Earthquake magnitude (1–100)','magnitude',{type:'number',min:1,max:100});
   if(a.type==='camera')field(parent,'Zoom (%)',a.zoom*100,v=>a.zoom=v/100,{type:'number',min:40,max:250,step:5});
   if(a.type==='variable'){
    field(parent,'Variable slot',a.variable,v=>a.variable=Number(v),{choices:[0,1,2,3].map(i=>[i,'Variable '+(i+1)])});
