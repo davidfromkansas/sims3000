@@ -19,3 +19,5 @@ console.log('PASS: line/plane geometry across the footprint, nonmutating preview
 const floorPaint='0'.repeat(100)+'4'+'0'.repeat(11899),beforeFloorPaint=JSON.stringify(draft);editor.applyFloorPaint(floorPaint);assert.equal(draft.surfacePaint,floorPaint);$('blockUndo').onclick();assert.equal(JSON.stringify(draft),beforeFloorPaint);$('blockRedo').onclick();assert.equal(draft.surfacePaint,floorPaint);
 
 $('blockMode').value='tower';$('blockMode').onchange();assert.equal(draft.surfacePaint,undefined);$('blockMode').value='blocks';$('blockMode').onchange();assert.equal(draft.surfacePaint,floorPaint,'height draft retains per-floor paint across mode changes');
+
+const detailLayer='3'+'0'.repeat(11999),beforeDetail=JSON.stringify(draft);editor.applyDetails(detailLayer);assert.equal(draft.surfaceDetails,detailLayer);$('blockUndo').onclick();assert.equal(JSON.stringify(draft),beforeDetail);$('blockRedo').onclick();assert.equal(draft.surfaceDetails,detailLayer);editor.applyFloorPaint('1'.repeat(12000));assert.equal(draft.surfaceDetails,detailLayer);$('blockUndo').onclick();assert.equal(draft.surfaceDetails,detailLayer);

@@ -12,3 +12,5 @@ const geometryBefore=[...draft.voxels],paint=Array(500).fill(0);paint[12]=2;edit
 console.log('PASS: layered editor previews, independent-plane placement/erasure, undo/redo, immediate layer refresh, pointer and Shift cancellation, invalid input and redo invalidation.');
 
 const floorPaint='0'.repeat(100)+'4'+'0'.repeat(11899),beforeFloorPaint=JSON.stringify(draft);editor.applyFloorPaint(floorPaint);assert.equal(draft.surfacePaint,floorPaint);$('voxelUndo').onclick();assert.equal(JSON.stringify(draft),beforeFloorPaint);$('voxelRedo').onclick();assert.equal(draft.surfacePaint,floorPaint);
+
+const detailLayer='3'+'0'.repeat(11999),beforeDetail=JSON.stringify(draft);editor.applyDetails(detailLayer);assert.equal(draft.surfaceDetails,detailLayer);$('voxelUndo').onclick();assert.equal(JSON.stringify(draft),beforeDetail);$('voxelRedo').onclick();assert.equal(draft.surfaceDetails,detailLayer);editor.applyFloorPaint('1'.repeat(12000));assert.equal(draft.surfaceDetails,detailLayer);$('voxelUndo').onclick();assert.equal(draft.surfaceDetails,detailLayer);

@@ -835,3 +835,5 @@ Loan planning checkpoint: inspect all remaining annual repayments and preview a 
 Individual-floor paint checkpoint: paint and sample one floor surface, preserve it through undo/redo, construction drafts, city saves and building files. See [floor paint](FLOOR-PAINT-MILESTONE.md). All 224 suites passed; source only, publication pending.
 
 Connected-paint checkpoint: fill contiguous same-material wall or roof planes directly on the model, preview the affected tiles and undo the entire fill. See [connected surface fill](CONNECTED-SURFACE-FILL-MILESTONE.md). All 225 suites passed; source only, publication pending.
+
+Building-detail checkpoint: place independent windows, doors, vents and ledges above paint, remove/undo details and preserve them in building files and cities. See [surface details](BUILDING-SURFACE-DETAILS-MILESTONE.md). All 226 suites passed; source only, publication pending.

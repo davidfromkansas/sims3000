@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {placeSurfaceDetails,validateSurfaceDetails,buildingSurfaceDetail,drawBuildingSurfaceDetail} from '../dist/building-surface-details.js';
+import {paintFloorSurfaces,floorSurfaceMaterial} from '../dist/building-floor-paint.js';
+import {defaultBuildingDesign,validateBuildingDesign,exportBuildingDesign,importBuildingDesign,drawBuildingDesign} from '../dist/building-designs.js';
+import {createCity,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {copyBuildingSet} from '../dist/building-sets.js';
+const face={x:4,y:4,index:44,side:1,from:0,to:1,points:[[0,0,0],[1,0,0],[1,0,1],[0,0,1]]},d={...defaultBuildingDesign(),blocks:Array(100).fill(0)};d.blocks[44]=4;
+const details=placeSurfaceDetails(d,[face],2),decorated={...d,surfaceDetails:details};assert.equal(buildingSurfaceDetail(decorated,face),2);assert.equal(d.surfaceDetails,undefined);decorated.surfacePaint=paintFloorSurfaces(decorated,[face],1);assert.equal(buildingSurfaceDetail(decorated,face),2);assert.equal(floorSurfaceMaterial(decorated,face),1);const erased={...decorated,surfaceDetails:placeSurfaceDetails(decorated,[face],0)};assert.equal(buildingSurfaceDetail(erased,face),0);assert.equal(floorSurfaceMaterial(erased,face),1);
+const roof={...face,side:4};assert.equal(placeSurfaceDetails(d,[roof],2),'0'.repeat(12000));assert.equal(buildingSurfaceDetail({surfaceDetails:placeSurfaceDetails(d,[roof],3)},roof),3);
+for(const value of ['',null,Array(12000).fill(0),'5'.repeat(12000),'00001'+'0'.repeat(11995)])assert.throws(()=>validateSurfaceDetails(value));assert.throws(()=>validateBuildingDesign({...defaultBuildingDesign(),surfaceDetails:details}));
+// Detail polygons stay on the selected surface and above the material drawing.
+for(let detail=1;detail<=4;detail++){let count=0;drawBuildingSurfaceDetail(face,detail,d,(points,color)=>{count++;assert.match(color,/^#[a-f0-9]{6}$/i);for(const [x,y,z]of points){assert.equal(y,0);assert.ok(x>=0&&x<=1&&z>=0&&z<=1);}});assert.ok(count>=3);}
+const colors=[],ctx={beginPath(){},closePath(){},moveTo(){},lineTo(){},fill(){colors.push(this.fillStyle);}};drawBuildingDesign(ctx,decorated);assert.ok(colors.includes('#624d41'),'entrance renders in main building drawing');assert.ok(colors.indexOf('#624d41')>colors.indexOf('#d0aa89'),'detail renders over brick paint');
+const maximum={...decorated,name:'界'.repeat(40),footprint:{width:4,height:4},voxels:Array(100).fill(0xffffff),materials:Array(500).fill(4),surfacePaint:'5'.repeat(12000),surfaceDetails:'33333'.repeat(2400)};delete maximum.blocks;
+for(const design of [decorated,maximum]){const file=exportBuildingDesign(design);assert.equal(JSON.parse(file).version,7);assert.ok(Buffer.byteLength(file)<32768,'largest combined detailed model fits file bound');assert.deepEqual(importBuildingDesign(file),design);for(let version=1;version<=6;version++)assert.throws(()=>importBuildingDesign(JSON.stringify({...JSON.parse(file),version})));}
+const city=createCity();city.buildingDesigns={2:decorated};assert.deepEqual(validateSave(JSON.parse(serializeCity(city))).buildingDesigns,city.buildingDesigns);assert.deepEqual(copyBuildingSet(city).buildingDesigns,city.buildingDesigns);const old=JSON.parse(serializeCity(city));old.version=121;assert.throws(()=>validateSave(old),/122/);delete old.buildingDesigns[2].surfaceDetails;assert.equal(validateSave(old).version,122);
+console.log('PASS: independent detail placement/removal, paint beneath details, plane-contained rendering, roof restrictions, bounded portable files, city migration and building-set retention.');
