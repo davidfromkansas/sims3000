@@ -481,3 +481,14 @@ Schema 97 records a session-local start sequence. Fire spread inherits its sourc
 Regression exercises real starts, a real seeded fire spread, resolved and repeated hazards, save/load continuation, invalid order metadata and response resets. The complete regression set has 131 suites. Browser interaction acceptance remains pending. Damage, warnings and response speed are unchanged.
 
 Feedback exercise: start a fire, then an earthquake, then a separate fire and an alien attack. Use Next emergency location to follow that sequence. Save and reload during the response and check the same ordering.
+
+
+### Play preferences — milestones 1, 5 and 6
+
+City desk now exposes browser-wide Play preferences, implementing the general disaster-camera option on manual p.36 and the vehicle/decorative presentation controls on p.35. Auto Go To Disasters is enabled by default. Disabling it prevents random and scenario-triggered emergencies from changing the camera or main map layer; their warnings, response panels and essential indicators remain. Manual location navigation and explicitly placed disasters still focus their targets.
+
+Show vehicles controls decorative road cars, surface trains, ships and aircraft without changing commuting, transport capacity or traffic data. Traffic visibility can also be limited to 100% or 150% and closer zooms, adapting the manual’s zoom-dependent control to the continuous browser camera; all zoom levels remains the default. Animate scenery currently controls fountain motion; a disabled fountain uses its static pose. These switches do not hide essential disaster graphics. System reduced-motion, pause, hidden-tab, dialog and emergency holds keep their existing precedence. Disabling both decorative categories also stops the shared scene clock and its high-frequency refresh demand.
+
+Preferences persist separately from city files and apply across cities in the same browser. Storage failures still apply changes for the session and report that they could not be saved. The tests run real dialog handlers and Canvas renderer dispatch, check visible cars/trains versus hidden sampling, static/animated fountain draws, essential alien graphics, reduced motion, clock holds and unchanged serialized city data. All 132 regression suites pass; browser interaction and visual acceptance remain pending. Save schema 97 is unchanged. The original full animation/sound catalog is still incomplete.
+
+Feedback exercise: open City desk → Play preferences, hide vehicles and stop decorative scenery, then restore them. Disable Auto Go To Disasters before a scripted emergency and compare the retained camera view with manually choosing Next emergency location.
