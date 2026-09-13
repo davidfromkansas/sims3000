@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 195 regression suites, save schema 118. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 196 regression suites, save schema 119. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -781,3 +781,5 @@ Sanitation health checkpoint: uncollected garbage now directly lowers exposed re
 Water diagnostics checkpoint: Utilities now identifies shortages by pipe network, locates uncovered zones, and opens source maintenance queries. See [water network diagnostics](WATER-GRID-DIAGNOSTICS-MILESTONE.md). Source only; publication pending.
 
 Rail landfill checkpoint: garbage can reach remote landfill sidings through surface rail from road-connected stations or rail imports. See [rail landfill delivery](LANDFILL-RAIL-FREIGHT-MILESTONE.md). Source only; publication pending.
+
+Water continuity checkpoint: previously supplied buildings retain their water requirement through shrinkage and abandonment, with saved interruption progress and repair/reoccupation behavior. See [water-service continuity](WATER-SERVICE-CONTINUITY-MILESTONE.md). Source only; publication pending.
