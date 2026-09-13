@@ -1,8 +1,8 @@
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=script-clipboard-2';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=script-clipboard-2';
-import {projectBuildingPoint} from './building-footprints.js?v=script-clipboard-2';
-import {buildingShapeCells} from './building-shapes.js?v=script-clipboard-2';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=script-clipboard-2';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=scenario-result-1';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=scenario-result-1';
+import {projectBuildingPoint} from './building-footprints.js?v=scenario-result-1';
+import {buildingShapeCells} from './building-shapes.js?v=scenario-result-1';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=scenario-result-1';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;
