@@ -1,4 +1,4 @@
-import {buildingLotMembers,updateBuildingLot} from './building-lots.js?v=tornado-controls-1';
+import {buildingLotMembers,updateBuildingLot} from './building-lots.js?v=large-city-routing-1';
 const zones=['residential','commercial','industrial'];
 export const canPreserve=t=>zones.includes(t.type)&&t.industry!=='farm'&&!t.rubble&&!t.fire&&(t.level>0||t.historicalLevel>0);
 export function designateHistorical(c,index,value){

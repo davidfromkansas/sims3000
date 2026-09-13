@@ -1,0 +1,112 @@
+{
+  "baselineCommit": "c5a5b196fccd8201ec4db211bc97e640826e6886",
+  "method": "Three samples per fixture; median timings. Synthetic occupied grid district. Same Node runtime and machine, sequential baseline and candidate runs, without CPU profiler. No browser rendering measured.",
+  "before": {
+    "runtime": "v22.19.0",
+    "platform": "darwin",
+    "results": [
+      {
+        "size": 96,
+        "width": 48,
+        "population": 30720,
+        "recomputeMs": 102,
+        "monthMs": 362,
+        "samples": [
+          {
+            "recomputeMs": 147.971709,
+            "monthMs": 479.45116700000005,
+            "population": 30720
+          },
+          {
+            "recomputeMs": 102.14224999999999,
+            "monthMs": 362.424042,
+            "population": 30720
+          },
+          {
+            "recomputeMs": 71.14574999999991,
+            "monthMs": 356.1240419999999,
+            "population": 30720
+          }
+        ]
+      },
+      {
+        "size": 256,
+        "width": 96,
+        "population": 122880,
+        "recomputeMs": 1365,
+        "monthMs": 6829,
+        "samples": [
+          {
+            "recomputeMs": 1364.7103749999999,
+            "monthMs": 6834.270125000001,
+            "population": 122880
+          },
+          {
+            "recomputeMs": 1358.935374999999,
+            "monthMs": 6812.710250000002,
+            "population": 122880
+          },
+          {
+            "recomputeMs": 1378.6990829999995,
+            "monthMs": 6828.624583000001,
+            "population": 122880
+          }
+        ]
+      }
+    ]
+  },
+  "after": {
+    "runtime": "v22.19.0",
+    "platform": "darwin",
+    "results": [
+      {
+        "size": 96,
+        "width": 48,
+        "population": 30720,
+        "recomputeMs": 46,
+        "monthMs": 111,
+        "samples": [
+          {
+            "recomputeMs": 102.217917,
+            "monthMs": 253.19400000000002,
+            "population": 30720
+          },
+          {
+            "recomputeMs": 45.53425000000004,
+            "monthMs": 111.03933399999994,
+            "population": 30720
+          },
+          {
+            "recomputeMs": 20.705125000000066,
+            "monthMs": 103.62312500000007,
+            "population": 30720
+          }
+        ]
+      },
+      {
+        "size": 256,
+        "width": 96,
+        "population": 122880,
+        "recomputeMs": 295,
+        "monthMs": 1489,
+        "samples": [
+          {
+            "recomputeMs": 311.531875,
+            "monthMs": 1489.2431250000002,
+            "population": 122880
+          },
+          {
+            "recomputeMs": 295.04512499999964,
+            "monthMs": 1492.9563750000002,
+            "population": 122880
+          },
+          {
+            "recomputeMs": 293.2555419999999,
+            "monthMs": 1457.6205419999997,
+            "population": 122880
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 188 regression suites, save schema 116. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 189 regression suites, save schema 116. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -767,3 +767,5 @@ Reward inspection checkpoint: rotate previews of the Mayor’s House, Stadium an
 Earthquake scenario checkpoint: choose magnitude1–100 in timed events and routines, inspect the chosen strength during response, and preserve it across saves. Default50 retains previous behavior; other damage/radius scaling is explicit reconstruction tuning. See [earthquake magnitude](EARTHQUAKE-MAGNITUDE-MILESTONE.md). All 187 regression suites passed; schema115, cache earthquake-magnitude-1. Not yet hosted.
 
 Tornado scenario checkpoint: configure direction, intensity, distance, travel speed and early warnings in timed events and routines. Saved storms preserve movement pauses and siren preparation. See [authored tornado paths](TORNADO-CONTROLS-MILESTONE.md). Schema116; cache tornado-controls-1. Manual-named controls use explicitly documented reconstruction ranges and damage tuning. Not yet hosted.
+
+Large-city routing checkpoint: stop commuter searches when reachable jobs are exhausted, preserving exact route allocation. A synthetic 122,880-resident fixture improved from 6.83s to 1.49s per monthly tick (three-sample medians on this Mac). See [large-city routing](LARGE-CITY-ROUTING-MILESTONE.md) for limits and raw measurements. All 189 regression suites passed; schema116 unchanged, cache large-city-routing-1. Not yet hosted.

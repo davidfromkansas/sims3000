@@ -1,7 +1,7 @@
-import {LANDMARKS} from './landmarks.js?v=tornado-controls-1';
-import {BUSINESSES} from './business.js?v=tornado-controls-1';
-import {REWARDS} from './rewards.js?v=tornado-controls-1';
-import {POWER_PLANTS} from './power.js?v=tornado-controls-1';
-import {RECREATION} from './recreation.js?v=tornado-controls-1';
+import {LANDMARKS} from './landmarks.js?v=large-city-routing-1';
+import {BUSINESSES} from './business.js?v=large-city-routing-1';
+import {REWARDS} from './rewards.js?v=large-city-routing-1';
+import {POWER_PLANTS} from './power.js?v=large-city-routing-1';
+import {RECREATION} from './recreation.js?v=large-city-routing-1';
 // Fixed-footprint ploppable structures share construction, damage and save validation.
 export const STRUCTURES={...LANDMARKS,...POWER_PLANTS,...RECREATION,...REWARDS,...BUSINESSES};
