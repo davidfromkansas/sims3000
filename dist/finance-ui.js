@@ -1,8 +1,8 @@
-import {loanScheduleReport} from './loan-schedule.js?v=freehand-building-1';
-import {disasterReliefReport} from './disaster-relief.js?v=freehand-building-1';
-import {businessIncomeReport} from './business.js?v=freehand-building-1';
-import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=freehand-building-1';
-import {applyBudget,borrow} from './engine.js?v=freehand-building-1';
+import {loanScheduleReport} from './loan-schedule.js?v=plane-navigation-1';
+import {disasterReliefReport} from './disaster-relief.js?v=plane-navigation-1';
+import {businessIncomeReport} from './business.js?v=plane-navigation-1';
+import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=plane-navigation-1';
+import {applyBudget,borrow} from './engine.js?v=plane-navigation-1';
 const names={residential:'Residential',commercial:'Commercial',industrial:'Industrial'};
 export function showFinance(ui){
  const {city,dialog,close,update,save,clearUndo,notify,review}=ui,c=city(),fmt=n=>'§'+Math.round(n).toLocaleString(),$=s=>document.querySelector(s),f=c.finance;

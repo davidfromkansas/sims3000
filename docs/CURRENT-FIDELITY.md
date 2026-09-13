@@ -839,3 +839,5 @@ Connected-paint checkpoint: fill contiguous same-material wall or roof planes di
 Building-detail checkpoint: place independent windows, doors, vents and ledges above paint, remove/undo details and preserve them in building files and cities. See [surface details](BUILDING-SURFACE-DETAILS-MILESTONE.md). All 226 suites passed; source only, publication pending.
 
 Freehand construction checkpoint: build and erase continuous bent strokes across all three layered edit planes, with matching previews and atomic undo/redo. See [freehand construction](FREEHAND-CONSTRUCTION-MILESTONE.md). All 227 suites passed; source only, publication pending.
+
+Edit-plane navigation checkpoint: inspect cross-sections using a synchronized slider, previous/next controls, wheel input and Page Up/Down, canceling unfinished construction when moving slices. See [plane navigation](BUILDING-PLANE-NAVIGATION-MILESTONE.md). All 227 suites passed; source only, publication pending.
