@@ -9,6 +9,7 @@ export function backgroundInteractionAllowed(event){
  // Tab must remain available even when it moves focus to a temporarily blocked command.
  if(['Tab',' ','Home','+','-','=','Escape','h','H','[',']'].includes(event.key))return true;
  if(event.target.closest?.('.navigation-map'))return true;
+ if(event.target.id==='city'&&['ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key))return true;
  return camera&&['Enter','ArrowLeft','ArrowRight','ArrowUp','ArrowDown'].includes(event.key);
 }
 export const nativeSpaceTarget=target=>!!target.closest?.('button,a,input,textarea,select,summary,[role="button"]');
