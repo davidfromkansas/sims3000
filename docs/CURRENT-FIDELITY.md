@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 212 regression suites, save schema 120. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 213 regression suites, save schema 120. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -811,3 +811,5 @@ Building construction checkpoint: preview whole lines and planes, commit each as
 Independent building layers checkpoint: construct arches and overhangs on 24 editable horizontal layers, preview and undo changes, and preserve models through city saves and building files. See [independent layers](BUILDING-3D-LAYERS-MILESTONE.md). All 211 suites passed; source only, publication pending.
 
 Vertical building construction checkpoint: edit either vertical cross-section to create tall walls or openings in one operation, with shared occupancy and history. See [vertical edit planes](BUILDING-VERTICAL-PLANES-MILESTONE.md). All 212 suites passed; source only, publication pending.
+
+Building edit guidance checkpoint: selected cross-sections and pending blocks now appear on the rotating model preview. See [3D edit guides](BUILDING-PLANE-GUIDES-MILESTONE.md). All 213 suites passed; source only, publication pending.
