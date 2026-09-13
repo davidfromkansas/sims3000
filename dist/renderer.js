@@ -1,27 +1,28 @@
-import {drawBridgeStructure} from './bridge-structures.js?v=disaster-relief-1';
-import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=disaster-relief-1';
-import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=disaster-relief-1';
-import {stationAreas} from './service-areas.js?v=disaster-relief-1';
-import {cityGrid,visibleTileBounds} from './city-grid.js?v=disaster-relief-1';
-import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=disaster-relief-1';
-import {designForTile,drawDesignedBuilding} from './building-designs.js?v=disaster-relief-1';
-import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=disaster-relief-1';
-import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=disaster-relief-1';
-import {inScenarioArea} from './scenario-area.js?v=disaster-relief-1';
-import {railVehicles} from './rail-visuals.js?v=disaster-relief-1';
-import {zonedSprite} from './building-art.js?v=disaster-relief-1';
-import {trafficVehicles} from './traffic-visuals.js?v=disaster-relief-1';
-import {tunnelAt} from './tunnels.js?v=disaster-relief-1';
-import {STRUCTURES} from './structures.js?v=disaster-relief-1';
-import {LANDSCAPE} from './landscape.js?v=disaster-relief-1';
-import {POWER_PLANTS} from './power.js?v=disaster-relief-1';
-import {WATER_STRUCTURES} from './utilities.js?v=disaster-relief-1';
-import {FACILITIES} from './facilities.js?v=disaster-relief-1';
-import {rampCrossings} from './highway.js?v=disaster-relief-1';
-import {STATIONS} from './rail.js?v=disaster-relief-1';
-import {roadNeighbors} from './transport.js?v=disaster-relief-1';
-import {SERVICES} from './civic.js?v=disaster-relief-1';
-import {ZONES,selection,planBuild} from './engine.js?v=disaster-relief-1';
+import {drawCityCivic} from './civic-models.js?v=civic-models-1';
+import {drawBridgeStructure} from './bridge-structures.js?v=civic-models-1';
+import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=civic-models-1';
+import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=civic-models-1';
+import {stationAreas} from './service-areas.js?v=civic-models-1';
+import {cityGrid,visibleTileBounds} from './city-grid.js?v=civic-models-1';
+import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=civic-models-1';
+import {designForTile,drawDesignedBuilding} from './building-designs.js?v=civic-models-1';
+import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=civic-models-1';
+import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=civic-models-1';
+import {inScenarioArea} from './scenario-area.js?v=civic-models-1';
+import {railVehicles} from './rail-visuals.js?v=civic-models-1';
+import {zonedSprite} from './building-art.js?v=civic-models-1';
+import {trafficVehicles} from './traffic-visuals.js?v=civic-models-1';
+import {tunnelAt} from './tunnels.js?v=civic-models-1';
+import {STRUCTURES} from './structures.js?v=civic-models-1';
+import {LANDSCAPE} from './landscape.js?v=civic-models-1';
+import {POWER_PLANTS} from './power.js?v=civic-models-1';
+import {WATER_STRUCTURES} from './utilities.js?v=civic-models-1';
+import {FACILITIES} from './facilities.js?v=civic-models-1';
+import {rampCrossings} from './highway.js?v=civic-models-1';
+import {STATIONS} from './rail.js?v=civic-models-1';
+import {roadNeighbors} from './transport.js?v=civic-models-1';
+import {SERVICES} from './civic.js?v=civic-models-1';
+import {ZONES,selection,planBuild} from './engine.js?v=civic-models-1';
 const COLORS={residential:'#81b96b',commercial:'#79baca',industrial:'#d9ba6b'};
 export class CityRenderer{
  constructor(canvas,getCity){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.rotation=0;this.layer='city';this.tool='road';this.density=1;this.hover=null;this.drag=null;this.sprites=[];this.assetReady=false;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');this.time=0;this.vehicleTime=0;this.previousFrame=null;this.dirty=true;this.w=0;this.h=0;this.resize=new ResizeObserver(()=>{const first=this.w===0;this.w=canvas.clientWidth;this.h=canvas.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);canvas.width=this.w*this.dpr;canvas.height=this.h*this.dpr;if(first)this.center();this.dirty=true;});this.resize.observe(canvas);this.loadSprites();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);}
@@ -113,7 +114,7 @@ export class CityRenderer{
  else if(['waterTower','desalination','waterTreatment'].includes(t.type))this.sprite(29+['waterTower','desalination','waterTreatment'].indexOf(t.type),p.x,p.y+u,u*1.95,this.layer==='water'?.8:fade);
  else if(['recycling','incinerator','wasteEnergy'].includes(t.type))this.sprite(32+['recycling','incinerator','wasteEnergy'].indexOf(t.type),p.x,p.y+u,u*1.95,fade);
  else if(t.type==='landfill'){if(t.garbage>0)this.sprite(12,p.x,p.y+u,u*1.9,this.layer==='garbage'?1:fade);if(this.layer==='garbage'){c.fillStyle='#f8e2ac';c.font='11px sans-serif';c.textAlign='center';c.fillText(Math.round(t.garbage/2)+'%',p.x,p.y);}}
- else if(SERVICES[t.type]){this.sprite(13+Object.keys(SERVICES).indexOf(t.type),p.x,p.y+u,u*1.95,fade);if(!t.serviceActive&&this.layer==='city'){c.fillStyle='#ffb8a4';c.font='bold 12px sans-serif';c.textAlign='center';c.fillText('!',p.x,p.y-u*.9);}}
+ else if(SERVICES[t.type]){drawCityCivic(c,t.type,this.rotation,p.x,p.y+u/2,u*2.1,fade);if(!t.serviceActive&&this.layer==='city'){c.fillStyle='#ffb8a4';c.font='bold 12px sans-serif';c.textAlign='center';c.fillText('!',p.x,p.y-u*.9);}}
  else if(STATIONS[t.type]){this.sprite(22+Object.keys(STATIONS).indexOf(t.type),p.x,p.y+u,u*1.95,['rail','subway'].includes(this.layer)?1:fade);if(['rail','subway'].includes(this.layer)){c.fillStyle=t.stationActive?'#d8fda8':'#ffb8a4';c.font='bold 12px sans-serif';c.textAlign='center';c.fillText(t.stationRiders.toFixed(1),p.x,p.y-u);}}
  else if(t.type==='busStop'){this.sprite(21,p.x,p.y+u,u*1.95,this.layer==='transit'?1:fade);if(this.layer==='transit'){c.fillStyle=t.stopActive?'#d6ffb5':'#ffb8a4';c.font='bold 12px sans-serif';c.textAlign='center';c.fillText(t.busRiders.toFixed(1),p.x,p.y-u);}}
  else if(t.type==='park')this.sprite(10,p.x,p.y+u,u*1.9,fade);
