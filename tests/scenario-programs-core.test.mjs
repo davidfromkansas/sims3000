@@ -1,0 +1,19 @@
+import assert from 'node:assert/strict';
+import {compileScenarioPrograms,startScenarioProgram,nextScenarioProgramAction,validateScenarioProgramCursor} from '../dist/scenario-programs.js';
+import {validateEventDefinitions,validateEventCondition,eventConditionMet} from '../dist/scenario-events.js';
+import {createCity} from '../dist/engine.js';
+const validators={validateAction(action){const {month,repeatCount,repeatEvery,condition,...rest}=validateEventDefinitions([{...action,month:1}],2)[0];return rest;},validateCondition:validateEventCondition};
+const say=message=>({kind:'action',action:{type:'announcement',message}}),call=routine=>({kind:'call',routine});
+const input=[{name:'Monthly council',steps:[say('Opening'),{kind:'if',condition:{metric:'population',target:100,operator:'gte'},then:[call(1),say('Met target')],else:[say('Build more homes')]},say('Closing')]},{name:'Award',steps:[say('Grant approved'),{kind:'action',action:{type:'popup',message:'Review the grant'}}]}];
+const snapshot=JSON.stringify(input),programs=compileScenarioPrograms(input,validators);assert.equal(JSON.stringify(input),snapshot);const city=createCity();
+function collect(pop){city.stats.population=pop;let cursor=startScenarioProgram(programs,0);const actions=[];for(let i=0;i<20&&!cursor.done;i++){const action=nextScenarioProgramAction(programs,cursor,condition=>eventConditionMet(city,condition));if(action)actions.push(action.message);cursor=validateScenarioProgramCursor(JSON.parse(JSON.stringify(cursor)),programs);}assert.ok(cursor.done);return actions;}
+assert.deepEqual(collect(101),['Opening','Grant approved','Review the grant','Met target','Closing']);assert.deepEqual(collect(0),['Opening','Build more homes','Closing']);
+// A taken branch stays selected while a popup is pending, including save/load.
+city.stats.population=101;let cursor=startScenarioProgram(programs,0);nextScenarioProgramAction(programs,cursor,c=>eventConditionMet(city,c));nextScenarioProgramAction(programs,cursor,c=>eventConditionMet(city,c));const popup=nextScenarioProgramAction(programs,cursor,c=>eventConditionMet(city,c));assert.equal(popup.type,'popup');assert.equal(cursor.stack.length,2);cursor=validateScenarioProgramCursor(JSON.parse(JSON.stringify(cursor)),programs);city.stats.population=0;assert.equal(nextScenarioProgramAction(programs,cursor,c=>eventConditionMet(city,c)).message,'Met target');assert.equal(nextScenarioProgramAction(programs,cursor,c=>eventConditionMet(city,c)).message,'Closing');assert.equal(nextScenarioProgramAction(programs,cursor,()=>false),null);assert.equal(cursor.done,true);
+for(const routines of [[{name:'Self',steps:[call(0)]}],[{name:'A',steps:[call(1)]},{name:'B',steps:[call(0)]}],[{name:'Missing',steps:[call(1)]}],[{name:'Bad',steps:[{kind:'source',text:'alert(1)'}]}]])assert.throws(()=>compileScenarioPrograms(routines,validators));
+const expansive=Array.from({length:8},(_,i)=>({name:'Routine '+i,steps:i===7?[say('End')]:[call(i+1),call(i+1),call(i+1)]}));assert.throws(()=>compileScenarioPrograms(expansive,validators),/1024/);
+assert.throws(()=>compileScenarioPrograms([{name:'Too large',steps:Array.from({length:129},()=>say('x'))}],validators),/128/);
+assert.throws(()=>validateScenarioProgramCursor({entry:0,steps:2,done:false,stack:[{routine:0,pc:1},{routine:1,pc:0}]},programs),/return address/);
+assert.throws(()=>validateScenarioProgramCursor({...startScenarioProgram(programs,0),done:true},programs));
+const empty=compileScenarioPrograms([{name:'Empty',steps:[]}],validators),emptyCursor=startScenarioProgram(empty,0);assert.equal(nextScenarioProgramAction(empty,emptyCursor,()=>false),null);assert.ok(emptyCursor.done);
+console.log('PASS: bounded structured If/Else and subroutine compilation, real game conditions/actions, ordered calls, persistent popup continuation, branch stability, recursion/expansion rejection and invalid cursor rejection.');

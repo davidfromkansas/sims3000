@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 161 regression suites, save schema 109. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 168 regression suites, save schema 110. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -674,3 +674,10 @@ Wind turbines now indicate running scenery through a constant, eight-second roto
 Source checkpoint: 161 regression suites, schema 109. Vacant serviced medium/dense zoning can form 2×2 buildings; dense zoning first tries 3×3. Every member shares growth, abandonment, history and destruction, while occupancy and utility demand remain distributed across tiles. Any member opens the shared building query or whole-lot demolition. Scenario building counts use the northwest root; population remains the sum of occupants.
 
 The manual requires replacement tile-size matching (pp.73–74) and Building Architect tile-size selection (p.140). Style libraries and portable v4 designs now enforce this, preserving legacy 1×1 files. Original procedural models cover larger footprints in four views with constant physical floor height. Lot-selection probabilities, capacity tuning, footprint catalog and artwork are reconstruction choices rather than recovered original algorithms. See BUILDING-LOTS-MILESTONE.md for validation; full original fidelity and browser acceptance remain incomplete. Publication beyond v150 is still pending approval.
+
+
+## Branching scenario routines
+
+Source checkpoint:168 suites, schema110. Form-authored routines now support ordered action blocks, nested If/Else, reusable nonrecursive subroutine calls and repeated scheduled entries. Conditions read city state when reached; chosen paths survive popup/emergency suspension. Actual primitive actions share dispatch with existing events. Program history, city-file and named saves, worker execution, goal provenance and starting-city replay are integrated.
+
+Manual pp.188–189 specify If/If Else action blocks, Subroutine and Repeat Regular. Runtime bounds, completion-relative repeat timing and the structured browser format are reconstruction choices. Binary original scenario files, unrestricted recursion and the full original instruction catalog remain unsupported. The routine popup form supports advisor presentation; custom portrait files can be preserved from imported routines but new file selection uses the existing standalone popup editor. Browser acceptance and Sites publication after v150 remain pending. See SCENARIO-PROGRAMS-MILESTONE.md.

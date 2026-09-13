@@ -8,7 +8,7 @@ const controls=new Map();
 function element(id,attrs='') {
  let value=attrs.match(/value="([^"]*)"/)?.[1]||'';
  const label={hidden:false};
- return {id,hidden:false,disabled:/\sdisabled(?:\s|$)/.test(attrs),checked:/\schecked(?:\s|$)/.test(attrs),
+ return {children:[],append(...nodes){this.children.push(...nodes);},replaceChildren(...nodes){this.children=nodes;},setAttribute(){},id,hidden:false,disabled:/\sdisabled(?:\s|$)/.test(attrs),checked:/\schecked(?:\s|$)/.test(attrs),
  get value(){return value;},set value(v){value=String(v);},textContent:'',files:[],closest:()=>label,
  set outerHTML(html){parse(html);},set innerHTML(html){const options=[...html.matchAll(/<option\b([^>]*)>/g)];if(options.length)this.value=(options.find(m=>/selected/.test(m[1]))||options[0])[1].match(/value="([^"]*)"/)?.[1]||'';}};
 }
@@ -17,7 +17,7 @@ function parse(html){
  for(const m of html.matchAll(/<select\b[^>]*id="([^"]+)"[^>]*>([\s\S]*?)<\/select>/g))controls.get(m[1]).innerHTML=m[2];
 }
 const $=id=>{const e=controls.get(id.replace(/^#/,''));assert.ok(e,'Missing rendered control '+id);return e;};
-globalThis.document={querySelector:$,getElementById:$,querySelectorAll:selector=>[...controls.values()].filter(e=>[...selector.matchAll(/\[id\^=([^\]]+)\]/g)].some(m=>e.id.startsWith(m[1])))};
+globalThis.document={createElement:tag=>({...element(''),tagName:tag}),querySelector:$,getElementById:$,querySelectorAll:selector=>[...controls.values()].filter(e=>[...selector.matchAll(/\[id\^=([^\]]+)\]/g)].some(m=>e.id.startsWith(m[1])))};
 const city=createCity('Activation editor',false);let saved=0;
 showCustomScenarioEditor({city:()=>city,dialog:(_,html)=>parse(html),exportCity(){},save(){saved++;},update(){},beginCustom(){}},()=>{});
 const change=(id,value)=>{$(id).value=value;$(id).onchange();};
