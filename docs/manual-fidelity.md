@@ -386,3 +386,5 @@ Water continuity checkpoint: previously supplied buildings retain their water re
 Dense routing checkpoint: filled workplaces leave the route destination index immediately, reducing the measured dense 256-map month from 1.75 s to 1.12 s while preserving exact city outcomes. See [available job targets](AVAILABLE-JOB-TARGETS-MILESTONE.md). Source only; publication pending.
 
 Waste artwork checkpoint: recycling, incineration and waste-to-energy now use distinct four-view models, with throughput-driven smoke that respects pause and reduced motion. See [waste facility artwork](WASTE-FACILITY-MODELS-MILESTONE.md). Source only; publication pending.
+
+Employment trends checkpoint: compare actual filled Commerce and Industry jobs with workforce unemployment over time. See [employment trends](EMPLOYMENT-TRENDS-MILESTONE.md). Source only; publication pending.
