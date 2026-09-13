@@ -3,7 +3,7 @@ import {mountScenarioProgramEditor} from '../dist/scenario-program-editor.js';
 import {createCity,tick} from '../dist/engine.js';
 import {attachCustomScenario} from '../dist/custom-scenarios.js';
 import {pendingScenarioPopup} from '../dist/scenario-popups.js';
-class Node {constructor(tag){this.tag=tag;this.children=[];this.textContent='';this.value='';}append(...nodes){for(const n of nodes){n.parent=this;this.children.push(n);}}replaceChildren(...nodes){this.children=[];this.append(...nodes);}setAttribute(){} }
+class Node {constructor(tag){this.tag=tag;if(tag==='textarea')Object.defineProperty(this,'type',{get:()=> 'textarea'});this.children=[];this.textContent='';this.value='';}append(...nodes){for(const n of nodes){n.parent=this;this.children.push(n);}}replaceChildren(...nodes){this.children=[];this.append(...nodes);}setAttribute(){} }
 globalThis.document={createElement:tag=>new Node(tag)};const root=new Node('div'),walk=n=>[n,...n.children.flatMap(walk)];
 const box=title=>walk(root).find(n=>n.tag==='legend'&&n.textContent===title)?.parent;
 const click=(scope,label)=>{const b=scope.children.find(n=>n.tag==='button'&&n.textContent===label);assert.ok(b,label);assert.ok(!b.disabled,label+' enabled');b.onclick();};

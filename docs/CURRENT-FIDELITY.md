@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 223 regression suites, save schema 120. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 228 regression suites, save schema 122. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -841,3 +841,5 @@ Building-detail checkpoint: place independent windows, doors, vents and ledges a
 Freehand construction checkpoint: build and erase continuous bent strokes across all three layered edit planes, with matching previews and atomic undo/redo. See [freehand construction](FREEHAND-CONSTRUCTION-MILESTONE.md). All 227 suites passed; source only, publication pending.
 
 Edit-plane navigation checkpoint: inspect cross-sections using a synchronized slider, previous/next controls, wheel input and Page Up/Down, canceling unfinished construction when moving slices. See [plane navigation](BUILDING-PLANE-NAVIGATION-MILESTONE.md). All 227 suites passed; source only, publication pending.
+
+Script editing checkpoint: cut/copy/paste complete structured steps across routines, with independent copies, reference preservation and bounded insertion. Message textareas now render correctly in browsers. See [script clipboard](SCENARIO-STEP-CLIPBOARD-MILESTONE.md). Full suite and targeted final-fix validation documented there; source only, publication pending.

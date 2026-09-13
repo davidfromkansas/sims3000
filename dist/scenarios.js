@@ -1,13 +1,13 @@
-import {validateTextOverrides} from './scenario-dialog-text.js?v=plane-navigation-1';
-import {validateProgramInvocations} from './scenario-program-invocations.js?v=plane-navigation-1';
-import {validateGoalMarks} from './scenario-goal-marks.js?v=plane-navigation-1';
-import {validateGoalActivations} from './scenario-goal-activation.js?v=plane-navigation-1';
-import {validateScenarioStart} from './scenario-replay.js?v=plane-navigation-1';
-import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=plane-navigation-1';
-import {validateVariableValues} from './scenario-variables.js?v=plane-navigation-1';
-import {businessRoots} from './business.js?v=plane-navigation-1';
-import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=plane-navigation-1';
-import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=plane-navigation-1';
+import {validateTextOverrides} from './scenario-dialog-text.js?v=script-clipboard-2';
+import {validateProgramInvocations} from './scenario-program-invocations.js?v=script-clipboard-2';
+import {validateGoalMarks} from './scenario-goal-marks.js?v=script-clipboard-2';
+import {validateGoalActivations} from './scenario-goal-activation.js?v=script-clipboard-2';
+import {validateScenarioStart} from './scenario-replay.js?v=script-clipboard-2';
+import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=script-clipboard-2';
+import {validateVariableValues} from './scenario-variables.js?v=script-clipboard-2';
+import {businessRoots} from './business.js?v=script-clipboard-2';
+import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=script-clipboard-2';
+import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=script-clipboard-2';
 // Original challenges using the manual's scenario/status model; not shipped SC3KU scenarios.
 export const SCENARIOS={
  waterRecovery:{title:'Water under pressure',months:24,description:'Restore a broken water network and sustain six months of full water service, at least 224 residents and a §5,000 reserve.',briefing:'Your town starts with 224 residents and §10,000. Its freshwater pumping station still works, but the trunk pipe is broken at map coordinates 25, 17. An aging emergency water tower cannot supply the entire lower town. Open Utilities to find shortages and switch to Water view to inspect the break. Reconnect the trunk pipe, or provide another viable supply. Keep every lot’s water demand served, preserve at least 224 residents, and hold §5,000 for six consecutive monthly checks within two years. Previously watered buildings can abandon if service is not restored promptly. Landfill collection is prepared; random disasters start off.'},
