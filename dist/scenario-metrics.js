@@ -1,9 +1,10 @@
-import {tileIndex} from './city-grid.js?v=toolbar-view-1';
-import {STRUCTURE_METRICS} from './scenario-structures.js?v=toolbar-view-1';
-import {inScenarioArea} from './scenario-area.js?v=toolbar-view-1';
-import {ORDINANCES} from './ordinances.js?v=toolbar-view-1';
-import {LANDMARKS,landmarkRoots} from './landmarks.js?v=toolbar-view-1';
-import {businessRoots} from './business.js?v=toolbar-view-1';
+import {CALENDAR_MONTHS,calendarMonthIndex} from './scenario-calendar.js?v=scenario-calendar-1';
+import {tileIndex} from './city-grid.js?v=scenario-calendar-1';
+import {STRUCTURE_METRICS} from './scenario-structures.js?v=scenario-calendar-1';
+import {inScenarioArea} from './scenario-area.js?v=scenario-calendar-1';
+import {ORDINANCES} from './ordinances.js?v=scenario-calendar-1';
+import {LANDMARKS,landmarkRoots} from './landmarks.js?v=scenario-calendar-1';
+import {businessRoots} from './business.js?v=scenario-calendar-1';
 export const CUSTOM_METRICS={population:{name:'Population',direction:'at least',max:1000000,initial:400,read:c=>c.stats.population},funds:{name:'Treasury',direction:'at least',min:-1000000000,max:1000000000,initial:50000,read:c=>c.funds},education:{name:'Education',direction:'at least',max:100,initial:60,read:c=>c.civic.education},crime:{name:'Crime',direction:'at most',max:100,initial:20,read:c=>c.stats.averageCrime},pollution:{name:'Air pollution',direction:'at most',max:100,initial:10,read:c=>c.stats.averagePollution},roadCondition:{name:'Road condition',direction:'at least',max:100,initial:80,read:c=>c.finance.roadCondition},aura:{name:'Resident wellbeing',direction:'at least',max:100,initial:60,read:c=>c.stats.aura},lifeExpectancy:{name:'Life expectancy',direction:'at least',min:45,max:90,initial:70,read:c=>c.civic.lifeExpectancy}};
 
 const homesWithout=(c,utility,area)=>c.tiles.filter(t=>inScenarioArea(t,area)&&t.type==='residential'&&t.level>0&&!t.rubble&&!t[utility]).length;
@@ -50,3 +51,9 @@ for(let i=0;i<4;i++)CUSTOM_METRICS[`variable${i+1}`]={name:`Scenario variable ${
 CUSTOM_METRICS.challengeMonths={name:'Elapsed challenge months',direction:'at most',min:0,max:1200,integer:true,initial:12,read:c=>c.scenario?c.month-c.scenario.startMonth:0};
 
 export const metricLimit=(metric,size=48)=>metric.max===2304?size*size:metric===CUSTOM_METRICS.farms?Math.floor(size*size/9):metric.max;
+
+Object.assign(CUSTOM_METRICS,{
+ date:{name:'Calendar date',direction:'at least',integer:true,date:true,min:1900*12,max:2050*12+120000,initial:1950*12,read:calendarMonthIndex},
+ year:{name:'Calendar year',direction:'at least',integer:true,format:'year',min:1900,max:12050,initial:2000,read:c=>Math.floor(calendarMonthIndex(c)/12)},
+ monthOfYear:{name:'Calendar month',direction:'equals',integer:true,format:'month',states:CALENDAR_MONTHS,min:0,max:11,initial:0,read:c=>calendarMonthIndex(c)%12}
+});

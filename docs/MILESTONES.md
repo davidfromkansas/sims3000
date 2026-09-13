@@ -587,3 +587,7 @@ Open City view layers, hide zoned or other buildings, and inspect the ground and
 Press H or choose Hide to expand the city across the game area. Pan, zoom, use construction hotkeys and pause with Space; restore the interface with Show controls, H or Escape. Hiding cancels an unfinished drag. Feedback target: can you comfortably play and inspect the city with the interface hidden, and is returning to the toolkit effortless?
 
 The [ and ] keys rotate the city counterclockwise and clockwise, including with toolbars hidden and during background monthly updates. Modified, editing and repeated key presses are guarded.
+
+### Author calendar-based challenges (source checkpoint; publication pending)
+
+Choose Calendar date for a goal or event/rank condition, or Calendar month for a seasonal rule. Use {date}, {year} and {monthOfYear} in messages; copy dates to variables when calculating elapsed months. Save and replay a challenge that crosses New Year. Feedback target: can you schedule dated objectives and understand which game month will trigger each condition?
