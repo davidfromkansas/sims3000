@@ -3,8 +3,8 @@ import {createCity} from '../dist/engine.js';
 import {serializeCity} from '../dist/save.js';
 import {showCityAppearance} from '../dist/city-appearance-ui.js';
 import {treeCanvas} from '../dist/tree-models.js';
-let controls,saved=0,closed=0,canvasCount=0;
-const ctx=new Proxy({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)})},{get:(o,k)=>o[k]??(()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
+let controls,saved=0,closed=0,canvasCount=0;const previewPoints=[];
+const ctx=new Proxy({moveTo:(x,y)=>previewPoints.push([x,y]),lineTo:(x,y)=>previewPoints.push([x,y]),createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)})},{get:(o,k)=>o[k]??(()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
 const dialog=(_,body)=>{controls=new Map([...body.matchAll(/id="([^"]+)"/g)].map(m=>[m[1],{value:'',textContent:'',getContext:()=>ctx}]));for(const m of body.matchAll(/<select[^>]*id="([^"]+)"[^>]*>([\s\S]*?)<\/select>/g)){const options=[...m[2].matchAll(/<option\b([^>]*)>/g)],selected=options.find(o=>/selected/.test(o[1]))||options[0];controls.get(m[1]).value=selected[1].match(/value="([^"]+)"/)[1];}};
 globalThis.document={getElementById:id=>controls.get(id),createElement:()=>{canvasCount++;return{getContext:()=>ctx};}};
 const city=createCity(),before=serializeCity(city),ui={city,renderer:{rotation:0,sprites:[]},dialog,apply:()=>saved++,close:()=>closed++},get=id=>controls.get('appearance'+id);
@@ -12,4 +12,5 @@ showCityAppearance(ui);get('Landscape').value='lush';get('Trees').value='palm';g
 showCityAppearance(ui);get('Landscape').value='alpine';get('Trees').value='conifer';get('Trees').onchange();get('Apply').onclick();assert.equal(saved,1);assert.deepEqual(city.appearance,{landscape:'alpine',trees:'conifer'});get('Default').onclick();assert.deepEqual(city.appearance,{landscape:'alpine',trees:'conifer'},'default remains draft');get('Apply').onclick();assert.equal(saved,2);assert.deepEqual(city.appearance,{landscape:'classic',trees:'classic'});
 get('Trees').value='unknown';get('Apply').onclick();assert.equal(saved,2);assert.match(get('Status').textContent,/valid/);
 const a=treeCanvas('palm',1,0),count=canvasCount;assert.equal(treeCanvas('palm',1,0),a);assert.equal(canvasCount,count,'repeated tree views reuse bounded cached images');assert.equal(a.width,256);assert.equal(a.height,256);
+assert.ok(previewPoints.length>0&&previewPoints.every(([x,y])=>x>=0&&x<=540&&y>=0&&y<=270),'shared landscape preview fits its canvas without clipping');
 console.log('PASS: actual appearance controls preview, rotate, cancel, apply, reset as draft and reject invalid choices; tree views reuse 256px cached sprites.');
