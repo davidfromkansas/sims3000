@@ -1,5 +1,5 @@
-import {recordHazard} from './emergency-order.js?v=local-city-ambience-1';
-import {beginEmergencySession} from './emergency-session.js?v=local-city-ambience-1';
+import {recordHazard} from './emergency-order.js?v=station-inspection-1';
+import {beginEmergencySession} from './emergency-session.js?v=station-inspection-1';
 export const freshWhirlpool=()=>({randomWhirlpools:false,whirlpool:null,whirlpools:0});
 export function startWhirlpool(c,x,y){const n=Math.sqrt(c.tiles.length),e=c.emergency;if(e.whirlpool)return{ok:false,error:'This disaster type is already active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n||c.tiles[y*n+x].terrain!=='water')return{ok:false,error:'Choose a water tile for the whirlpool.'};beginEmergencySession(e);recordHazard(e,'whirlpool');Object.assign(e,{whirlpool:{x,y,age:0}});e.whirlpools++;return{ok:true};}
 // Four expanding pulses; only connected surface water and its immediate shore are exposed.

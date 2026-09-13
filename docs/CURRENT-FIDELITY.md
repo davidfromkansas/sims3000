@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 143 regression suites, save schema 102. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 144 regression suites, save schema 102. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -605,3 +605,11 @@ Ambience fades to silence while city time is paused, a dialog is open, a data la
 Validation: 143 suites, including the actual camera projection/picking with nearby and distant sources, stereo reversal under rotation, zoom/operating gates, resource cleanup, asynchronous mute, preference persistence and actual settings handlers. Browser listening/subjective quality remain pending. Feedback exercise once published: enable ambient sound, close Sound settings, run the city and zoom into a busy street, an industrial district and a quiet waterfront.
 
 Publication note: nested scenario conditions (PR #44) and this ambient milestone are local/GitHub progress beyond deployed version 150. Automatic approval review rejected Sites source export despite verified owner-private access and a matching payload. No further Sites export will be attempted until explicit authorization arrives.
+
+
+## Station network inspection checkpoint — publication pending
+Train stations, subway stations and rail–subway connections now have detailed inspections built from the same connected track groups used by passenger allocation. The report lists connected stations, operating state, passenger activity, rail/subway tile counts, nearby occupied homes/residents and developed workplaces/job places. It distinguishes missing tracks, no destination station, absent homes/jobs at the other end, zero funding, poor equipment condition and strikes. Links open rail/subway maps or transit funding.
+
+This supports the manual pp.94–96 requirement for convenient public transit near both homes and workplaces. The existing three-tile square station access range is still reconstruction calibration. Nearby jobs can already be filled and overlapping catchments are not additive; station activity includes boarding/alighting/transfers, not unique citywide riders. Connected tracks alone do not guarantee a journey. No new routing or fare rules are claimed.
+
+Derived network summaries are computed during normal simulation and only retained for components containing stations. Inspecting reads these summaries and never reruns the mutating rail allocator. Save schema stays 102; summaries and station group IDs are recomputed on load. Validation: 144 suites, including mixed rail/subway transfers, broken/repaired destination routes, funding/condition/strike reasons, exact passenger activity, read-only inspection, saved restoration and actual inspection-map/funding handlers. Browser acceptance remains pending. Feedback exercise once published: connect homes and jobs through a transfer, inspect their stations, remove a subway segment and use the report to diagnose the lost destination.
