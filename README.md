@@ -291,3 +291,5 @@ Utility planning checkpoint: compare power/water usage, available supply, demand
 Water recovery challenge: restore a broken utility connection and sustain six months of supply, population and cash stability. See [Water under pressure](docs/WATER-RECOVERY-SCENARIO-MILESTONE.md). Source only; publication pending.
 
 Scenario inspection checkpoint: preview actual prepared-city layouts, starting figures and utility/rail service before loading a challenge. See [starting-town previews](docs/SCENARIO-START-PREVIEW-MILESTONE.md). Source only; publication pending.
+
+Camera inspection checkpoint: rotate both directions while keeping the panned neighborhood in view. See [anchored camera rotation](docs/CAMERA-ROTATION-MILESTONE.md). Source only; publication pending.
