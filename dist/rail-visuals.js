@@ -9,8 +9,8 @@ export function railPaths(c){
  for(const [i,links]of adj)for(const j of links)trace(i,j);
  return paths;
 }
-export function railVehicles(c,seconds,limit=72){
- const out=[];for(const path of railPaths(c)){const length=path.length-1,run=(length-.6)/.7,dwell=1.2,cycle=2*(run+dwell),phase=(Math.max(0,seconds)+path[0]*.137)%cycle,back=phase>=run+dwell,part=back?phase-run-dwell:phase,distance=.3+Math.min(run,part)*.7,center=back?length-distance:distance,direction=back?-1:1;
-  for(let coach=0;coach<3;coach++){if(out.length>=limit)return out;const position=Math.max(0,Math.min(length,center+(coach-1)*.27)),segment=Math.min(length-1,Math.floor(position)),f=position-segment,a=c.tiles[path[segment]],b=c.tiles[path[segment+1]];out.push({x:a.x+(b.x-a.x)*f,y:a.y+(b.y-a.y)*f,dx:(b.x-a.x)*direction,dy:(b.y-a.y)*direction,tile:path[f<.5?segment:segment+1],cab:coach===(back?0:2)});}
+export function railVehicles(c,seconds,limit=72,paths=railPaths(c),contains=null){
+ const out=[];for(const path of paths){const length=path.length-1,run=(length-.6)/.7,dwell=1.2,cycle=2*(run+dwell),phase=(Math.max(0,seconds)+path[0]*.137)%cycle,back=phase>=run+dwell,part=back?phase-run-dwell:phase,distance=.3+Math.min(run,part)*.7,center=back?length-distance:distance,direction=back?-1:1;
+  for(let coach=0;coach<3;coach++){if(out.length>=limit)return out;const position=Math.max(0,Math.min(length,center+(coach-1)*.27)),segment=Math.min(length-1,Math.floor(position)),f=position-segment,a=c.tiles[path[segment]],b=c.tiles[path[segment+1]];const vehicle={x:a.x+(b.x-a.x)*f,y:a.y+(b.y-a.y)*f,dx:(b.x-a.x)*direction,dy:(b.y-a.y)*direction,tile:path[f<.5?segment:segment+1],cab:coach===(back?0:2)};if(!contains||contains(vehicle.x,vehicle.y))out.push(vehicle);}
  }return out;
 }
