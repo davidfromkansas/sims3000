@@ -735,3 +735,5 @@ Employment trends checkpoint: compare actual filled Commerce and Industry jobs w
 Utility planning checkpoint: compare power/water usage, available supply, demand and actual unmet demand over time, with report shortcuts. See [utility usage trends](UTILITY-USAGE-TRENDS-MILESTONE.md). Source only; publication pending.
 
 Water recovery challenge: restore a broken utility connection and sustain six months of supply, population and cash stability. See [Water under pressure](WATER-RECOVERY-SCENARIO-MILESTONE.md). Source only; publication pending.
+
+Scenario inspection checkpoint: preview actual prepared-city layouts, starting figures and utility/rail service before loading a challenge. See [starting-town previews](SCENARIO-START-PREVIEW-MILESTONE.md). Source only; publication pending.
