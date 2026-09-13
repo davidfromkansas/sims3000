@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 202 regression suites, save schema 119. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 203 regression suites, save schema 119. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -795,3 +795,5 @@ Utility planning checkpoint: compare power/water usage, available supply, demand
 Water recovery challenge: restore a broken utility connection and sustain six months of supply, population and cash stability. See [Water under pressure](WATER-RECOVERY-SCENARIO-MILESTONE.md). Source only; publication pending.
 
 Scenario inspection checkpoint: preview actual prepared-city layouts, starting figures and utility/rail service before loading a challenge. See [starting-town previews](SCENARIO-START-PREVIEW-MILESTONE.md). Source only; publication pending.
+
+Camera inspection checkpoint: rotate both directions while keeping the panned neighborhood in view. See [anchored camera rotation](CAMERA-ROTATION-MILESTONE.md). Source only; publication pending.
