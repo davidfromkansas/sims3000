@@ -281,3 +281,5 @@ Rail landfill checkpoint: garbage can reach remote landfill sidings through surf
 Water continuity checkpoint: previously supplied buildings retain their water requirement through shrinkage and abandonment, with saved interruption progress and repair/reoccupation behavior. See [water-service continuity](docs/WATER-SERVICE-CONTINUITY-MILESTONE.md). Source only; publication pending.
 
 Dense routing checkpoint: filled workplaces leave the route destination index immediately, reducing the measured dense 256-map month from 1.75 s to 1.12 s while preserving exact city outcomes. See [available job targets](docs/AVAILABLE-JOB-TARGETS-MILESTONE.md). Source only; publication pending.
+
+Waste artwork checkpoint: recycling, incineration and waste-to-energy now use distinct four-view models, with throughput-driven smoke that respects pause and reduced motion. See [waste facility artwork](docs/WASTE-FACILITY-MODELS-MILESTONE.md). Source only; publication pending.
