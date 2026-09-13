@@ -1,0 +1,28 @@
+import assert from 'node:assert/strict';
+import {createCity,tick,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {attachCustomScenario} from '../dist/custom-scenarios.js';
+import {validateEventCondition,eventConditionMet,eventConditionLabel} from '../dist/scenario-events.js';
+import {restartCustomScenario} from '../dist/scenario-replay.js';
+import {parseConditionLogic} from '../dist/scenario-condition-logic.js';
+const row=(metric,target,operator='gte')=>({metric,target,operator});
+const rows=[row('variable1',2),row('funds',0),row('population',1),null],tree=parseConditionLogic('1 AND (2 OR 3)',rows);
+assert.deepEqual(tree,{match:'all',conditions:[rows[0],{match:'any',conditions:rows.slice(1,3)}]});
+const c=createCity('Nested rules',false);
+attachCustomScenario(c,{title:'Choose a route to success',months:12,completionMode:'scripted',eventMode:'together',objectives:[{metric:'funds',target:0}],events:[{type:'variable',month:1,variable:0,operation:'add',value:1,repeatEvery:1,repeatCount:3},{type:'announcement',month:1,message:'Eligible at {variable1}.',repeatEvery:1,repeatCount:2,condition:tree},{type:'ending',month:4,outcome:'won',message:'Complete.',condition:{match:'all',conditions:[row('variable1',3),{match:'any',conditions:[row('funds',0),row('population',1)]}]}}],ranks:[{name:'Nested achiever',outcome:'won',message:'Earned through nested conditions.',condition:{match:'all',conditions:[row('goalStatus1',2,'eq'),{match:'any',conditions:[row('variable1',3),row('population',100)]}]}}]});
+for(const counter of [0,2])for(const funds of [-1,0])for(const population of [0,1]){c.scenario.variables[0]=counter;c.funds=funds;c.stats.population=population;assert.equal(eventConditionMet(c,tree),counter>=2&&(funds>=0||population>=1));}
+const precedence=parseConditionLogic('1 OR 2 AND 3',rows);assert.equal(precedence.match,'any');assert.equal(precedence.conditions[1].match,'all');assert.notDeepEqual(precedence,parseConditionLogic('(1 OR 2) AND 3',rows));
+assert.match(eventConditionLabel(tree),/ AND \(.* OR .*\)/);
+c.scenario.variables[0]=0;c.funds=50000;c.stats.population=0;tick(c);assert.equal(c.scenario.events[1].runs,0);tick(c);assert.equal(c.scenario.events[1].runs,1);
+const restored=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(restored.scenario.definition.events[1].condition,tree);
+for(let i=0;i<2;i++){tick(c);tick(restored);}assert.equal(c.scenario.status,'won');assert.equal(c.scenario.events[1].runs,2);assert.equal(c.scenario.rank,'Nested achiever');assert.deepEqual(restored.scenario,c.scenario);
+const replay=restartCustomScenario(c);for(let i=0;i<4;i++)tick(replay);assert.equal(replay.scenario.rank,c.scenario.rank);assert.deepEqual(replay.scenario.events,c.scenario.events,'replay uses the same nested rules');
+const area={x:20,y:20,radius:2},local={match:'all',conditions:[row('funds',0),{match:'any',conditions:[{...row('farms',0),area},row('population',1)]}]};
+assert.deepEqual(validateEventCondition(local).conditions[1].conditions[0].area,area);
+assert.equal(parseConditionLogic(' ',rows),null);assert.deepEqual(parseConditionLogic('1 AND 1',[rows[0]]),{match:'all',conditions:[rows[0],rows[0]]});
+for(const formula of ['1 AND','1 OR (2','1 AND ()','1 2','1 AND 4','1 XOR 2','5','1 AND (2 OR 3))','1','1'.repeat(201)])assert.throws(()=>parseConditionLogic(formula,rows));
+const wrap=value=>({match:'all',conditions:[value]});let deep=rows[0];for(let i=0;i<9;i++)deep=wrap(deep);assert.throws(()=>validateEventCondition(deep),/eight/);const cyclic=wrap(null);cyclic.conditions[0]=cyclic;assert.throws(()=>validateEventCondition(cyclic),/circular/);
+for(const bad of [wrap(null),{match:'any',conditions:[]},{match:'all',conditions:Array(17).fill(rows[0])},{match:'all',conditions:Array(4).fill({match:'any',conditions:Array(5).fill(rows[0])})},{match:'all',conditions:new Array(2)}])assert.throws(()=>validateEventCondition(bad));
+const bad=JSON.parse(serializeCity(c));bad.scenario.definition.ranks[0].condition.conditions[1].conditions[0]=row('goalStatus4',2,'eq');assert.throws(()=>validateSave(bad),/undefined goal/);
+const legacy=createCity();const old=JSON.parse(serializeCity(legacy));old.version=101;assert.equal(validateSave(old).version,102);
+console.log('PASS: nested truth tables and precedence, actual repeated event/rank playthrough, saved continuation, recursive areas/goal references, formula errors, bounded trees/cycles and schema migration.');
