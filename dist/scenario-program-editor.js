@@ -1,21 +1,22 @@
-import {defaultTornadoSettings,TORNADO_DIRECTIONS,TORNADO_SPEEDS} from './tornado-settings.js?v=plane-navigation-1';
-import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=plane-navigation-1';
-import {CUSTOM_METRICS} from './scenario-metrics.js?v=plane-navigation-1';
-import {CALCULATIONS} from './scenario-variables.js?v=plane-navigation-1';
-import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=plane-navigation-1';
-import {BUSINESSES} from './business.js?v=plane-navigation-1';
-import {REWARDS} from './rewards.js?v=plane-navigation-1';
-import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=plane-navigation-1';
-import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=plane-navigation-1';
+import {PROGRAM_LIMITS} from './scenario-programs.js?v=script-clipboard-2';
+import {defaultTornadoSettings,TORNADO_DIRECTIONS,TORNADO_SPEEDS} from './tornado-settings.js?v=script-clipboard-2';
+import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=script-clipboard-2';
+import {CUSTOM_METRICS} from './scenario-metrics.js?v=script-clipboard-2';
+import {CALCULATIONS} from './scenario-variables.js?v=script-clipboard-2';
+import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=script-clipboard-2';
+import {BUSINESSES} from './business.js?v=script-clipboard-2';
+import {REWARDS} from './rewards.js?v=script-clipboard-2';
+import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=script-clipboard-2';
+import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=script-clipboard-2';
 const leaf=()=>({metric:'population',operator:'gte',target:100});
 const optionsOf=items=>Object.entries(items).map(([value,label])=>[value,typeof label==='string'?label:label.name]);
 const primitiveOptions=optionsOf(SCENARIO_EVENTS).filter(([key])=>key!=='program');
 const visitSteps=(steps,fn)=>{for(const step of steps){fn(step);if(step.kind==='if'){visitSteps(step.then,fn);visitSteps(step.else,fn);}}};
 export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[],entryTargets=()=>[],onChange=()=>{}}={}){
- let routines=structuredClone(initial);const status=document.createElement('p');status.setAttribute('role','status');
+ let routines=structuredClone(initial),clipboard=null;const status=document.createElement('p');status.setAttribute('role','status');
  const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
  const button=(parent,text,handler)=>{const b=el('button',text);b.type='button';b.onclick=()=>{try{handler();status.textContent='Draft updated. Start the challenge to apply it.';}catch(e){status.textContent=e.message;}};parent.append(b);return b;};
- function field(parent,label,value,set,{type='text',choices,min,max,step='1',multiline=false,maxLength=500}={}){const wrap=el('label',label),input=el(choices?'select':multiline?'textarea':'input');if(choices)for(const [v,name]of choices){const option=el('option',name);option.value=String(v);input.append(option);}else input.type=type;input.value=String(value??'');if(min!==undefined)input.min=min;if(max!==undefined)input.max=max;input.step=step;if(multiline)input.maxLength=maxLength;const change=()=>set(choices?input.value:type==='number'?(input.value.trim()===''?NaN:Number(input.value)):input.value);if(choices)input.onchange=change;else input.oninput=change;wrap.append(input);parent.append(wrap);return input;}
+ function field(parent,label,value,set,{type='text',choices,min,max,step='1',multiline=false,maxLength=500}={}){const wrap=el('label',label),input=el(choices?'select':multiline?'textarea':'input');if(choices)for(const [v,name]of choices){const option=el('option',name);option.value=String(v);input.append(option);}else if(!multiline)input.type=type;input.value=String(value??'');if(min!==undefined)input.min=min;if(max!==undefined)input.max=max;input.step=step;if(multiline)input.maxLength=maxLength;const change=()=>set(choices?input.value:type==='number'?(input.value.trim()===''?NaN:Number(input.value)):input.value);if(choices)input.onchange=change;else input.oninput=change;wrap.append(input);parent.append(wrap);return input;}
  function check(parent,label,value,set){const wrap=el('label',label),input=el('input');input.type='checkbox';input.checked=value;input.onchange=()=>set(input.checked);wrap.append(input);parent.append(wrap);}
  const changed=removed=>onChange(structuredClone(routines),removed);
  function defaultAction(type){const a={type};if(['announcement','popup','ending','dialogText','resultText'].includes(type))a.message='Mayor, review the latest city report.';if(type==='resultText')a.outcome='both';if(type==='ending')a.outcome='won';if(type==='popup'){a.showStatus=true;a.presenter=null;}if(type==='variable')Object.assign(a,{variable:0,operation:'add',value:1});if(['markGoal','addGoal'].includes(type))a.goal=0;if(type==='markGoal')a.goalStatus='satisfied';if(type==='sound')a.sound='notice';if(type==='reward')a.reward='university';if(type==='business')a.business='casino';if(type==='neighborDeal')Object.assign(a,{operation:'enable',neighbor:'east',resource:'power',direction:'import',amount:50});if(!['announcement','popup','ending','variable','markGoal','addGoal','sound','reward','business','neighborDeal','dialogText','resultText'].includes(type))Object.assign(a,{x:Math.floor(size/2),y:Math.floor(size/2)});if(type==='tornado')a.tornado=defaultTornadoSettings();if(type==='earthquake')a.magnitude=50;if(type==='camera')a.zoom=1;return a;}
@@ -68,22 +69,30 @@ export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[]
   if(m.spatial){check(group,'Limit to a map area',!!c.area,v=>{c.area=v?{x:0,y:0,radius:0}:null;render();});if(c.area)for(const key of ['x','y','radius'])field(group,'Area '+key,key==='radius'?c.area[key]:c.area[key]+1,v=>c.area[key]=key==='radius'?v:v-1,{type:'number',min:key==='radius'?0:1,max:key==='radius'?Math.ceil((size-1)*Math.SQRT2):size});}
   if(depth<8)button(group,'Combine conditions',()=>replace({match:'all',conditions:[structuredClone(c),leaf()]}));
  }
+ function paste(steps,index,depth){
+  if(!clipboard)return;let count=0;routines.forEach(r=>visitSteps(r.steps,()=>count++));visitSteps([clipboard],()=>count++);if(count>PROGRAM_LIMITS.nodes)throw Error('Pasting would exceed 128 instructions. Remove unused steps first.');
+  function checkDepth(items,d){if(d>PROGRAM_LIMITS.depth)throw Error('Pasting here would exceed eight nesting levels.');for(const step of items)if(step.kind==='if'){checkDepth(step.then,d+1);checkDepth(step.else,d+1);}}checkDepth([clipboard],depth);
+  steps.splice(index,0,structuredClone(clipboard));render();
+ }
  function block(parent,steps,label,depth=1){
   const box=el('fieldset');box.append(el('legend',label));parent.append(box);
   steps.forEach((step,i)=>{const row=el('section');row.className='program-step';box.append(row);row.append(el('h4','Step '+(i+1)));
    button(row,'Move step up',()=>{if(i>0){[steps[i-1],steps[i]]=[steps[i],steps[i-1]];render();}}).disabled=i===0;
    button(row,'Move step down',()=>{if(i+1<steps.length){[steps[i+1],steps[i]]=[steps[i],steps[i+1]];render();}}).disabled=i===steps.length-1;
+   button(row,'Copy step',()=>{clipboard=structuredClone(step);render();});button(row,'Cut step',()=>{clipboard=structuredClone(step);steps.splice(i,1);render();});button(row,'Paste before step',()=>paste(steps,i,depth)).disabled=!clipboard;
    button(row,'Remove step',()=>{steps.splice(i,1);render();});
    if(step.kind==='action'){field(row,'Action',step.action.type,v=>{step.action=defaultAction(v);render();},{choices:primitiveOptions});actionFields(row,step.action);}
    if(step.kind==='call')field(row,'Call routine',step.routine,v=>step.routine=Number(v),{choices:routines.map((r,j)=>[j,r.name||'Unnamed routine'])});
    if(step.kind==='if'){conditionFields(row,step.condition,v=>{step.condition=v;render();});block(row,step.then,'If true',depth+1);block(row,step.else,'Otherwise',depth+1);}
   });
+  button(box,'Paste at end',()=>paste(steps,steps.length,depth)).disabled=!clipboard;
   button(box,'Add action',()=>{steps.push({kind:'action',action:defaultAction('announcement')});render();});
   button(box,'Add If / Else',()=>{steps.push({kind:'if',condition:leaf(),then:[],else:[]});render();}).disabled=depth>=8;
   button(box,'Add subroutine call',()=>{steps.push({kind:'call',routine:0});render();});
  }
  function render(removed){root.replaceChildren();root.append(el('h3','Routine scripts'),el('p','Create reusable action sequences. Schedule a routine below. If / Else chooses a path when reached; messages and emergencies pause that path. Goal and variable numbers refer to the rows in this editor.'));
-  routines.forEach((r,index)=>{const panel=el('fieldset');panel.append(el('legend','Routine '+(index+1)));root.append(panel);field(panel,'Routine name',r.name,v=>{r.name=v;changed();});button(panel,'Delete routine',()=>{let used=entryTargets().includes(index);routines.forEach(other=>visitSteps(other.steps,s=>{if(s.kind==='call'&&s.routine===index)used=true;}));if(used)throw Error('Remove scheduled entries and subroutine calls to this routine before deleting it.');routines.splice(index,1);routines.forEach(other=>visitSteps(other.steps,s=>{if(s.kind==='call'&&s.routine>index)s.routine--;}));render(index);});block(panel,r.steps,'Actions');});
+  root.append(el('p',clipboard?`Copied step: ${clipboard.kind==='if'?'If / Else branch':clipboard.kind==='call'?'Call '+(routines[clipboard.routine]?.name||'routine'):SCENARIO_EVENTS[clipboard.action.type]?.name||clipboard.action.type}. Paste into any action block. Copies remain independent; goal and variable references keep their row numbers.`:'No copied step. Copy or cut an action, call or complete If / Else branch. This clipboard stays inside the open editor.'));button(root,'Clear copied step',()=>{clipboard=null;render();}).disabled=!clipboard;
+  routines.forEach((r,index)=>{const panel=el('fieldset');panel.append(el('legend','Routine '+(index+1)));root.append(panel);field(panel,'Routine name',r.name,v=>{r.name=v;changed();});button(panel,'Delete routine',()=>{let used=entryTargets().includes(index);if(clipboard)visitSteps([clipboard],s=>{if(s.kind==='call'&&s.routine===index)used=true;});routines.forEach(other=>visitSteps(other.steps,s=>{if(s.kind==='call'&&s.routine===index)used=true;}));if(used)throw Error('Remove scheduled entries and subroutine calls to this routine before deleting it. Clear the copied step if it contains a call to this routine.');routines.splice(index,1);if(clipboard)visitSteps([clipboard],s=>{if(s.kind==='call'&&s.routine>index)s.routine--;});routines.forEach(other=>visitSteps(other.steps,s=>{if(s.kind==='call'&&s.routine>index)s.routine--;}));render(index);});block(panel,r.steps,'Actions');});
   if(available.length)button(root,'Copy routines from current challenge',()=>{if(routines.length+available.length>8)throw Error('Copying would exceed eight routines. Remove unused drafts first.');const offset=routines.length,copies=structuredClone(available),names=new Set(routines.map(r=>r.name));for(const routine of copies){const original=routine.name;let suffix=1;while(names.has(routine.name))routine.name=original.slice(0,48)+' copy '+suffix++;names.add(routine.name);visitSteps(routine.steps,s=>{if(s.kind==='call')s.routine+=offset;});}routines.push(...copies);render();});
   button(root,'Add routine',()=>{if(routines.length>=8)throw Error('You can create at most eight routines.');routines.push({name:'Routine '+(routines.length+1),steps:[]});render();});root.append(status);changed(removed);
  }

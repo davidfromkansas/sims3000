@@ -1,4 +1,4 @@
-import {NAV_LAYERS} from './navigation-map.js?v=plane-navigation-1';
+import {NAV_LAYERS} from './navigation-map.js?v=script-clipboard-2';
 // Manual pp.41–42: above-ground element toggles, terrain grid, Apply and Default View.
 export const CITY_VIEW_DEFAULTS=Object.freeze({transportation:true,powerLines:true,flora:true,zonedBuildings:true,otherBuildings:true,zones:true,grid:true});
 export const CITY_VIEW_CHOICES=[['transportation','Transportation','Roads, surface tracks, highways, ramps, tunnel portals and moving traffic.'],['powerLines','Power lines','Surface poles and wires.'],['flora','Flora','Standalone landscape trees. Trees built into a building model stay with that building.'],['zonedBuildings','Zoned buildings','Residential, commercial, industrial, airport and seaport buildings.'],['otherBuildings','Other buildings','Civic services, transit stations, utilities, recreation and special buildings.'],['zones','Zones','Colored zoning ground and empty-zone outlines.'],['grid','Terrain grid','Tile-edge lines in every view.']];
