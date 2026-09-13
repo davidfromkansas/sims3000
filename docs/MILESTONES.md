@@ -599,3 +599,7 @@ Focus the map, choose R or a zone hotkey, and move with arrows. Press Shift + En
 ### Create tax and debt challenges (source checkpoint; publication pending)
 
 Author a challenge requiring all loan payments to clear while keeping residential taxes below a chosen rate. Add a land-value objective or announce remaining debt in a scheduled message. Save and replay it. Feedback target: are the financial targets clear, and can you distinguish remaining loan obligations from available treasury funds?
+
+### Author utility and cleanup challenges (source checkpoint; publication pending)
+
+Create a challenge requiring spare power and water capacity, then build the supply to satisfy it. Combine these targets with occupied homes without service to catch disconnected neighborhoods. Add pollution, traffic or uncollected-garbage limits and show their current values in messages. Feedback target: do the targets distinguish insufficient capacity, missing connections and environmental cleanup clearly?

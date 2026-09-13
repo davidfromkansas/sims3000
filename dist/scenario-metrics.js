@@ -1,11 +1,12 @@
-import {outstandingLoanPayments} from './loan-debt.js?v=scenario-economy-1';
-import {CALENDAR_MONTHS,calendarMonthIndex} from './scenario-calendar.js?v=scenario-economy-1';
-import {tileIndex} from './city-grid.js?v=scenario-economy-1';
-import {STRUCTURE_METRICS} from './scenario-structures.js?v=scenario-economy-1';
-import {inScenarioArea} from './scenario-area.js?v=scenario-economy-1';
-import {ORDINANCES} from './ordinances.js?v=scenario-economy-1';
-import {LANDMARKS,landmarkRoots} from './landmarks.js?v=scenario-economy-1';
-import {businessRoots} from './business.js?v=scenario-economy-1';
+import {averageWaterPollution,averageRoadTraffic,surplusPower,surplusWater} from './city-measures.js?v=scenario-environment-1';
+import {outstandingLoanPayments} from './loan-debt.js?v=scenario-environment-1';
+import {CALENDAR_MONTHS,calendarMonthIndex} from './scenario-calendar.js?v=scenario-environment-1';
+import {tileIndex} from './city-grid.js?v=scenario-environment-1';
+import {STRUCTURE_METRICS} from './scenario-structures.js?v=scenario-environment-1';
+import {inScenarioArea} from './scenario-area.js?v=scenario-environment-1';
+import {ORDINANCES} from './ordinances.js?v=scenario-environment-1';
+import {LANDMARKS,landmarkRoots} from './landmarks.js?v=scenario-environment-1';
+import {businessRoots} from './business.js?v=scenario-environment-1';
 export const CUSTOM_METRICS={population:{name:'Population',direction:'at least',max:1000000,initial:400,read:c=>c.stats.population},funds:{name:'Treasury',direction:'at least',min:-1000000000,max:1000000000,initial:50000,read:c=>c.funds},education:{name:'Education',direction:'at least',max:100,initial:60,read:c=>c.civic.education},crime:{name:'Crime',direction:'at most',max:100,initial:20,read:c=>c.stats.averageCrime},pollution:{name:'Air pollution',direction:'at most',max:100,initial:10,read:c=>c.stats.averagePollution},roadCondition:{name:'Road condition',direction:'at least',max:100,initial:80,read:c=>c.finance.roadCondition},aura:{name:'Resident wellbeing',direction:'at least',max:100,initial:60,read:c=>c.stats.aura},lifeExpectancy:{name:'Life expectancy',direction:'at least',min:45,max:90,initial:70,read:c=>c.civic.lifeExpectancy}};
 
 const homesWithout=(c,utility,area)=>c.tiles.filter(t=>inScenarioArea(t,area)&&t.type==='residential'&&t.level>0&&!t.rubble&&!t[utility]).length;
@@ -65,4 +66,12 @@ Object.assign(CUSTOM_METRICS,{
  landValue:{name:'Average land value',direction:'at least',min:0,max:100,initial:60,read:c=>c.stats.averageLandValue},
  totalDebt:{name:'Remaining loan payments (principal + interest)',direction:'at most',min:0,max:375000,integer:true,initial:0,read:outstandingLoanPayments},
  ...Object.fromEntries(['residential','commercial','industrial'].map(sector=>[sector+'Tax',{name:sector[0].toUpperCase()+sector.slice(1)+' tax rate (%)',direction:'at most',min:0,max:20,initial:7,read:c=>c.finance.taxes[sector]}]))
+});
+
+Object.assign(CUSTOM_METRICS,{
+ waterPollution:{name:'Average water pollution',direction:'at most',min:0,max:100,initial:10,read:averageWaterPollution},
+ traffic:{name:'Average road traffic (vehicles/tile)',direction:'at most',min:0,max:1000000,initial:20,read:averageRoadTraffic},
+ surplusPower:{name:'Citywide power surplus (supply minus demand)',direction:'at least',min:-1000000000,max:1000000000,initial:100,read:surplusPower},
+ surplusWater:{name:'Citywide water surplus (supply minus demand)',direction:'at least',min:-1000000000,max:1000000000,initial:100,read:surplusWater},
+ uncollectedGarbage:{name:'Uncollected garbage (units)',direction:'at most',min:0,max:65536000000000,initial:0,read:c=>c.stats.uncollectedWaste}
 });
