@@ -12,6 +12,6 @@ for(let seed=0;seed<24;seed++){
  const city=createCity('Target exhaustion '+seed,false);city.civic.ordinances.carpool=seed%2===0;city.transport.funding=50+seed*3;
  for(const t of city.tiles){t.terrain='land';t.elevation=0;t.nature=false;if(t.x<4||t.y<4||t.x>33||t.y>33)continue;if(t.x%6===0||t.y%6===0)t.type='road';else{const r=random();t.type=r<.58?'residential':r<.8?'industrial':'commercial';t.level=1+Math.floor(random()*3);t.density=3;}}
  for(const x of [7,19,31])Object.assign(city.tiles[7*48+x],{type:'busStop',level:0});recompute(city);
- const old=structuredClone(city),current=structuredClone(city);assert.deepEqual(recomputeTransport(current),reference(old),'stats seed '+seed);for(let i=0;i<city.tiles.length;i++)assert.deepEqual(current.tiles[i],old.tiles[i],'tile '+i+' seed '+seed);
+ const old=structuredClone(city),current=structuredClone(city);const {commercialEmployed,industrialEmployed,...legacy}=recomputeTransport(current);assert.deepEqual(legacy,reference(old),'stats seed '+seed);assert.ok(Math.abs(commercialEmployed+industrialEmployed-(legacy.commuters-legacy.unemployed))<1e-6);for(let i=0;i<city.tiles.length;i++)assert.deepEqual(current.tiles[i],old.tiles[i],'tile '+i+' seed '+seed);
 }
 console.log('PASS: target removal during iteration preserves successors, exhaustion callbacks fire once, and seeded road/bus/carpool allocations exactly match the frozen router.');

@@ -1,10 +1,10 @@
-import {JobCapacity} from './job-capacity.js?v=waste-facility-models-1';
-import {workforceShare} from './workforce.js?v=waste-facility-models-1';
-import {routeLength} from './tunnels.js?v=waste-facility-models-1';
-import {industrialJobs} from './industry.js?v=waste-facility-models-1';
-import {streetGraph,MinQueue} from './highway.js?v=waste-facility-models-1';
-import {railNetwork,STATIONS} from './rail.js?v=waste-facility-models-1';
-import {occupancy} from './utilities.js?v=waste-facility-models-1';
+import {JobCapacity} from './job-capacity.js?v=employment-trends-1';
+import {workforceShare} from './workforce.js?v=employment-trends-1';
+import {routeLength} from './tunnels.js?v=employment-trends-1';
+import {industrialJobs} from './industry.js?v=employment-trends-1';
+import {streetGraph,MinQueue} from './highway.js?v=employment-trends-1';
+import {railNetwork,STATIONS} from './rail.js?v=employment-trends-1';
+import {occupancy} from './utilities.js?v=employment-trends-1';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const freshTransport=()=>({funding:100,condition:100,underfunded:0});
 export function changeTransit(c,value){if(!Number.isInteger(value)||value<0||value>150)return{ok:false,error:'Transit funding must be 0–150%.'};c.transport.funding=value;return{ok:true};}
@@ -35,5 +35,6 @@ export function recomputeTransport(c){
  }
  const roads=tiles.filter(t=>t.type==='road'),highways=tiles.filter(t=>t.highway),busy=roads.filter(t=>t.traffic>40),used=commuters-unemployed;
  const rail=network.stats();
- return{carpoolVehiclesSaved,...rail,highwayTiles:highways.length,highwayBridgeTiles:highways.filter(t=>t.terrain==='water').length,ramps:tiles.filter(t=>t.type==='ramp').length,activeRamps:tiles.filter(t=>t.type==='ramp'&&t.rampActive).length,highwayVehicles:highways.reduce((v,t)=>v+t.highwayTraffic,0),congestedHighways:highways.filter(t=>t.highwayTraffic>160).length,trainRiders,busStops:stops.length,activeBusStops:stops.filter(t=>t.stopActive).length,commuters,unemployed,busRiders,transitStrike:strike,averageCommute:used?travel/used:0,congestedRoads:busy.length,peakTraffic:Math.max(0,...roads.map(t=>t.traffic)),bridgeTiles:roads.filter(t=>t.terrain==='water').length,transitFare:Math.round(busRiders*.03+trainRiders*.05),transitExpense:Math.round(stops.length*5*transit.funding/100)+rail.stationExpense+rail.trackExpense};
+ const employment={commercialEmployed:0,industrialEmployed:0};for(const w of workplaces)employment[w.type+'Employed']+=(w.type==='commercial'?occupancy(w.level)*6:industrialJobs(w))-remaining.get(w);
+ return{...employment,carpoolVehiclesSaved,...rail,highwayTiles:highways.length,highwayBridgeTiles:highways.filter(t=>t.terrain==='water').length,ramps:tiles.filter(t=>t.type==='ramp').length,activeRamps:tiles.filter(t=>t.type==='ramp'&&t.rampActive).length,highwayVehicles:highways.reduce((v,t)=>v+t.highwayTraffic,0),congestedHighways:highways.filter(t=>t.highwayTraffic>160).length,trainRiders,busStops:stops.length,activeBusStops:stops.filter(t=>t.stopActive).length,commuters,unemployed,busRiders,transitStrike:strike,averageCommute:used?travel/used:0,congestedRoads:busy.length,peakTraffic:Math.max(0,...roads.map(t=>t.traffic)),bridgeTiles:roads.filter(t=>t.terrain==='water').length,transitFare:Math.round(busRiders*.03+trainRiders*.05),transitExpense:Math.round(stops.length*5*transit.funding/100)+rail.stationExpense+rail.trackExpense};
 }
