@@ -1,8 +1,8 @@
 # SIMS3000 current fidelity audit
 
-Current source: 157 regression suites, save schema 108. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 161 regression suites, save schema 109. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
-The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
+The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
 | Manual area | Current playable behavior and source evidence | Remaining fidelity work |
 | --- | --- | --- |
@@ -667,3 +667,10 @@ All eight power technologies replace fixed-view sprites with original procedural
 ### Wind rotor motion — milestone 2 presentation follow-up
 
 Wind turbines now indicate running scenery through a constant, eight-second rotor revolution. Three vector blades rotate rigidly over four cached tower images, with their plane placed behind the tower in views 0/3 and in front in views 1/2. No animated bitmap-frame cache or per-frame depth buffer is allocated. The existing scenery clock holds during pause, dialogs, hidden tabs and emergencies; reduced-motion, disabled scenery, diagnostic views and damaged turbines use static artwork. This visual speed is original tuning and does not change power output or model weather. Tests cover continuous geometry, depth order, fixed cache size across frames, actual scene-clock holds, preferences and unchanged city state. Offline keyframes were inspected and a GIF is at docs/previews/wind-turbine-motion.gif. 157 suites, schema 108 unchanged. Browser motion/performance acceptance and publication remain pending.
+
+
+## Larger RCI lots and footprint-matched architecture
+
+Source checkpoint: 161 regression suites, schema 109. Vacant serviced medium/dense zoning can form 2×2 buildings; dense zoning first tries 3×3. Every member shares growth, abandonment, history and destruction, while occupancy and utility demand remain distributed across tiles. Any member opens the shared building query or whole-lot demolition. Scenario building counts use the northwest root; population remains the sum of occupants.
+
+The manual requires replacement tile-size matching (pp.73–74) and Building Architect tile-size selection (p.140). Style libraries and portable v4 designs now enforce this, preserving legacy 1×1 files. Original procedural models cover larger footprints in four views with constant physical floor height. Lot-selection probabilities, capacity tuning, footprint catalog and artwork are reconstruction choices rather than recovered original algorithms. See BUILDING-LOTS-MILESTONE.md for validation; full original fidelity and browser acceptance remain incomplete. Publication beyond v150 is still pending approval.

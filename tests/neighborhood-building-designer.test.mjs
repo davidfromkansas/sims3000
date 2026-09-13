@@ -25,7 +25,7 @@ for(const floors of [1,2,3])for(const roof of ['flat','step','spire'])for(let ro
 replaceBuildingStyle(c,6,54);assert.equal(c.buildingDesigns[6],undefined);assert.equal(zonedSprite(lots.find(t=>baseZonedSprite(t,c.seed)===6),c.seed,c.buildingReplacements),54);
 assert.throws(()=>replaceBuildingStyle(c,6,0));assert.throws(()=>validateBuildingDesigns({...c.buildingDesigns,unknown:defaultBuildingDesign()}));
 let canvases=0;globalThis.document={createElement:()=>{canvases++;return{getContext:()=>({beginPath(){},closePath(){},fill(){},stroke(){},moveTo(){},lineTo(){}})};}};
-const renderer={unit:24,rotation:0,project:()=>({x:0,y:0}),ctx:{save(){},restore(){},drawImage(){}}};
+const renderer={getCity:()=>restored,unit:24,rotation:0,project:()=>({x:0,y:0}),ctx:{save(){},restore(){},drawImage(){}}};
 for(let pass=0;pass<2;pass++)for(const tile of lots)for(let rotation=0;rotation<4;rotation++){renderer.rotation=rotation;drawDesignedBuilding(renderer,tile,designForTile(restored,tile));}
 assert.equal(canvases,56,'all 14 models retain four cached views without repainting on the second pass');
 console.log('PASS: all 14 RCI customization slots, unchanged simulation, abandoned/historical continuity, farm/rubble exclusions, complete library save/import, low-rise four-view bounds and industrial artwork replacement.');

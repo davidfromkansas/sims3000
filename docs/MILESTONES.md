@@ -615,3 +615,8 @@ Place the available power technologies, rotate the map and compare plant silhoue
 ### Watch the wind farm operate (source checkpoint; publication pending)
 
 Build wind turbines and run the city. Rotate the view, pause and resume, then toggle scenery animation or reduced motion. Feedback target: does rotor motion make the wind farm feel active without distracting from construction or data overlays? Offline motion preview: previews/wind-turbine-motion.gif.
+
+
+### Grow and customize whole city blocks (source checkpoint; publication pending)
+
+Zone a serviced 2×2 medium-density or 3×3 dense area and let it develop. Inspect an outside corner, preserve the whole building, interrupt and restore its utilities, then try footprint-matched artwork in the Building designer. Feedback target: are whole-building boundaries, service needs, historical protection and demolition clear? Can you customize one footprint without unexpectedly changing smaller buildings? Offline preview: previews/building-lot-models.png.
