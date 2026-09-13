@@ -1,4 +1,4 @@
-import {escapeAnnouncement} from './scenario-announcements.js?v=background-months-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=background-controls-1';
 export const ADVISOR_PORTRAIT='assets/scenario-advisor.png';
 export const MAX_PORTRAIT_BYTES=300000;
 export function validatePortrait(value){
