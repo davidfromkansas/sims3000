@@ -1,10 +1,10 @@
-import {JobCapacity} from './job-capacity.js?v=direct-model-paint-2';
-import {workforceShare} from './workforce.js?v=direct-model-paint-2';
-import {routeLength} from './tunnels.js?v=direct-model-paint-2';
-import {industrialJobs} from './industry.js?v=direct-model-paint-2';
-import {streetGraph,MinQueue} from './highway.js?v=direct-model-paint-2';
-import {railNetwork,STATIONS} from './rail.js?v=direct-model-paint-2';
-import {occupancy} from './utilities.js?v=direct-model-paint-2';
+import {JobCapacity} from './job-capacity.js?v=business-site-analysis-2';
+import {workforceShare} from './workforce.js?v=business-site-analysis-2';
+import {routeLength} from './tunnels.js?v=business-site-analysis-2';
+import {industrialJobs} from './industry.js?v=business-site-analysis-2';
+import {streetGraph,MinQueue} from './highway.js?v=business-site-analysis-2';
+import {railNetwork,STATIONS} from './rail.js?v=business-site-analysis-2';
+import {occupancy} from './utilities.js?v=business-site-analysis-2';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const freshTransport=()=>({funding:100,condition:100,underfunded:0});
 export function changeTransit(c,value){if(!Number.isInteger(value)||value<0||value>150)return{ok:false,error:'Transit funding must be 0–150%.'};c.transport.funding=value;return{ok:true};}

@@ -1,9 +1,9 @@
 // Shared base consumption used by network allocation and scenario queries.
-import {occupancy,WATER_STRUCTURES} from './utilities.js?v=direct-model-paint-2';
-import {SERVICES} from './civic.js?v=direct-model-paint-2';
-import {FACILITIES} from './facilities.js?v=direct-model-paint-2';
-import {BUSINESSES} from './business.js?v=direct-model-paint-2';
-import {REWARDS} from './rewards.js?v=direct-model-paint-2';
+import {occupancy,WATER_STRUCTURES} from './utilities.js?v=business-site-analysis-2';
+import {SERVICES} from './civic.js?v=business-site-analysis-2';
+import {FACILITIES} from './facilities.js?v=business-site-analysis-2';
+import {BUSINESSES} from './business.js?v=business-site-analysis-2';
+import {REWARDS} from './rewards.js?v=business-site-analysis-2';
 const isZone=t=>['residential','commercial','industrial'].includes(t.type);
 export const powerBaseNeed=t=>isZone(t)?1+occupancy(t.level):FACILITIES[t.type]||BUSINESSES[t.type]||REWARDS[t.type]?3:WATER_STRUCTURES[t.type]||SERVICES[t.type]||t.type==='recycling'?8:0;
 export const waterBaseNeed=t=>isZone(t)?1+occupancy(t.level)*3:FACILITIES[t.type]?3:0;

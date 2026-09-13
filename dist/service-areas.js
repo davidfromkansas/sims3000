@@ -1,5 +1,5 @@
-import {EDUCATION_LAYERS} from './education-layers.js?v=direct-model-paint-2';
-import {serviceRadius} from './civic.js?v=direct-model-paint-2';
+import {EDUCATION_LAYERS} from './education-layers.js?v=business-site-analysis-2';
+import {serviceRadius} from './civic.js?v=business-site-analysis-2';
 export const PRECINCT_LAYERS={police:'police',crime:'police',fire:'fire',flammability:'fire'};
 export const PRECINCT_LEGEND='Station dots: operating white, inactive orange · Rings: current service limit; strength falls toward the edge';
 export function stationAreas(city,layer){
