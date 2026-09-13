@@ -13,7 +13,7 @@ assert.equal(navigate(c,'fire:485').x,5);assert.equal(navigate(c,'fire:999999'),
 navigate(c,'fire:95');at(95,0).fire=0;assert.equal(navigate(c).x,5,'resolved last location wraps to remaining areas');
 // The anchor can change without returning the player to the same area.
 at(81,80).fireAge=8;assert.equal(navigate(c).x,81);
-c.emergency.started++;assert.equal(navigate(c).x,5,'a new emergency starts navigation from its first location');
+c.emergency.started++;assert.equal(navigate(c).x,5,'a new emergency starts navigation from its first location');c.emergency.started--; // Restore the real session identity before saving its relief assessment.
 c.emergency.tornado={x:40,y:50,age:4,warningSteps:0};assert.equal(navigate(c,'tornado').label,'Tornado');c.emergency.tornado.x=41;assert.equal(navigate(c,'tornado').x,41,'moving hazards are read at selection time');delete c.emergency.tornado;
 // Navigation never alters saved gameplay state and resumes against loaded coordinates.
 c.emergency.tornado=null;recompute(c);const before=serializeCity(c),loaded=validateSave(JSON.parse(before));assert.equal(navigate(loaded).x,5);

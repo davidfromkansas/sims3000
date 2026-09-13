@@ -569,3 +569,7 @@ Create a custom challenge and turn off random disasters, automatic business offe
 ### Customize a whole neighborhood (source checkpoint; publication pending)
 
 City desk → Building designer now targets homes, shops and industrial buildings across all 14 existing non-farm RCI styles. Create a one-floor shop, a block-built courtyard or a factory, apply it citywide, export it and restore the original artwork. Feedback target: does the expanded library let you establish a recognizable neighborhood style, and are the citywide scope and unchanged simulation values clear?
+
+### Recover with disaster assistance (source checkpoint; publication pending)
+
+Respond to a destructive emergency, then review the recovery grant in Emergency or Budget. Overlapping hazards receive one combined assessment. Compare a city with established fire/water protection against an unprepared city, rebuild using the one-time funds, and check the separate recovery-grant line in year-end accounts. Feedback target: does the payment help recovery without obscuring the ongoing cost of running the city, and is the assessment understandable?
