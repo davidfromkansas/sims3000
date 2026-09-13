@@ -1,5 +1,5 @@
-import {MAX_CITY_FILE_BYTES} from './city-grid.js?v=large-city-routing-1';
-import {copyBuildingSet,applyBuildingSet,buildingSetChanges} from './building-sets.js?v=large-city-routing-1';
+import {MAX_CITY_FILE_BYTES} from './city-grid.js?v=visible-city-traffic-1';
+import {copyBuildingSet,applyBuildingSet,buildingSetChanges} from './building-sets.js?v=visible-city-traffic-1';
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function showBuildingSetImport({city,dialog,validateCity,apply,backup,close}){
  dialog('Import a building set',`<p>Reuse the custom models and building replacements from an exported SIMS3000 city. Choose a city file to review the changes before applying them.</p><p>This replaces your entire building set, including restoring original artwork for styles absent from the selected city. Terrain, residents, finances and challenge progress stay in your current city.</p><label>Source city file<input id="buildingSetFile" type="file" accept=".json,application/json"></label><p id="buildingSetStatus" role="status"></p><div id="buildingSetReview"></div><div class="actions"><button id="buildingSetBackup">Export current city as backup</button><button id="buildingSetApply" class="primary" disabled>Apply building set</button><button id="buildingSetClose">Cancel</button></div><p class="fine">Supports SIMS3000 city files up to 64 MB, including all saved style and footprint variants. Original SimCity city files are not supported.</p>`);
