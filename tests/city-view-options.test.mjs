@@ -1,0 +1,30 @@
+import assert from 'node:assert/strict';
+import {CITY_VIEW_DEFAULTS,createCityViewOptions,cityElementVisible,cityTileVisible,showCityViewOptions} from '../dist/city-view-options.js';
+import {createCity,build,recompute,planBuild} from '../dist/engine.js';
+import {ignite} from '../dist/emergency.js';
+import {serializeCity} from '../dist/save.js';
+import {CityRenderer} from '../dist/renderer.js';
+const memory=new Map(),storage={getItem:k=>memory.get(k),setItem:(k,v)=>memory.set(k,v)},options=createCityViewOptions(storage),off=Object.fromEntries(Object.keys(CITY_VIEW_DEFAULTS).map(k=>[k,false]));
+assert.deepEqual(options.settings,CITY_VIEW_DEFAULTS);assert.ok(options.apply(off));assert.deepEqual(createCityViewOptions(storage).settings,off);assert.throws(()=>options.apply({grid:'no'}));assert.deepEqual(options.settings,off);assert.equal(createCityViewOptions().apply(off),false);
+for(const [type,group] of [['residential','zonedBuildings'],['airport','zonedBuildings'],['fire','otherBuildings'],['powerline','powerLines'],[null,'flora']])for(const key of Object.keys(CITY_VIEW_DEFAULTS)){const renderer={layer:'city',cityView:{...CITY_VIEW_DEFAULTS,[key]:false}};assert.equal(cityTileVisible(renderer,{type}),key!==group,'independent '+key+' visibility for '+type);}
+const r0={layer:'city',cityView:off};for(const key of Object.keys(off))assert.equal(cityElementVisible(r0,key),false);for(const layer of ['water','power','subway','zones']){for(const key of Object.keys(off).filter(k=>k!=='grid'))assert.equal(cityElementVisible({...r0,layer},key),true);assert.equal(cityElementVisible({...r0,layer},'grid'),false);}
+for(const type of ['residential','commercial','industrial','airport','seaport','powerline','fire','trainStation',null])assert.equal(cityTileVisible(r0,{type}),false);assert.equal(cityTileVisible(r0,{type:'residential',rubble:true}),true);
+// Run actual dialog controls: draft changes, Cancel, Apply, defaults and Apply & close.
+const controls=new Map();let closed=0,layer='garbage',html;
+const element=()=>({checked:false,value:'',textContent:''});globalThis.document={querySelector:s=>controls.get(s)};
+const renderer={layer,cityView:options.settings};const ui={options,renderer,dialog:(_,body)=>{html=body;controls.clear();for(const [,id,attrs] of body.matchAll(/id="([^"]+)"([^>]*)/g))controls.set('#'+id,{...element(),checked:/\bchecked\b/.test(attrs)});controls.get('#view-layer').value=renderer.layer;},close:()=>closed++,setLayer:value=>{layer=value;renderer.layer=value;}};
+showCityViewOptions(ui);assert.match(html,/value="garbage" selected/);controls.get('#view-flora').checked=true;controls.get('#view-cancel').onclick();assert.equal(options.settings.flora,false);assert.equal(closed,1);
+showCityViewOptions(ui);controls.get('#view-default').onclick();assert.equal(options.settings.flora,false,'defaults remain a draft until applied');controls.get('#view-done').onclick();assert.deepEqual(options.settings,CITY_VIEW_DEFAULTS);assert.equal(layer,'city');assert.equal(closed,2);
+const ctx=new Proxy({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),createLinearGradient:()=>({addColorStop(){}}),createRadialGradient:()=>({addColorStop(){}}),measureText:()=>({width:0})},{get:(o,k)=>o[k]??(()=>{}),set:(o,k,v)=>{o[k]=v;return true;}});
+globalThis.document={createElement:()=>({getContext:()=>ctx}),hidden:false,querySelector:()=>null};
+const city=createCity('Visibility',false);city.funds=100000;for(const t of city.tiles){t.terrain='land';t.elevation=0;t.nature=false;}
+for(const [i,type] of ['road','rail','highway','powerline','residential','commercial','pump','fire'].entries())assert.ok(build(city,type,[{x:20+i,y:20}]).ok,type);
+city.tiles[20*48+24].level=1;city.tiles[20*48+28].nature=true;city.tiles[21*48+24].rubble=true;recompute(city);assert.ok(ignite(city,24,20).ok);
+const scene=Object.create(CityRenderer.prototype),draws={};const record=(key,...args)=>(draws[key]??=[]).push(args);
+Object.assign(scene,{getCity:()=>city,ctx,dpr:1,w:1500,h:800,rotation:0,zoom:1,pan:{x:0,y:0},sprites:[],layer:'city',reducedMotion:{matches:true},vehicleTime:0,preferences:{vehicleAnimations:false,pedestriansVisible:false},cityView:{...CITY_VIEW_DEFAULTS},hover:null,tool:'query',sprite:(...args)=>record('sprite',...args),drawRoad:(...args)=>record('road',...args),drawTrack:(...args)=>record('track',...args),drawHighway:(...args)=>record('highway',...args),line:(...args)=>record('line',...args),diamond:(...args)=>record('diamond',...args)});
+const before=serializeCity(city),point=scene.project(26,20),pick=scene.pick(point.x,point.y+scene.unit/2),plan=planBuild(city,'road',[{x:26,y:20}]);
+scene.draw();assert.ok(draws.road.length);assert.ok(draws.track.length);assert.ok(draws.highway.length);assert.ok(draws.sprite.some(a=>a[0]===11));assert.ok(draws.sprite.some(a=>a[0]>=42&&a[0]<=44));
+for(const key of Object.keys(draws))delete draws[key];scene.cityView=off;scene.draw();assert.equal(draws.road,undefined);assert.equal(draws.track,undefined);assert.equal(draws.highway,undefined);assert.equal(draws.line,undefined,'surface power-line strokes are hidden');assert.ok(!draws.sprite.some(a=>a[0]===11||a[0]===0||a[0]>=42&&a[0]<=44));assert.ok(draws.sprite.some(a=>a[0]===27),'fire stays visible');assert.ok(draws.sprite.some(a=>a[0]===28),'rubble stays visible');assert.ok(draws.diamond.every(a=>a[4]===null),'grid and empty-zone outlines are hidden');
+assert.deepEqual(scene.pick(point.x,point.y+scene.unit/2),pick);assert.deepEqual(planBuild(city,'road',[{x:26,y:20}]),plan);assert.equal(serializeCity(city),before);
+for(const key of Object.keys(draws))delete draws[key];scene.layer='power';scene.draw();assert.ok(draws.road.length);assert.ok(draws.sprite.some(a=>a[0]===11),'diagnostic views retain their content');
+console.log('PASS: persisted visibility defaults, atomic validation/session fallback, actual Apply/Cancel/Default controls, real scene network/building/tree/grid hiding, retained hazards, unchanged picking/construction/city and diagnostic restoration.');

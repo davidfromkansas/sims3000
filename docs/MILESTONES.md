@@ -577,3 +577,7 @@ Respond to a destructive emergency, then review the recovery grant in Emergency 
 ### Read civic districts from every direction (source checkpoint; publication pending)
 
 Build a civic district and rotate the map: all eight service buildings now show their actual sides, roofs and grounds. Compare the fire-engine bays, hospital wing, school courtyard and jail perimeter, then inspect their operating status. Feedback target: can you recognize each service at normal play zoom and keep your bearings as you rotate the city?
+
+### Build through a dense city (source checkpoint; publication pending)
+
+Open City view layers, hide zoned or other buildings, and inspect the ground and networks beneath them. Toggle roads, poles, trees, zone colors and the terrain grid independently; use Default View then Apply to restore the city. Hidden buildings still block occupied lots, and emergency indicators stay visible. Feedback target: do the controls make crowded areas easier to understand without making construction targets ambiguous?
