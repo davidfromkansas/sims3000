@@ -1,8 +1,8 @@
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=new-city-artwork-1';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=new-city-artwork-1';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=new-city-artwork-1';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=new-city-artwork-1';
-import {escapeAnnouncement} from './scenario-announcements.js?v=new-city-artwork-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=scenario-neighbor-status-1';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=scenario-neighbor-status-1';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=scenario-neighbor-status-1';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=scenario-neighbor-status-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=scenario-neighbor-status-1';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';
