@@ -17,11 +17,13 @@ All six milestones contain playable functionality. None is a claim of full origi
 | 5. Connect and customize a metropolis | Bus/rail/subway/highway/bridge/tunnel networks, ports/airports, tower replacement and albums | Improve a busy route, customize a skyline and export a captioned album |
 | 6. Face and author challenges | Nine disaster types, response/recovery, prepared scenarios and custom goals/events/messages | Recover from a disaster, then author and export a measurable challenge |
 
+The latest milestone 6 authoring checkpoint adds goals during play through timed or conditional events. Try an initially hidden goal, save across its activation, then restart to restore the initial goal set.
+
 For each exercise, assess controls, understandable cause/effect, recovery options and presentation. In-game Roadmap cards now have direct links to their respective feedback form.
 
 ## Checkpoint process
 
-Each milestone is a reviewable playable release. Feedback can be submitted through each milestone's in-game review prompts while development continues. No feedback has been assumed. The overall goal stays active until the full requested reconstruction is verified; milestone delivery alone does not establish parity. First-town, utilities, finance, and civic-service feedback checkpoints remain available. Neighbor contracts are the current checkpoint; the rest of milestone 5 is still planned; full manual fidelity is still unfinished.
+Each milestone is a reviewable playable release. Feedback can be submitted through each milestone's in-game review prompts while development continues. No feedback has been assumed. The overall goal stays active until the full requested reconstruction is verified; milestone delivery alone does not establish parity. First-town, utilities, finance, and civic-service feedback checkpoints remain available. Recent checkpoints include regional contract reviews, building customization, navigation maps, concurrent disaster response and pedestrians. Historical checkpoint notes below describe their release-time state and may be superseded by later work; full manual fidelity is still unfinished.
 
 
 ## Fire response checkpoint — milestone 6

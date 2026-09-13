@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Reviewed 2026-09-13 against the supplied manual, the current `dist` modules, and the latest 116-suite regression run. Save schema: 92. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity.
+Current release: 135 regression suites, save schema 98. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, one-tile RCI buildings, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -17,12 +17,12 @@ The manual describes behavior but does not expose all simulation formulas. Numer
 | Snapshot albums, pp.63–65 | `snapshots.js`, `snapshot-frame.js`, `snapshot-files.js`: movable frames, captions, chronological album browsing, PNG download and portable album import/export | Original album-file compatibility; browser albums are separate from city files and bounded to 50 photos |
 | Building replacement, pp.72–84 | `building-replacement-ui.js`, `building-art.js`, `building-designs.js`, `building-designer-ui.js`: previews, citywide substitution, custom tower creation, portable model files, revert and saved overrides | Four tower style slots with custom procedural models/import/export; original building-file compatibility, larger replacement library and free-form block editor |
 | Reports, pp.64–71 | `reports.js`, `reports-ui.js`, `report-breakdowns.js`: data layers, 1/10/100-year histories, income/waste/power/workforce breakdowns | Broader chart presentation and browser acceptance. Manual p.68 specifies annual electricity and garbage totals, not an annual water chart. Historical implementation notes are not evidence of missing current maps |
-| Scenarios and creator, pp.24–26, 155–197 | `scenarios.js`, `custom-scenarios.js`, `scenario-events.js`, `scenario-text.js`: five original prepared challenges, custom goals/streaks, repeated/conditional events, outcome messages, live values, portable challenge cities | Shipped scenario catalog, full variable/block/command language, remaining structure query types, scripted actions and general ranks/dialogs. Current editor is a subset |
+| Scenarios and creator, pp.24–26, 155–197 | `scenarios.js`, `custom-scenarios.js`, `scenario-events.js`, `scenario-text.js`: five original prepared challenges, custom goals/streaks, repeated/conditional events, outcome messages, live values, portable challenge cities | Shipped scenario catalog, general variable/block/command execution and event-driven goal activation. Later checkpoints cover additional structure queries, ranks, presenters and scripted endings; the editor remains a subset |
 | Presentation and sound | `renderer.js`, `game-audio.js`: original sprites, procedural traffic/disaster motion, muted-by-default effects and volume | Full soundtrack/effects, broader animation, four-facing sprites and continued visual/performance refinement |
 
 ## Evidence limits
 
-The regression suites prove specific invariants, not complete manual fidelity. The latest run passed 116 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
+The regression suites prove specific invariants, not complete manual fidelity. The earlier baseline run passed 116 suites, including real construction/simulation recovery exercises, save migration, event continuity and citywide replacement behavior. Separate browser checks cover selected rendered workflows: navigation, sound controls, photos, message insertion, skyline rendering, train pause and replacement previews. No blanket claim of cross-browser, mobile or whole-game acceptance follows from those checks.
 
 Player acceptance is still pending. No silence or automatic continuation has been treated as positive feedback. The six in-game milestones provide exercises and locally saved notes; notes are not automatically transmitted.
 
@@ -505,3 +505,16 @@ Play preferences adds Show pedestrians and a separate zoom threshold (100% and c
 Tests exercise real starter-town routes, blocked roads/elevation changes, empty towns, large-map sampling/caps, continuous motion over turns, all camera orientations, actual renderer visibility and cache refresh, saved continuation and unchanged city state. The full regression set has 133 suites; schema 97 is unchanged.
 
 Feedback exercise: zoom into the starter town’s occupied residential streets, pause and resume, then rotate the camera. Hide vehicles while leaving pedestrians on, and compare the separate zoom thresholds under City desk → Play preferences.
+
+
+### Event-driven scenario goals — milestone 6
+
+The creator now supports the manual’s Add At Startup and Add Goal workflow (printed pp.179 and 185). Uncheck Add at startup on a goal, then target it with a timed or conditional Add Goal event. Inactive objectives remain hidden in Scenario status until activated. The news ticker reports an Add Goal action. Goal menus use the actual authoring rows and labels; blank rows do not shift a target to a different goal. Invalid targets and inactive goals without an activation event are rejected.
+
+Automatic victory checks active simultaneous objectives, required timed events, emergencies and sustained progress. An empty active objective list cannot win. Conditional activation events remain optional like other conditional events: if they never trigger, another active goal can still grant victory; an unconditional activation event is required when the new goal must become part of the challenge. Adding a simultaneous requirement resets the hold streak, and the activation month participates in the new check. Repeating activation is idempotent. Sequential stages wait for activation and previous stages; activating a later stage does not reset the current stage’s hold.
+
+Schema 98 stores first activation months separately from immutable goal definitions. Loading checks activation against startup policy and recorded events, rejects impossible pre-activation holds/stage completions, and restores older all-startup challenges. Replay restores the initial active set. Existing four-goal/four-event limits and monthly scheduling remain; this is not the full original script interpreter.
+
+The 135-suite regression set covers real editor submission, sparse-row targeting, timed and conditional activation, grouped variable→goal actions, repeated activation, delayed victory, empty-list deadline loss, sequential waits, save/load, replay and legacy migration. Browser acceptance remains pending.
+
+Feedback exercise: create a funds goal active at startup and a population goal initially inactive. Add the second goal in month 3, save during the attempt, and inspect Scenario status before and after activation. Restart the challenge and verify the second goal begins hidden again.
