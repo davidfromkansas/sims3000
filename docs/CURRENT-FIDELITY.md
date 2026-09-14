@@ -965,3 +965,7 @@ The simulation now exposes a reconciled citywide demand ledger in Zone developme
 ### Growing upward — schema 134, 276 suites
 
 The eleventh prepared challenge verifies early densification through ordinary water construction and balanced RCI rezoning. Both missing-water and insufficient-job-growth paths fail. Late-game reachability and original shipped scenarios remain incomplete.
+
+### Courtyard apartments — schema 134, 277 suites
+
+Original transparent Imagegen artwork adds a medium-density residential variation. Default mixed-apartment selection respects custom designs, explicit replacements and retained building history. This expands visual variety; the full original building catalog and AAA art review remain incomplete.

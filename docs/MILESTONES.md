@@ -775,3 +775,7 @@ Inspect the factors behind each sector’s demand directly in Zone development, 
 ## Growing upward challenge
 
 An original two-year challenge teaches water supply, medium-density zoning and balanced job growth. A tested route grows the town from 224 to 728 residents in eight months. See [milestone details](GROWING-UPWARD-MILESTONE.md).
+
+## Courtyard apartment artwork
+
+Medium-density neighborhoods now mix in original courtyard apartment artwork, with an optional view preference and explicit building replacement support. See [milestone details](COURTYARD-APARTMENTS-MILESTONE.md).

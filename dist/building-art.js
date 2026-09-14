@@ -1,5 +1,5 @@
-import {buildingSlot,parseBuildingSlot,tileBuildingFootprint} from './building-footprints.js?v=growing-upward-1';
-import {tileIndex} from './city-grid.js?v=growing-upward-1';
+import {buildingSlot,parseBuildingSlot,tileBuildingFootprint} from './building-footprints.js?v=courtyard-apartments-1';
+import {tileIndex} from './city-grid.js?v=courtyard-apartments-1';
 // Variants depend only on the lot and city seed, so saved and historical buildings keep their appearance.
 export function baseZonedSprite(t,seed){
  const level=t.historicalLevel||t.abandonedLevel||t.level;
@@ -11,7 +11,7 @@ export function baseZonedSprite(t,seed){
 }
 
 export const REPLACEABLE_STYLES={
- 0:{name:'Detached homes',group:'residential',level:1},76:{name:'Craftsman bungalow',group:'residential',level:1},1:{name:'Residential mid-rise',group:'residential',level:2},2:{name:'Classic apartment tower',group:'residential',level:3},74:{name:'Terraced apartment tower',group:'residential',level:3},
+ 0:{name:'Detached homes',group:'residential',level:1},76:{name:'Craftsman bungalow',group:'residential',level:1},1:{name:'Residential mid-rise',group:'residential',level:2},78:{name:'Courtyard apartments',group:'residential',level:2},2:{name:'Classic apartment tower',group:'residential',level:3},74:{name:'Terraced apartment tower',group:'residential',level:3},
  3:{name:'Neighborhood shops',group:'commercial',level:1},77:{name:'Corner shop and apartment',group:'commercial',level:1},4:{name:'Commercial mid-rise',group:'commercial',level:2},5:{name:'Classic office tower',group:'commercial',level:3},75:{name:'Stepped glass office',group:'commercial',level:3},
  6:{name:'Small factory',group:'industrial',level:1},7:{name:'Industrial works',group:'industrial',level:2},8:{name:'Heavy industrial complex',group:'industrial',level:3},54:{name:'Small clean-industry workshop',group:'industrial',level:1},55:{name:'Clean-industry campus',group:'industrial',level:2},56:{name:'High-tech industrial complex',group:'industrial',level:3}
 };
@@ -22,4 +22,4 @@ export function validateBuildingReplacements(value){if(!value||typeof value!=='o
 export function replaceBuildingStyle(c,source,target){const next=validateBuildingReplacements({...c.buildingReplacements,[source]:target});c.buildingReplacements=next;if(c.buildingDesigns)delete c.buildingDesigns[source];}
 
 // Optional browser art preference preserves simulation style slots and explicit customizations.
-export function cityZonedSprite(t,city,view){const sprite=zonedSprite(t,city.seed,city.buildingReplacements,city),base=baseZonedSprite(t,city.seed),key=String(base),variant=base===0&&view?.variedHomes?76:base===3&&view?.variedShops?77:null;if(variant===null||t.lotRoot!=null||sprite!==base||Object.hasOwn(city.buildingReplacements||{},key)||city.buildingDesigns?.[key])return sprite;return ((Math.imul(t.x+1,73856093)^Math.imul(t.y+1,19349663)^city.seed)>>>3)&1?variant:base;}
+export function cityZonedSprite(t,city,view){const sprite=zonedSprite(t,city.seed,city.buildingReplacements,city),base=baseZonedSprite(t,city.seed),key=String(base),variant=base===0&&view?.variedHomes?76:base===3&&view?.variedShops?77:base===1&&view?.variedApartments?78:null;if(variant===null||t.lotRoot!=null||sprite!==base||Object.hasOwn(city.buildingReplacements||{},key)||city.buildingDesigns?.[key])return sprite;return ((Math.imul(t.x+1,73856093)^Math.imul(t.y+1,19349663)^city.seed)>>>3)&1?variant:base;}
