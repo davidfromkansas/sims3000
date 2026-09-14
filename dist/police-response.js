@@ -1,5 +1,5 @@
-import {civicRoots,civicCenter} from './civic-footprints.js?v=metropolis-growth-planning-1';
-import {civicServiceOperating,serviceRadius} from './civic.js?v=metropolis-growth-planning-1';
+import {civicRoots,civicCenter} from './civic-footprints.js?v=medical-research-center-1';
+import {civicServiceOperating,serviceRadius} from './civic.js?v=medical-research-center-1';
 // Orders belong to their station root, so removing another station cannot move them.
 // An explicitly dispatched squad is unavailable for automatic precinct response.
 export function policeResponses(c){

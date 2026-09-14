@@ -1,5 +1,5 @@
-import {rasterizeMiniature} from './miniature-raster.js?v=metropolis-growth-planning-1';
-export const MODELED_REWARDS=new Set(['cityHall','mayorHouse','stadium','university','countyCourthouse']);
+import {rasterizeMiniature} from './miniature-raster.js?v=medical-research-center-1';
+export const MODELED_REWARDS=new Set(['medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){
  if(!MODELED_REWARDS.has(type))throw Error('Unknown reward model.');
@@ -9,7 +9,16 @@ export function rewardGeometry(type){
  const hall=(x,y,w,d,h,color)=>{box(x,y,.05,w,d,h,color);roof(x,y,h+.05,w+.02,d+.02,.075,'#647c83');for(const side of [-1,1])for(let i=0;i<Math.floor(w/.07);i++)for(const z of [.12,.23])if(z+.045<h+.05)box(x-w/2+.045+i*.07,y+side*(d/2+.003),z,.028,.007,.048,'#547e8a');};
  const tree=(x,y)=>{box(x,y,.06,.015,.015,.09,'#796449');for(const [z,w]of [[.14,.085],[.19,.065],[.23,.035]])box(x,y,z,w,w,.035,'#537a50');};
  box(0,0,0,.97,.97,.04,'#aaa993');box(0,0,.04,.93,.93,.015,'#81966d');
- if(type==='mayorHouse'){
+ if(type==='medicalResearch'){
+  // Original modern laboratory campus: glazed research tower, clinic wing and rooftop plant.
+  box(0,.25,.055,.78,.35,.014,'#c5c8be');box(-.10,-.12,.055,.56,.49,.40,'#d5ded7');
+  for(const z of [.13,.22,.31,.40]){box(-.10,.129,z,.48,.009,.052,'#497f8a');box(-.384,-.12,z,.009,.42,.052,'#527e8a');box(.184,-.12,z,.009,.42,.052,'#608e98');box(-.10,-.369,z,.48,.009,.052,'#537e89');}
+  box(-.10,-.12,.455,.59,.52,.025,'#a8b9b7');box(-.16,-.18,.48,.24,.19,.055,'#889c9d');for(const x of [-.23,-.10])box(x,-.18,.535,.065,.12,.015,'#596f72');
+  box(.29,-.02,.055,.26,.57,.21,'#b8c9c8');box(.29,-.02,.265,.29,.60,.025,'#729296');
+  for(const y of [-.21,-.09,.03,.15])box(.423,y,.13,.008,.075,.075,'#466f7b');
+  box(-.10,.18,.055,.27,.11,.17,'#537f88');box(-.10,.23,.23,.36,.18,.028,'#e3e6dc');for(const x of [-.23,.03])box(x,.28,.06,.014,.014,.17,'#c5d4cd');
+  for(const x of [-.37,.36])tree(x,.36);box(-.29,.30,.07,.04,.08,.10,'#6b9ca5');box(-.29,.30,.17,.08,.08,.018,'#dbe2d9');
+ }else if(type==='mayorHouse'){
   box(0,.20,.056,.14,.48,.008,'#c6bfa8');hall(-.06,-.10,.49,.35,.26,'#d9cbaa');hall(.27,-.14,.17,.25,.14,'#c7b994');
   box(-.06,.145,.06,.27,.12,.045,'#c9c4ae');for(const x of [-.17,-.06,.05])box(x,.15,.105,.018,.018,.18,'#f0dfb6');roof(-.06,.15,.285,.30,.13,.035,'#6b7e83');box(-.06,.079,.06,.057,.01,.14,'#605d57');box(-.20,-.11,.36,.045,.065,.12,'#ac7f65');
   for(const y of [-.34,.34])for(const x of [-.35,.35])tree(x,y);for(const x of [-.42,.42])box(x,0,.06,.025,.80,.04,'#567e52');

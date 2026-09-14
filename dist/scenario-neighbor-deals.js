@@ -1,4 +1,4 @@
-import {NEIGHBORS,connectionCandidates,signDeal,cancelDeal} from './region.js?v=metropolis-growth-planning-1';
+import {NEIGHBORS,connectionCandidates,signDeal,cancelDeal} from './region.js?v=medical-research-center-1';
 export {NEIGHBORS};
 export const DEAL_RESULTS={created:'Contract created',alreadyActive:'Matching contract already active; existing terms kept',ended:'Contract ended',alreadyInactive:'No matching contract to end',missingConnection:'No registered, working connection for this resource',conflictingDeal:'Another contract occupies this neighbor/resource pair',unavailableSupply:'The neighbor cannot supply this offer'};
 const successful=new Set(['created','alreadyActive','ended','alreadyInactive']);
