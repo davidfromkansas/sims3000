@@ -1,5 +1,5 @@
-import {LANDMARKS} from './landmarks.js?v=architecture-collection-48';
-import {MODELED_LANDMARKS,drawLandmarkPreview} from './landmark-models.js?v=architecture-collection-48';
+import {LANDMARKS} from './landmarks.js?v=architecture-collection-51';
+import {MODELED_LANDMARKS,drawLandmarkPreview} from './landmark-models.js?v=architecture-collection-51';
 const directions=['North','East','South','West'];
 export function showLandmarks({city,dialog,close,setTool}){
  const c=city(),placedTypes=new Set(c.tiles.map(t=>t.type));

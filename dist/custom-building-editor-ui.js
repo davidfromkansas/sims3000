@@ -1,5 +1,5 @@
-import {mountCustomBuildingLibrary} from './custom-building-library-ui.js?v=architecture-collection-48';
-import {importBuildingDesign,buildingDesignCanvas} from './building-designs.js?v=architecture-collection-48';
+import {mountCustomBuildingLibrary} from './custom-building-library-ui.js?v=architecture-collection-51';
+import {importBuildingDesign,buildingDesignCanvas} from './building-designs.js?v=architecture-collection-51';
 export function showCustomBuildingEditor({dialog,back,storage}){
  let draft=null,rotation=0,request=0;
  dialog('Custom building list',`<p>Import and organize models for future use in any city in this browser. Preview a saved model or choose a building file, then add it to the list below.</p><label>Building file<input id="customListFile" type="file" accept=".json,application/json"></label><p id="customListStatus" role="status"></p><div><img id="customListPreview" width="192" height="288" alt="" hidden><p id="customListName"></p><div class="actions"><button id="customListLeft" disabled>Rotate left</button><span id="customListDirection" role="status"></span><button id="customListRight" disabled>Rotate right</button></div></div><div id="customListEditor"></div><div class="actions"><button id="customListBack">Back to city building styles</button></div>`);

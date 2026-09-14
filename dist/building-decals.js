@@ -1,5 +1,5 @@
-import {clipPolygon} from './building-decal-clipping.js?v=architecture-collection-48';
-import {drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-48';
+import {clipPolygon} from './building-decal-clipping.js?v=architecture-collection-51';
+import {drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-51';
 export const MAX_BUILDING_DECALS=32;
 export const DECAL_NAMES=['','Framed window','Entrance door','Vent grille','Window with ledge','Cornice'];
 const bounded=(v,min,max)=>Number.isFinite(v)&&v>=min&&v<=max&&Math.abs(v*1000-Math.round(v*1000))<1e-7;

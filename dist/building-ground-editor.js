@@ -1,8 +1,8 @@
-import {projectedTowerOcclusion} from './building-tower-geometry.js?v=architecture-collection-48';
-import {groundFaces,groundMaterial,paintGround,connectedGround} from './building-ground-paint.js?v=architecture-collection-48';
-import {projectedBuildingSurfaces,pickBuildingSurface} from './building-surface-picking.js?v=architecture-collection-48';
-import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=architecture-collection-48';
-import {BUILDING_MATERIALS} from './building-materials.js?v=architecture-collection-48';
+import {projectedTowerOcclusion} from './building-tower-geometry.js?v=architecture-collection-51';
+import {groundFaces,groundMaterial,paintGround,connectedGround} from './building-ground-paint.js?v=architecture-collection-51';
+import {projectedBuildingSurfaces,pickBuildingSurface} from './building-surface-picking.js?v=architecture-collection-51';
+import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=architecture-collection-51';
+import {BUILDING_MATERIALS,buildingMaterialName} from './building-materials.js?v=architecture-collection-51';
 export function mountBuildingGroundEditor(canvas,{get,camera,mode,material,status,apply,render}){
  const names=['onpointerdown','onpointermove','onpointerup','onpointercancel','onkeydown','onwheel'],base=Object.fromEntries(names.map(k=>[k,canvas[k]]));let hover=null,stroke=null,cache=null;
  const active=()=>['paint-ground','fill-ground','sample-ground','erase-ground'].includes(mode.value),point=e=>{const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};};
@@ -12,7 +12,7 @@ export function mountBuildingGroundEditor(canvas,{get,camera,mode,material,statu
  const signature=()=>JSON.stringify([get().blocks,get().voxels,get().blockGeometry,get().groundPaint,get().props,get().footprint,get().rotation,get().width,get().depth,get().floors,get().roof,camera()]);
  function message(face){status.textContent=face?`Ground · column ${face.x+1}, row ${face.y+1}. ${mode.value==='fill-ground'?'Fill connected ground of the same material.':'Release to apply; Shift or Escape cancels.'}`:'Point at visible ground around the building.';}
  function act(indices){if(indices.length)apply(paintGround(get(),indices,mode.value==='erase-ground'?-1:Number(material.value)));}
- function sample(face){if(!face)return;const value=groundMaterial(get(),face.index);if(value>=0)material.value=String(value);status.textContent=value>=0?`Selected ${BUILDING_MATERIALS[value]}. Ground is unchanged.`:'Original ground. Your selected material is unchanged.';}
+ function sample(face){if(!face)return;const value=groundMaterial(get(),face.index);if(value>=0)material.value=String(value);status.textContent=value>=0?`Selected ${buildingMaterialName(value,get())}. Ground is unchanged.`:'Original ground. Your selected material is unchanged.';}
  const previousMode=mode.onchange;mode.onchange=()=>{stroke=null;hover=null;previousMode?.();if(active()){material.disabled=mode.value==='erase-ground';message(null);render();}};
  const previousMaterial=material.onchange;material.onchange=()=>{stroke=null;previousMaterial?.();};
  canvas.onpointerdown=e=>{if(!active())return base.onpointerdown?.(e);if(e.button!==0)return;e.preventDefault();canvas.focus({preventScroll:true});hover=point(e);const face=pick(hover);if(mode.value==='sample-ground')sample(face);else{stroke={id:e.pointerId,signature:signature(),indices:new Set(selected(face))};canvas.setPointerCapture(e.pointerId);message(face);}render();};

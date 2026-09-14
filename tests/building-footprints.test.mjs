@@ -46,7 +46,7 @@ assert.equal(JSON.stringify(expanded.tiles),expandedBefore.tiles);assert.equal(J
 const expandedSave=serializeCity(expanded),expandedRestored=validateSave(JSON.parse(expandedSave));assert.equal(expandedRestored.buildingLots.get(expandedLot.root).ids.length,25);assert.equal(serializeCity(expandedRestored),expandedSave);
 const oldExpanded=JSON.parse(expandedSave);oldExpanded.version=145;assert.throws(()=>validateSave(oldExpanded),/146/);oldExpanded.buildingDesigns={};assert.throws(()=>validateSave(oldExpanded),/146/);
 tick(expandedRestored);assert.equal(serializeCity(validateSave(JSON.parse(serializeCity(expandedRestored)))),serializeCity(expandedRestored));assert.equal(build(expandedRestored,'bulldoze',[{x:34,y:34}]).ok,true);assert.ok(expandedLot.ids.every(id=>expandedRestored.tiles[id].lotRoot==null&&expandedRestored.tiles[id].level===0),'demolishing a distant member removes the entire five-tile building');
-const olderOrdinary=JSON.parse(serializeCity(createCity()));olderOrdinary.version=145;assert.equal(validateSave(olderOrdinary).version,154);
+const olderOrdinary=JSON.parse(serializeCity(createCity()));olderOrdinary.version=145;assert.equal(validateSave(olderOrdinary).version,155);
 for(const footprint of [{width:5,height:1},{width:1,height:5},{width:5,height:5}])for(let rotation=0;rotation<4;rotation++){
  const d=defaultBuildingDesign(buildingSlot(4,footprint)),points=[],ctx={beginPath(){},closePath(){},fill(){},stroke(){},moveTo(...p){points.push(p);},lineTo(...p){points.push(p);}};drawBuildingDesign(ctx,d,rotation);assert.ok(points.every(([x,y])=>x>=0&&x<=256&&y>=0&&y<=384));
 }
@@ -138,3 +138,21 @@ for(const layered of [false,true]){
  node('designFloors').value='12';node('designFloors').oninput();node('applyDesign').onclick();assert.equal(towerCity.buildingDesigns[2].groundPaint[f.index],'6');assert.equal(towerCity.buildingDesigns[2].floors,12);assert.equal(towerCity.buildingDesigns[2].blocks,undefined);
  assert.deepEqual(validateSave(JSON.parse(serializeCity(towerCity))).buildingDesigns[2],towerCity.buildingDesigns[2]);
 }
+// Choose custom paint through the mounted palette, then paint, sample, undo and save.
+for(const method of ['tower','blocks','voxels']){
+ const solidCity=createCity(),layout=Array(100).fill(0);layout[44]=method==='voxels'?15:4;const model={...defaultBuildingDesign(2),...(method==='tower'?{}:{[method]:layout})};solidCity.buildingDesigns[2]=model;
+ showBuildingDesigner({city:solidCity,dialog(){node('designSource').value='2';node('designFootprint').value='1x1';},apply(){},close(){}},2);
+ const canvas=node('designPreview');Object.assign(canvas,{getBoundingClientRect:()=>({left:0,top:0,width:256,height:384}),focus(){},setPointerCapture(){}});
+ node('previewTool').value='paint-ground';node('previewTool').onchange();node('solidPaintColor').value='#C14367';node('chooseSolidPaint').onclick();assert.equal(node('previewMaterial').value,'7');assert.equal(solidCity.buildingDesigns[2].paintColors,undefined,'color selection is a draft');assert.match(node('blockMaterial').innerHTML,/Solid paint #c14367/);
+ const {groundFaces}=await import('../dist/building-ground-paint.js'),center=f=>f.polygon.reduce((p,[x,y])=>({x:p.x+x/f.polygon.length,y:p.y+y/f.polygon.length}),{x:0,y:0}),point=center(groundFaces(model)[99]),event=p=>({button:0,pointerId:104,clientX:p.x,clientY:p.y,preventDefault(){}}),paint=f=>{const e=event(center(f));canvas.onpointerdown(e);canvas.onpointerup(e);};
+ const e=event(point);canvas.onpointerdown(e);canvas.onpointerup(e);node('applyDesign').onclick();assert.deepEqual(solidCity.buildingDesigns[2].paintColors,['#c14367']);assert.equal(solidCity.buildingDesigns[2].groundPaint[99],'8');
+ node('previewTool').value='sample-ground';node('previewTool').onchange();node('previewMaterial').value='0';canvas.onpointerdown(e);assert.equal(node('previewMaterial').value,'7');assert.match(node('previewPaintStatus').textContent,/#c14367/);
+ const undo=method==='tower'?'towerGroundUndo':method==='blocks'?'blockUndo':'voxelUndo',redo=method==='tower'?'towerGroundRedo':method==='blocks'?'blockRedo':'voxelRedo';node(undo).onclick();node(undo).onclick();node('applyDesign').onclick();assert.equal(solidCity.buildingDesigns[2].paintColors,undefined);assert.equal(solidCity.buildingDesigns[2].groundPaint,undefined);node(redo).onclick();node(redo).onclick();node('applyDesign').onclick();assert.equal(solidCity.buildingDesigns[2].groundPaint[99],'8');
+ if(method!=='tower'){
+  node('previewTool').value='paint';node('previewTool').onchange();node('previewPaintScope').value='floor';node('solidSwatch0').onclick();const faces=projectedBuildingSurfaces(model),wall=faces.find(f=>f.side===2&&f.from===1),roof=faces.find(f=>f.side===4);paint(wall);paint(roof);node('applyDesign').onclick();
+  const {floorSurfaceMaterial}=await import('../dist/building-floor-paint.js');assert.equal(floorSurfaceMaterial(solidCity.buildingDesigns[2],wall),7);assert.equal(floorSurfaceMaterial(solidCity.buildingDesigns[2],roof),7);
+  node('previewTool').value='sample';node('previewTool').onchange();node('previewMaterial').value='0';canvas.onpointerdown(event(center(wall)));assert.equal(node('previewMaterial').value,'7');assert.match(node('previewPaintStatus').textContent,/#c14367/);
+ }
+ node('designName').value='Solid paint workflow';node('designName').oninput();node('applyDesign').onclick();const saved=validateSave(JSON.parse(serializeCity(solidCity)));assert.deepEqual(saved.buildingDesigns[2],solidCity.buildingDesigns[2]);
+}
+console.log('PASS: composed custom-color selection, ground/wall/roof painting, named sampling, palette/paint Undo/Redo, draft isolation, field edits and city restoration.');

@@ -7,7 +7,7 @@ import {serializeCity} from '../dist/save.js';
 const c=createCity();for(const [x,y] of [[23,25],[27,14]])assert.ok(build(c,'police',[{x,y}]).ok);assert.ok(startRiot(c,20,20).ok);
 for(let i=0;i<3;i++)assert.ok(dispatchPolice(c,40+i,40).ok);
 const owners=c.emergency.policeUnits.map(p=>p.owner);assert.deepEqual(owners,[-1,14*48+27,25*48+23]);assert.equal(policeResponses(c).filter(p=>p.automatic).length,0);
-const saved=serializeCity(c),loaded=validateSave(JSON.parse(saved));assert.equal(loaded.version,154);assert.deepEqual(loaded.emergency.policeUnits,c.emergency.policeUnits);assert.match(policeOrdersReport(c),/Recall squad/);assert.equal(serializeCity(c),saved);
+const saved=serializeCity(c),loaded=validateSave(JSON.parse(saved));assert.equal(loaded.version,155);assert.deepEqual(loaded.emergency.policeUnits,c.emergency.policeUnits);assert.match(policeOrdersReport(c),/Recall squad/);assert.equal(serializeCity(c),saved);
 assert.ok(recallPolice(c,owners[2]).ok);assert.equal(policeResponses(c).filter(p=>p.automatic).length,1);assert.equal(c.emergency.policeUnits.length,2);assert.equal(recallPolice(c,owners[2]).ok,false);assert.ok(dispatchPolice(c,22,20).ok);assert.equal(c.emergency.policeUnits.at(-1).owner,owners[2]);assert.deepEqual(c.emergency.policeUnits.slice(0,2),loaded.emergency.policeUnits.slice(0,2));
 // Removing the earlier station cannot transfer its order to the surviving station.
 for(const t of c.tiles.filter(t=>t.type==='police'&&t.y<20))Object.assign(t,{type:null,root:null});prunePoliceOrders(c);assert.deepEqual(c.emergency.policeUnits.map(p=>p.owner),[-1,owners[2]]);assert.equal(c.emergency.policeUnits[1].x,22);assert.equal(policeResponses(c).find(p=>p.station===owners[2]).x,22);

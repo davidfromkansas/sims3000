@@ -16,7 +16,7 @@ const design={...defaultBuildingDesign(),blocks,materials:west};const file=expor
 const old={...design};delete old.materials;assert.equal(JSON.parse(exportBuildingDesign(old)).version,2);assert.deepEqual(importBuildingDesign(exportBuildingDesign(old)),old);
 for(const version of [1,2])assert.throws(()=>importBuildingDesign(JSON.stringify({...JSON.parse(file),version})));
 assert.throws(()=>importBuildingDesign(JSON.stringify({format:'SIMS3000-building',version:3,design:old})));
-for(const bad of [null,[],Array(499).fill(0),Array(500).fill(7),Array(500).fill(-1),Array(500).fill(1.1),Array(500).fill('1'),Array(500)])assert.throws(()=>validateBuildingMaterials(bad));
+for(const bad of [null,[],Array(499).fill(0),Array(500).fill(35),Array(500).fill(-1),Array(500).fill(1.1),Array(500).fill('1'),Array(500)])assert.throws(()=>validateBuildingMaterials(bad));
 assert.throws(()=>exportBuildingDesign({...defaultBuildingDesign(),materials:west}));
 const captured=[];for(let rotation=0;rotation<4;rotation++){const points=[],fills=[],ctx={beginPath(){},closePath(){},fill(){fills.push(this.fillStyle);},stroke(){},moveTo(x,y){points.push([x,y]);},lineTo(x,y){points.push([x,y]);}};drawBuildingDesign(ctx,design,rotation);assert.ok(points.every(([x,y])=>Number.isFinite(x)&&Number.isFinite(y)&&x>=0&&x<=256&&y>=0&&y<=384));captured.push(fills);}
 assert.notDeepEqual(captured[0],captured[2],'world surface materials change visible sides with rotation');

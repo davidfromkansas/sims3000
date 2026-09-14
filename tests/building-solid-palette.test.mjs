@@ -1,0 +1,11 @@
+import assert from 'node:assert/strict';
+import {mountSolidPalette} from '../dist/building-solid-palette.js';
+let d={},writes=0,changes=0;const nodes=new Map(),node=id=>{if(!nodes.has(id))nodes.set(id,{value:'',setAttribute(k,v){this[k]=v;}});return nodes.get(id);};
+const material={value:'0',onchange(){changes++;}},status={};const palette=mountSolidPalette({querySelector:s=>node(s.slice(1))},{get:()=>d,material,applyColors:paintColors=>{d={...d,paintColors};writes++;},status});
+node('solidPaintColor').value='#ABCDEF';node('chooseSolidPaint').onclick();assert.equal(material.value,'7');assert.deepEqual(d.paintColors,['#abcdef']);assert.equal(node('solidSwatch0')['aria-pressed'],'true');assert.match(node('solidPreview0').innerHTML,/#abcdef/);
+node('solidPaintColor').value='#123456';node('chooseSolidPaint').onclick();assert.equal(material.value,'8');node('solidSwatch0').onclick();assert.equal(material.value,'7');assert.equal(node('solidPaintColor').value,'#abcdef');
+material.disabled=true;palette.refresh();const before=writes;node('chooseSolidPaint').onclick();node('solidSwatch1').onclick();assert.equal(writes,before);assert.equal(material.value,'7');assert.equal(node('chooseSolidPaint').disabled,true);
+material.disabled=false;d={};palette.refresh();assert.equal(material.value,'0','undo removing a palette resets an invalid selection');assert.equal(node('solidSwatch0').hidden,true);
+node('solidPaintColor').value='invalid';node('chooseSolidPaint').onclick();assert.match(status.textContent,/28/);assert.deepEqual(d,{});
+node('materialSet').value='facade';palette.refresh();assert.equal(node('solidPaintPalette').hidden,true);node('materialSet').value='solid';palette.refresh();assert.equal(node('solidPaintPalette').hidden,false);
+console.log('PASS: custom-color controls, normalized selection, swatches, disabled tools, removed-palette selection reset, invalid-color preservation and material groups.');

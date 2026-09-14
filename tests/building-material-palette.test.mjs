@@ -11,6 +11,6 @@ node('materialSet').value='landscape';node('materialSet').onchange();assert.equa
 material.value='1';palette.refresh();assert.equal(node('materialSet').value,'all','sampling another group reveals the selection');assert.equal(node('materialSwatch1')['aria-pressed'],'true');
 material.disabled=true;palette.refresh();node('materialSwatch6').onclick();assert.equal(material.value,'1');assert.equal(changes,1);assert.equal(node('materialSwatch6').disabled,true);
 d={...d,facade:'#123456'};palette.refresh();assert.ok(drawings>initial);
-const html=materialPaletteHTML();assert.equal((html.match(/<button /g)||[]).length,7);assert.equal((html.match(/aria-pressed="true"/g)||[]).length,1);assert.match(html,/type="hidden" value="0"/);
+const html=materialPaletteHTML();assert.equal((html.match(/<button /g)||[]).length,36);assert.equal((html.match(/aria-pressed="true"/g)||[]).length,1);assert.match(html,/type="hidden" value="0"/);
 for(let i=0;i<7;i++){points=[];drawMaterialSwatch(ctx,i,d);assert.ok(points.every(([x,y])=>Number.isFinite(x)&&Number.isFinite(y)&&x>=0&&x<=80&&y>=0&&y<=64));}
 console.log('PASS: bounded runtime texture previews, cached drawing, visual selection, authored groups, sampled-selection reveal and disabled-tool behavior.');
