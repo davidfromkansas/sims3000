@@ -989,3 +989,7 @@ Emergency rosters now support individual recall; manual orders persist station r
 ## Restore the peace
 
 A prepared unrest/recovery challenge connects police recall, automatic response, funding, containment and sustained neighborhood recovery. The verified path wins at month three; neglected funding loses. Emergency-start scenarios open held for review. See RESTORE-PEACE-MILESTONE.md. Schema 135 is unchanged.
+
+## Sawtooth factory artwork
+
+Single-tile small dirty factories can mix in an original sawtooth-roof sprite through City view, with saved explicit replacements and custom-design priority. Other industry types retain their automatic artwork. See SAWTOOTH-FACTORY-MILESTONE.md. Schema remains 135.
