@@ -771,3 +771,7 @@ Reserve undeveloped RCI neighborhoods without counting empty land as excess hous
 ## Explain the demand bars
 
 Inspect the factors behind each sector’s demand directly in Zone development, including taxes, available jobs, regional access and growth limits. See [milestone details](DEMAND-EXPLANATION-MILESTONE.md).
+
+## Growing upward challenge
+
+An original two-year challenge teaches water supply, medium-density zoning and balanced job growth. A tested route grows the town from 224 to 728 residents in eight months. See [milestone details](GROWING-UPWARD-MILESTONE.md).

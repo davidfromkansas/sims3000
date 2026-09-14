@@ -1,7 +1,7 @@
-import {ADVISOR_POLICIES,ORDINANCES,analyzeOrdinances} from './ordinance-analysis.js?v=demand-explanation-1';
-import {changeCivic,ordinanceCost} from './civic.js?v=demand-explanation-1';
-import {serializeCity} from './save.js?v=demand-explanation-1';
-import {recompute} from './engine.js?v=demand-explanation-1';
+import {ADVISOR_POLICIES,ORDINANCES,analyzeOrdinances} from './ordinance-analysis.js?v=growing-upward-1';
+import {changeCivic,ordinanceCost} from './civic.js?v=growing-upward-1';
+import {serializeCity} from './save.js?v=growing-upward-1';
+import {recompute} from './engine.js?v=growing-upward-1';
 const immediate=[['Monthly balance (§)','balance'],['Policy spending (§/month)','cost'],['Policy revenue (§/month)','revenue'],['Resident crime / 100','crime'],['Resident aura / 100','aura'],['Average air pollution / 100','air'],['Power demand','powerDemand'],['Water demand','waterDemand'],['Power delivered','powerDelivered'],['Unserved power demand','powerUnserved'],['Water delivered','waterDelivered'],['Unserved water demand','waterUnserved'],['Operating recycling capacity / month','recyclingCapacity'],['Recyclable share of new garbage (%)','recyclablePercent'],['Peak road traffic','peakTraffic'],['Cleaner industrial buildings','cleanIndustry'],['Average building flammability / 100','flammability']],longTerm=[['Life expectancy target (years)','lifeTarget'],['School-age education target / 100','schoolTarget'],['College-age education target / 100','collegeTarget']];
 const fmt=n=>n===null?'Not applicable':n.toLocaleString('en-US',{maximumFractionDigits:2});
 const departmentMeasures={utilities:['powerDemand','powerDelivered','powerUnserved','waterDemand','waterDelivered','waterUnserved'],environment:['air','cleanIndustry','recyclingCapacity','recyclablePercent'],transport:['peakTraffic','air','aura'],safety:['crime','flammability'],hea:['crime','aura']};

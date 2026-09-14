@@ -961,3 +961,7 @@ Undeveloped zoning no longer creates vacancy pressure. A verified 270-tile RCI l
 ### Demand explanation — schema 134, 275 suites
 
 The simulation now exposes a reconciled citywide demand ledger in Zone development. It retains existing coefficients and distinguishes local regional bonuses. Original-formula fidelity and late-game reward reachability remain incomplete.
+
+### Growing upward — schema 134, 276 suites
+
+The eleventh prepared challenge verifies early densification through ordinary water construction and balanced RCI rezoning. Both missing-water and insufficient-job-growth paths fail. Late-game reachability and original shipped scenarios remain incomplete.
