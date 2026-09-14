@@ -10,3 +10,9 @@ export function validateRewards(v,month,version=123){if(!v||!Number.isInteger(v.
 
 export const REWARD_JOB_TYPES=Object.keys(REWARDS).filter(key=>REWARDS[key].jobs>0);
 export function rewardJobSites(c){return rewardRoots(c).filter(t=>REWARDS[t.type].jobs>0&&rewardActive(c,t));}
+
+// Prima reward directory p.409: crime -20/20 tiles, air 450/10, water 450/5.
+// Pollution intensity is divided by 100 for this reconstruction's 0–100 scale.
+export const CITY_HALL_EFFECTS={crime:20,crimeRadius:20,air:4.5,airRadius:10,water:4.5,waterRadius:5};
+export function activeCityHalls(c){return rewardRoots(c).filter(t=>t.type==='cityHall'&&rewardActive(c,t));}
+export function cityHallCrimeRelief(halls,t){return halls.reduce((sum,h)=>sum+CITY_HALL_EFFECTS.crime*Math.max(0,1-Math.hypot(t.x-h.x-1,t.y-h.y-1)/CITY_HALL_EFFECTS.crimeRadius),0);}
