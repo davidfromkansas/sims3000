@@ -10,17 +10,17 @@ const c=createCity('Separate teaching');c.funds=100000;
 const p=c.stats.population;c.demographics.cohorts=[p/2,p/2,0,0,0,0,0,0];recompute(c);
 assert.ok(build(c,'school',[{x:23,y:25}]).ok);
 assert.equal(c.stats.childEducationCoverage,100);assert.equal(c.stats.collegeEducationCoverage,0);near(c.stats.schoolCoverage,50);
-const school=c.tiles[25*48+23],d=civicFacilityDetails(c,school);near(d.demand,p/2);assert.equal(d.capacity,300);assert.equal(d.combinedCoverage,100);assert.match(d.group,/0–14/);
+const school=c.tiles[25*48+23],d=civicFacilityDetails(c,school);near(d.demand,p/2);assert.equal(d.capacity,3000);assert.equal(d.combinedCoverage,100);assert.match(d.group,/0–14/);
 const before=[...c.civic.ageEducation];advanceEducation(c);assert.ok(c.civic.ageEducation[0]>before[0]);assert.ok(c.civic.ageEducation[1]<before[1],'school capacity cannot teach the college band');
 assert.ok(build(c,'school',[{x:27,y:21}]).ok);assert.equal(c.stats.collegeEducationCoverage,0,'more schools cannot replace college places');
-assert.ok(build(c,'college',[{x:21,y:14}]).ok);const college=c.tiles[14*48+21];assert.equal(c.stats.collegeEducationCoverage,100);near(c.stats.schoolCoverage,100);assert.equal(civicFacilityDetails(c,college).capacity,500);assert.match(civicFacilityReport(c,college),/15–24/);
-c.civic.funding.education=10;recompute(c);near(c.stats.childEducationCoverage,60/(p/2)*100);near(c.stats.collegeEducationCoverage,50/(p/2)*100);near(civicFacilityDetails(c,college).combinedCoverage,c.stats.collegeEducationCoverage);
+assert.ok(build(c,'college',[{x:21,y:14}]).ok);const college=c.tiles[14*48+21];assert.equal(c.stats.collegeEducationCoverage,100);near(c.stats.schoolCoverage,100);assert.equal(civicFacilityDetails(c,college).capacity,7500);assert.match(civicFacilityReport(c,college),/15–24/);
+c.civic.funding.education=1;recompute(c);near(c.stats.childEducationCoverage,60/(p/2)*100);near(c.stats.collegeEducationCoverage,75/(p/2)*100);near(civicFacilityDetails(c,college).combinedCoverage,c.stats.collegeEducationCoverage);
 const expected=(c.stats.childEducationCoverage+c.stats.collegeEducationCoverage)/2;near(c.stats.schoolCoverage,expected);near(c.stats.educationCoverage,expected);
 // A road-disconnected college contributes no places despite being powered.
 for(const t of civicMembers(c,college)){t.roadIds=[];t.serviceActive=false;}
 assert.equal(civicFacilityDetails(c,college).capacity,0);assert.equal(civicFacilityDetails(c,college).residents,0);
 c.civic.underfunded.education=6;recompute(c);assert.equal(c.stats.childEducationCoverage,0);assert.equal(c.stats.collegeEducationCoverage,0);
-c.civic.underfunded.education=0;c.civic.funding.education=100;recompute(c);
+c.civic.underfunded.education=0;c.civic.funding.education=10;recompute(c);
 // Removing schools leaves the college cohort supported but children unsupported.
 assert.ok(build(c,'bulldoze',[{x:23,y:25}]).ok);assert.ok(build(c,'bulldoze',[{x:27,y:21}]).ok);assert.equal(c.stats.childEducationCoverage,0);assert.equal(c.stats.collegeEducationCoverage,100);
 const eq=[...c.civic.ageEducation];advanceEducation(c);assert.ok(c.civic.ageEducation[0]<eq[0]);assert.ok(c.civic.ageEducation[1]>eq[1]);
