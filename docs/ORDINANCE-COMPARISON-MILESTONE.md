@@ -16,3 +16,5 @@ The manual's advisor meeting workflow (p.60) includes departmental ordinances an
 
 ## Validation
 All 231 suites passed. The expanded conservation comparison also passed its targeted suite after the final display additions. Regression coverage verifies detached state preservation, projection equality with actual enactment, policy repeal, conservation demand, shared education targets, empty-city handling, department scoping, unchanged-package protection, changed-selection invalidation, stale-city rejection, explicit apply/save and return behavior. Live browser verification was unavailable because the Mac was locked. Save schema remains 122. Sites publication is still pending explicit source-export authorization.
+
+Browser follow-up during the zone-growth milestone verified Free clinics selected through Randall: comparison reduced monthly balance from §64 to §59 and raised the life-expectancy target by three years. Back returned to Randall without applying the policy.

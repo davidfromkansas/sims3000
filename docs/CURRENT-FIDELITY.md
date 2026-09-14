@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 232 regression suites, save schema 122. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 233 regression suites, save schema 122. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -851,3 +851,7 @@ Civic advisor checkpoint: original portraits for Maria Montoya and Randall Shoop
 Advisor policy checkpoint: compare departmental or citywide ordinance packages against actual detached simulation, separate immediate effects from long-term targets and explicitly apply reviewed changes. See [ordinance comparisons](ORDINANCE-COMPARISON-MILESTONE.md). All 231 suites passed. Browser verification unavailable while Mac locked; source only, publication pending.
 
 Financial advisor checkpoint: meet Mortimer and inspect month-by-month treasury projections with actual repayment dates, cash-shortage warnings and budget/policy shortcuts. See [financial advisor](FINANCIAL-ADVISOR-MILESTONE.md). All 232 suites passed. Browser verification unavailable while Mac locked; source only, publication pending.
+
+Zone development checkpoint: shared simulation conditions explain stalled lots, with sector/status filters, pagination and map/inspection shortcuts. See [zone growth diagnostics](ZONE-GROWTH-MILESTONE.md). All 233 suites passed, with browser filtering and location checks verified; source only, publication pending.
+
+Advisor browser follow-up: Mortimer’s portrait and ten-year horizon, Randall’s portrait, the free-clinic comparison (monthly balance 64 to 59; health target +3 years), return navigation and hospital tool selection verified after browser access resumed. No policies were applied and no city was saved. No browser errors or warnings were reported.
