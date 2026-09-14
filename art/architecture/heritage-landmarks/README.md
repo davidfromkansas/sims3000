@@ -1,0 +1,15 @@
+# Heritage landmark artwork
+
+Three original procedural miniatures have twelve transparent four-view renders. Generate them with `node scripts/render-heritage-landmarks.mjs`, then `python3 scripts/assemble-heritage-landmarks.py`. All twelve passed transparent-boundary checks and the contact sheet was inspected. All three are now registered in the local playable catalog, which contains nineteen landmarks. Focused placement, four-view depth rendering, uniqueness, demolition/rebuilding, scenario counts, gallery and saved continuation checks passed.
+
+## Sources and interpretation
+
+- Brandenburg Gate: [Berlin's official tourism organization](https://www.visitberlin.de/en/brandenburg-gate) describes two rows of six Doric columns and the Quadriga. The model preserves those column rows, five intervening passage bays, side pavilions, attic and a simplified four-horse chariot. Dimensions, reliefs, sculpture and proportions are authored miniatures; they are not survey geometry or the exact original game asset.
+- Parthenon: [Acropolis Restoration Service](https://www.ysma.gr/en/monuments/parthenon/) and its [sculpture publication](https://www.ysma.gr/wp-content/uploads/2018/07/ParthenonSculpture_ENG.pdf) document the Doric temple and eight-by-seventeen outer colonnade. The model uses that perimeter count with shared corner columns and an open ruin interpretation. Interior fragments, pediment remnants and the extent of retained architraves are authored, not a reconstruction of a specific restoration date. Exact original-game ruin composition remains unverified.
+- Taj Mahal: [official exterior description](https://www.tajmahal.gov.in/the-taj-exteriors.aspx) and [interior/overall composition](https://tajmahal.gov.in/the-taj-interiors.aspx/) describe the symmetrical tomb, corner minarets, main dome and chamfered corners. The model focuses on the tomb platform, four minarets, pointed arch recesses, central dome and four smaller roof pavilions. The complete garden, riverfront terrace and outlying buildings are outside this miniature. Decoration, dome profiles, minaret details and dimensions are simplified.
+
+All three names are in the existing development landmark inventory. Original game footprints and complete compositions remain unverified; runtime mappings are registered, leaving 81 inventory entries unmapped. Authored footprints are 3×3 for Brandenburg Gate and 4×4 for Parthenon/Taj Mahal. City schema 154 preserves the new types and rejects new landmarks mislabeled as older saves. Browser acceptance remains pending.
+
+## Feedback exercise
+
+Import `review-challenge.city.json`, place the three landmarks and keep all of them for two monthly checks. Rotate the gallery previews and city, compare silhouettes at ordinary zoom, try duplicate placement, demolish from a distant footprint corner and rebuild. Save before victory and restore. The original challenge uses a twelve-month deadline; it is not a recreation of a shipped scenario. Generate and verify it with `node scripts/create-heritage-landmark-review.mjs`.

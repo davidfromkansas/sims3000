@@ -1,12 +1,13 @@
-import {splitBuildingFloors} from './building-floor-paint.js?v=science-center-2';
-import {buildingBlockFaces} from './building-blocks.js?v=science-center-2';
-import {buildingVoxelFaces} from './building-voxels.js?v=science-center-2';
-import {projectBuildingPoint} from './building-footprints.js?v=science-center-2';
-import {validateBuildingMaterials,BUILDING_MATERIALS} from './building-materials.js?v=science-center-2';
+import {BUILDING_MATERIAL_LIMIT} from './building-paint-colors.js?v=architecture-workspace-1';
+import {splitBuildingFloors} from './building-floor-paint.js?v=architecture-workspace-1';
+import {buildingBlockFaces} from './building-blocks.js?v=architecture-workspace-1';
+import {buildingVoxelFaces} from './building-voxels.js?v=architecture-workspace-1';
+import {projectBuildingPoint} from './building-footprints.js?v=architecture-workspace-1';
+import {validateBuildingMaterials,BUILDING_MATERIALS} from './building-materials.js?v=architecture-workspace-1';
 // The drawing order is the same as the rendered model. Picking walks it backwards
 // so an occluded face never wins over the face actually painted on screen.
 export function projectedBuildingSurfaces(design,rotation=0){const faces=design.voxels?buildingVoxelFaces(design.voxels,rotation,design.footprint,design.blockGeometry):design.blocks?buildingBlockFaces(design.blocks,rotation,design.footprint):[];return splitBuildingFloors(faces).map(face=>({...face,index:face.y*10+face.x,polygon:face.points.map(point=>projectBuildingPoint(point,rotation,design.footprint))}));}
 export function pointInBuildingSurface(point,polygon){if(!Number.isFinite(point?.x)||!Number.isFinite(point?.y))return false;let sign=0;for(let i=0;i<polygon.length;i++){const a=polygon[i],b=polygon[(i+1)%polygon.length],cross=(b[0]-a[0])*(point.y-a[1])-(b[1]-a[1])*(point.x-a[0]);if(Math.abs(cross)<1e-7)continue;const side=Math.sign(cross);if(sign&&side!==sign)return false;sign=side;}return sign!==0;}
 export function pickBuildingSurface(surfaces,point,camera={zoom:1,x:0,y:0}){if(!Number.isFinite(camera.zoom)||camera.zoom<=0||![camera.x,camera.y].every(Number.isFinite))return null;const local={x:(point.x-camera.x)/camera.zoom,y:(point.y-camera.y)/camera.zoom};for(let i=surfaces.length-1;i>=0;i--)if(pointInBuildingSurface(local,surfaces[i].polygon))return surfaces[i];return null;}
-export function paintPickedSurfaces(materials,surfaces,material){if(!Number.isInteger(material)||material<0||material>=BUILDING_MATERIALS.length)throw Error('Choose a valid building material.');const next=materials?validateBuildingMaterials(materials):Array(500).fill(0);for(const surface of surfaces){if(!Number.isInteger(surface.index)||surface.index<0||surface.index>=100||!Number.isInteger(surface.side)||surface.side<0||surface.side>4)throw Error('Choose a valid building surface.');next[surface.index*5+surface.side]=material;}return next;}
+export function paintPickedSurfaces(materials,surfaces,material){if(!Number.isInteger(material)||material<0||material>=BUILDING_MATERIAL_LIMIT)throw Error('Choose a valid building material.');const next=materials?validateBuildingMaterials(materials):Array(500).fill(0);for(const surface of surfaces){if(!Number.isInteger(surface.index)||surface.index<0||surface.index>=100||!Number.isInteger(surface.side)||surface.side<0||surface.side>4)throw Error('Choose a valid building surface.');next[surface.index*5+surface.side]=material;}return next;}
 export function samplePickedSurface(materials,surface){return materials?.[surface.index*5+surface.side]||0;}

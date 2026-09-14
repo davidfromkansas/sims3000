@@ -1,0 +1,21 @@
+import {readCustomBuildingLibrary,saveCustomBuildingLibrary,customBuildingIdentity,MAX_CUSTOM_BUILDINGS} from './custom-building-library.js?v=architecture-workspace-1';
+import {sameBuildingFootprint} from './building-footprints.js?v=architecture-workspace-1';
+const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+export function mountCustomBuildingLibrary({host,footprint,getDraft,selectDesign,storage}){
+ let saved,models,pending=null;
+ try{saved=readCustomBuildingLibrary(storage);models=structuredClone(saved);}catch(error){host.innerHTML='<p role="status"></p>';host.querySelector('p').textContent=`Custom building list unavailable: ${error.message}`;return;}
+ host.innerHTML='<details><summary>Saved custom buildings</summary><p>Keep up to 100 models in this browser for use across cities. Applied models also stay in city saves. Export building files in the designer to keep a portable backup.</p><div data-custom-rows></div><p data-custom-status role="status"></p><div class="actions"><button data-custom-add>Add previewed custom model</button><button data-custom-confirm hidden>Replace listed model</button><button data-custom-dismiss hidden>Keep listed model</button><button data-custom-save>Save list</button><button data-custom-reset>Discard list edits</button></div><p class="fine">Adding and removing entries changes this draft list. Save list keeps those edits; closing this dialog discards unsaved list edits. Removing an entry does not remove artwork already applied to a city.</p></details>';
+ const $=selector=>host.querySelector(selector),status=$('[data-custom-status]');
+ const draw=()=>{
+  const changed=JSON.stringify(models)!==JSON.stringify(saved);$('[data-custom-save]').disabled=!changed;$('[data-custom-reset]').disabled=!changed;
+  $('[data-custom-confirm]').hidden=$('[data-custom-dismiss]').hidden=!pending;
+  $('[data-custom-rows]').innerHTML=models.length?`<ul>${models.map((model,i)=>`<li>${escape(model.name)} · ${model.footprint?.width??1} × ${model.footprint?.height??1} <button data-custom-use="${i}" ${(!footprint||sameBuildingFootprint(model.footprint,footprint))?'':'disabled'}>Preview</button> <button data-custom-remove="${i}">Remove</button></li>`).join('')}</ul>`:'<p>No custom models in this list yet. Import a model above, then add it here.</p>';
+  host.querySelectorAll('[data-custom-use]').forEach(button=>button.onclick=()=>{const model=models[Number(button.dataset.customUse)];if((!footprint||sameBuildingFootprint(model.footprint,footprint)))selectDesign(structuredClone(model));});
+  host.querySelectorAll('[data-custom-remove]').forEach(button=>button.onclick=()=>{models.splice(Number(button.dataset.customRemove),1);pending=null;status.textContent='Removed from the draft list. Save list to keep this change.';draw();});
+ };
+ $('[data-custom-add]').onclick=()=>{const model=getDraft();pending=null;if(!model){status.textContent='Import or preview a custom model first.';draw();return;}const index=models.findIndex(item=>customBuildingIdentity(item)===customBuildingIdentity(model));if(index>=0){pending={index,model:structuredClone(model)};status.textContent='A model with this name and footprint is already listed. Replace it or keep the listed model?';}else if(models.length>=MAX_CUSTOM_BUILDINGS)status.textContent='The list is full. Remove a model before adding another.';else{models.push(structuredClone(model));status.textContent='Added to the draft list. Save list to keep it.';}draw();};
+ $('[data-custom-confirm]').onclick=()=>{if(!pending)return;models[pending.index]=pending.model;pending=null;status.textContent='Replaced in the draft list. Save list to keep it.';draw();};
+ $('[data-custom-dismiss]').onclick=()=>{pending=null;status.textContent='Kept the listed model.';draw();};
+ $('[data-custom-save]').onclick=()=>{try{saveCustomBuildingLibrary(models,storage);saved=structuredClone(models);pending=null;status.textContent='Custom building list saved in this browser.';draw();}catch(error){status.textContent=`Could not save the list: ${error.message}. Your draft remains available.`;}};
+ $('[data-custom-reset]').onclick=()=>{models=structuredClone(saved);pending=null;status.textContent='Unsaved list edits discarded.';draw();};draw();
+}

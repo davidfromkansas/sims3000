@@ -1,0 +1,226 @@
+{
+  "baselineCommit": "f2c111c1082cc478ffee16ee0e25c23908e28c93",
+  "method": "Sequential Node processes on the same Mac; graph benchmark uses three warmups and seven samples, monthly benchmark uses three samples. No CPU profiler during timings. Synthetic cities, no browser interaction claim.",
+  "graphs": {
+    "before": {
+      "runtime": "v22.19.0",
+      "platform": "darwin",
+      "scope": "Synthetic 256 maps, three warmups and seven measured road/rail graph constructions. No browser FPS or monthly simulation claim.",
+      "results": [
+        {
+          "layout": "empty",
+          "tiles": 65536,
+          "roadGroups": 0,
+          "streetEdges": 0,
+          "samplesMs": [
+            20.36429099999998,
+            21.401417000000038,
+            17.96895900000004,
+            17.849750000000085,
+            21.598124999999982,
+            17.647166999999968,
+            18.127083999999968
+          ],
+          "medianMs": 18.127083999999968
+        },
+        {
+          "layout": "roads",
+          "tiles": 65536,
+          "roadGroups": 1,
+          "streetEdges": 43860,
+          "samplesMs": [
+            24.89779199999998,
+            22.500749999999925,
+            23.72158300000001,
+            22.042249999999967,
+            23.67766699999993,
+            21.486916000000065,
+            24.949792000000116
+          ],
+          "medianMs": 23.67766699999993
+        },
+        {
+          "layout": "mixed",
+          "tiles": 65536,
+          "roadGroups": 12,
+          "streetEdges": 49470,
+          "samplesMs": [
+            24.677791999999954,
+            27.837999999999965,
+            28.063499999999976,
+            28.027249999999867,
+            26.01958300000001,
+            28.667249999999967,
+            28.239624999999933
+          ],
+          "medianMs": 28.027249999999867
+        }
+      ]
+    },
+    "after": {
+      "runtime": "v22.19.0",
+      "platform": "darwin",
+      "scope": "Synthetic 256 maps, three warmups and seven measured road/rail graph constructions. No browser FPS or monthly simulation claim.",
+      "results": [
+        {
+          "layout": "empty",
+          "tiles": 65536,
+          "roadGroups": 0,
+          "streetEdges": 0,
+          "samplesMs": [
+            11.533832999999959,
+            10.221957999999972,
+            10.225124999999935,
+            10.64529200000004,
+            10.398208999999952,
+            9.879625000000033,
+            13.992750000000001
+          ],
+          "medianMs": 10.398208999999952
+        },
+        {
+          "layout": "roads",
+          "tiles": 65536,
+          "roadGroups": 1,
+          "streetEdges": 43860,
+          "samplesMs": [
+            16.26587500000005,
+            15.355666999999812,
+            14.727041999999983,
+            14.644832999999835,
+            14.401499999999942,
+            12.121415999999954,
+            13.447875000000067
+          ],
+          "medianMs": 14.644832999999835
+        },
+        {
+          "layout": "mixed",
+          "tiles": 65536,
+          "roadGroups": 12,
+          "streetEdges": 49470,
+          "samplesMs": [
+            20.247208,
+            18.405124999999998,
+            20.225750000000062,
+            18.998416000000134,
+            51.98745800000006,
+            16.61895800000002,
+            16.072333999999955
+          ],
+          "medianMs": 18.998416000000134
+        }
+      ]
+    }
+  },
+  "simulation": {
+    "before": {
+      "runtime": "v22.19.0",
+      "platform": "darwin",
+      "results": [
+        {
+          "size": 96,
+          "width": 48,
+          "population": 30720,
+          "recomputeMs": 47,
+          "monthMs": 135,
+          "samples": [
+            {
+              "recomputeMs": 122.741583,
+              "monthMs": 281.806792,
+              "population": 30720
+            },
+            {
+              "recomputeMs": 46.948166000000015,
+              "monthMs": 134.86749999999995,
+              "population": 30720
+            },
+            {
+              "recomputeMs": 26.40833299999997,
+              "monthMs": 119.74625000000003,
+              "population": 30720
+            }
+          ]
+        },
+        {
+          "size": 256,
+          "width": 96,
+          "population": 122880,
+          "recomputeMs": 263,
+          "monthMs": 1316,
+          "samples": [
+            {
+              "recomputeMs": 288.1630419999999,
+              "monthMs": 1315.560792,
+              "population": 122880
+            },
+            {
+              "recomputeMs": 262.45433300000013,
+              "monthMs": 1330.666291,
+              "population": 122880
+            },
+            {
+              "recomputeMs": 262.74874999999975,
+              "monthMs": 1302.5960420000001,
+              "population": 122880
+            }
+          ]
+        }
+      ]
+    },
+    "after": {
+      "runtime": "v22.19.0",
+      "platform": "darwin",
+      "results": [
+        {
+          "size": 96,
+          "width": 48,
+          "population": 30720,
+          "recomputeMs": 48,
+          "monthMs": 120,
+          "samples": [
+            {
+              "recomputeMs": 110.745375,
+              "monthMs": 277.156709,
+              "population": 30720
+            },
+            {
+              "recomputeMs": 47.85570800000005,
+              "monthMs": 118.35837500000002,
+              "population": 30720
+            },
+            {
+              "recomputeMs": 28.481083000000012,
+              "monthMs": 120.35033299999998,
+              "population": 30720
+            }
+          ]
+        },
+        {
+          "size": 256,
+          "width": 96,
+          "population": 122880,
+          "recomputeMs": 260,
+          "monthMs": 1249,
+          "samples": [
+            {
+              "recomputeMs": 315.3505,
+              "monthMs": 1246.5257500000002,
+              "population": 122880
+            },
+            {
+              "recomputeMs": 259.67983300000014,
+              "monthMs": 1249.2911670000003,
+              "population": 122880
+            },
+            {
+              "recomputeMs": 246.31433300000026,
+              "monthMs": 1368.9160000000002,
+              "population": 122880
+            }
+          ]
+        }
+      ]
+    }
+  }
+}

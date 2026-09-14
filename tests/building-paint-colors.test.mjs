@@ -1,0 +1,44 @@
+import assert from 'node:assert/strict';
+import {validatePaintColors,encodePaintMaterial,decodePaintMaterial,chooseSolidPaint,validatePaintReferences,solidPaintColor} from '../dist/building-paint-colors.js';
+for(let i=0;i<35;i++){const code=encodePaintMaterial(i);assert.equal(code.length,1);assert.equal(decodePaintMaterial(code),i);}assert.equal(decodePaintMaterial('0'),-1);
+for(const bad of [-1,35,NaN,.5])assert.throws(()=>encodePaintMaterial(bad));for(const bad of ['',null,'aa','A','!'])assert.throws(()=>decodePaintMaterial(bad));
+for(const bad of [[],['red'],['#fff'],['#12345g'],Array(29).fill('#123456'),Array(2)])assert.throws(()=>validatePaintColors(bad));
+const original={materials:Array(500).fill(0),surfacePaint:'0'.repeat(12000),groundPaint:'0'.repeat(100)},copy=structuredClone(original);
+const first=chooseSolidPaint(original,'#AABBCC');assert.equal(first.material,7);assert.deepEqual(first.design.paintColors,['#aabbcc']);assert.deepEqual(original,copy);
+const second=chooseSolidPaint(first.design,'#112233');assert.equal(second.material,8);const same=chooseSolidPaint(second.design,'#aabbcc');assert.equal(same.material,7);assert.equal(same.design.paintColors.length,2);assert.equal(solidPaintColor(8,same.design),'#112233');
+for(const field of ['materials','surfacePaint','groundPaint']){const d={...first.design};if(field==='materials')d.materials=Array(500).fill(8);else d[field]=encodePaintMaterial(8).repeat(field==='surfacePaint'?12000:100);assert.throws(()=>validatePaintReferences(d),/missing/);}
+const colors=Array.from({length:28},(_,i)=>'#'+i.toString(16).padStart(6,'0')),full={paintColors:colors,materials:Array.from({length:500},(_,i)=>7+i%28)};assert.throws(()=>chooseSolidPaint(full,'#abcdef'),/used.*history/);
+const available={...full,materials:full.materials.map(m=>m===12?0:m)};const replaced=chooseSolidPaint(available,'#ABCDEF');assert.equal(replaced.material,12);assert.equal(replaced.design.paintColors[5],'#abcdef');assert.equal(full.paintColors[5],'#000005');for(let i=0;i<28;i++)if(i!==5)assert.equal(replaced.design.paintColors[i],full.paintColors[i]);
+console.log('PASS: compact solid-paint encoding, normalized custom colors, nonmutating selection/reuse, all surface reference validation, safe unused-slot replacement and full-palette protection.');
+const {defaultBuildingDesign,validateBuildingDesign,exportBuildingDesign,importBuildingDesign,drawBuildingDesign}=await import('../dist/building-designs.js');
+const {paintFloorSurfaces,floorSurfaceMaterial}=await import('../dist/building-floor-paint.js');
+const {paintGround,groundMaterial}=await import('../dist/building-ground-paint.js');
+const {createCity,validateSave,VERSION}=await import('../dist/engine.js');
+const {serializeCity}=await import('../dist/save.js');
+const model={...defaultBuildingDesign(),blocks:Array(100).fill(0),paintColors:Array.from({length:28},(_,i)=>i===27?'#ff0044':'#'+i.toString(16).padStart(6,'0'))};model.blocks[44]=4;model.materials=Array(500).fill(34);model.surfacePaint='z'.repeat(12000);model.groundPaint=paintGround(model,[0,1],34);
+assert.equal(groundMaterial(model,0),34);const face={x:4,y:4,side:2,from:1,to:2};assert.equal(floorSurfaceMaterial(model,face),34);assert.equal(paintFloorSurfaces(model,[face],34).length,12000);
+function colorsDrawn(d,r){const colors=[];drawBuildingDesign({beginPath(){},closePath(){},moveTo(){},lineTo(){},stroke(){},fill(){colors.push(this.fillStyle);}},d,r);return colors;}
+for(let r=0;r<4;r++){const colors=colorsDrawn(model,r);assert.ok(colors.includes('#ff0044'));assert.ok(colors.every(c=>/^#[0-9a-f]{6}$/i.test(c)));assert.deepEqual(colorsDrawn({...model,facade:'#123456',windows:'#abcdef',accent:'#987654'},r),colors,'explicit solid paint is independent from whole-building colors');}
+const portable=exportBuildingDesign(model);assert.equal(JSON.parse(portable).version,14);assert.deepEqual(importBuildingDesign(portable),model);
+for(const version of [1,6,11,12,13])assert.throws(()=>importBuildingDesign(JSON.stringify({...JSON.parse(portable),version})));
+assert.throws(()=>validateBuildingDesign({...model,paintColors:undefined}),/missing/);assert.throws(()=>validateBuildingDesign({...model,paintColors:['#abcdef']}),/missing/);
+const c=createCity();c.buildingDesigns[2]=model;const saved=JSON.parse(serializeCity(c));assert.equal(saved.version,VERSION);assert.deepEqual(validateSave(saved).buildingDesigns[2],model);saved.version=154;assert.throws(()=>validateSave(saved),/155/);
+const old=JSON.parse(serializeCity(createCity()));old.version=154;assert.equal(validateSave(old).version,VERSION);
+const maximum={...defaultBuildingDesign(),footprint:{width:5,height:5},voxels:Array(100).fill(0xffffff),paintColors:model.paintColors,materials:Array(500).fill(34),surfacePaint:'z'.repeat(12000),surfaceDetails:'11110'.repeat(2400),props:Array.from({length:64},(_,i)=>({kind:'tree',x:i%10,y:Math.floor(i/10),z:3.4800009999999997,rotation:i%4})),blockGeometry:'0'.repeat(2400),groundPaint:'z'.repeat(100),decals:Array.from({length:32},(_,i)=>({kind:5,side:i%4,plane:10,u:9.999,z:3.479,width:9.999,height:3.479}))};
+const maximumFile=exportBuildingDesign(maximum);assert.ok(Buffer.byteLength(maximumFile)<32768,`${Buffer.byteLength(maximumFile)} bytes`);assert.deepEqual(importBuildingDesign(maximumFile),maximum);
+console.log(`PASS: solid walls/roofs/ground across four views, independent building colors, format-14 and city-version-155 gates, prior-city migration and maximum ${Buffer.byteLength(maximumFile)}-byte combined design.`);
+const {saveCustomBuildingLibrary,readCustomBuildingLibrary}=await import('../dist/custom-building-library.js');
+const {copyBuildingSet,applyBuildingSet}=await import('../dist/building-sets.js');
+const entries=new Map(),storage={getItem:key=>entries.get(key)??null,setItem:(key,value)=>entries.set(key,value)};
+saveCustomBuildingLibrary([model,maximum],storage);
+const restored=readCustomBuildingLibrary(storage);assert.deepEqual(restored,[model,maximum]);
+const source=createCity('Paint source'),destination=createCity('Paint destination');
+source.buildingDesigns={'2':restored[0],'2@5x5':restored[1]};
+const set=copyBuildingSet(validateSave(JSON.parse(serializeCity(source))));applyBuildingSet(destination,set);
+assert.deepEqual(destination.buildingDesigns,source.buildingDesigns);
+destination.buildingDesigns[2].paintColors[27]='#112233';
+assert.equal(source.buildingDesigns[2].paintColors[27],'#ff0044','transferred palettes are independent');
+assert.equal(set.buildingDesigns[2].paintColors[27],'#ff0044','applying a set does not alias its palette');
+const before=serializeCity(destination),invalid=structuredClone(set);invalid.buildingDesigns['2@5x5'].paintColors=['#abcdef'];
+assert.throws(()=>applyBuildingSet(destination,invalid),/missing/);assert.equal(serializeCity(destination),before,'invalid palette transfer must leave the destination unchanged');
+console.log('PASS: solid-paint browser-storage library and saved-city building-set transfers, independent palettes and atomic invalid-palette rejection.');

@@ -1,0 +1,107 @@
+{
+  "before": {
+    "runtime": "v22.19.0",
+    "scope": "Synthetic transit districts, three samples; no browser responsiveness claim.",
+    "results": [
+      {
+        "size": 96,
+        "width": 36,
+        "samples": [
+          {
+            "recomputeMs": 123.24137499999999,
+            "monthMs": 292.619875,
+            "trainRiders": 3250.233652724346
+          },
+          {
+            "recomputeMs": 45.59883400000001,
+            "monthMs": 171.95412499999998,
+            "trainRiders": 3250.233652724346
+          },
+          {
+            "recomputeMs": 29.05479200000002,
+            "monthMs": 156.15224999999998,
+            "trainRiders": 3250.233652724346
+          }
+        ],
+        "recomputeMs": 45.59883400000001,
+        "monthMs": 171.95412499999998
+      },
+      {
+        "size": 256,
+        "width": 60,
+        "samples": [
+          {
+            "recomputeMs": 443.635708,
+            "monthMs": 1941.839584,
+            "trainRiders": 9028.169518788043
+          },
+          {
+            "recomputeMs": 398.97845800000005,
+            "monthMs": 1947.2222080000001,
+            "trainRiders": 9028.169518788043
+          },
+          {
+            "recomputeMs": 429.8911670000007,
+            "monthMs": 1921.1072919999988,
+            "trainRiders": 9028.169518788043
+          }
+        ],
+        "recomputeMs": 429.8911670000007,
+        "monthMs": 1941.839584
+      }
+    ]
+  },
+  "after": {
+    "runtime": "v22.19.0",
+    "scope": "Synthetic transit districts, three samples; no browser responsiveness claim.",
+    "results": [
+      {
+        "size": 96,
+        "width": 36,
+        "samples": [
+          {
+            "recomputeMs": 98.94829100000001,
+            "monthMs": 223.40729199999998,
+            "trainRiders": 3250.233652724346
+          },
+          {
+            "recomputeMs": 27.692375000000027,
+            "monthMs": 94.94912499999992,
+            "trainRiders": 3250.233652724346
+          },
+          {
+            "recomputeMs": 21.799458999999956,
+            "monthMs": 87.31666599999994,
+            "trainRiders": 3250.233652724346
+          }
+        ],
+        "recomputeMs": 27.692375000000027,
+        "monthMs": 94.94912499999992
+      },
+      {
+        "size": 256,
+        "width": 60,
+        "samples": [
+          {
+            "recomputeMs": 184.85079100000007,
+            "monthMs": 861.2995409999999,
+            "trainRiders": 9028.169518788043
+          },
+          {
+            "recomputeMs": 171.3882080000003,
+            "monthMs": 829.745958,
+            "trainRiders": 9028.169518788043
+          },
+          {
+            "recomputeMs": 166.26987499999996,
+            "monthMs": 887.4886250000004,
+            "trainRiders": 9028.169518788043
+          }
+        ],
+        "recomputeMs": 171.3882080000003,
+        "monthMs": 861.2995409999999
+      }
+    ]
+  },
+  "baselineCommit": "f2c111c1082cc478ffee16ee0e25c23908e28c93"
+}

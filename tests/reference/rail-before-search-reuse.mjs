@@ -1,0 +1,31 @@
+import {civicSize} from '../../dist/civic-footprints.js?v=architecture-collection-58';
+import {REWARDS,rewardSize} from '../../dist/rewards.js?v=architecture-collection-58';
+import {civicJobSites,civicJobCapacity} from '../../dist/civic-jobs.js?v=architecture-collection-58';
+import {tunnelEdges,routeLength} from '../../dist/tunnels.js?v=architecture-collection-58';
+import {MinQueue} from '../../dist/highway.js?v=architecture-collection-58';
+// Absent network nodes share an immutable list; only real tracks/roads allocate adjacency.
+const EMPTY_EDGES=Object.freeze([]);
+export const STATIONS={trainStation:{name:'Train station',cost:500,upkeep:10},subwayStation:{name:'Subway station',cost:500,upkeep:10},railTransfer:{name:'Rail–subway connection',cost:1000,upkeep:20}};
+export function railNetwork(c){
+ const tiles=c.tiles,N=tiles.length,n=Math.sqrt(N),enabled=c.transport.funding>0&&c.transport.condition>20&&c.transport.underfunded<6,edges=Array(N*2).fill(EMPTY_EDGES),present=i=>i<N?tiles[i].rail:tiles[i-N].subway;
+ const nearby=(t,mode,includeCenter=false)=>{const out=[];for(const [dx,dy]of (includeCenter?[[0,0],[1,0],[-1,0],[0,1],[0,-1]]:[[1,0],[-1,0],[0,1],[0,-1]])){const x=t.x+dx,y=t.y+dy;if(x<0||y<0||x>=n||y>=n)continue;const i=y*n+x;if(mode==='rail'?tiles[i].rail:tiles[i].subway)out.push(i+(mode==='subway'?N:0));}return out;};
+ for(let i=0;i<N*2;i++){if(!present(i))continue;edges[i]=[];const t=tiles[i%N],mode=i<N?'rail':'subway';for(const j of nearby(t,mode)){const u=tiles[j%N];if(mode==='rail'){const axis=t.x===u.x?'y':'x';if(t.terrain==='water'&&t.railAxis!==axis||u.terrain==='water'&&u.railAxis!==axis)continue;}edges[i].push(j);}}
+ for(const [a,b]of tunnelEdges(c,'rail')){edges[a].push(b);edges[b].push(a);}
+ const transfers=new Map();
+ const stations=tiles.filter(t=>STATIONS[t.type]);
+ for(const t of tiles){t.railRiders=0;t.subwayRiders=0;t.stationRiders=0;t.stationActive=false;t.stationGroups=[];t.railAccess=false;}
+ for(const s of stations){const rail=nearby(s,'rail'),subway=nearby(s,'subway',true);s.stationNodes=s.type==='trainStation'?rail:s.type==='subwayStation'?subway:rail.length&&subway.length?[...rail,...subway]:[];s.stationActive=enabled&&!s.fire&&!s.rubble&&!s.radiation&&s.stationNodes.length>0;if(s.type==='railTransfer'&&s.stationActive){for(const a of rail)for(const b of subway){edges[a].push(b);edges[b].push(a);transfers.set(a+':'+b,s);transfers.set(b+':'+a,s);}}}
+ const groups=new Int32Array(N*2).fill(-1);let g=0;for(let i=0;i<N*2;i++){if(!present(i)||groups[i]>=0)continue;const q=[i];groups[i]=g;for(let k=0;k<q.length;k++)for(const j of edges[q[k]])if(groups[j]<0){groups[j]=g;q.push(j);}g++;}
+ const railNetworks={};
+ for(const s of stations){s.stationGroups=[...new Set(s.stationNodes.map(i=>groups[i]).filter(id=>id>=0))];for(const id of s.stationGroups){railNetworks[id]??={id,railTiles:0,subwayTiles:0,stations:[]};railNetworks[id].stations.push(s.y*n+s.x);}}
+ if(stations.length)for(let i=0;i<N*2;i++){const group=railNetworks[groups[i]];if(group)group[i<N?'railTiles':'subwayTiles']++;}
+ const nearStations=t=>stations.filter(s=>s.stationActive&&Math.max(t.x-s.x,s.x-t.x-((REWARDS[t.type]?.jobs?rewardSize(t):civicSize(t))-1),t.y-s.y,s.y-t.y-((REWARDS[t.type]?.jobs?rewardSize(t):civicSize(t))-1))<=3),zoneGroups=new Map(),uses=Array.from({length:g},()=>new Set());
+ for(const t of [...tiles.filter(t=>['residential','commercial','industrial'].includes(t.type)),...civicJobSites(c)]){const gs=new Set(nearStations(t).flatMap(s=>s.stationNodes.map(i=>groups[i])));zoneGroups.set(t,gs);for(const id of gs)uses[id].add(civicJobCapacity(t)?'civicJobs':t.type);}
+ for(const [t,gs]of zoneGroups){t.railAccess=[...gs].some(id=>uses[id].has('residential')&&(uses[id].has('commercial')||uses[id].has('industrial')||uses[id].has('civicJobs')));t.access=t.access||t.railAccess;}
+ function allocate(home,workplaces,remaining,maxPassengers){if(!home.railAccess||maxPassengers<=0)return{passengers:0,travel:0};const starts=nearStations(home),prev=new Int32Array(N*2).fill(-2),origin=new Map(),q=new MinQueue(),distance=new Float64Array(N*2).fill(Infinity);for(const s of starts)for(const i of s.stationNodes)if(prev[i]===-2){prev[i]=-1;distance[i]=0;q.push(i,0);origin.set(i,s);}const destinations=new Map();for(const w of workplaces){if(!remaining.get(w))continue;for(const s of nearStations(w))for(const i of s.stationNodes){if(!destinations.has(i))destinations.set(i,[]);destinations.get(i).push({work:w,station:s});}}
+ let passengers=0,travel=0;
+ while(q.length&&passengers<maxPassengers){const item=q.pop(),i=item.node;if(item.cost!==distance[i])continue;for(const {work,station}of destinations.get(i)||[]){const from=origin.get(i);if(from===station)continue;const count=Math.min(maxPassengers-passengers,remaining.get(work)||0);if(count<=0)continue;const path=[];for(let j=i;j>=0;j=prev[j])path.push(j);for(const j of path){if(j<N)tiles[j].railRiders+=count;else tiles[j-N].subwayRiders+=count;}for(let k=1;k<path.length;k++){const transfer=transfers.get(path[k-1]+':'+path[k]);if(transfer)transfer.stationRiders+=count;}from.stationRiders+=count;station.stationRiders+=count;remaining.set(work,remaining.get(work)-count);passengers+=count;travel+=count*routeLength(c,path);}
+ for(const j of edges[i]){const a=tiles[i%N],b=tiles[j%N],next=distance[i]+Math.max(1,Math.abs(a.x-b.x)+Math.abs(a.y-b.y));if(next<distance[j]){distance[j]=next;prev[j]=i;origin.set(j,origin.get(i));q.push(j,next);}}}
+ return{passengers,travel};}
+ return{allocate,stats:()=>({railNetworks,railTiles:tiles.filter(t=>t.rail).length,subwayTiles:tiles.filter(t=>t.subway).length,stations:stations.length,activeStations:stations.filter(s=>s.stationActive).length,stationExpense:Math.round(stations.reduce((v,s)=>v+STATIONS[s.type].upkeep,0)*c.transport.funding/100),trackExpense:Math.round(tiles.reduce((v,t)=>v+(t.rail?.2:0)+(t.subway?.4:0),0)*c.transport.funding/100)})};
+}

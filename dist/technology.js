@@ -1,5 +1,5 @@
-import {POWER_PLANTS} from './power.js?v=science-center-2';
-import {WATER_STRUCTURES,WASTE_STRUCTURES} from './utilities.js?v=science-center-2';
+import {POWER_PLANTS} from './power.js?v=architecture-workspace-1';
+import {WATER_STRUCTURES,WASTE_STRUCTURES} from './utilities.js?v=architecture-workspace-1';
 // Airport dates conflict in the manual: p.46 says 1930; p.99 says 1915.
 // Use the transportation chapter's 1915 date consistently.
 export const TECHNOLOGY={...Object.fromEntries(Object.entries({...POWER_PLANTS,...WATER_STRUCTURES,...WASTE_STRUCTURES}).map(([key,value])=>[key,{name:value.name,year:value.year}])),subway:{name:'Subway rail',year:1912},subwayStation:{name:'Subway station',year:1912},railTransfer:{name:'Rail–subway connection',year:1912},airport:{name:'Airport zone',year:1915},busStop:{name:'Bus stop',year:1920},highway:{name:'Highway',year:1940},ramp:{name:'On-ramp',year:1940}};

@@ -1,5 +1,5 @@
-import {buildingShapeCells} from './building-shapes.js?v=science-center-2';
-import {voxelOccupied} from './building-voxels.js?v=science-center-2';
+import {buildingShapeCells} from './building-shapes.js?v=architecture-workspace-1';
+import {voxelOccupied} from './building-voxels.js?v=architecture-workspace-1';
 export const BUILDING_EDIT_PLANES=Object.freeze({horizontal:{rows:10,slices:24,label:'Horizontal floor',position:'Floor layer (1–24)'},xz:{rows:24,slices:10,label:'Vertical west–east',position:'North–south row (1–10)'},yz:{rows:24,slices:10,label:'Vertical north–south',position:'West–east column (1–10)'}});
 export function voxelPlanePoint(plane,slice,index){const p=BUILDING_EDIT_PLANES[plane];if(!p||!Number.isInteger(slice)||slice<0||slice>=p.slices||!Number.isInteger(index)||index<0||index>=p.rows*10)throw Error('Choose a valid building cross-section and square.');const col=index%10,row=Math.floor(index/10);return plane==='horizontal'?{x:col,y:row,z:slice}:plane==='xz'?{x:col,y:slice,z:23-row}:{x:slice,y:col,z:23-row};}
 export function voxelPlaneCells(voxels,plane,slice){const p=BUILDING_EDIT_PLANES[plane];if(!p)throw Error('Choose a building edit plane.');return Array.from({length:10*p.rows},(_,i)=>{const point=voxelPlanePoint(plane,slice,i);return{...point,occupied:voxelOccupied(voxels,point.y*10+point.x,point.z)};});}

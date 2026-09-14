@@ -1,13 +1,30 @@
-// Original low-poly landmark geometry. Gallery illustrations are separate Imagegen art.
-export const MODELED_LANDMARKS=new Set(['bigBen','statueLiberty','chryslerBuilding','arcDeTriomphe']);
+import {CHICAGO_LANDMARK_GEOMETRY} from './chicago-landmark-models.js?v=architecture-workspace-1';
+import {HERITAGE_LANDMARK_GEOMETRY} from './heritage-landmark-models.js?v=architecture-workspace-1';
+import {ASIAN_LANDMARK_GEOMETRY} from './asian-landmark-models.js?v=architecture-workspace-1';
+import {SKYLINE_LANDMARK_GEOMETRY} from './skyline-landmark-models.js?v=architecture-workspace-1';
+import {US_MEMORIAL_GEOMETRY} from './us-memorial-models.js?v=architecture-workspace-1';
+import {eiffelTowerGeometry} from './eiffel-tower-model.js?v=architecture-workspace-1';
+import {greatPyramidGeometry} from './great-pyramid-model.js?v=architecture-workspace-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=architecture-workspace-1';
+import {helsinkiCathedralGeometry} from './helsinki-cathedral-model.js?v=architecture-workspace-1';
+// Original landmark geometry shared by the city renderer and gallery previews.
+export const MODELED_LANDMARKS=new Set(['bigBen','statueLiberty','chryslerBuilding','arcDeTriomphe','helsinkiCathedral','eiffelTower','greatPyramid',...Object.keys(US_MEMORIAL_GEOMETRY),...Object.keys(SKYLINE_LANDMARK_GEOMETRY),...Object.keys(ASIAN_LANDMARK_GEOMETRY),...Object.keys(HERITAGE_LANDMARK_GEOMETRY),...Object.keys(CHICAGO_LANDMARK_GEOMETRY)]);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function landmarkGeometry(type){
  const faces=[],add=(points,color)=>faces.push({points,color});
  function ring(x,y,z,r,h,top,color,n=8){const a=Array.from({length:n},(_,i)=>{const t=i/n*Math.PI*2;return[x+Math.cos(t)*r,y+Math.sin(t)*r,z];}),b=a.map(([xx,yy])=>[x+(xx-x)*top/r,y+(yy-y)*top/r,z+h]);for(let i=0;i<n;i++)add([a[i],a[(i+1)%n],b[(i+1)%n],b[i]],shade(color,.68+.28*(i/n)));add(b,shade(color,1.12));}
  function box(x,y,z,w,d,h,color){const p=[[x-w/2,y-d/2,z],[x+w/2,y-d/2,z],[x+w/2,y+d/2,z],[x-w/2,y+d/2,z]],q=p.map(([a,b])=>[a,b,z+h]);for(let i=0;i<4;i++)add([p[i],p[(i+1)%4],q[(i+1)%4],q[i]],shade(color,[.7,.82,.95,.78][i]));add(q,shade(color,1.1));}
  function beam(a,b,r,color){const v=b.map((n,i)=>n-a[i]),len=Math.hypot(...v),u=v.map(n=>n/len),ref=Math.abs(u[2])<.9?[0,0,1]:[1,0,0],cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],v1=cross(u,ref),l=Math.hypot(...v1),p=v1.map(n=>n/l),q=cross(u,p),circle=c=>Array.from({length:8},(_,i)=>c.map((n,j)=>n+r*(p[j]*Math.cos(i*Math.PI/4)+q[j]*Math.sin(i*Math.PI/4)))),aa=circle(a),bb=circle(b);for(let i=0;i<8;i++)add([aa[i],aa[(i+1)%8],bb[(i+1)%8],bb[i]],shade(color,.72+i*.035));add(bb,color);}
- const stone='#c5ae87',copper='#73a799';box(0,0,0,2.8,2.8,.12,stone);box(0,0,.12,2.55,2.55,.025,'#65805c');box(0,0,.15,2.1,2.1,.08,'#d0c8b5');
- if(type==='bigBen'){
+ const stone='#c5ae87',copper='#73a799';box(0,0,0,2.8,2.8,.12,stone);if(type!=='greatPyramid'){box(0,0,.12,2.55,2.55,.025,'#65805c');box(0,0,.15,2.1,2.1,.08,'#d0c8b5');}
+ if(CHICAGO_LANDMARK_GEOMETRY[type]){CHICAGO_LANDMARK_GEOMETRY[type]({box,add,ring,beam});
+ }else if(HERITAGE_LANDMARK_GEOMETRY[type]){HERITAGE_LANDMARK_GEOMETRY[type]({box,add,ring,beam});
+ }else if(ASIAN_LANDMARK_GEOMETRY[type]){ASIAN_LANDMARK_GEOMETRY[type]({box,add,ring,beam});
+ }else if(SKYLINE_LANDMARK_GEOMETRY[type]){SKYLINE_LANDMARK_GEOMETRY[type]({box,add,ring,beam});
+ }else if(US_MEMORIAL_GEOMETRY[type]){US_MEMORIAL_GEOMETRY[type]({box,add,ring,beam});
+ }else if(type==='eiffelTower'){eiffelTowerGeometry({box,beam});
+ }else if(type==='greatPyramid'){greatPyramidGeometry({box,add});
+ }else if(type==='helsinkiCathedral'){helsinkiCathedralGeometry({add,box,ring,beam});
+ }else if(type==='bigBen'){
   box(0,0,.23,1.05,1.05,.18,stone);for(let floor=0;floor<8;floor++)box(0,0,.41+floor*.55,.82,.82,.55,stone);
   for(let floor=0;floor<8;floor++){const z=.54+floor*.55;for(let side=0;side<4;side++)for(let col=0;col<3;col++){const o=(col-1)*.23;if(side%2===0)box(o,side===0?-.414:.414,z,.1,.025,.29,'#34474b');else box(side===1?.414:-.414,o,z,.025,.1,.29,'#34474b');}box(0,0,z+.36,.91,.91,.055,'#ddc699');}
   box(0,0,4.81,1.04,1.04,.12,stone);box(0,0,4.93,.97,.97,.82,'#b29b73');
@@ -80,7 +97,12 @@ export function landmarkGeometry(type){
  }else throw Error('Unknown modeled landmark.');
  return faces;
 }
+export function rasterizeLandmark(type,rotation=0,includeDepth=false){
+ const project=([x,y,z],r)=>{[x,y]=r===0?[x,y]:r===1?[-y,x]:r===2?[-x,-y]:[y,-x];return[256+(x-y)*80,720+(x+y)*40-z*80];};
+ return rasterizeMiniature(landmarkGeometry(type),rotation,includeDepth,{width:512,height:848,project});
+}
 export function drawLandmarkModel(ctx,type,rotation=0){
+ if(HERITAGE_LANDMARK_GEOMETRY[type]||ASIAN_LANDMARK_GEOMETRY[type]||SKYLINE_LANDMARK_GEOMETRY[type]||US_MEMORIAL_GEOMETRY[type]||['helsinkiCathedral','eiffelTower','greatPyramid'].includes(type)){const raster=rasterizeLandmark(type,rotation),pixels=ctx.createImageData(raster.width,raster.height);pixels.data.set(raster.data);ctx.putImageData(pixels,0,0);return;}
  const turn=([x,y,z])=>rotation===0?[x,y,z]:rotation===1?[-y,x,z]:rotation===2?[-x,-y,z]:[y,-x,z];
  const project=([x,y,z])=>[256+(x-y)*80,720+(x+y)*40-z*80];
  const faces=landmarkGeometry(type).map(f=>({...f,points:f.points.map(turn)})).filter(f=>{if(type!=='arcDeTriomphe')return true;const [a,b,c]=f.points,u=b.map((v,i)=>v-a[i]),v=c.map((n,i)=>n-a[i]),normal=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]];return normal[0]+normal[1]+normal[2]>0;});
@@ -89,4 +111,16 @@ export function drawLandmarkModel(ctx,type,rotation=0){
  for(const f of faces){ctx.beginPath();f.points.map(project).forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fillStyle=f.color;ctx.fill();}
 }
 const cache=new Map();
-export function drawCityLandmark(ctx,type,rotation,x,y,width,alpha=1){const key=type+':'+rotation;let canvas=cache.get(key);if(!canvas){canvas=document.createElement('canvas');canvas.width=512;canvas.height=848;drawLandmarkModel(canvas.getContext('2d'),type,rotation);cache.set(key,canvas);}ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(canvas,x-width/2,y-720*width/512,width,848*width/512);ctx.restore();}
+function landmarkFrame(type,rotation){
+ const key=type+':'+rotation;let frame=cache.get(key);if(frame)return frame;
+ const canvas=document.createElement('canvas');canvas.width=512;canvas.height=848;drawLandmarkModel(canvas.getContext('2d'),type,rotation);
+ let left=512,top=848,right=0,bottom=0;
+ for(const face of landmarkGeometry(type))for(const [px,py,z] of face.points){const [x,y]=rotation===0?[px,py]:rotation===1?[-py,px]:rotation===2?[-px,-py]:[py,-px],u=256+(x-y)*80,v=720+(x+y)*40-z*80;left=Math.min(left,u);right=Math.max(right,u);top=Math.min(top,v);bottom=Math.max(bottom,v);}
+ left=Math.max(0,Math.floor(left)-2);top=Math.max(0,Math.floor(top)-2);right=Math.min(512,Math.ceil(right)+2);bottom=Math.min(848,Math.ceil(bottom)+2);
+ frame={canvas,left,top,width:right-left,height:bottom-top};cache.set(key,frame);return frame;
+}
+export function drawLandmarkPreview(ctx,type,rotation,width,height){
+ const frame=landmarkFrame(type,rotation),scale=Math.min((width-24)/frame.width,(height-24)/frame.height),w=frame.width*scale,h=frame.height*scale;
+ ctx.clearRect(0,0,width,height);ctx.drawImage(frame.canvas,frame.left,frame.top,frame.width,frame.height,(width-w)/2,(height-h)/2,w,h);
+}
+export function drawCityLandmark(ctx,type,rotation,x,y,width,alpha=1){const {canvas}=landmarkFrame(type,rotation);ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(canvas,x-width/2,y-720*width/512,width,848*width/512);ctx.restore();}

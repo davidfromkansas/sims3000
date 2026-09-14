@@ -1,0 +1,15 @@
+{
+  "format": "SIMS3000-building",
+  "version": 12,
+  "design": {
+    "name": "Terrace garden tower",
+    "floors": 10,
+    "width": 6,
+    "depth": 8,
+    "roof": "step",
+    "facade": "#cfbda6",
+    "windows": "#34566b",
+    "accent": "#eee0c5",
+    "groundPaint": "6666666666660000006666000000666600000066660000006666000000666600000066660000006677000000776666676666"
+  }
+}

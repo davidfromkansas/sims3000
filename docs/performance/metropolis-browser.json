@@ -1,0 +1,28 @@
+{
+  "cache": "responsive-metropolis-1",
+  "fixture": "256 by 256 synthetic rail city, 60 tile district",
+  "visibility": "visible",
+  "months": [
+    {
+      "durationMs": 2897.100000023842,
+      "background": true,
+      "trainRiders": 9028.169518788043
+    },
+    {
+      "durationMs": 1497,
+      "background": true,
+      "trainRiders": 9020.911542736854
+    },
+    {
+      "durationMs": 1287.7000000476837,
+      "background": true,
+      "trainRiders": 9013.013375536766
+    }
+  ],
+  "viewInteractions": 2,
+  "frameCallbacks": 584,
+  "largestFrameGapMs": 283.3000000000029,
+  "p95FrameGapMs": 8.400000000001455,
+  "restoredPopulation": 19200,
+  "scope": "Observed browser benchmark output. Anchored camera rotation and move accepted while worker simulation ran. Current renderer, no comparative browser speedup claim. Frame callback gaps are not GPU timings."
+}

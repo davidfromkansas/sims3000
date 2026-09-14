@@ -1,0 +1,522 @@
+# Architecture collection — in progress
+
+The intended player change is a broader choice of coherent building styles across city districts, with consistent camera rotations, matching lot footprints, working customization and reusable saved building sets. This release is not complete; the full architecture and landmark scope in the roadmap remains outstanding.
+
+The initial 1–4 tile implementation introduced Limestone office block, a six-story commercial model rendered in Blender. It has native geometry for all 16 supported 1–4 tile width/depth combinations. Facades gain window bays as lots expand; story height and entrance details are not scaled up from a one-tile sprite. Each footprint has four views. Blender coordinates use game X and negative game Y; the rendered model turns by negative 90 degrees for each positive game-camera rotation.
+
+Views load on demand, share crop bounds and stay in a rendering cache outside city saves. The renderer draws one building per lot, aligns its footprint with the ground, restores opacity, and gives saved custom designs priority. A matching procedural model remains visible during artwork loading. The replacement picker updates asynchronously without replacing a newer selection or a closed dialog.
+
+Save schema 145 identifies the new style. Earlier saves continue to load; a file claiming an earlier version cannot contain new-style replacements or custom slots. Focused tests verify matching view selection, one-time decoding, common bounds, one draw per rectangular lot, footprint anchoring, unchanged city finances/population, custom priority and save continuity. All 301 regular regression suites passed. All 64 native renders passed transparency and clipping checks; their common crop metadata avoids pixel scanning during play. Browser checks applied the new style to 215 commercial buildings in a paused 204,544-resident city, with unchanged visible funds and population, and reviewed all four city rotations. A separate imported visual fixture covered one single-tile building and 15 multi-tile buildings across all supported footprints; the rotation sweep showed native rectangular geometry following the lot orientation. The fixture was saved through the game and reopened; the inspector retained the 3×3 lot and its selected Limestone office block replacement. These are functional and visual checks, not a performance benchmark.
+
+Original model source and renders are under `art/architecture/commercial-midrise`. The earlier Imagegen sheet was rejected for inconsistent views and colored edge artifacts; it remains a reference rather than production artwork. Browser QA found and fixed a first-load preview exception: the procedural fallback now uses canonical building-slot keys, including the single-tile case. A focused regression covers that case. Additional architectural styles, catalog coverage, broader game-scale visual review, renderer performance and player feedback are still required before completing the broader release.
+
+## City-wide building manager
+
+Manual printed pages 79–81 describe selecting current or future building styles, filtering by type and footprint, and clearing the entire replacement set. City desk → City building styles now exposes those flows for the supported RCI catalog. Players can see the original and current appearance, count affected buildings, select a style before it develops, preview replacements, and return to the same filters after applying. Natural source styles are distinct from alternate replacement artwork. Saved custom slots remain represented in the catalog.
+
+Restore all original artwork offers a backup action and confirmation, then clears replacements and custom models across every footprint. Import building set remains available from the manager. At this checkpoint, rewards, opportunity buildings and 5×5 customization were not supported; the five-tile expansion below supersedes the footprint limit.
+
+Browser QA filtered to a nonexistent 2×3 residential mid-rise, applied Courtyard apartments, and verified the changed catalog entry with zero current buildings. Canceling the global reset preserved it. Confirming reset also removed commercial replacements in other footprints; the 3×3 commercial inspector catalog returned to original artwork and the reset button disabled. No browser errors were recorded in that playtest. Building-set tests cover filtered future-style entries, current counts, custom-model labels, unchanged simulation, atomic import and complete reset. The full 301-suite run above predates this manager addition; relevant building-set and directional-art tests pass after it.
+
+## Independent replacement preview
+
+Replacement previews now have clockwise and counterclockwise controls. The new office art, multi-tile procedural models and saved custom models rotate without moving the city camera or changing a save. Single-view legacy artwork is explicitly labeled and its rotation controls disabled when it is the selected replacement. Asynchronous image completion respects the current choice, orientation and dialog lifetime.
+
+Browser checks cycled North, East, South and West and observed four distinct office preview images, then reversed direction. The directional-art regression also verifies that a preview orientation override leaves the renderer camera unchanged. An already-applied custom model disables the apply button until another supplied style is selected, preventing a preview-only visit from replacing the visible custom design with underlying stock artwork.
+
+The custom-model browser check applied a tower design, opened it in the replacement manager, verified the apply button disabled, rotated and canceled, and confirmed the catalog still showed the custom model. Selecting legacy supplied artwork re-enabled applying and displayed fixed-view controls. No browser errors were recorded.
+
+## Native industrial artwork
+
+Sawtooth factory (existing style 79) now uses separately authored Blender geometry: brick walls, framed windows, loading doors, north-light roof bays and an asymmetric chimney. All sixteen supported footprints have four native views. The generalized staging script validates and records all 64 factory images before installation. Office and factory art now total 128 directional images; this count measures views, not distinct building designs.
+
+The mixed-factory view preference now includes multi-tile low-rise dirty industry. Root and member tiles select the same deterministic appearance, and explicit replacements/custom designs retain priority. Clean industry and farms remain excluded. The style already existed in saves, so this visual upgrade does not add another save schema.
+
+A browser fixture with one single-tile and fifteen multi-tile industrial buildings was imported and reviewed through a full rotation sweep. Roof orientation, rectangular lot alignment and the chimney remained consistent; no browser errors were recorded. Focused factory-art, directional-loading and building-lot renderer tests pass, including multi-tile variant consistency and explicit replacement priority. Broader visual/performance acceptance remains to be checked before releasing the architecture collection.
+
+## Ordinary industrial playthrough
+
+The normal 48×48 starter town ran for twelve monthly simulation steps without editing occupancy, finances or development levels. At month 12 it had 280 residents, §43,480 and three occupied factories selecting the new mixed artwork. The save was imported into the isolated browser preview. Tile 30,26 showed connected electricity and transport, twelve jobs and light development. The browser then ran at normal speed from January to September 1951, retaining 280 residents and reaching §44,116 before being paused. This verifies ordinary play alongside the earlier artificial footprint review; it is not a large-city performance measurement or a claim that the starter’s utility problems are solved.
+
+The expanded full regression run found a stale replacement-UI expectation that applied the hidden stock style over an existing custom design. That test now asserts preservation during preview/disabled apply, followed by an explicit selection enabling a replacement. The corrected focused test and all 301 suites in the full rerun passed. The ordinary browser playthrough recorded no runtime errors.
+
+## Five-tile customization
+
+Manual printed page 81 includes footprint filters through 5×5. The editor and city-wide manager now offer all 25 combinations of 1–5 tile width and depth. City schema 146 supports larger RCI lot validation and saved customization; older saves remain loadable, while files claiming older schemas cannot contain five-tile slots or lots. Building-file version 9 carries five-tile models, including their layered shapes and surface data; files with smaller footprints retain existing format versions.
+
+Focused checks cover a complete 25-member lot, model export/import, layered-shape round trips, invalid older-format rejection, city save restoration, ordinary monthly continuation and whole-lot demolition from the far corner. Projection bounds cover 5×1, 1×5 and 5×5 in every camera direction. In the browser, a 5×5 custom model was created, applied, saved and reopened through the filtered library with the custom artwork intact. A stale cached module caused the first reload to fail; the architecture asset version was advanced to load a consistent module set, after which the editor and restoration checks succeeded.
+
+All additional renders completed, and both assets passed staging validation across 25 footprints and four views each: 200 images representing two building designs. Validation checks RGBA dimensions, visible/transparent pixels, unclipped margins and shared crop bounds. All 301 regression suites pass for schema 146. An imported 50-building visual fixture was reviewed from North, East and South, including inspection of a 5×5 factory with 25 occupied tiles. This artificial fixture tests rendering, not ordinary city development. The expanded West-facing screenshot and final browser error check remain pending: computer-use access on September 15 reported that the Mac is locked. The isolated QA server was stopped. Earlier complete four-view acceptance applies to the 1–4 tile set.
+
+## Draw-order cost for larger buildings
+
+`buildingLotPlacement` now selects the frontmost rectangle corner directly for the current quarter-turn rotation, replacing an allocation and full member sort on every footprint tile. The selected tile and centered draw position are unchanged. Regression compares against the previous sorted painter-order definition across all 24 multi-tile width/depth combinations, four rotations and 48/96/256-tile maps.
+
+A local warmed microbenchmark used seven paired samples of 12,500 placement calls on a 5×5 building, verifying equal draw-position checksums. Median time was 29.22 ms for sorting and 0.15 ms for direct corner selection. This measures the placement helper only; it does not establish whole-game frame rate or large-city responsiveness. Existing actual-renderer and directional-art tests pass after the change.
+
+The version-9 portable-model check now combines all 24 occupied layers, per-column materials, 12,000 painted surfaces, 12,000 detail entries and 2,400 shaped-block entries in a 5×5 footprint. Exact export/import round trip passes and the resulting file stays below 32 KB. This verifies that the expanded format retains the complete supported editor data, not only simple tower parameters.
+
+
+## Artwork loading recovery
+
+Failed image loads retain procedural artwork and retry on a later draw or preview request after a five-second cooldown. They do not issue another request every frame. A city renderer joining an in-flight request originally started by a replacement preview now subscribes to its completion, so paused cities also refresh once the artwork arrives. Each renderer subscribes once per request; the cache uses weak membership and remains outside saved game state.
+
+Focused regression simulates a preview request shared by two city renderers over 120 frames, confirms only four image decodes, and verifies both renderers request redraw on completion. A separate simulated outage checks the cooldown and recovery. These loading checks pass after the full 301-suite run; browser network-failure injection has not been performed.
+
+
+## Full-footprint library view
+
+The manager now opens with all widths and depths visible, with a footprint column distinguishing each original style’s slots. Either dimension can be narrowed independently or reset to All. The filtered count includes its full-catalog denominator, following the manual’s printed page 81 selection-count behavior. Fourteen natural source styles across 25 footprints produce 350 slots; these are explicitly labeled building slots, not 350 distinct architectural designs. Configured alternate-source slots remain represented. Replacement selection and returning from it preserve the current filters.
+
+Building-set checks verify unique all-footprint slots, custom models and replacements across different sizes, independent width/depth filtering and equivalence with filtering the complete catalog. Existing appearance-only import, save restoration and monthly-continuation checks pass. Browser interaction and layout acceptance for this expanded list remain pending while the Mac is locked. Reward/opportunity categories and full original catalog coverage remain unfinished.
+
+
+## Hold-to-compare replacement preview
+
+Manual printed page 77 describes holding the Peek-a-boo tab to reveal the original building, then restoring the replacement when released. The replacement dialog now offers Hold to view original in the selected preview area. Pointer capture supports release outside the control; cancellation, lost capture, keyboard release, Escape and focus loss restore the selected appearance. Space and Enter provide keyboard access, and the control reports its pressed state. Selecting another style clears comparison. Preview updates ignore a dialog that has been replaced, and asynchronously loaded artwork respects an active comparison.
+
+Actual dialog-handler checks verify pointer hold/cancellation, Space release, Enter/focus loss and unchanged serialized city/custom model state. The existing footprint, save and replacement tests pass. Browser interaction/layout acceptance remains pending; the control uses a labeled button instead of reproducing the original folded-corner decoration.
+
+
+## Custom-file replacement drafts
+
+The replacement dialog now imports portable SIMS3000 building models directly, allowing rotation and original-art comparison before applying them across the selected style/footprint. Imported artwork remains an in-memory draft; Cancel leaves saved artwork untouched. Imports enforce the existing 32 KB size limit and exact footprint match. A failed import preserves the preceding valid draft, while request identity prevents an older file read or canceled dialog from installing a stale result.
+
+Actual handler checks cover matching import, wrong-footprint rejection, draft preservation, explicit application, comparison/rotation without city mutation, out-of-order reads and cancellation during a pending read. The footprint/save suite passes. This removes the designer detour for importing a replacement; the manual’s separately managed multi-building Active List (printed pages 82–84) remains unfinished. Original SimCity building-file compatibility and browser acceptance remain outstanding.
+
+
+## Reusable custom-building list
+
+The replacement dialog now includes a saved custom-building list based on the manual’s Active List workflow (printed pages 82–84). Players add the previewed custom model, preview compatible saved models, remove entries, confirm replacement of duplicate names at the same footprint, save list edits, or discard them. List edits are staged independently of city artwork. Closing the dialog drops unsaved list edits. Removing a saved entry leaves already-applied city models intact.
+
+The list persists up to 100 validated portable models in this browser, shared by cities on the same site origin. It does not sync to another browser; applied models remain in city saves and the designer’s building-file export supplies portable backups. Saved data is versioned, bounded and checked for duplicate identities and invalid models. Storage failures retain the editable draft, while an unreadable list is reported without overwriting it.
+
+The new focused suite verifies persistence, invalid data, duplicate confirmation, independent preview copies, staged add/remove/reset, explicit save and quota failure recovery. Existing replacement/footprint handler checks also pass. It is registered in the main regression command; the last complete run predates this addition. Browser acceptance and a top-level list editor accessible outside a replacement remain outstanding, alongside reward/opportunity replacements and the wider catalog.
+
+
+## Standalone list editor
+
+City building styles → Edit custom building list now opens the reusable list independently of a replacement slot. Any supported footprint can be imported and previewed, with left/right rotation, named footprint information and explicit add/save controls. Returning to city building styles retains its filters. The existing replacement panel still restricts saved-model selection to matching footprints.
+
+The list suite now exercises the actual standalone editor handlers: a 5×5 import, rotation, addition without persistence, explicit save, and leaving while another file is still being read. All pass. The earlier note that a top-level list editor was outstanding is superseded by this implementation; browser layout and interaction review remain pending.
+
+
+## Integrated regression checkpoint — September 15
+
+The complete `npm test` command finished with exit code 0 and 302 PASS records on architecture-collection-9 / city schema 146. This includes the all-footprint manager data, replacement comparison and import handlers, directional request sharing/recovery, standalone custom-building editor, reusable list storage and the existing simulation/save/late-game regressions. The logged temporary asset-outage warning comes from the deliberate recovery test. All relative static module imports also resolve.
+
+No broader browser acceptance is inferred from this run. A fresh computer-use attempt still reported the Mac locked. The expanded West-facing fixture review and the new library/editor browser flows remain pending, as do the architecture catalog gaps. This is an integrated validation checkpoint within the unfinished architecture release, not a new release or publication.
+
+
+## Native courtyard apartments
+
+Existing replacement style 78 now has an original four-story apartment model with terracotta masonry, limestone surrounds, balconies, a planted open-air courtyard, entrance passage and asymmetric stair enclosure. All 25 footprints have four rendered views. A first-render facade transform error was found visually and corrected before the footprint batch; the accepted 1×1, 1×5 rear and 5×5 west views were inspected. All 100 images passed staging validation.
+
+The shared directional registry integrates the new apartment views alongside the office and factory models, bringing native directional artwork to three distinct designs and 300 rendered images. The existing saved-custom-model precedence and footprint anchoring remain in effect; this upgrades an existing replacement style without changing simulation or save schema. Browser play/rotation review remains pending. The full 302-suite run predates this art addition; focused directional and footprint tests are the post-change checks.
+
+
+## Revert remains a preview until applied
+
+Manual printed page 77 places Revert before the final checkmark and states that Cancel leaves the city unchanged. The replacement dialog now follows that order: Revert selects original artwork in the preview, while Apply performs the city-wide restoration. Cancel preserves the existing replacement or custom model. Revert enables when the selected preview differs from the original and disables after selecting the original. Reverting also invalidates pending file reads so late imports cannot replace that choice.
+
+Actual dialog-handler checks verify deferred restoration, explicit apply, custom-model preservation after revert/cancel and unchanged serialized city state during preview. The footprint suite passes after this correction. Browser review remains pending; a fresh computer-use check again reported the Mac locked.
+
+
+## Transactional city-wide replacement set
+
+The manager now follows the manual’s final-checkmark/Cancel behavior across multiple building selections. It edits copied appearance maps while retaining the city’s existing simulation for counts and previews. Selecting replacements, importing a set and confirming a whole-set reset update that draft. The final Apply building set validates and installs both appearance maps, then invokes normal city persistence; Cancel discards the draft. Filters and draft choices survive visits to the individual replacement or custom-list editor. Independently saved browser-library entries remain separate from city artwork.
+
+The replacement and import dialogs identify manager-draft actions explicitly. Direct access to the standalone set importer retains its existing apply-to-city behavior. Actual manager-handler tests verify imported-set cancellation/application, reset cancellation/application and that persistence occurs only on final Apply. Existing footprint and import-dialog suites also pass. Browser acceptance remains pending, and earlier manager QA describing immediate application is historical.
+
+
+## Architect keyboard rotation
+
+The focused building preview now follows the manual’s Spacebar rotation shortcut. One press rotates clockwise by 90 degrees; key repeat does not spin continuously. Enter retains painting/selection behavior. Rotation buttons and the shortcut reset unfinished preview paint strokes before changing the view. The shortcut is attached to the canvas, so typing spaces into a model name remains normal.
+
+The actual designer-handler check confirms the orientation change, ignored repeat and unchanged serialized city. The footprint suite passes. Browser keyboard and paint-stroke interaction acceptance remain pending.
+
+
+## Designer import ordering
+
+The building designer now invalidates pending file reads when a newer import starts, the selected slot changes, the player edits the model, applies/restores artwork, or closes the editor. Late file results and errors cannot replace newer work or another dialog’s state. Actual handler checks resolve two reads out of order and complete an import after a manual name edit; the newer model/edit remains intact. The footprint suite passes after the correction.
+
+
+## Right-button construction eraser
+
+The independent-layer editor now implements the manual’s right-button erase shortcut (printed page 151). Right-drag uses the selected freehand, line or plane shape to erase on the current cross-section, without changing the selected Place/Erase control. Erasure previews until release, Shift cancels it, and Undo/Redo treat it as one construction action. The grid suppresses its context menu for this interaction.
+
+Actual handler checks exercise all three shapes across horizontal, XZ and YZ planes, including deferred changes, Shift cancellation, preserved construction selection and complete undo/redo. The voxel-editor suite passes. Browser pointer acceptance remains pending; the shortcut applies to the independent-layer construction grid.
+
+
+## Construct-mode block selection
+
+The layer editor now offers Select existing block, corresponding to the manual’s Construct-mode eyedropper (printed pages 151–152). Clicking an occupied cell selects its geometry and world orientation in the palette without editing the model or adding undo history. Empty cells preserve the existing palette choice and report that there is no block to sample. Players switch back to Place blocks to use the selection.
+
+Actual pointer-handler checks cover all three edit planes, oriented wedges, unchanged model/write count, empty cells and untouched undo history. The voxel-editor suite passes. This covers selecting the supported cube/wedge geometry; the complete fourteen-type block palette and browser acceptance remain unfinished.
+
+
+## Detail eyedropper
+
+The model preview now offers Select existing detail, extending the manual’s mode-specific selection tool to the supported windows, doors, vents and ledges. Pointer or Enter selects the detail at the visible floor surface without modifying paint or geometry. Blank surfaces preserve the current detail choice. Players switch to Place building details to use it.
+
+Actual preview-handler checks verify pointer/keyboard sampling, unchanged complete model data and blank-surface behavior. The preview-paint suite passes; browser acceptance and the wider original detail catalog remain pending.
+
+
+## Integrated editor validation — architecture-collection-17
+
+The complete regression command finished with exit code 0 and 302 PASS records after courtyard integration, transactional manager changes, designer import ordering, keyboard rotation, right-button erasure and block/detail sampling. Static import resolution and presence of all 300 directional images with their inspection records were also checked. The expected simulated image-outage warning remains part of recovery coverage.
+
+This supersedes the earlier architecture-collection-9 full-run checkpoint for source compatibility. It does not establish browser usability, actual large-city frame rate, completed catalog coverage or publication. Those remain separate requirements for the unfinished architecture milestone.
+
+
+## Helsinki Cathedral model draft
+
+An original cathedral model has been authored from parish and architectural references, with the characteristic central dome, four smaller domes, white porticoes and steps. Four-view coordinate/bounds checks pass, but offline visual inspection exposed column/portico occlusion in the shared landmark painter. Depth-correct rendering is the next required fix. The model is not in the playable catalog, which remains at six landmarks; no new save schema or completed-landmark claim is made.
+
+
+## Cathedral depth rendering
+
+The shared cached-miniature rasterizer now supports a configurable viewport/projection, allowing the cathedral’s 512×848 landmark view to use per-pixel depth instead of average face ordering. Columns now appear in front of their walls. Visual review also found and corrected reversed roof-face winding. Four development renders were saved; views 0 and 2 were inspected after correction.
+
+The new cathedral test verifies finite geometry, nonclipped occupied pixels/depth in every rotation, front-surface visibility independent of face submission order and the actual drawing path. Existing tree and landmark suites pass after the shared raster change. The cathedral remains outside the playable catalog pending migration and gameplay integration.
+
+## Helsinki Cathedral placement integration
+
+Helsinki Cathedral is now the seventh catalog landmark, using the original four-view model described above. Players can select it in the landmark gallery, place it immediately for free on a clear 3×3 footprint, count it in scenario objectives, demolish any member tile and rebuild it. It follows the shared one-per-city rule and adds no jobs or direct income. The 3×3 size is an authored reconstruction choice, not a recovered original-game dimension.
+
+Schema 147 preserves the new landmark and rejects its presence in earlier-version payloads; version 146 cities without it remain supported. Cache graph architecture-collection-19. Focused placement/save/projection checks pass. The complete regression run finished with 303 PASS records and exit code 0; log: `/tmp/sims3000-helsinki-integration-tests.log`. Browser acceptance is pending because the Mac remains locked. This is part of the broad architecture milestone, not a separate milestone commit or publication.
+
+## Rotate landmarks before placement
+
+The landmark gallery now displays the same cached city models for all five modeled landmarks, with independent clockwise/counterclockwise controls and accessible North/East/South/West labels. Preview images fit projected geometry bounds without changing the city rendering anchor, which makes low buildings such as Helsinki Cathedral legible alongside towers. Eiffel Tower and Great Pyramid retain their existing illustrations until directional models are authored. Selecting a preview changes no city data; the Place action selects the construction tool and already-placed entries remain disabled.
+
+Five focused suites pass, including a new test exercising actual gallery handlers, four-view wrapping, source/destination bounds, aspect ratio, unchanged saved state, placed-item protection and shared preview/city raster caching. Cache architecture-collection-20; schema 147 unchanged. The last full regression remains 303 suites at cache 19; the test command now includes the new gallery suite. Browser visual review is pending because the Mac is locked.
+
+## Directional artwork for every current landmark
+
+Eiffel Tower and Great Pyramid now use original depth-rendered geometry in the city and gallery. All seven catalog landmarks therefore rotate with the map and can be inspected from four directions before placement. The Eiffel Tower's 3×3 and Great Pyramid's 4×4 footprints, placement rules and saved types are preserved; no save-schema change is required. Geometry and references are recorded under `art/architecture/eiffel-tower` and `art/architecture/great-pyramid`. This completes directional coverage of the current seven-entry catalog, not the full original landmark catalog.
+
+Six focused suites pass at cache architecture-collection-21. The new renderer test executes the actual structure branch for every tile of every landmark and verifies one centered draw per footprint in each map direction, without static-sprite fallback. New raster checks verify finite geometry, unclipped transparent bounds and actual drawing output. Gallery, uniqueness/rebuilding, save continuation, alien targeting and scenario counting checks also pass. The test command now includes 305 suites; the most recent full run is still 303 suites at cache 19. Offline model review is partial as specified in the asset READMEs; browser review remains pending. No separate milestone commit or publication has been made.
+
+## Landmark inventory coverage checkpoint
+
+A source-linked development inventory and executable runtime comparison now make remaining catalog work explicit. The inventory retains 74 standard candidates, 25 Unlimited additions and the existing downloadable extension separately. Current runtime mappings cover seven entries; 93 are unmapped. CN Tower's absence from the guide extraction, paired components, ambiguous names and the single-pyramid composition are recorded for further verification. The coverage script completed successfully. No game behavior or release status changed at this checkpoint.
+
+## American memorial landmark batch
+
+Washington Monument, Gateway Arch, Jefferson Memorial and Lincoln Memorial are now selectable with original four-view models and rotatable gallery previews. Washington Monument uses an authored 3×3 footprint; the other three use authored 4×4 footprints. Original-game dimensions remain unverified. Shared free placement, uniqueness, demolition/rebuilding, alien preference and scenario metrics apply. Sources and visual-review limits are recorded in `art/architecture/us-memorials/README.md`.
+
+Schema 148 accepts the batch; earlier-version payloads containing these types are rejected, while ordinary schema 147 cities migrate. The focused batch suite passed, including four-view raster bounds, documented column counts, far-corner demolition/rebuilding and saved monthly continuation. One initial test expectation incorrectly omitted normal bulldozer fees and was corrected; construction itself is free. All current-landmark placement, gallery and renderer checks passed before the full regression run was started. The full regression completed with 306 PASS records and exit code 0 at cache architecture-collection-22; log `/tmp/sims3000-memorial-batch-tests.log`.
+
+There are now eleven runtime landmark mappings, leaving 89 inventory entries unmapped. This is part of the ongoing architecture release group; it has not been separately committed or published. Browser acceptance remains pending because the Mac is locked.
+
+A validated 96×96 review city containing all eleven landmarks is saved at `/tmp/sims3000-landmark-review-city.json` for the pending browser walkthrough.
+
+## Architect reference-block preview
+
+Manual printed pages 143–145 describe a yellow reference location in the edit plane and model before construction begins. Independent-layer editing now highlights the hovered or keyboard-focused cell before a click, using the existing 3D plane guide. The highlight follows all three cross-section orientations, clears on leaving/focus exit, Escape or slice changes, and yields to a pending drag preview. Repeated motion within one cell avoids redundant redraws.
+
+Three focused editor/guide/designer suites pass, including actual pointer/focus/keyboard handlers, unchanged draft and undo history, pending drag preservation, per-plane cell mapping and invalid reference rejection. Cache architecture-collection-23; schema 148 unchanged. The last full regression remains the 306-suite cache-22 run committed in draft PR #192. These follow-up edits are uncommitted and await browser review. The manual image confirms a scrolling block palette but does not identify all fourteen shapes; full block and prop catalogs remain outstanding.
+
+## Prop model and renderer foundation — controls unfinished
+
+Manual printed pages 149–150 describe rotatable props placed on ground/building surfaces, clipping at the model boundary, and persistence after the support block is removed. Custom block/layer designs now validate and preserve up to 64 independent prop records. The first original geometry types are a garden tree and parked car. Physical dimensions stay independent of lot aspect ratio; the renderer uses building faces as depth-only occluders before drawing the prop overlay. Imported prop models render in existing design previews and city caches.
+
+Portable building format 10 stores compact prop tuples; city schema 149 preserves records and rejects props in older-version cities. Older model formats remain supported. A maximum 5×5 model with full voxel occupancy, all paint/details/geometry and 64 props fits the existing 32 KB portable-file limit. `/tmp/sims3000-prop-model.json` is prepared for visual review.
+
+Focused prop, footprint, building-set, custom-library, tree-raster and cathedral-raster checks pass. They cover invalid records, deep copies, support-independent positions, saved simulation continuity, four-view occlusion, rooftop/floating visibility, model-space bounds and portable roundtrips. Cache architecture-collection-24; the last full regression remains 306 suites at cache 22.
+
+This is unfinished infrastructure, not a complete prop-placement tool. Next work must connect model/ground picking, a category/rotation picker, placement/removal and undo/redo to the designer; handle construction-mode switches coherently; verify cropping near walls; and visually review original prop assets and their game-scale rendering. Broader prop categories remain missing. These changes are uncommitted and not part of draft PR #192.
+
+## Architect prop placement controls
+
+The designer now offers Place props, with the first original Flora/Vehicle entries, a separate four-direction selector, a projected size outline, visible ground/roof picking and a placed-prop removal list. Click release commits one draft edit; Shift release, Escape, pointer cancellation or intervening camera/model changes discard a pending placement. Arrow keys move the target and Enter places. Props share each construction editor’s undo/redo history. Applying or exporting the building preserves props; changing a name or color does not discard them.
+
+Removing every supporting block leaves a valid prop-only building, as manual printed page 150 describes. A completely empty model still cannot be applied/exported. Switching between height layout and independent layers retains the latest prop edits independently of remembered construction geometry; a regression caught and fixed stale props being restored from the old height-layout snapshot. Switching to parametric towers asks the player to remove props first and leaves the current model/history intact.
+
+The five focused prop/editor/construction/designer suites passed. The new prop UI suite is included in npm test. Cache architecture-collection-25, schema 149; all 308 registered regression suites passed with 309 PASS records and exit code 0 in `/tmp/sims3000-prop-editor-tests.log`. Placement tests also cover all four model views, both rectangular lot orientations and zoom/pan transforms. A fresh computer-use check still reports the Mac locked, so no browser visual acceptance is claimed. The broader eight-category palette, near-wall cropping fidelity and game-scale appearance remain unfinished. This is continuing architecture work, not a new small milestone commit or a published release.
+
+## Eight-category original prop collection
+
+The prop palette now has a category selector and twelve original models spanning the manual’s eight groups. Added models include the specifically mentioned family station wagon and blue pickup truck, plus an arch, column, clock, bench, lamp, picnic table, storage tank and ventilation unit. These are authored originals; category coverage does not establish the full original prop inventory. All forty-eight enlarged directional review images were inspected, with a reversed arch face corrected and shared world-space lighting added. See `art/architecture/building-props/README.md` for reproduction and limits.
+
+An actual-scale raster test exposed a thin lamp disappearing on a 1×5 lot. Prop rendering now samples at four times resolution within only the affected bounds, then downsamples with alpha coverage. Model dimensions remain unchanged. Every prop/orientation/view combination now produces visible coverage on square and both narrow rectangular lots. Seven focused collection, prop, editor, construction, designer-save and custom-library suites pass. The new collection suite is registered in npm test (309 commands); the last full run remains the 308-suite cache-25 run.
+
+Cache architecture-collection-26; schema 149 and portable model 10 remain unchanged because this prop capability is still unpublished, uncommitted work following draft PR #192. Full shipped-palette parity, adjacent-wall physical cropping and browser appearance remain outstanding. No separate small milestone commit or Sites publication was made.
+
+## Prop surfaces cropped against construction
+
+Props now subtract the occupied volume of height-layout columns and independent cubes/wedges before drawing. Clipping is performed in model space, separately from camera occlusion, so the geometry stays consistent when rotated. It respects all four wedge directions, rectangular lots, overhangs and empty layer gaps. Props exactly on a roof retain their contact surfaces. Saved prop geometry is unchanged; removing construction restores the cropped surfaces. This is an explicit geometric reconstruction of the manual’s cropping behavior, not evidence of the original program’s exact clipping algorithm.
+
+Analytic tests compare remaining polygon areas against known cube/wedge intersections, including vertical surfaces and rectangular lots, and check gaps, contact, immutability and support removal. A sixteen-view enlarged geometry diagnostic was inspected at `art/architecture/building-props/clipping/contact-sheet.png`; regenerate with `node scripts/render-prop-clipping-review.mjs` then `python3 scripts/assemble-prop-clipping-review.py`. The browser still needs actual-scale acceptance.
+
+Cache architecture-collection-27; schema 149 unchanged. The full 310-command regression passed with 312 PASS records and exit code 0 in `/tmp/sims3000-prop-clipping-tests.log`. A one-pass stress diagnostic with 64 rooftop arches on a fully occupied 24-layer model took 86/59/52/42 ms across four view rasters on this Mac. These are individual raster timings, not browser FPS; repeated editor-hover rendering should reuse unchanged prop frames in the next performance pass.
+
+## Reuse unchanged prop preview frames
+
+Building Architect retains at most four directional prop frames per drawing context for the current model content. Cursor/guide/camera redraws reuse the unchanged artwork. Content fingerprints include prop records, blocks/layers, wedge geometry and footprint dimensions, so even in-place edits invalidate stale views. Clearing props draws no retained artwork; unrelated name or facade edits leave the prop layer reusable. Weakly held contexts allow discarded previews to be collected.
+
+Four focused cache/designer/clipping/editor suites passed, including byte-for-byte pixel equivalence, fifty repeated redraws, all four view reuse, actual changed geometry and independent destinations. The cache suite is registered (311 test commands); the last full regression remains the 310-suite cache-27 run. Cache architecture-collection-28, schema 149 unchanged.
+
+A stress diagnostic with 64 rooftop arches on a fully occupied 24-layer model measured cold frame preparation at 79.836/58.114/47.262/38.892 ms across four views; one hundred reused calls per view averaged 0.009/0.008/0.008/0.008 ms. This uses a mocked drawing context and measures frame preparation only; it excludes actual browser compositing, the rest of building rendering and input processing, so it is not a browser FPS claim. Browser acceptance is still pending. Changes remain grouped in the ongoing architecture work.
+
+## Inspect the selected prop before placement
+
+The prop palette now includes a fitted visual preview driven by the same model geometry and world-space lighting as placement. It follows both the selected prop’s physical direction and the building camera, with a caption and accessible image label naming each. Category, prop, direction and camera changes refresh the image; cursor-only redraws reuse it. The preview is intentionally enlarged to help choose small objects, independently of actual building scale.
+
+Four focused collection/editor/designer/cache suites pass. Every one of twelve models is tested through all sixteen direction/view combinations for visible coverage and transparent framing margins; actual controls verify labels and unchanged-preview reuse. The cache graph is architecture-collection-29, schema 149 unchanged. The last full regression remains the 310-suite cache-27 run. A fresh computer-use availability check still reported the Mac locked, so no browser visual acceptance was performed. This continues the architecture milestone without a separate small commit or publication.
+
+## Erase props directly from the model
+
+The manual tutorial (printed page 133) names Erase and Undo for removing props. A new Erase props preview mode now selects the frontmost visible prop surface and removes the corresponding record through the existing shared construction undo path. It also supports the preview cursor’s arrows/Enter and the existing Shift/Escape cancellation. Placement choices are disabled while erasing; the selected prop receives a removal highlight. The list-based removal option remains useful for completely hidden props.
+
+Picking uses clipped model-space prop geometry and building surfaces, projected with per-surface depth rather than selecting a bounding rectangle. It respects walls, all camera rotations, zoom/pan, rectangular lots and equal-depth overlapping props. Cached pick geometry refreshes when relevant model content changes. Four focused picking/editor/designer/paint suites pass, including the actual erase control and cancelling a removal. The picking suite is registered (312 test commands). Cache architecture-collection-30; schema 149 unchanged. Last full regression remains the 310-suite cache-27 run; browser acceptance is pending.
+
+## Skyline landmark batch
+
+Empire State Building and CN Tower now join the playable landmark gallery with original four-view miniatures, authored 3×3 footprints, free unique placement and the existing scenario/save/demolition behavior. The inventory now maps thirteen runtime landmarks and leaves 87 entries unmapped. CN Tower retains its directory-evidence discrepancy flag. Architectural sources, original geometry scope, condensed detail and footprint/scale limits are documented in `art/architecture/skyline-landmarks/README.md`.
+
+All eight enlarged model views were inspected. Focused skyline, collection, gallery, city-renderer and landmark lifecycle checks pass. Test fixtures now accommodate the larger collection while still checking every placed landmark exactly once in each map direction; old fixed raster-cache counts were replaced with current catalog counts. A validated 96×96 review city containing all thirteen is at `/tmp/sims3000-skyline-review-city.json`.
+
+Cache architecture-collection-31; schema 149 covers this continuing unpublished architecture follow-up, and version 148 payloads containing the new types are rejected. The full 313-command regression passed with 318 PASS records and exit code 0 in `/tmp/sims3000-skyline-batch-tests.log`, including the recent prop preview/cache/erase work. Browser review remains pending. No separate small landmark commit or Sites publication was made.
+
+## Find landmarks in the growing collection
+
+The gallery now searches landmark names and locations, matching multiple words case-insensitively and ignoring common accent differences. Availability filters distinguish all, available-to-place and already-placed landmarks. Live result counts, an explicit empty state and a Clear filters control make filtering recoverable. Cards retain their independent preview rotation when hidden and shown; browsing does not change the city or grant another copy of a placed landmark.
+
+The actual gallery-control suite passes name/location, combined-word, accent, availability, no-result and clear/focus checks alongside existing gallery/city raster reuse and placement protection. One initial test mistakenly assumed “state” would not match “United States”; the test now uses the unambiguous query “empire york.” Cache architecture-collection-32, schema 149 unchanged; the last full regression remains 313 suites at cache 31. Browser layout/accessibility acceptance remains pending. This is part of the architecture release group, without a separate small commit.
+
+## Prop selection and drag erasing
+
+Manual printed pages 151–152 describe a read-only eyedropper that selects a prop in its palette, plus dragging to erase multiple items. Select existing prop now copies the visible prop’s category, type and physical direction without changing the building. The player then chooses Place props to reuse it. Empty selection leaves the current palette intact.
+
+Erase props now gathers visible props across a drag and removes them in a single construction edit on release; Shift/Escape cancellation discards the pending removal. One Undo restores the entire stroke. Existing depth/clipping picking still prevents selecting hidden props. Selection and erase outlines are blue, while new placement stays yellow. The manual’s full blue hue/tint treatment is not yet reproduced; the current highlight is a bounding outline.
+
+Four focused prop-editor/construction/paint/designer suites pass, including unchanged state/history on selection, palette copying, empty selection, delayed multi-prop commit, cancellation and whole-stroke undo/redo. Cache architecture-collection-33, schema 149 unchanged. Last full regression remains 313 suites at cache 31. Full fourteen-block shape coverage, exact prop/texture/detail catalogs, navigation-panel parity and browser visual acceptance remain outstanding.
+
+## Visible-surface blue prop highlighting
+
+Select/Erase now tint the existing prop’s visible surfaces blue, retaining geometry shading, instead of outlining its bounds. Pending drag erases tint every marked prop. The overlay includes all construction and other prop surfaces in the depth test, so it cannot show through walls or overlapping props. Equal-depth ordering matches ordinary rendering. Color coverage is downsampled per sample to avoid bleeding the tint into unselected props. This supersedes the earlier outline-only gap; exact original tint colors and browser appearance are still unverified.
+
+Separate bounded overlay caches keep selection changes from evicting normal prop artwork. Six focused highlight/cache/editor/clipping/designer/model suites pass, including exact visible coverage, shaded blue channels, wall/prop occlusion, equal-depth overlap, per-prop sample ownership, unchanged models and actual multi-prop overlay drawing. The new highlight suite is registered (314 test commands). Cache architecture-collection-34; schema 149 unchanged. Last full regression remains 313 suites at cache 31.
+
+## Whole-model overview navigator
+
+The Building Architect navigation reference (printed page 152) describes a complete model preview with the current visible area highlighted and click-to-pan navigation. The designer now includes a small whole-model overview and visible-area frame. Clicking recenters the main view without changing zoom; arrow keys move the center, Shift increases the step, and Home resets. The frame is derived from the inverse camera transform and clipped to the overview bounds, so zoomed-out views still show a full frame. Cached artwork refreshes on model/rotation changes and is reused for camera movement.
+
+Three focused overview/camera/actual-designer suites pass, covering CSS-scaled pointer coordinates, inverse viewport dimensions, keyboard/recenter/reset, maintained zoom, model preservation and raster reuse. Test DOM canvases now model the overview as a separate context, preventing overview scaling from corrupting the mock main-canvas scale. The overview suite is registered (315 test commands). Cache architecture-collection-35, schema 149 unchanged; last full regression remains 313 suites at cache 31.
+
+The overview uses the rectangular main-preview viewport across modes. The manual’s special Construct-mode hexagonal frame/widget behavior is not reproduced, and actual browser layout/accessibility acceptance remains pending. Desktop main-preview sizing now reserves space for the overview controls.
+
+## Architecture feedback exercise and grouped checkpoint
+
+In-game checkpoint 7 now covers construction, paint, portable models, prop placement/selection/group erasing, overview navigation, custom-model reuse and landmark browsing/placement. Its original three step identifiers and texts are preserved, so prior player checkmarks retain their meaning; four new exercises start unmarked. The feedback dialog provides direct Building Architect, Building Library and Landmark launch controls. Notes remain browser-local until the player downloads and shares them; no feedback is assumed. Actual feedback controls and app routing are tested, including opening the menu before menu-owned tools.
+
+This checkpoint groups the post-PR-192 architecture work: twelve original props with editing, clipping, previews and highlights; the overview navigator; two additional landmarks; gallery filtering; and updated feedback exercises. Cache architecture-collection-36, schema 149. The full 315-command regression passed with 324 PASS records and exit code 0 in `/tmp/sims3000-architecture-feedback-tests.log`. The GitHub PR remains draft pending browser visual acceptance. A fresh computer-use check again reported the Mac locked; Sites source-export/publication authorization remains separately pending.
+
+## Visual construction block palette
+
+The Construct editor now displays clickable projected previews for its existing cube and four directional wedge choices, replacing the text-only geometry selector. Native buttons expose the selected shape through aria-pressed; labels name each wedge's rising direction. Selecting a shape cancels an unfinished construction stroke without changing the model. Sampling an occupied block updates the selected preview, and the subsequent construction stroke uses that geometry. The palette retains the current Place/Erase/Sample tool choice.
+
+The five generated geometry previews were visually inspected in `/tmp/sims3000-block-palette.png`. Focused palette, actual voxel-editor, block-geometry, three-edit-plane and actual-designer/footprint suites all passed with exit code 0. The palette suite is registered, bringing the regression command inventory to 316; the last full regression remains 315 commands at cache 36. Cache architecture-collection-37, schema 149 unchanged. Browser layout and keyboard acceptance remain pending; projected asset inspection is not browser acceptance.
+
+Manual printed pages 144–145 describe visual block selection and fourteen block types with four rotations. This change improves selection of the currently supported cube and wedge; it does not claim the remaining original block types have been identified or implemented. This work remains local for the next grouped architecture checkpoint; it has not been published.
+
+## Grass and asphalt surface materials
+
+The manual's Paint section (printed page 145) explicitly names grass and asphalt alongside brick and stucco. Both now appear in the shared material palette and work on block walls, rooftops, per-floor overrides and connected fills. They use original procedural grain and grass marks. Automatic facade windows are suppressed for these materials in both height-layout and independent-layer renderers; explicitly placed details still render over the texture. Bare-ground painting is not yet implemented, so this does not complete the manual's walls/rooftops/ground scope.
+
+Portable building format 11 preserves these materials with or without optional props; older palettes retain their previous export versions. City schema 150 accepts ordinary schema-149 saves but rejects new material identifiers mislabeled as older saves. Column-paint and per-floor encodings independently enforce this boundary. The registered landscape-material suite exercises fill, override, optional prop roundtrips, both downgrade gates and all four views in both construction representations. Focused landscape/material/floor-paint/prop suites passed. The preliminary eight-frame rendered review exposed inherited windows, which were fixed and covered by renderer assertions; final revised visual review remains pending.
+
+There are now 317 registered regression commands, cache architecture-collection-38. A full run is active in terminal session 99388, logging to `/tmp/sims3000-landscape-material-tests.log`; do not count it as passed until terminal completion. That run began before the automatic-window fix, which has separate focused verification. These changes and the visual block palette remain local for the next grouped checkpoint. Browser acceptance and Sites publication remain pending.
+
+
+Landscape-material verification closeout: terminal session 99388 completed with exit code 0, all 317 registered commands and 326 PASS records. The log is `/tmp/sims3000-landscape-material-tests.log`. The final texture variation and preview-handler assertions also passed separately in focused material/landscape/preview suites; the full run began before those final edits, so its result is supplemented by these checks rather than claimed as a frozen final-source run. The revised eight-view geometry render `/tmp/sims3000-landscape-materials-revised.png` was inspected after removing automatic windows and replacing rigid texture rows with deterministic staggered marks. Bounds and repeatability are asserted. These are rendered-art and handler checks, not interactive browser acceptance. Bare-ground painting remains the next Paint-mode functionality gap.
+
+## Ground painting
+
+Paint mode now offers Paint ground, Fill connected ground, Sample ground material and Restore original ground. A separate 10×10 ground layer spans the building lot, draws below the model and props, and uses the shared seven-entry material palette. Brush strokes stage until release, Shift/Escape cancel, arrow keys move the target and Enter applies or samples. Picking rejects points covered by rendered building faces or props. Fill follows adjacent ground squares of the same material and uses each square's center to detect a ground-level building barrier; this grid resolution and barrier rule are reconstruction choices, not a claim of the original editor's exact algorithm.
+
+Ground edits join the active block/layer undo history and the latest ground paint survives construction-method changes. The current controls require a block layout or independent layers; tower-parameter models can retain/render imported ground paint but direct ground editing in tower mode is not enabled. Ground paint is independent from rooftop and wall materials. New portable format 12 and city schema 151 preserve the layer; mislabeled older files are rejected, and older cities without ground paint migrate. The lot's simulation behavior is unchanged by the artwork.
+
+Focused ground geometry/format/editor, block history, voxel history and actual-designer/footprint suites passed. `/tmp/sims3000-ground-review.png` was visually inspected, showing a lawn/path composition in all four rotations using the runtime renderer. These checks do not establish browser pointer/layout acceptance. There are 319 registered regression commands; last full regression was 317 commands before ground support. Current cache architecture-collection-39. Full current regression, browser acceptance and publication remain pending. This remains local with the visual block palette and landscape materials for a grouped architecture checkpoint.
+
+
+Ground integration verification: custom-library encode/decode and whole building-set transfer preserve ground paint with props. A fully populated five-tile design with 64 props, all surface layers and ground paint remains below 32 KB and roundtrips exactly. Actual preview handlers reject clicks through visible props. These focused tests passed, local module imports resolve, and diff whitespace checks pass. A fresh browser availability check still reported the Mac locked. The 319-command full regression is running in terminal session 14633, logging to `/tmp/sims3000-ground-paint-tests.log`; wait for terminal completion before recording a pass or preparing the grouped GitHub checkpoint.
+
+
+Review artifact: `art/architecture/ground-paint/garden-court.building.json` is a validated importable one-tile model with lawn and a paved path. The adjacent README provides six concrete player exercises, and `four-view-review.png` preserves the inspected runtime geometry rendering. PR 192 was rechecked: open/draft at commit 25ec369bc85bb3089f2d985aca76c5f909c9153b. The 319-command regression continues in session 14633; the source files have not changed since that run started. The review artifact and documentation were added while it runs.
+
+
+Grouped painting checkpoint verified: the full 319-command regression at cache architecture-collection-39/schema 151 completed with exit code 0 and 328 PASS records in `/tmp/sims3000-ground-paint-tests.log` (session 14633 closed). Product source was unchanged during this run. This closes automated verification for visual block selection, landscape surface materials and ground painting together. Browser acceptance and publication remain pending; PR 192 stays draft.
+
+## Visual Paint palette and ground-preservation correction
+
+The manual's printed page 147 describes selecting a texture/paint from a visual palette organized into sets. The designer now shows seven clickable runtime texture swatches, grouped as All materials, Facades, Roofing and Landscape. These set names and memberships are authored organization of the current material inventory, not a reconstruction of the original complete palette catalog. Selection uses native buttons with aria-pressed; sampled selections outside the filtered group reveal themselves by returning to All materials. Swatches follow editable facade/glass colors and cache unchanged artwork. Ground restore mode updates disabled controls immediately.
+
+Inspection also found a real integration omission: the designer's field-to-draft read function discarded groundPaint, despite the format and editor layers preserving it. It now carries groundPaint through name/color edits, Apply and imported drafts. The actual designer suite now asserts these paths for both block and voxel representations. This corrects a bug present in the previous GitHub checkpoint; the fix is currently local.
+
+Focused material-palette, actual designer/footprint, preview-paint and ground-editor suites passed. The seven swatch renderings were inspected in `/tmp/sims3000-material-swatches.png`. Current cache architecture-collection-40, schema 151 unchanged, 320 registered test commands. Last full regression remains 319 commands at cache 39 before these changes; browser acceptance and publication remain pending. The full original paint/color catalog remains incomplete.
+
+
+Composed painting acceptance: the actual Building Architect controls are now exercised together for block and voxel models. Tests choose a material swatch, paint a visible ground square, prove the city remains unchanged before Apply, rename the draft, apply, sample the ground, erase/undo, apply again and restore a serialized city. Both representations preserve the lawn through the entire sequence. This is handler-based acceptance with an in-memory DOM, not browser visual acceptance. Checkpoint 7 now adds an eighth exercise for material previews and ground-paint/save continuity; all seven earlier step identities remain unchanged and the new check starts unmarked. Focused composed-designer, palette and feedback suites passed. Cache architecture-collection-41, schema 151 unchanged.
+
+
+Paint-palette follow-up verified: all 320 registered regression commands passed with 329 PASS records and terminal exit 0 in `/tmp/sims3000-paint-palette-tests.log` (session 66956 closed). Product source remained unchanged during the run. Cache architecture-collection-41/schema 151. This checkpoint includes the visual material palette, the designer ground-paint preservation correction, composed painting/Apply/save coverage and the eighth architecture feedback exercise. Browser acceptance and publication remain pending.
+
+## Anchored detail rendering foundation — not yet a playable checkpoint
+
+The next editor feature has a saved `decals` layer with up to 32 authored wall-detail placements: kind, wall side/plane, lower-left horizontal anchor, vertical anchor, width and height. Coordinates use bounded millith precision; portable format 13 stores compact integer tuples and city schema 152 rejects anchored-detail data mislabeled as older versions. Five authored designs include the four existing detail motifs and a cornice. Roof decals still use the legacy single-tile system; variable-size roof placement is not implemented.
+
+The runtime projects the placement into each matching wall plane and clips each detail polygon against the exposed face. Rendering happens within each face's painter-order turn, preserving intervening geometry and gaps; sloped faces use convex clipping. The tests verify lower-left-to-right orientation for every visible wall/rotation, coordinate reversibility, gap clipping, boundaries, save/file gates and maximum combined model size below 32 KB. Both block and layered histories can retain, undo and redo decal edits, and construction-mode memories do not resurrect removed placements. The designer read path retains imported decal records through ordinary field edits.
+
+Focused anchored-detail, material, legacy detail, block history, voxel history and actual-designer suites passed. `/tmp/sims3000-anchored-details-review.png` was visually inspected: wide windows and cornices span six wall columns in all four views. The feature currently has no player-facing anchored placement/size/sampling/erasure controls; do not describe it as playable. Current cache architecture-collection-42, schema 152, 321 registered test commands. Full regression remains at the preceding 320-command cache-41 checkpoint. UI integration, composed acceptance, richer clipping/occlusion evidence, browser review and publication remain pending. These changes are local for the next substantial architecture checkpoint.
+
+## Anchored wall-detail controls
+
+Building Architect now exposes Place anchored wall detail, Select anchored detail and Erase anchored detail. Players choose one of five current designs, a width in wall tiles and a height in floor units. The highlighted existing wall tile supplies the lower-left anchor; placement extends right/up and the renderer clips to available wall geometry. Placement commits on release, Shift/Escape and size changes cancel, camera/model changes invalidate pending placement, and arrows/Enter support keyboard positioning. Selection samples the visible rendered portion's design and size without changing the model; erasure removes its whole placement. Prop geometry blocks picking through a visible prop. The player can undo/redo using the active construction history.
+
+Focused controller tests passed for size validation, scaled pointer coordinates, release/cancel, visible sampling/erasure, stale rotation and keyboard placement. Actual composed designer tests passed in both block and voxel modes: place a cornice through the new controls, prove draft isolation, rename, Apply, Undo/Redo, Apply and restore the saved city. These are handler tests, not browser acceptance. The existing four-view geometry review covers the rendered wide window/cornice appearance.
+
+Current cache architecture-collection-43, schema 152, 322 registered regression commands. Full regression and browser review remain pending. Variable-size roof details, a complete original detail catalog, arbitrary sub-tile anchor positioning, and visual detail palettes are not implemented. The current anchor snaps to the selected wall tile and the controls use authored size ranges. This work remains local for the anchored-detail checkpoint.
+
+Anchored-detail review artifact: `art/architecture/anchored-details/cornice-pavilion.building.json` provides eight original wide-window/cornice placements on four walls. Its README supplies six player exercises and the directory preserves the inspected four-view rendering. Structural equality checks passed for portable export/import, browser-local custom-library encoding/decoding and whole building-set transfer. An initial ad hoc JSON-string comparison differed because validation reorders object keys; structural comparison confirmed the model data is preserved. No runtime changes were needed. The full 322-command regression remains active in terminal session 31412 at `/tmp/sims3000-anchored-detail-tests.log`; product source has not changed during that run. Browser acceptance and the grouped push remain pending.
+
+
+Anchored-detail checkpoint verified: all 322 registered regression commands passed with 331 PASS records and terminal exit code 0 in `/tmp/sims3000-anchored-detail-tests.log` (session 31412 closed). Product source stayed unchanged during the run. A separate seeded stress check covered 13,820 wall faces and 19,330 clipped polygons across 12 layered buildings and four rotations; every emitted point stayed inside its wall polygon. Cache architecture-collection-43, schema 152. The grouped checkpoint includes saved anchored details, rendering, placement/size/sample/erase controls, shared history, composed Apply/save tests and the Cornice pavilion review artifact. Browser acceptance and publication remain pending.
+
+## Next Asian landmark batch — art stage
+
+Original Tokyo Tower, Bank of China Tower and Nam San Tower miniatures now have twelve transparent four-view renders under `art/architecture/asian-landmarks/`. Owner references, simplifications and generation commands are recorded in that directory's README. The first review caught Bank of China Tower antenna clipping in a rotated view; its scale was corrected and all twelve views then passed transparent-boundary checks. The corrected contact sheet was inspected. Geometry is available to the art renderer, but these three models are not yet in the playable catalog or its modeled-type set. Runtime membership remains thirteen, with inventory mappings unchanged. Catalog/save/lifecycle/gallery integration and browser review are next; this art work remains local.
+
+## Asian landmark integration
+
+Tokyo Tower, Bank of China Tower and Nam San Tower now join the playable landmark catalog, bringing it to 16 entries. All use original four-view geometry and authored 3×3 footprints, with free unique placement, whole-footprint demolition/rebuilding and scenario counts. The gallery and city share depth-rendered models. Schema 153 preserves these types and migrates prior schema-152 cities; older version labels cannot carry the new types. Catalog mappings leave 84 of 100 tracked entries unmapped. Exact original footprints and complete architectural fidelity remain unverified.
+
+Focused Asian lifecycle/raster, full landmark collection, gallery and directional city-renderer tests passed, and the catalog audit reports 16 modeled runtime entries. Current cache architecture-collection-44, 323 registered regression commands. Full regression and interactive browser acceptance remain pending. Source is local for the grouped architecture checkpoint; Sites publication remains blocked on the prior explicit source-export authorization request.
+
+Asian collection feedback artifact: `art/architecture/asian-landmarks/review-challenge.city.json` provides an original twelve-month challenge requiring all three landmarks for two consecutive checks. Its generation script passed placement, demolition-induced streak reset, rebuilding and structurally identical saved continuation to victory. An initial raw JSON-string comparison differed only in property ordering; structural equality passed. A fresh browser availability check still reported the Mac locked, so interactive review remains pending. Full regression session 86068 is still running with output in `/tmp/sims3000-asian-landmarks-tests.log`; no product source has changed since it began.
+
+Asian landmark checkpoint verified: all 323 registered regression commands completed with exit 0 and 332 PASS records in `/tmp/sims3000-asian-landmarks-tests.log` (session 86068 closed). Product source was unchanged during the run. Cache architecture-collection-44/schema 153. The separate importable review challenge also passed interrupted progress, rebuilding and saved victory checks. All 823 local module imports resolve; diff whitespace checks pass. Browser acceptance and Sites publication remain pending.
+
+## Visual anchored-detail palette
+
+The editor now offers five visual detail buttons, grouped into authored sets. Previews use the same wall-detail polygons as placed models and refresh with facade, glass and accent colors. Selecting a design cancels pending placement; sampling reveals the selected design across group filters. Controls reflect disabled sampling/erasure modes and use native buttons with pressed-state semantics. Width and height controls remain independent. Focused palette, pointer/editor and composed block/layer Apply/save tests passed; the five default preview SVGs and rendered contact sheet were inspected. This closes visual selection for the current authored designs, not the full original detail catalog or variable-size roof placement. Cache architecture-collection-45, schema 153 unchanged, 324 registered commands. Full regression and browser acceptance remain pending; changes are local for the next grouped editor checkpoint.
+
+Paint-under-detail acceptance: `node scripts/check-detail-paint-order.mjs` passed 56 actual-renderer cases (both construction methods × four views × seven surface materials). Each repaints a wall after placing an anchored cornice, checks the final visible color at the cornice and preserves decal records through portable export/import. This directly exercises manual p.148 layering behavior. The 324-command regression remains active in session 4724; no product source changed during this follow-up.
+
+Detail-palette color review: reproducible render/assembly scripts now preserve fifteen actual runtime previews across default, terracotta and night building colors. The generated contact sheet was visually inspected; all polygons remain inside the swatch. This confirms color response for the five current designs, not browser layout or a larger detail inventory. Full regression session 4724 remains active; product source remains unchanged.
+
+Detail-palette verification closeout: full regression session 4724 completed with exit 0, 324 registered commands and 333 PASS records at cache architecture-collection-45. A subsequent composed-editor assertion exposed stale swatches after a building color input: the parent designer redraw did not refresh the detail palette. The assertion failed on the original code, then passed after adding the refresh to the actual redraw path. Focused composed designer, palette, anchored editor and 56-case paint-order checks passed after the correction. Current cache architecture-collection-46/schema 153. The full-run result predates this narrowly verified correction; it is not a frozen final-source full run. Browser acceptance and publication remain pending, and changes remain local for the next grouped architecture checkpoint.
+
+## Ground painting for tower models
+
+Players can now paint, fill, sample and restore ground around tower-parameter buildings without converting them to blocks or independent layers. Tower ground edits have their own twenty-entry Undo/Redo history; edits stay drafts until Apply, survive tower parameter changes and save/load, and retain the current construction method. Ground fill excludes cells whose centers fall within the tower plinth. This is the existing authored 10×10 ground-grid rule.
+
+Tower rendering and ground occlusion now share solid geometry. All 72 compared drawing command streams (three roof styles × three heights × two footprints × four rotations) exactly matched the committed renderer before refactoring. Picking includes walls, stepped roofs, rooftop caps and the spire stroke. Parameter changes invalidate pending strokes. Focused tests cover all three roofs/four views, blocked clicks through the model, sampling, fills, portable retention and composed tower paint/Apply/Undo/Redo/parameter-edit/save. An initial sampling assertion targeted ground covered after widening the tower; restoring the original width correctly restored access. Cache architecture-collection-47, schema 153 unchanged, 325 registered regression commands. Full current regression and browser acceptance remain pending. This remains local with the visual detail palette for a grouped editor checkpoint.
+
+Tower-ground review artifact: `art/architecture/tower-ground/terrace-garden.building.json` provides an original tower with a lawn/path layout and six player feedback exercises. Its generator verifies portable and city save roundtrips, and its assembly script bounds-checks four actual renderer views. The resulting contact sheet was inspected. The first draft used depth 4, which the existing 6–10 parameter validator correctly rejected; the final review uses width 6/depth 8. Full regression session 24214 remains active in `/tmp/sims3000-tower-ground-tests.log`; product source is unchanged since it began.
+
+Tower-ground history acceptance: the expanded actual block-editor fixture passed tower→block/layer→tower continuity, latest-ground preservation over saved construction memories, twenty-edit history bounds, parameter-preserving undo, new-edit redo invalidation and history reset on method changes. This is a focused test addition after the full run had already passed the earlier version of this suite; product source remains unchanged. Session 24214 remains active.
+
+Grouped editor checkpoint verified: the full 325-command regression completed with exit 0 and 335 PASS records in `/tmp/sims3000-tower-ground-tests.log` (session 24214 closed). Product source remained unchanged during the run at cache architecture-collection-47/schema 153. The extended tower construction-history assertions passed separately and also appear in the completed full-run log; the earlier progress note incorrectly assumed that suite had already run. All 828 relative module imports resolve and diff whitespace checks pass. This checkpoint combines visual detail selection, immediate color refresh, tower ground editing/history, shared tower occlusion geometry and reproducible review artifacts. Browser acceptance and Sites publication remain pending.
+
+## Heritage landmark batch — art stage
+
+Original Brandenburg Gate, Parthenon and Taj Mahal miniatures now have twelve directional PNGs and an inspected contact sheet in `art/architecture/heritage-landmarks/`. Primary architectural references and explicit authored limitations are recorded in its README. The gate includes two rows of six columns and a simplified Quadriga; the Parthenon uses the documented eight-by-seventeen perimeter with an authored open-ruin composition; the Taj focuses on the tomb, domes and four minarets rather than the full complex. All frames passed transparent-boundary checks. These models are only dispatched to the art rasterizer; playable registration, inventory mappings, new-save gating and lifecycle/gallery tests remain pending. Runtime catalog remains sixteen. Current source is local; no new commit or publication has been made for this art stage.
+
+## Heritage landmark integration
+
+Brandenburg Gate, Parthenon and Taj Mahal are now available for free unique placement with shared depth-rendered gallery/city previews. Authored footprints are 3×3, 4×4 and 4×4 respectively. Whole-footprint demolition, rebuilding, scenario counts and saved monthly continuation passed focused tests, along with the complete nineteen-landmark collection and gallery/renderer checks. Schema 154 accepts prior cities while rejecting new types under older version labels. The inventory audit reports nineteen modeled runtime entries and 81 unmapped entries; this does not establish exact original composition or dimensions. Cache architecture-collection-48, 326 registered test commands. An original two-month hold challenge supplies concrete review exercises. Full regression and browser acceptance remain pending; changes remain local.
+
+Heritage architectural checks: geometry-level assertions passed for Brandenburg Gate’s two rows of six columns, the Parthenon’s eight-by-seventeen outer colonnade (shared corners counted on both faces) and four Taj Mahal minarets, one at each platform corner. These counts follow the primary sources linked in the art README; they do not establish decorative accuracy or original-game composition. The focused heritage suite passed after adding these assertions. A fresh browser check still reported the Mac locked. Full regression session 73766 remains active; product source is unchanged.
+
+Heritage boundary acceptance: `node scripts/check-heritage-landmark-boundaries.mjs` passed twelve landmark/map-size cases across 48, 96, 128 and 256 maps. It verifies unchanged full city serialization after right/bottom boundary rejection, free exact-fit placement at the southeast corner, saved final-corner tiles, whole-footprint demolition and rebuilding. This supplements visual/lifecycle checks without changing product source. Full regression session 73766 remains active.
+
+Heritage landmark checkpoint verified: the full 326-command regression completed with exit 0 and 337 PASS records in `/tmp/sims3000-heritage-landmark-tests.log` (session 73766 closed), including the reference-defined geometry assertions. Product source remained unchanged during the run at cache architecture-collection-48/schema 154. The separate twelve-case map-boundary script and playable review challenge also passed. All 829 relative module imports resolve; diff whitespace checks pass. Browser acceptance and Sites publication remain pending.
+
+## Independent solid paints — data foundation
+
+The manual's Paint section (printed pp.145–147) distinguishes textures from paints that can be applied to individual surfaces. A standalone `building-paint-colors.js` foundation now allocates seven built-in material identifiers plus up to 28 custom RGB colors in a one-character base-36 surface encoding. Zero preserves inherited/default paint. The 28-color bound is an authored storage choice, not an asserted original-game limit. Selection normalizes RGB hex, reuses existing colors, preserves input drafts and can reclaim only an unused slot when the palette is full. References are checked across column materials, per-floor surfaces and ground paint.
+
+The focused `building-paint-colors.test.mjs` passed encoding roundtrips, malformed inputs, missing references, immutable selection, duplicate reuse, safe unused-slot replacement and full-palette protection. This module is not yet imported by the playable editor or save validator. Renderer, material validation, history, palette controls and portable/city version gates remain to be implemented. It is not yet a playable feature. Runtime remains cache architecture-collection-48/schema154 with nineteen landmarks. No full regression or new commit is claimed for this standalone foundation.
+
+## Solid paint rendering and saved representation
+
+Column surfaces, per-floor walls/roofs and ground now accept the compact solid-color material identifiers. Explicit colors render independently of facade/glass/accent settings and remain beneath existing details. Whole-design validation rejects missing palette entries. Portable format 14 carries the palette, allows optional anchored details and props, and rejects new palette data under old labels. City schema 155 similarly gates the palette while accepting schema154 cities. The designer read path retains imported palettes through field edits and Apply.
+
+Focused solid-paint tests passed all 35 material-code roundtrips, immutable palette selection, missing-reference rejection, four-view independent color rendering, portable/city version gates, migration and a fully populated five-tile model with 64 props, 32 anchored details, all material layers and 28 colors at 32,634 bytes (below the existing 32 KB limit). Prior material/floor/ground/surface-picking/anchored-detail and composed designer suites passed. Current cache architecture-collection-49, 327 registered commands. Player color controls, palette-aware Undo/Redo and complete imported-color selection remain unfinished; this is not yet a completed playable paint workflow. Full regression and browser review are pending.
+
+## Custom-color controls and palette history
+
+The Paint palette now includes a native color picker, Use this color and up to 28 saved color swatches, with an authored Solid paints set. Selection normalizes colors and reuses existing entries; custom materials have readable sampling labels. Palette selection is a draft edit in the active history, followed by a separate paint-stroke edit. Block/layer histories retain palette snapshots, and tower ground history now retains both ground paint and its palette without rewinding tower parameters. Undoing an added palette resets a now-invalid selected color to the original facade.
+
+Unused-slot reclamation protects colors referenced by active undo/redo or remembered construction modes. This prevents restored surfaces from unexpectedly receiving a newly assigned color; the full-palette message explains when editing history reserves colors. Focused controls and all-three-construction-method history tests passed, alongside existing material palette, surface editor, ground editor and composed designer suites. These checks include palette removal/recreation by Undo/Redo and remembered-color reservation. Current cache architecture-collection-50/schema155, 328 registered commands. End-to-end custom-color painting through the actual composed designer, imported-color selection in every auxiliary control, visual review and full regression remain pending.
+
+Solid-paint composed acceptance: actual designer handlers now pass custom-color selection, draft isolation, ground painting/sampling, palette and stroke Undo/Redo in all construction methods, plus wall/roof painting and sampling in blocks and layers. Name edits, Apply and city restoration preserve all data. Imported colors appear in the block-grid material menu, render with their selected color and survive paint undo. These tests found and corrected a shared-menu refresh omission after selecting colors in layer mode. The importable Color court review and its four views were generated, bounded and inspected. Current cache architecture-collection-51/schema155, 328 registered commands. Full regression and browser acceptance remain pending; changes remain local for the solid-paint checkpoint.
+
+Solid-paint checkpoint verified: the full 328-command regression completed with exit 0 and 343 PASS records in `/tmp/sims3000-solid-paint-tests.log` (session 58776 closed). Product source remained unchanged during that run at cache architecture-collection-51/schema155. A subsequent focused extension also passed browser-storage library roundtrips for both a normal and maximum-size painted model, saved-city building-set transfer, independent destination palettes and atomic rejection of missing color references. The Color court four-view artifact and composed editor exercises are available for feedback; actual browser interaction acceptance and Sites publication remain pending.
+
+## Precise wall-detail placement
+
+Manual p.148 describes the highlighted cursor as the detail’s lower-left anchor. The editor now inverts the projected wall plane at the cursor, preserving fractional horizontal/vertical anchors at the existing 0.001 storage precision. Optional Snap anchor to wall tile restores regular grid alignment. A zoom-independent crosshair identifies the actual anchor; changing snap cancels a pending placement. Existing clipping, sampling, erasure and history remain shared. No save-format change is required.
+
+Focused checks passed inverse projection across all 25 footprints/four rotations, actual pointer handlers under CSS scaling and camera zoom/pan on rectangular lots, precise versus snapped placement, crosshair coordinates, snap-change cancellation, portable retention and composed editor Apply/Undo/Redo/city-save continuity. Cache architecture-collection-52, city schema155 unchanged. No full-regression or browser acceptance claim is made for this local addition. Variable-size roof details remain an outstanding editor requirement.
+
+## Variable-size roof details
+
+Anchored detail controls now offer Wall or Roof. On roofs, Skylight supplies an original glazed roof detail and Vent grille supplies a roof vent, with independent width/depth, cursor or tile-snapped anchors, visible-piece sampling, erasure and shared Undo/Redo. Plane-aware clipping supports coplanar flat and sloped roof faces, preserves gaps, and prevents transfer onto different roof levels. The renderer draws the pieces during each roof face’s normal depth pass. Wall and roof placements share a 32-detail limit.
+
+Portable format15 stores roof records as eight signed 16-bit fields encoded in base64; city schema156 gates roof data and migrates previous saves. A maximum model with all paint layers, 28 colors, 64 props, 32 roof details and a 40-character non-ASCII name occupies 32,684 bytes, beneath 32KB. Fixed storage precision is 0.001 construction units. Designer field edits retain roof details; tower conversion is refused while any remain.
+
+Focused checks passed 36 flat/sloped geometry cases, gap/height-plane isolation, four-view integrated rendering, format/schema gates, bounded decoding, and actual composed controls for block/layer placement, sampling, erasure, Undo/Redo, Apply, draft isolation and saved continuation. Current cache architecture-collection-53/schema156, 329 registered commands. Full regression and visual/browser review remain pending. This introduces two authored roof-detail designs, not a claim of complete original detail-catalog coverage.
+
+Roof-detail review artifact: the importable Skylight atelier model and four runtime views are in `art/architecture/roof-details/`, with six player feedback exercises. The final low-rise views were visually inspected, and the model roundtrips through portable and city saves. Focused library/set transfer checks also pass independent copied plane records and atomic invalid-plane rejection. Sparse plane arrays are now rejected; focused roof and composed-editor suites passed after this validation correction. The full regression session19436 is still running, so its completion is not yet claimed. The broad run began before the sparse-plane correction; focused post-correction checks are separate evidence.
+
+Roof palette refinement: choosing Roof now limits the palette to Skylight and Vent grille, selects a usable fallback when a wall-only detail was selected, blocks incompatible buttons and restores wall labels/choices when returning to Wall. Focused palette, pointer editor, composed designer and roof suites passed after this change. These post-start focused checks supplement the still-running broader regression; no frozen-source full-run claim is made.
+
+Detail-placement checkpoint regression completed: session19436 closed with exit0, all 329 registered commands and 352 PASS records in `/tmp/sims3000-roof-detail-tests.log`. The run began before the sparse-plane validation correction and contextual roof palette refinement; affected roof, palette, pointer and composed-editor suites were separately rerun after those corrections and passed. Current source is cache architecture-collection-53/schema156. The importable review model and four runtime views were reviewed; actual browser interaction acceptance remains pending.
+
+## Direct model edit-plane handles
+
+Manual pp.143–144 describes colored model widgets for moving the three edit cross-sections. Move layered edit planes now exposes green floor, red west–east and blue north–south handles on the model. Dragging projects pointer motion onto each plane’s normal axis, clamps to its supported slice range and updates the existing selector, position input, slider and model guide. Arrow keys move the selected plane; Shift moves five positions. Pan/zoom/rotation remain available through existing controls; camera changes cancel an active handle drag. Choosing the tool without independent layers provides an instruction.
+
+Focused checks passed 36 handle cases across four rotations and square/rectangular footprints, CSS scaling and camera zoom/pan, keyboard movement and unchanged model data. The composed designer check confirms the cross-section selector, position and slider update together and Apply does not edit the model after navigation alone. Current cache architecture-collection-54/schema156, 330 registered commands. Full regression and visual/browser review are pending for this local addition. Original Construct-mode hexagonal overview framing and edge panning through widgets remain outstanding.
+
+## Construct navigation continuity
+
+Dragging a plane widget beyond the preview’s sixteen-pixel inner boundary now pans the camera in proportion to further pointer motion. This is direct manipulation, with no timer or motion after release. Widget-driven camera changes preserve the active drag; external camera changes, model replacement, cancellation and tool changes stop it. Other pointers cannot hijack an active widget. Plane positions remain clamped and navigation never edits model geometry.
+
+The Move layered edit planes tool uses a six-sided overview frame following the inverse camera viewport and disables overview click/arrow recentering. Home still resets; returning to other tools restores ordinary overview interaction. Hexagon proportions and this explicit web tool activation are authored adaptations of manual p.152, not claimed pixel-identical original UI. Focused widget, overview and composed designer tests passed edge panning, release/cancellation, pointer isolation, camera/frame tracking and ordinary navigation preservation. Cache architecture-collection-55/schema156, 330 registered commands. Visual/browser review and the full regression are pending.
+
+Construct visual review: an importable Section study model and four workspace/overview pairs at 200% zoom were generated from actual runtime draw commands and inspected. This exposed handles falling outside the preview after rotation. Handles now remain within a twelve-pixel inset, connect back to their true projected positions and stay at least twenty-four pixels apart when pushed toward the same corner. Focused checks cover all rotations, zoom extremes, extreme panning, pointer behavior and the composed designer. The visual artifact has six feedback exercises. These corrections occurred after the broader regression started; focused post-correction results supplement that run, which is still active as session3125. No frozen-source full-run completion or browser acceptance is claimed.
+
+Construct navigation checkpoint verified: the broad 330-command regression completed with exit0 and 359 PASS records in `/tmp/sims3000-construct-navigation-tests.log` (session3125 closed). Handle visibility/separation and second-pointer protection were refined after the run began; affected widget, overview and composed-designer suites also passed after those changes. Tool/model changes, Escape and pointer cancellation prevent stale slice updates. Current cache architecture-collection-55/schema156. Four runtime workspace/overview views were inspected, with an importable model and six feedback exercises. Browser acceptance and Sites publication remain pending.
+
+## Whole-stroke detail erasure
+
+Manual p.151 permits holding and dragging Erase across multiple items. Anchored wall and roof details now collect visible placements along a drag, sample between pointer events, and erase them together on release. The draft remains unchanged until release; Shift, Escape, tool/surface changes, stale camera/model state or pointer cancellation discard the stroke. Pointer ownership prevents a second pointer from changing an active stroke. One Undo restores the full removed set and Redo removes it again. Details covered by another placement remain untouched during the stroke, rather than being removed through the visible top detail.
+
+Focused pointer and composed designer checks passed wall/roof strokes for both block and layer models, fast movement over an intervening detail, pre-release draft isolation, Shift cancellation, one-action Undo/Redo, save continuity and preservation of covered placements. Current cache architecture-collection-56/schema156, 330 commands. This addition remains local for a grouped editing checkpoint; no new full-regression or browser acceptance is claimed.
+
+## Review the complete editing workflow
+
+Checkpoint7 now has eleven exercises. Three new, separately keyed exercises cover independent surface colors/library transfer, resizable wall/roof details with whole-stroke erasure, and direct construction-plane navigation. Existing notes and the earlier eight checkmarks are preserved; the new steps are not assumed tried. The checkpoint offers downloadable Color court, Skylight atelier and Section study models from public static assets, followed by instructions to import them into Building Architect. Each download was imported and verified to retain its intended paint, roof-detail or layered geometry.
+
+This grouped editing checkpoint combines whole-stroke detail erasure with player-accessible review assets and feedback steps. Focused pointer/composed-designer and feedback/storage/import checks pass. Cache architecture-collection-57/schema156, 330 registered commands unchanged. No new whole-game regression is claimed; the prior full navigation run and these change-specific checks are separate evidence. Browser acceptance and publication remain pending.
+
+## Chicago cultural landmarks
+
+The local catalog now adds Adler Planetarium, Shedd Aquarium and the Art Institute of Chicago: twenty-two modeled landmarks total, with seventy-eight of the hundred inventoried names still unmapped. Original geometry uses the historic museum cores, omitting later campus additions. Architect/institution references and explicit simplifications are recorded in `art/architecture/chicago-landmarks/README.md`. The authored footprints are 3×3, 4×4 and 4×4; original-game footprints remain unverified.
+
+All twelve depth-raster views passed boundary checks and the contact sheet was inspected. Focused checks passed free unique placement, whole-footprint demolition/rebuilding, scenario metrics, saved monthly continuation, gallery interactions and directional city rendering. Source-defined checks cover Adler’s twelve-sided body, Shedd’s octagonal body/dome and the Art Institute’s paired lions. The expanded all-landmark test now uses a 96-tile map to fit the collection; its forged-duplicate fixture uses matching map indexing. City schema157 gates the new structures while accepting prior saves; cache architecture-collection-58, 331 registered commands. Full regression, browser acceptance and publication remain pending for this local addition.
+
+Chicago checkpoint regression completed with exit0: 331 registered commands and 364 PASS records in `/tmp/sims3000-chicago-landmark-tests.log`. After the run began, the feedback checkpoint gained a downloadable Chicago museum collection city: place all three museums, preserve them for two consecutive months, and test demolition/rebuilding recovery. The generated challenge passed save validation and identical saved continuation; the feedback/download suite passed separately after that change. Browser acceptance and publication remain pending.
+
+## Browser-led workspace correction
+
+Actual browser review found that the compact city dialog reduced the low-rise study building to a tiny image near the bottom of its portrait preview. Building Architect now uses a wider desktop dialog with a larger preview allowance. A Fit building button renders the current draft offscreen, finds its visible pixel bounds, and centers/scales those bounds with a margin. It changes the camera only; original Reset view behavior remains available. Other city dialogs retain their existing width.
+
+At the reviewed 1280×720 browser size, the imported Skylight atelier model fitted to 169% and its skylights and vent became clearly visible. A roof skylight was placed with the fitted camera and undone using the layout Undo control; it remained an unapplied draft. The overview zoom description updated consistently. Camera tests passed fitting low-rise/tall/tiny bounds, centering, bounds containment, pan interruption and reset. The composed designer suite passed existing editing, library and saved-city workflows. Cache architecture-workspace-1; schema157 unchanged. This local correction has not yet been committed; mobile visual review and the remaining architecture acceptance exercises are still open.
+
+Workspace browser verification continued at 390×844: page width equaled viewport width and the dialog content width equaled its client width, with no horizontal overflow. Fit/Reset/rotation remained usable. The viewport override was reset afterward. The imported Section study was fitted and all three handles moved their planes (floor7, west–east5, north–south5); layered Undo/Redo stayed disabled after navigation alone. Overview, widget and camera suites passed after the workspace change, supplementing the composed designer suite. These focused checks and browser exercises cover the workspace correction; the prior 333-command integration run remains separate evidence.

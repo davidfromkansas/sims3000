@@ -1,3 +1,4 @@
+import {buildingPlaneGuide} from '../dist/building-plane-guide.js';
 import assert from 'node:assert/strict';
 import {mountBuildingVoxelEditor} from '../dist/building-voxel-editor.js';
 import {defaultBuildingDesign} from '../dist/building-designs.js';
@@ -9,7 +10,6 @@ $('voxelAction').value='erase';$('voxelAction').onchange();down(11);move(23);up(
 const before=JSON.stringify(draft);$('voxelLevel').value='25';$('voxelLevel').oninput();down(11);up();assert.equal(JSON.stringify(draft),before);assert.match($('voxelStatus').textContent,/1 to 24/);
 $('voxelPlane').value='xz';$('voxelPlane').onchange();assert.equal($('voxelLevel').value,'10','orientation change clamps the slice');$('voxelLevel').value='2';$('voxelLevel').oninput();assert.equal(cells.length,240);assert.match(cells[0].attrs['aria-label'],/row 2, layer 24/);assert.match(cells[239].attrs['aria-label'],/row 2, layer 1/);down(230);move(5);up();assert.equal(draft.voxels[10],0xffffff,'vertical drag spans all heights');$('voxelUndo').onclick();assert.equal(draft.voxels[10],0);$('voxelPlane').value='horizontal';$('voxelPlane').onchange();assert.equal(cells.length,100);
 const geometryBefore=[...draft.voxels],paint=Array(500).fill(0);paint[12]=2;editor.applyMaterials(paint);assert.equal(draft.materials[12],2);assert.deepEqual(draft.voxels,geometryBefore);$('voxelUndo').onclick();assert.equal(draft.materials,undefined);assert.deepEqual(draft.voxels,geometryBefore);$('voxelRedo').onclick();assert.equal(draft.materials[12],2);
-console.log('PASS: layered editor previews, independent-plane placement/erasure, undo/redo, immediate layer refresh, pointer and Shift cancellation, invalid input and redo invalidation.');
 
 const floorPaint='0'.repeat(100)+'4'+'0'.repeat(11899),beforeFloorPaint=JSON.stringify(draft);editor.applyFloorPaint(floorPaint);assert.equal(draft.surfacePaint,floorPaint);$('voxelUndo').onclick();assert.equal(JSON.stringify(draft),beforeFloorPaint);$('voxelRedo').onclick();assert.equal(draft.surfacePaint,floorPaint);
 
@@ -22,3 +22,36 @@ const beforeNavigation=JSON.stringify(draft);$('voxelPlane').value='horizontal';
 down(11);move(15);grid.onkeydown({key:'PageDown',preventDefault(){}});assert.equal(editor.selection().pending,null);assert.equal($('voxelLevel').value,'19');up();assert.equal(JSON.stringify(draft),beforeNavigation,'moving the edit plane never commits a stroke');
 let consumed=0;const wheel=(deltaY,deltaMode=0,ctrlKey=false,timeStamp=10)=>grid.onwheel({deltaY,deltaMode,ctrlKey,timeStamp,preventDefault(){consumed++;}});wheel(-30);assert.equal($('voxelLevel').value,'19');wheel(-30);assert.equal($('voxelLevel').value,'20');wheel(120,0,true);assert.equal(consumed,2,'browser zoom gesture stays untouched');wheel(4,1,false,300);assert.equal($('voxelLevel').value,'19');wheel(-1,2,false,600);assert.equal($('voxelLevel').value,'21');
 $('voxelPlane').value='xz';$('voxelPlane').onchange();assert.equal($('voxelLevel').value,'10');assert.equal(Number($('voxelPlaneSlider').max),10);assert.equal($('voxelNext').disabled,true);$('voxelPlaneSlider').value='1';$('voxelPlaneSlider').oninput();assert.equal($('voxelPrevious').disabled,true);grid.onkeydown({key:'PageDown',preventDefault(){}});assert.equal($('voxelLevel').value,'1');assert.equal(JSON.stringify(draft),beforeNavigation);
+
+for(const orientation of ['horizontal','xz','yz'])for(const shape of ['single','line','plane']){
+ draft={...defaultBuildingDesign(),voxels:Array(100).fill(0xffffff)};editor.reset();$('voxelPlane').value=orientation;$('voxelPlane').onchange();$('voxelLevel').value='2';$('voxelLevel').oninput();$('voxelShape').value=shape;$('voxelAction').value='place';const original=JSON.stringify(draft);
+ const rightDown=()=>grid.onpointerdown({button:2,target:cells[11],pointerId:7,preventDefault(){}});
+ rightDown();move(23);up(true);assert.equal(JSON.stringify(draft),original,'Shift cancels right-drag erasure');
+ rightDown();move(23);assert.equal(JSON.stringify(draft),original);up();assert.notEqual(JSON.stringify(draft),original);assert.equal($('voxelAction').value,'place','right erasure preserves the selected construction action');$('voxelUndo').onclick();assert.equal(JSON.stringify(draft),original);$('voxelRedo').onclick();assert.notEqual(JSON.stringify(draft),original);
+}
+
+for(const orientation of ['horizontal','xz','yz']){
+ draft={...defaultBuildingDesign(),voxels:Array(100).fill(0xffffff),blockGeometry:'3'.repeat(2400)};editor.reset();$('voxelPlane').value=orientation;$('voxelPlane').onchange();$('voxelLevel').value='2';$('voxelLevel').oninput();$('voxelAction').value='sample';$('voxelGeometry').value='0';const original=JSON.stringify(draft),priorWrites=writes;down(11);up();assert.equal($('voxelGeometry').value,'3');assert.equal(JSON.stringify(draft),original);assert.equal(writes,priorWrites);assert.equal($('voxelUndo').disabled,true);assert.match($('voxelStatus').textContent,/geometry selected/);
+ draft={...draft,voxels:Array(100).fill(0),blockGeometry:undefined};editor.refresh();down(11);up();assert.equal($('voxelGeometry').value,'3','empty cells do not reset selected geometry');assert.match($('voxelStatus').textContent,/No block/);
+}
+// Pointer and keyboard targets appear before a stroke and never edit the draft.
+for(const orientation of ['horizontal','xz','yz']){
+ draft={...defaultBuildingDesign(),voxels:Array(100).fill(1)};editor.reset();$('voxelPlane').value=orientation;$('voxelPlane').onchange();$('voxelLevel').value='2';$('voxelLevel').oninput();$('voxelAction').value='place';$('voxelShape').value='plane';
+ const before=JSON.stringify(draft),priorWrites=writes;
+ move(12);assert.equal(editor.selection().reference,12);assert.equal(editor.selection().pending,null);assert.equal(buildingPlaneGuide(editor.selection()).length,2);assert.equal(cells.filter(c=>c.style.boxShadow).length,1);assert.ok(cells[12].style.boxShadow);
+ const priorViews=views;move(12);assert.equal(views,priorViews,'same hover target does not redraw');move(13);assert.equal(editor.selection().reference,13);assert.equal(cells[12].style.boxShadow,'');
+ grid.onpointerleave();assert.equal(editor.selection().reference,undefined);assert.equal(buildingPlaneGuide(editor.selection()).length,1);
+ grid.onfocusin({target:cells[21]});assert.equal(editor.selection().reference,21);grid.onkeydown({key:'ArrowRight',target:cells[21],preventDefault(){}});assert.equal(editor.selection().reference,22);grid.onfocusout({relatedTarget:null});assert.equal(editor.selection().reference,undefined);
+ move(14);grid.onkeydown({key:'Escape',preventDefault(){}});assert.equal(editor.selection().reference,undefined);
+ down(11);move(23);grid.onpointerleave();assert.equal(buildingPlaneGuide(editor.selection()).length,7,'leaving during drag retains the pending plane');up(true);assert.equal(JSON.stringify(draft),before);assert.equal(writes,priorWrites);assert.equal($('voxelUndo').disabled,true);
+ move(15);$('voxelNext').onclick();assert.equal(editor.selection().reference,undefined,'moving the slice discards the old target');
+}
+draft={...defaultBuildingDesign(),voxels:Array(100).fill(1)};editor.reset();const props=[{kind:'tree',x:1,y:2,z:.26,rotation:3}];editor.applyProps(props);assert.deepEqual(draft.props,props);$('voxelUndo').onclick();assert.equal(draft.props,undefined);$('voxelRedo').onclick();assert.deepEqual(draft.props,props);props[0].x=9;assert.equal(draft.props[0].x,1,'prop edits copy their input');
+console.log('PASS: layered editor previews, independent-plane placement/erasure, undo/redo, immediate layer refresh, pointer and Shift cancellation, invalid input and redo invalidation.');
+
+// Clicking the visual palette changes tool selection, not the model or undo history.
+$('voxelPlane').value='horizontal';$('voxelLevel').value='1';$('voxelAction').value='place';$('voxelShape').value='single';editor.refresh();
+const beforePalette=JSON.stringify(draft),writesBeforePalette=writes;down(22);$('voxelBlock3').onclick();assert.equal(editor.selection().pending,null,'choosing another block cancels a pending stroke');up();assert.equal(JSON.stringify(draft),beforePalette);assert.equal(writes,writesBeforePalette);assert.equal($('voxelGeometry').value,'3');assert.equal($('voxelBlock3').attrs['aria-pressed'],'true');assert.equal($('voxelBlock0').attrs['aria-pressed'],'false');
+down(22);up();assert.equal(draft.blockGeometry[22],'3','the next construction action uses the visually selected shape');$('voxelAction').value='sample';$('voxelBlock0').onclick();down(22);assert.equal($('voxelGeometry').value,'3');assert.equal($('voxelBlock3').attrs['aria-pressed'],'true','sampling updates the visible palette selection');
+const beforeGround=JSON.stringify(draft),ground='6'+'0'.repeat(99);editor.applyGroundPaint(ground);assert.equal(draft.groundPaint,ground);$('voxelUndo').onclick();assert.equal(JSON.stringify(draft),beforeGround);$('voxelRedo').onclick();assert.equal(draft.groundPaint,ground);
+const anchored=[{kind:1,side:2,plane:5,u:2,z:.2,width:2,height:.4}],beforeDecals=JSON.stringify(draft);editor.applyDecals(anchored);assert.deepEqual(draft.decals,anchored);$('voxelUndo').onclick();assert.equal(JSON.stringify(draft),beforeDecals);$('voxelRedo').onclick();assert.deepEqual(draft.decals,anchored);

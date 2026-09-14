@@ -1,13 +1,15 @@
-import {civicSize} from './civic-footprints.js?v=science-center-2';
-import {REWARDS,rewardSize} from './rewards.js?v=science-center-2';
-import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=science-center-2';
-import {tunnelEdges,routeLength} from './tunnels.js?v=science-center-2';
-import {MinQueue} from './highway.js?v=science-center-2';
+import {civicSize} from './civic-footprints.js?v=architecture-workspace-1';
+import {REWARDS,rewardSize} from './rewards.js?v=architecture-workspace-1';
+import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=architecture-workspace-1';
+import {tunnelEdges,routeLength} from './tunnels.js?v=architecture-workspace-1';
+import {MinQueue} from './highway.js?v=architecture-workspace-1';
+// Absent network nodes share an immutable list; only real tracks/roads allocate adjacency.
+const EMPTY_EDGES=Object.freeze([]);
 export const STATIONS={trainStation:{name:'Train station',cost:500,upkeep:10},subwayStation:{name:'Subway station',cost:500,upkeep:10},railTransfer:{name:'Rail–subway connection',cost:1000,upkeep:20}};
 export function railNetwork(c){
- const tiles=c.tiles,N=tiles.length,n=Math.sqrt(N),enabled=c.transport.funding>0&&c.transport.condition>20&&c.transport.underfunded<6,edges=Array.from({length:N*2},()=>[]),present=i=>i<N?tiles[i].rail:tiles[i-N].subway;
+ const tiles=c.tiles,N=tiles.length,n=Math.sqrt(N),enabled=c.transport.funding>0&&c.transport.condition>20&&c.transport.underfunded<6,edges=Array(N*2).fill(EMPTY_EDGES),present=i=>i<N?tiles[i].rail:tiles[i-N].subway;
  const nearby=(t,mode,includeCenter=false)=>{const out=[];for(const [dx,dy]of (includeCenter?[[0,0],[1,0],[-1,0],[0,1],[0,-1]]:[[1,0],[-1,0],[0,1],[0,-1]])){const x=t.x+dx,y=t.y+dy;if(x<0||y<0||x>=n||y>=n)continue;const i=y*n+x;if(mode==='rail'?tiles[i].rail:tiles[i].subway)out.push(i+(mode==='subway'?N:0));}return out;};
- for(let i=0;i<N*2;i++){if(!present(i))continue;const t=tiles[i%N],mode=i<N?'rail':'subway';for(const j of nearby(t,mode)){const u=tiles[j%N];if(mode==='rail'){const axis=t.x===u.x?'y':'x';if(t.terrain==='water'&&t.railAxis!==axis||u.terrain==='water'&&u.railAxis!==axis)continue;}edges[i].push(j);}}
+ for(let i=0;i<N*2;i++){if(!present(i))continue;edges[i]=[];const t=tiles[i%N],mode=i<N?'rail':'subway';for(const j of nearby(t,mode)){const u=tiles[j%N];if(mode==='rail'){const axis=t.x===u.x?'y':'x';if(t.terrain==='water'&&t.railAxis!==axis||u.terrain==='water'&&u.railAxis!==axis)continue;}edges[i].push(j);}}
  for(const [a,b]of tunnelEdges(c,'rail')){edges[a].push(b);edges[b].push(a);}
  const transfers=new Map();
  const stations=tiles.filter(t=>STATIONS[t.type]);
@@ -17,13 +19,21 @@ export function railNetwork(c){
  const railNetworks={};
  for(const s of stations){s.stationGroups=[...new Set(s.stationNodes.map(i=>groups[i]).filter(id=>id>=0))];for(const id of s.stationGroups){railNetworks[id]??={id,railTiles:0,subwayTiles:0,stations:[]};railNetworks[id].stations.push(s.y*n+s.x);}}
  if(stations.length)for(let i=0;i<N*2;i++){const group=railNetworks[groups[i]];if(group)group[i<N?'railTiles':'subwayTiles']++;}
- const nearStations=t=>stations.filter(s=>s.stationActive&&Math.max(t.x-s.x,s.x-t.x-((REWARDS[t.type]?.jobs?rewardSize(t):civicSize(t))-1),t.y-s.y,s.y-t.y-((REWARDS[t.type]?.jobs?rewardSize(t):civicSize(t))-1))<=3),zoneGroups=new Map(),uses=Array.from({length:g},()=>new Set());
+ const stationCache=new Map();
+ const nearStations=t=>{if(stationCache.has(t))return stationCache.get(t);const found=stations.filter(s=>s.stationActive&&Math.max(t.x-s.x,s.x-t.x-((REWARDS[t.type]?.jobs?rewardSize(t):civicSize(t))-1),t.y-s.y,s.y-t.y-((REWARDS[t.type]?.jobs?rewardSize(t):civicSize(t))-1))<=3);stationCache.set(t,found);return found;},zoneGroups=new Map(),uses=Array.from({length:g},()=>new Set());
  for(const t of [...tiles.filter(t=>['residential','commercial','industrial'].includes(t.type)),...civicJobSites(c)]){const gs=new Set(nearStations(t).flatMap(s=>s.stationNodes.map(i=>groups[i])));zoneGroups.set(t,gs);for(const id of gs)uses[id].add(civicJobCapacity(t)?'civicJobs':t.type);}
  for(const [t,gs]of zoneGroups){t.railAccess=[...gs].some(id=>uses[id].has('residential')&&(uses[id].has('commercial')||uses[id].has('industrial')||uses[id].has('civicJobs')));t.access=t.access||t.railAccess;}
- function allocate(home,workplaces,remaining,maxPassengers){if(!home.railAccess||maxPassengers<=0)return{passengers:0,travel:0};const starts=nearStations(home),prev=new Int32Array(N*2).fill(-2),origin=new Map(),q=new MinQueue(),distance=new Float64Array(N*2).fill(Infinity);for(const s of starts)for(const i of s.stationNodes)if(prev[i]===-2){prev[i]=-1;distance[i]=0;q.push(i,0);origin.set(i,s);}const destinations=new Map();for(const w of workplaces){if(!remaining.get(w))continue;for(const s of nearStations(w))for(const i of s.stationNodes){if(!destinations.has(i))destinations.set(i,[]);destinations.get(i).push({work:w,station:s});}}
+ // Search buffers and station destinations live only for this network recomputation.
+ let search=0,visited,prev,distance,origin,cachedWorkplaces,destinations;
+ function allocate(home,workplaces,remaining,maxPassengers){if(!home.railAccess||maxPassengers<=0)return{passengers:0,travel:0};
+ if(!visited){visited=new Uint32Array(N*2);prev=new Int32Array(N*2);distance=new Float64Array(N*2);origin=Array(N*2);}
+ if(++search===0x100000000){visited.fill(0);search=1;}
+ const starts=nearStations(home),q=new MinQueue();for(const s of starts)for(const i of s.stationNodes)if(visited[i]!==search){visited[i]=search;prev[i]=-1;distance[i]=0;q.push(i,0);origin[i]=s;}
+ if(cachedWorkplaces!==workplaces){cachedWorkplaces=workplaces;destinations=new Map();for(const w of workplaces)for(const s of nearStations(w))for(const i of s.stationNodes){if(!destinations.has(i))destinations.set(i,[]);destinations.get(i).push({work:w,station:s});}}
+
  let passengers=0,travel=0;
- while(q.length&&passengers<maxPassengers){const item=q.pop(),i=item.node;if(item.cost!==distance[i])continue;for(const {work,station}of destinations.get(i)||[]){const from=origin.get(i);if(from===station)continue;const count=Math.min(maxPassengers-passengers,remaining.get(work)||0);if(count<=0)continue;const path=[];for(let j=i;j>=0;j=prev[j])path.push(j);for(const j of path){if(j<N)tiles[j].railRiders+=count;else tiles[j-N].subwayRiders+=count;}for(let k=1;k<path.length;k++){const transfer=transfers.get(path[k-1]+':'+path[k]);if(transfer)transfer.stationRiders+=count;}from.stationRiders+=count;station.stationRiders+=count;remaining.set(work,remaining.get(work)-count);passengers+=count;travel+=count*routeLength(c,path);}
- for(const j of edges[i]){const a=tiles[i%N],b=tiles[j%N],next=distance[i]+Math.max(1,Math.abs(a.x-b.x)+Math.abs(a.y-b.y));if(next<distance[j]){distance[j]=next;prev[j]=i;origin.set(j,origin.get(i));q.push(j,next);}}}
+ while(q.length&&passengers<maxPassengers){const item=q.pop(),i=item.node;if(item.cost!==distance[i])continue;for(const {work,station}of destinations.get(i)||[]){const from=origin[i];if(from===station)continue;const count=Math.min(maxPassengers-passengers,remaining.get(work)||0);if(count<=0)continue;const path=[];for(let j=i;j>=0;j=prev[j])path.push(j);for(const j of path){if(j<N)tiles[j].railRiders+=count;else tiles[j-N].subwayRiders+=count;}for(let k=1;k<path.length;k++){const transfer=transfers.get(path[k-1]+':'+path[k]);if(transfer)transfer.stationRiders+=count;}from.stationRiders+=count;station.stationRiders+=count;remaining.set(work,remaining.get(work)-count);passengers+=count;travel+=count*routeLength(c,path);}
+ for(const j of edges[i]){const a=tiles[i%N],b=tiles[j%N],next=distance[i]+Math.max(1,Math.abs(a.x-b.x)+Math.abs(a.y-b.y));if(visited[j]!==search||next<distance[j]){visited[j]=search;distance[j]=next;prev[j]=i;origin[j]=origin[i];q.push(j,next);}}}
  return{passengers,travel};}
  return{allocate,stats:()=>({railNetworks,railTiles:tiles.filter(t=>t.rail).length,subwayTiles:tiles.filter(t=>t.subway).length,stations:stations.length,activeStations:stations.filter(s=>s.stationActive).length,stationExpense:Math.round(stations.reduce((v,s)=>v+STATIONS[s.type].upkeep,0)*c.transport.funding/100),trackExpense:Math.round(tiles.reduce((v,t)=>v+(t.rail?.2:0)+(t.subway?.4:0),0)*c.transport.funding/100)})};
 }

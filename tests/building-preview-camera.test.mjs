@@ -1,5 +1,5 @@
 import assert from 'node:assert/strict';
-import {freshBuildingCamera,zoomBuildingCamera,panBuildingCamera,mountBuildingPreviewCamera} from '../dist/building-preview-camera.js';
+import {freshBuildingCamera,fittedBuildingCamera,zoomBuildingCamera,panBuildingCamera,mountBuildingPreviewCamera} from '../dist/building-preview-camera.js';
 for(const camera of [freshBuildingCamera(),{zoom:2,x:-120,y:70},{zoom:.5,x:42,y:-70}])for(const point of [{x:128,y:346},{x:0,y:0},{x:240,y:100}])for(const factor of [.1,.8,1.25,100]){const next=zoomBuildingCamera(camera,factor,point);assert.ok(next.zoom>=.5&&next.zoom<=6);assert.ok(Math.abs((point.x-camera.x)/camera.zoom-(point.x-next.x)/next.zoom)<1e-8);assert.ok(Math.abs((point.y-camera.y)/camera.zoom-(point.y-next.y)/next.zoom)<1e-8);}
 const initial=freshBuildingCamera();assert.deepEqual(panBuildingCamera(initial,12,-34),{zoom:1,x:12,y:-34});assert.deepEqual(initial,freshBuildingCamera());assert.deepEqual(zoomBuildingCamera(initial,NaN),initial);
 const canvas={width:256,height:384,style:{},getBoundingClientRect:()=>({left:10,top:20,width:128,height:192}),focus(){},setPointerCapture(){}},controls={zoomIn:{},zoomOut:{},reset:{},label:{}},draws=[];let view;view=mountBuildingPreviewCamera(canvas,controls,()=>draws.push({...view.state}));const event=(x,y)=>({button:0,pointerId:2,clientX:x,clientY:y,preventDefault(){},stopPropagation(){}});
@@ -8,3 +8,10 @@ const before={...view.state};canvas.onwheel({...event(50,50),deltaY:-100,ctrlKey
 canvas.onkeydown({...event(0,0),key:'Home'});assert.deepEqual(view.state,initial);canvas.onkeydown({...event(0,0),key:'ArrowRight'});assert.equal(view.state.x,-24);canvas.onkeydown({...event(0,0),key:'Escape'});assert.deepEqual(view.state,initial);
 for(let i=0;i<30;i++)controls.zoomIn.onclick();assert.equal(view.state.zoom,6);assert.equal(controls.zoomIn.disabled,true);for(let i=0;i<30;i++)controls.zoomOut.onclick();assert.equal(view.state.zoom,.5);assert.equal(controls.zoomOut.disabled,true);controls.reset.onclick();assert.deepEqual(view.state,initial);assert.ok(draws.length>60);
 console.log('PASS: cursor-anchored bounded zoom, immutable camera movement, CSS-scaled pan/cancel, wheel interruption, browser modifier preservation, keyboard reset/pan and control limits.');
+
+for(const bounds of [{x:65,y:310,width:128,height:62},{x:30,y:28,width:190,height:340},{x:127,y:345,width:1,height:1}]){
+ const camera=fittedBuildingCamera(bounds),cx=(bounds.x+bounds.width/2)*camera.zoom+camera.x,cy=(bounds.y+bounds.height/2)*camera.zoom+camera.y;
+ assert.equal(cx,128);assert.equal(cy,192);assert.ok(bounds.width*camera.zoom<=216+1e-8);assert.ok(bounds.height*camera.zoom<=344+1e-8);
+}
+canvas.onpointerdown(event(18,30));view.fit({x:60,y:300,width:130,height:70});const fitted={...view.state};canvas.onpointermove(event(48,60));assert.deepEqual(view.state,fitted,'fit interrupts a pending pan');assert.equal(controls.label.textContent,Math.round(fitted.zoom*100)+'%');controls.reset.onclick();assert.deepEqual(view.state,initial);
+console.log('PASS: fit centers low-rise, tall and tiny model bounds without clipping, updates zoom controls, interrupts pan and preserves Reset view.');

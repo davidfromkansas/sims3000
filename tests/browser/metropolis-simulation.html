@@ -1,0 +1,41 @@
+<!doctype html><meta charset="utf-8"><base href="../../dist/"><title>Metropolis simulation review</title>
+<style>body{background:#142b30;color:#ecf7eb;font:16px system-ui;margin:24px}button{font:inherit;padding:12px;margin:4px}canvas{width:min(960px,100%);height:540px;display:block}pre{white-space:pre-wrap}#status{min-height:2em}</style>
+<h1>Large-city simulation review</h1>
+<p>A synthetic 256 × 256 transit city. This page does not read or change saved cities. While three months run, rotate or move the view and check that controls remain responsive. Setup time is excluded from the measurement.</p>
+<button id="prepare">Prepare review city</button><button id="run" disabled>Advance three months</button><button id="rotate" disabled>Rotate view</button><button id="move" disabled>Move view</button>
+<p id="status" role="status">Ready to prepare</p><canvas id="city" aria-label="Synthetic transit city"></canvas><pre id="result"></pre>
+<script type="module">
+import {createCity,recompute,validateSave} from './engine.js';
+import {createSimulationRunner} from './simulation-runner.js';
+import {rotateCityView} from './camera-rotation.js';
+import {CityRenderer} from './renderer.js';
+import {populateRailFixture} from '../benchmarks/rail-fixture.mjs';
+const $=id=>document.getElementById(id),runner=createSimulationRunner();
+let city,renderer,interactions=0,drawSamples=[];
+$('prepare').onclick=async()=>{try{
+ $('prepare').disabled=true;$('status').textContent='Preparing city and artwork…';
+ city=populateRailFixture(createCity('Browser transit review',false,256),60);recompute(city);
+ renderer=new CityRenderer($('city'),()=>city);const draw=renderer.draw.bind(renderer);renderer.draw=(...args)=>{const start=performance.now();const value=draw(...args);drawSamples.push(performance.now()-start);return value;};
+ renderer.preferences={vehicleAnimations:true,sceneryAnimations:true,pedestriansVisible:true};
+ const ready=setInterval(()=>{if(renderer.assetError){clearInterval(ready);$('status').textContent='Artwork failed to load.';return;}if(!renderer.assetReady)return;clearInterval(ready);const center=renderer.project(34,34);renderer.pan.x+=renderer.w/2-center.x;renderer.pan.y+=renderer.h/2-center.y;renderer.running=true;renderer.dirty=true;$('run').disabled=false;$('rotate').disabled=false;$('move').disabled=false;$('status').textContent='Ready. Run three months and try the view controls.';},100);
+ }catch(error){$('status').textContent=String(error);}
+};
+$('rotate').onclick=()=>{rotateCityView(renderer,1);renderer.dirty=true;interactions++;};
+$('move').onclick=()=>{renderer.pan.x+=40;renderer.dirty=true;interactions++;};
+$('run').onclick=async()=>{
+ $('run').disabled=true;interactions=0;drawSamples=[];const gaps=[],months=[];let active=true,last=performance.now();
+ const frame=now=>{gaps.push(now-last);last=now;if(active)requestAnimationFrame(frame);};requestAnimationFrame(frame);
+ try{for(let month=0;month<3;month++){
+  $('status').textContent=`Advancing month ${month+1} of 3…`;const start=performance.now();
+  const advancing=runner.advance(city),dispatchMs=performance.now()-start;const next=await advancing;city=next.city;months.push({dispatchMs,durationMs:performance.now()-start,background:next.background,trainRiders:city.stats.trainRiders});
+ }
+ await new Promise(requestAnimationFrame);active=false;
+ // Save validation is deliberately outside the interaction measurement.
+ const restored=validateSave(JSON.parse(JSON.stringify(city)));
+ const sorted=[...gaps].sort((a,b)=>a-b);
+ $('result').textContent=JSON.stringify({visibility:document.visibilityState,months,viewInteractions:interactions,drawCount:drawSamples.length,maxDrawMs:Math.max(0,...drawSamples),frameCallbacks:gaps.length,largestFrameGapMs:Math.max(0,...gaps),p95FrameGapMs:sorted[Math.floor(sorted.length*.95)]??null,restoredPopulation:restored.stats.population,scope:'Current browser, synthetic city with renderer and artwork; worker turnaround includes message cloning. Frame callback gaps are not GPU frame times. No comparative speedup or whole-game acceptance claim.'},null,2);
+ $('status').textContent='Three months completed and city save validated.';
+ }catch(error){$('status').textContent=String(error);}finally{active=false;$('run').disabled=false;}
+};
+addEventListener('pagehide',()=>runner.close());
+</script>
