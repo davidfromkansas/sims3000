@@ -1033,3 +1033,7 @@ Lighthouse and Historic Statue are now playable rewards, bringing the reward cat
 ## Courthouse neighborhoods and reward inspection
 
 County Courthouse now adds direct residential/commercial value (20/25 strengths) alongside its existing crime reduction and 135 jobs. The 30-tile value falloff is explicit reconstruction tuning. Zone inspection now shows signed direct reward value contributions and explains final-value limits. See COURTHOUSE-NEIGHBORHOOD-MILESTONE.md; this is not a complete original land-value model.
+
+## Country Club
+
+The reward catalog now includes ten playable rewards. Country Club adds the original 125,000-resident gate, strong approval, 5×5 footprint, §25,000 price, 75 jobs and 37,500 residential relief. It cleans air but pollutes water, with local value and aura effects. Save schema 140 preserves earlier cities. Its golf-course model is original procedural art. See COUNTRY-CLUB-MILESTONE.md for scale/falloff/upkeep assumptions and validation limits.

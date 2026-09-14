@@ -1,6 +1,6 @@
-import {stadiumMatchPixels} from './stadium-match.js?v=courthouse-neighborhood-1';
-import {rasterizeMiniature} from './miniature-raster.js?v=courthouse-neighborhood-1';
-export const MODELED_REWARDS=new Set(['historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
+import {stadiumMatchPixels} from './stadium-match.js?v=country-club-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=country-club-1';
+export const MODELED_REWARDS=new Set(['countryClub','historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){
  if(!MODELED_REWARDS.has(type))throw Error('Unknown reward model.');
@@ -10,7 +10,22 @@ export function rewardGeometry(type){
  const hall=(x,y,w,d,h,color)=>{box(x,y,.05,w,d,h,color);roof(x,y,h+.05,w+.02,d+.02,.075,'#647c83');for(const side of [-1,1])for(let i=0;i<Math.floor(w/.07);i++)for(const z of [.12,.23])if(z+.045<h+.05)box(x-w/2+.045+i*.07,y+side*(d/2+.003),z,.028,.007,.048,'#547e8a');};
  const tree=(x,y)=>{box(x,y,.06,.015,.015,.09,'#796449');for(const [z,w]of [[.14,.085],[.19,.065],[.23,.035]])box(x,y,z,w,w,.035,'#537a50');};
  box(0,0,0,.97,.97,.04,'#aaa993');box(0,0,.04,.93,.93,.015,'#81966d');
- if(type==='historicStatue'){
+ if(type==='countryClub'){
+  // Original miniature golf landscape: curved fairways, bunkers, water and clubhouse.
+  const oval=(x,y,rx,ry,z,color)=>add(Array.from({length:24},(_,i)=>[x+rx*Math.cos(i*Math.PI/12),y+ry*Math.sin(i*Math.PI/12),z]),color);
+  box(0,0,.055,.91,.91,.007,'#597b48');
+  for(const [x,y,rx,ry]of [[-.24,-.16,.10,.25],[.12,-.17,.11,.24],[.28,.17,.12,.17]]){
+   oval(x,y,rx+.025,ry+.025,.063,'#71965b');oval(x,y,rx,ry,.065,'#90ac6b');
+   for(let stripe=0;stripe<5;stripe++){const yy=y-ry*.60+stripe*ry*.30;oval(x,yy,rx*.80,ry*.065,.066,stripe%2?'#96b573':'#8bab66');}
+   oval(x,y-ry*.62,rx*.60,ry*.28,.068,'#adc780');box(x,y-ry*.62,.07,.006,.006,.115,'#e7dfc3');
+   add([[x,y-ry*.62,.185],[x+.046,y-ry*.62,.174],[x,y-ry*.62,.157]],'#ba6c52');
+   oval(x+rx*.72,y+ry*.38,.04,.065,.069,'#d2c28e');
+  }
+  oval(-.25,.22,.13,.10,.067,'#a6b88a');oval(-.25,.22,.11,.08,.069,'#719b9c');oval(-.25,.22,.075,.045,.071,'#82aeb0');
+  box(.015,.34,.064,.31,.21,.008,'#c5ba9b');hall(.015,.32,.23,.16,.10,'#dac8a7');roof(.015,.32,.16,.27,.20,.05,'#7b7761');
+  box(.015,.22,.07,.27,.045,.02,'#b6a887');for(const x of [-.085,.015,.115])box(x,.215,.09,.007,.007,.075,'#ead9b5');
+  for(const [x,y]of [[-.40,-.37],[-.39,-.04],[-.43,.36],[-.06,-.40],[.36,-.39],[.42,-.04],[.40,.37],[-.10,.12]])tree(x,y);
+ }else if(type==='historicStatue'){
   // Original bronze civic figure with book, on a limestone memorial plinth.
   box(0,0,.055,.76,.76,.035,'#cac4b1');box(0,0,.09,.49,.49,.06,'#b2ad99');
   box(0,0,.15,.29,.29,.25,'#d6ccb2');box(0,0,.40,.35,.35,.035,'#e2d7bb');

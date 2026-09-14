@@ -1,9 +1,9 @@
-import {SERVICES,civicSize} from './civic-footprints.js?v=courthouse-neighborhood-1';
-import {LANDMARKS} from './landmarks.js?v=courthouse-neighborhood-1';
-import {BUSINESSES} from './business.js?v=courthouse-neighborhood-1';
-import {REWARDS,rewardSize} from './rewards.js?v=courthouse-neighborhood-1';
-import {POWER_PLANTS} from './power.js?v=courthouse-neighborhood-1';
-import {RECREATION} from './recreation.js?v=courthouse-neighborhood-1';
+import {SERVICES,civicSize} from './civic-footprints.js?v=country-club-1';
+import {LANDMARKS} from './landmarks.js?v=country-club-1';
+import {BUSINESSES} from './business.js?v=country-club-1';
+import {REWARDS,rewardSize} from './rewards.js?v=country-club-1';
+import {POWER_PLANTS} from './power.js?v=country-club-1';
+import {RECREATION} from './recreation.js?v=country-club-1';
 // Fixed-footprint ploppable structures share construction, damage and save validation.
 export const STRUCTURES={...LANDMARKS,...POWER_PLANTS,...RECREATION,...REWARDS,...BUSINESSES,...SERVICES};
 
