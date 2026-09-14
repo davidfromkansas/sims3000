@@ -1,10 +1,10 @@
-import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=architecture-collection-36';
-import {blockCornerHeights} from './building-block-geometry.js?v=architecture-collection-36';
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-36';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=architecture-collection-36';
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-36';
-import {buildingShapeCells} from './building-shapes.js?v=architecture-collection-36';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-36';
+import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=architecture-collection-39';
+import {blockCornerHeights} from './building-block-geometry.js?v=architecture-collection-39';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-39';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=architecture-collection-39';
+import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-39';
+import {buildingShapeCells} from './building-shapes.js?v=architecture-collection-39';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-39';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;
@@ -35,5 +35,5 @@ export function buildingVoxelFaces(voxels,rotation=0,footprint={width:1,height:1
 }
 export function drawBuildingVoxels(ctx,design,rotation=0){
  const project=p=>projectBuildingPoint(p,rotation,design.footprint),tint=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join(''),polygon=(points,color)=>{ctx.beginPath();points.map(project).forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fillStyle=color;ctx.fill();};
- for(const face of buildingVoxelFaces(design.voxels,rotation,design.footprint,design.blockGeometry)){const material=floorSurfaceMaterial(design,face);polygon(face.points,tint(materialSurfaceColor(material,design),face.side===4?1.08:face.side%2?.72:.9));const frame=wallDecorationFrame(face),decorate=(points,color)=>{const clipped=clipWallDecoration(face,points);if(clipped.length>=3)polygon(clipped,color);};drawMaterialDetail(frame,material,design,decorate);const detail=buildingSurfaceDetail(design,face);if(detail){drawBuildingSurfaceDetail(frame,detail,design,decorate);continue;}if(face.side===4||material===3||material===4)continue;const a=face.points[0],b=face.points[1],point=(f,z)=>[a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,z],low=.12+(face.from+.23)*.14,high=.12+(face.from+.7)*.14;decorate([point(.23,low),point(.77,low),point(.77,high),point(.23,high)],(face.from*7+face.x*3+face.y+face.side)%9===0?design.accent:design.windows);}
+ for(const face of buildingVoxelFaces(design.voxels,rotation,design.footprint,design.blockGeometry)){const material=floorSurfaceMaterial(design,face);polygon(face.points,tint(materialSurfaceColor(material,design),face.side===4?1.08:face.side%2?.72:.9));const frame=wallDecorationFrame(face),decorate=(points,color)=>{const clipped=clipWallDecoration(face,points);if(clipped.length>=3)polygon(clipped,color);};drawMaterialDetail(frame,material,design,decorate);const detail=buildingSurfaceDetail(design,face);if(detail){drawBuildingSurfaceDetail(frame,detail,design,decorate);continue;}if(face.side===4||material>=3)continue;const a=face.points[0],b=face.points[1],point=(f,z)=>[a[0]+(b[0]-a[0])*f,a[1]+(b[1]-a[1])*f,z],low=.12+(face.from+.23)*.14,high=.12+(face.from+.7)*.14;decorate([point(.23,low),point(.77,low),point(.77,high),point(.23,high)],(face.from*7+face.x*3+face.y+face.side)%9===0?design.accent:design.windows);}
 }

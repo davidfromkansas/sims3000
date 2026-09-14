@@ -1,0 +1,26 @@
+import assert from 'node:assert/strict';
+import {mountBuildingGroundEditor} from '../dist/building-ground-editor.js';
+import {groundFaces,groundMaterial} from '../dist/building-ground-paint.js';
+import {projectedBuildingSurfaces,pickBuildingSurface} from '../dist/building-surface-picking.js';
+import {defaultBuildingDesign} from '../dist/building-designs.js';
+let draft={...defaultBuildingDesign(),blocks:Array(100).fill(0),rotation:0},writes=0,pans=0;draft.blocks[44]=5;
+const mode={value:'paint-ground'},material={value:'5'},status={},camera={zoom:1,x:0,y:0};
+const canvas={width:256,height:384,style:{},getBoundingClientRect:()=>({left:10,top:20,width:512,height:768}),focus(){},setPointerCapture(){},onpointerdown(){pans++;}};
+const controller=mountBuildingGroundEditor(canvas,{get:()=>draft,camera:()=>camera,mode,material,status,apply:p=>{writes++;draft={...draft,groundPaint:p};},render(){}});
+const center=f=>({x:f.polygon.reduce((s,p)=>s+p[0],0)/f.polygon.length,y:f.polygon.reduce((s,p)=>s+p[1],0)/f.polygon.length}),face=groundFaces(draft).find(f=>!pickBuildingSurface(projectedBuildingSurfaces(draft),center(f))),p=center(face),e={button:0,pointerId:1,clientX:10+p.x*2,clientY:20+p.y*2,preventDefault(){}};
+canvas.onpointerdown(e);assert.equal(writes,0);canvas.onpointerup({...e,shiftKey:true});assert.equal(writes,0);
+canvas.onpointerdown(e);canvas.onpointerup(e);assert.equal(writes,1);assert.equal(groundMaterial(draft,face.index),5);
+mode.value='sample-ground';mode.onchange();material.value='0';canvas.onpointerdown(e);assert.equal(material.value,'5');assert.equal(writes,1);assert.match(status.textContent,/Grass/);
+mode.value='erase-ground';mode.onchange();canvas.onpointerdown(e);canvas.onpointerup(e);assert.equal(groundMaterial(draft,face.index),-1);
+mode.value='paint-ground';mode.onchange();canvas.onpointerdown(e);draft={...draft,rotation:1};canvas.onpointerup(e);assert.equal(writes,2,'rotation cancels stale stroke');draft={...draft,rotation:0};
+canvas.onpointerdown(e);canvas.onkeydown({key:'Escape',preventDefault(){},stopPropagation(){}});canvas.onpointerup(e);assert.equal(writes,2);
+const wall=center(projectedBuildingSurfaces(draft).at(-1)),we={...e,clientX:10+wall.x*2,clientY:20+wall.y*2};canvas.onpointerdown(we);canvas.onpointerup(we);assert.equal(writes,2,'building occludes ground');
+mode.value='fill-ground';mode.onchange();canvas.onpointerdown(e);canvas.onpointerup(e);assert.ok([...draft.groundPaint].filter(c=>c==='6').length>80);
+mode.value='paint-ground';mode.onchange();material.value='6';canvas.onpointermove(e);canvas.onkeydown({key:'Enter',preventDefault(){},stopPropagation(){}});assert.equal(groundMaterial(draft,face.index),6);
+mode.value='pan';mode.onchange();canvas.onpointerdown(e);assert.equal(pans,1);controller.reset();
+console.log('PASS: ground brush commit/cancel, scaled pointer, sample/restore, wall occlusion, connected fill, keyboard painting and camera delegation.');
+const {buildingPropPickFaces,pickBuildingProp}=await import('../dist/building-prop-picking.js');
+draft={...draft,props:[{kind:'car',x:1,y:1,z:0,rotation:0}]};controller.reset();mode.value='paint-ground';mode.onchange();
+const propFaces=buildingPropPickFaces(draft,0);let hit=null;
+for(const face of propFaces.filter(f=>f.owner===0)){const point={x:face.points.reduce((s,p)=>s+p[0],0)/face.points.length,y:face.points.reduce((s,p)=>s+p[1],0)/face.points.length};if(pickBuildingProp(propFaces,point)===0){hit=point;break;}}
+assert.ok(hit);const beforePropClick=writes,propEvent={...e,clientX:10+hit.x*2,clientY:20+hit.y*2};canvas.onpointerdown(propEvent);canvas.onpointerup(propEvent);assert.equal(writes,beforePropClick,'visible prop prevents painting through it');

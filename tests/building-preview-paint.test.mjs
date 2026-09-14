@@ -27,3 +27,12 @@ mode.value='fill';mode.onchange();canvas.onpointermove(fillEvent);material.value
 
 const detail={value:'2'};mountBuildingPreviewPaint(canvas,{get:()=>draft,camera:()=>({zoom:1,x:0,y:0}),apply(){},applyFloor(){},applyDetails:layer=>{draft={...draft,surfaceDetails:layer};},detail,render(){},mode,material,status,scope});mode.value='detail';mode.onchange();assert.equal(detail.disabled,false);assert.equal(material.disabled,true);canvas.onpointerdown(fillEvent);assert.equal(draft.surfaceDetails,undefined);canvas.onpointerup(fillEvent);assert.equal([...draft.surfaceDetails].filter(c=>c==='2').length,1);assert.match(status.textContent,/Entrance door/);const beforeSampleDetail=JSON.stringify(draft);mode.value='sample-detail';mode.onchange();detail.value='1';canvas.onpointerdown(fillEvent);canvas.onpointerup(fillEvent);assert.equal(detail.value,'2');assert.equal(JSON.stringify(draft),beforeSampleDetail);assert.match(status.textContent,/Selected Entrance door/);canvas.onkeydown({key:'Enter',preventDefault(){},stopPropagation(){}});assert.equal(JSON.stringify(draft),beforeSampleDetail);mode.value='detail';mode.onchange();
 detail.value='0';canvas.onpointerdown(fillEvent);canvas.onpointerup(fillEvent);assert.equal(draft.surfaceDetails,'0'.repeat(12000));mode.value='sample-detail';mode.onchange();detail.value='2';canvas.onpointerdown(fillEvent);assert.equal(detail.value,'2');assert.match(status.textContent,/No detail/);mode.value='paint';mode.onchange();assert.equal(detail.disabled,true);assert.equal(material.disabled,false);
+
+// The expanded palette travels through the actual preview controls.
+mountBuildingPreviewPaint(canvas,{get:()=>draft,camera:()=>({zoom:1,x:0,y:0}),apply(){throw Error('Unexpected column callback');},applyFloor:p=>{draft={...draft,surfacePaint:p};},render(){},mode,material,status,scope});
+for(const [id,name] of [[5,'Grass'],[6,'Asphalt']]){
+ mode.value='paint';mode.onchange();scope.value='floor';material.value=String(id);
+ const before=draft.surfacePaint;canvas.onpointerdown(event);canvas.onpointerup({...event,shiftKey:true});assert.equal(draft.surfacePaint,before);
+ canvas.onpointerdown(event);canvas.onpointerup(event);assert.ok(draft.surfacePaint.includes(String(id+1)));
+ mode.value='sample';mode.onchange();material.value='0';const sampled=JSON.stringify(draft);canvas.onpointerdown(event);assert.equal(material.value,String(id));assert.match(status.textContent,new RegExp(name));assert.equal(JSON.stringify(draft),sampled);
+}

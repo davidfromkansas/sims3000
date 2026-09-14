@@ -33,3 +33,5 @@ $('blockMode').value='voxels';$('blockMode').onchange();editor.applyProps([]);
 $('blockMode').value='blocks';$('blockMode').onchange();assert.deepEqual(draft.props,[],'returning to height layout does not resurrect removed props');
 
 const erasedBatch=[{kind:'pickup',x:2,y:2,z:0,rotation:3},{kind:'bench',x:7,y:7,z:0,rotation:1}];editor.applyProps(erasedBatch);editor.applyProps([]);$('blockUndo').onclick();assert.deepEqual(draft.props,erasedBatch,'one Undo restores every prop in the erase stroke');$('blockRedo').onclick();assert.deepEqual(draft.props,[]);
+const beforeGround=JSON.stringify(draft),lawn='6'.repeat(100),pavement='7'.repeat(100);editor.applyGroundPaint(lawn);assert.equal(draft.groundPaint,lawn);$('blockUndo').onclick();assert.equal(JSON.stringify(draft),beforeGround);$('blockRedo').onclick();assert.equal(draft.groundPaint,lawn);
+$('blockMode').value='voxels';$('blockMode').onchange();assert.equal(draft.groundPaint,lawn);editor.applyGroundPaint(pavement);$('blockMode').value='blocks';$('blockMode').onchange();assert.equal(draft.groundPaint,pavement,'ground follows current model across construction modes');

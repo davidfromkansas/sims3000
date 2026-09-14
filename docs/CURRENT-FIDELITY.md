@@ -1109,3 +1109,18 @@ The thirteenth reward adds population, approval and treasury gates, 480 jobs and
 The fourteenth reward implements the source date/EQ/approval gates, paid 5×5 placement, 375 jobs, land-value and pollution tradeoffs, and full-footprint waste handling. The model is an original planetarium/research campus. Schema 144 preserves old cities. All 300 regular suites and the complete optional ordinary-city education route passed. See [Science Center](SCIENCE-CENTER-MILESTONE.md).
 
 Science Center acceptance update: the staged ordinary city earned its offer at month 1421 (90.009 EQ), paid for placement, and passed twelve months of operation with 375 jobs filled, full utilities, zero garbage backlog and exact save continuity. Browser review verified all four preview rotations, corrected three reward-card descriptions, and imported the resulting city with its earned/placed reward intact. The complete optional fixture replay passed with the same result. In-map inspection, navigation, all four city rotations, and advancing the large city while using camera controls also passed browser review. Cache graph: science-center-2. See [Science Center milestone](SCIENCE-CENTER-MILESTONE.md).
+
+
+Visual block palette follow-up: the Building Architect now exposes cube and four wedge directions as selectable shape previews, synchronizes sampling with selection and cancels pending strokes on shape changes. Five focused suites passed; 316 regression commands are registered, with the last full run still 315 at cache 36. Current cache 37/schema 149. The manual's fourteen block types, browser acceptance and publication remain incomplete. See [architecture milestone](ARCHITECTURE-COLLECTION-MILESTONE.md).
+
+
+Grass/asphalt follow-up: both manual-named textures now work on existing building surfaces, including connected fill and independent floor paint, with portable format 11 and city schema 150. Original procedural textures suppress automatic windows. Bare-ground painting remains incomplete. Cache 38; 317 test commands registered. Focused checks passed; full regression and revised visual acceptance remain pending. See [architecture milestone](ARCHITECTURE-COLLECTION-MILESTONE.md).
+
+
+Landscape verification completed: the 317-command regression exited 0 (326 PASS records). Subsequent texture/actual-preview refinements passed focused checks, and the final four-view grass/asphalt renders were inspected. Automatic windows are absent; texture marks are deterministic and staggered. Bare-ground painting, browser acceptance and publication remain incomplete.
+
+
+Ground-paint follow-up: block/layer models now support a separate saved lot-ground layer with brush/fill/sample/restore tools, cancellation, keyboard interaction and undo/redo. Ground renders below the building in all four views. Portable format 12/schema 151; cache 39; 319 commands registered. Focused checks and four-view art review passed, while full current regression/browser acceptance/publication remain pending. Fill uses authored 10×10 center-based barrier rules, and direct tower-mode ground editing remains unavailable. See [architecture milestone](ARCHITECTURE-COLLECTION-MILESTONE.md).
+
+
+Grouped painting checkpoint verified: the full 319-command regression at cache architecture-collection-39/schema 151 completed with exit code 0 and 328 PASS records in `/tmp/sims3000-ground-paint-tests.log` (session 14633 closed). Product source was unchanged during this run. This closes automated verification for visual block selection, landscape surface materials and ground painting together. Browser acceptance and publication remain pending; PR 192 stays draft.

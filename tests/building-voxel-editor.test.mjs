@@ -48,3 +48,9 @@ for(const orientation of ['horizontal','xz','yz']){
 }
 draft={...defaultBuildingDesign(),voxels:Array(100).fill(1)};editor.reset();const props=[{kind:'tree',x:1,y:2,z:.26,rotation:3}];editor.applyProps(props);assert.deepEqual(draft.props,props);$('voxelUndo').onclick();assert.equal(draft.props,undefined);$('voxelRedo').onclick();assert.deepEqual(draft.props,props);props[0].x=9;assert.equal(draft.props[0].x,1,'prop edits copy their input');
 console.log('PASS: layered editor previews, independent-plane placement/erasure, undo/redo, immediate layer refresh, pointer and Shift cancellation, invalid input and redo invalidation.');
+
+// Clicking the visual palette changes tool selection, not the model or undo history.
+$('voxelPlane').value='horizontal';$('voxelLevel').value='1';$('voxelAction').value='place';$('voxelShape').value='single';editor.refresh();
+const beforePalette=JSON.stringify(draft),writesBeforePalette=writes;down(22);$('voxelBlock3').onclick();assert.equal(editor.selection().pending,null,'choosing another block cancels a pending stroke');up();assert.equal(JSON.stringify(draft),beforePalette);assert.equal(writes,writesBeforePalette);assert.equal($('voxelGeometry').value,'3');assert.equal($('voxelBlock3').attrs['aria-pressed'],'true');assert.equal($('voxelBlock0').attrs['aria-pressed'],'false');
+down(22);up();assert.equal(draft.blockGeometry[22],'3','the next construction action uses the visually selected shape');$('voxelAction').value='sample';$('voxelBlock0').onclick();down(22);assert.equal($('voxelGeometry').value,'3');assert.equal($('voxelBlock3').attrs['aria-pressed'],'true','sampling updates the visible palette selection');
+const beforeGround=JSON.stringify(draft),ground='6'+'0'.repeat(99);editor.applyGroundPaint(ground);assert.equal(draft.groundPaint,ground);$('voxelUndo').onclick();assert.equal(JSON.stringify(draft),beforeGround);$('voxelRedo').onclick();assert.equal(draft.groundPaint,ground);

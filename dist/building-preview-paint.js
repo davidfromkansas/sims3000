@@ -1,8 +1,8 @@
-import {BUILDING_DETAILS,buildingSurfaceDetail,detailFitsSurface,placeSurfaceDetails} from './building-surface-details.js?v=architecture-collection-36';
-import {connectedBuildingSurfaces} from './building-surface-fill.js?v=architecture-collection-36';
-import {floorPaintKey,floorSurfaceMaterial,paintFloorSurfaces,surfaceLevel} from './building-floor-paint.js?v=architecture-collection-36';
-import {projectedBuildingSurfaces,pickBuildingSurface,paintPickedSurfaces} from './building-surface-picking.js?v=architecture-collection-36';
-import {BUILDING_MATERIALS,SURFACE_NAMES} from './building-materials.js?v=architecture-collection-36';
+import {BUILDING_DETAILS,buildingSurfaceDetail,detailFitsSurface,placeSurfaceDetails} from './building-surface-details.js?v=architecture-collection-39';
+import {connectedBuildingSurfaces} from './building-surface-fill.js?v=architecture-collection-39';
+import {floorPaintKey,floorSurfaceMaterial,paintFloorSurfaces,surfaceLevel} from './building-floor-paint.js?v=architecture-collection-39';
+import {projectedBuildingSurfaces,pickBuildingSurface,paintPickedSurfaces} from './building-surface-picking.js?v=architecture-collection-39';
+import {BUILDING_MATERIALS,SURFACE_NAMES} from './building-materials.js?v=architecture-collection-39';
 export function mountBuildingPreviewPaint(canvas,{get,camera,apply,applyFloor,applyDetails,detail,render,mode,material,status,scope}){
  const base=Object.fromEntries(['onpointerdown','onpointermove','onpointerup','onpointercancel','onkeydown','onwheel'].map(k=>[k,canvas[k]]));let hover=null,stroke=null,geometry=null;
  const point=e=>{const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};};
