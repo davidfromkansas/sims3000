@@ -12,7 +12,7 @@ c.stats.population=0;c.stats.aura=0;c.month++;advanceRewards(c);assert.equal(c.r
 assert.ok(build(c,'solar',[{x:10,y:20}]).ok);assert.ok(build(c,'powerline',selection('powerline',{x:14,y:20},{x:19,y:20})).ok);assert.ok(build(c,'road',selection('road',{x:20,y:19},{x:24,y:19})).ok);
 c.funds=74999;const before=serializeCity(c);assert.equal(build(c,'stadium',[{x:20,y:20}]).ok,false);assert.equal(serializeCity(c),before,'unaffordable construction is atomic');
 c.funds=75000;assert.ok(build(c,'stadium',[{x:20,y:20}]).ok);assert.equal(c.funds,0);assert.equal(REWARDS.stadium.size,5);const root=c.tiles[20*48+20],members=c.tiles.filter(t=>t.type==='stadium');assert.equal(members.length,25);assert.ok(members.every(t=>t.stadiumSize===5));assert.ok(rewardActive(c,root));assert.equal(c.stats.civicJobs,200);assert.equal(c.stats.rewardUpkeep,25);
-const saved=JSON.parse(serializeCity(c));assert.equal(saved.version,138);assert.equal(validateSave(saved).stats.civicJobs,200);
+const saved=JSON.parse(serializeCity(c));assert.equal(saved.version,139);assert.equal(validateSave(saved).stats.civicJobs,200);
 for(const mutate of [s=>delete s.tiles[20*48+20].stadiumSize,s=>s.tiles[24*48+24].stadiumSize=4,s=>s.tiles[24*48+24].type=null,s=>s.tiles[20*48+20].stadiumSize=6]){const bad=structuredClone(saved);mutate(bad);assert.throws(()=>validateSave(bad));}
 const edge=c.tiles[24*48+24];edge.fire=10;recompute(c);assert.equal(c.stats.civicJobs,0);edge.fire=0;recompute(c);assert.equal(c.stats.civicJobs,200);
 c.funds=100000;assert.ok(build(c,'bulldoze',[{x:24,y:24}]).ok);assert.equal(c.tiles.filter(t=>t.type==='stadium').length,0);assert.ok(members.every(t=>t.stadiumSize===undefined));assert.ok(build(c,'stadium',[{x:20,y:20}]).ok);
