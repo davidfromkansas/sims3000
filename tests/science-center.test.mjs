@@ -1,0 +1,24 @@
+import {readFileSync} from 'node:fs';
+import assert from 'node:assert/strict';
+import {createCity,build,selection,recompute,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {REWARDS,rewardCondition,rewardProgress,advanceRewards,REWARD_APPROVAL,rewardActive} from '../dist/rewards.js';
+import {rewardGeometry,rasterizeReward} from '../dist/reward-models.js';
+import {rewardWasteProduction,rewardGarbageInspection} from '../dist/reward-waste.js';
+import {rewardNeighborhoodReport} from '../dist/reward-neighborhood.js';
+import {structureSize} from '../dist/structures.js';
+const c=createCity('Science district',false);c.funds=200000;c.startYear=1998;c.month=11;for(const t of c.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});
+Object.assign(c.stats,{population:0,aura:REWARD_APPROVAL,education:90});assert.equal(rewardCondition(c,'scienceCenter'),false);c.month=12;assert.equal(rewardCondition(c,'scienceCenter'),true,'no population gate');
+for(const [key,value]of [['aura',REWARD_APPROVAL-.001],['education',89.999]]){const original=c.stats[key];c.stats[key]=value;assert.equal(rewardCondition(c,'scienceCenter'),false);c.stats[key]=original;}
+assert.equal(rewardProgress(c,'scienceCenter').requirements.length,3);assert.ok(advanceRewards(c).includes('scienceCenter'));c.stats.education=40;c.month++;advanceRewards(c);assert.equal(c.rewards.earned.scienceCenter,12);
+const put=(tool,a,b=a)=>assert.ok(build(c,tool,selection(tool,a,b),3).ok,tool);
+put('solar',{x:10,y:20});put('powerline',{x:14,y:20},{x:19,y:20});put('road',{x:20,y:19},{x:30,y:19});put('residential',{x:20,y:17},{x:25,y:17});put('residential',{x:20,y:16},{x:30,y:16});put('commercial',{x:26,y:17});put('industrial',{x:27,y:17});for(const t of c.tiles)if(t.type==='residential')t.level=3;recompute(c);
+const home=c.tiles[17*48+24],before={air:home.airPollution,water:home.waterPollution,education:c.stats.education,school:c.stats.childEducationCoverage};let funds=c.funds;put('scienceCenter',{x:20,y:20});const root=c.tiles[20*48+20];assert.equal(c.funds,funds-75000);assert.equal(c.tiles.filter(t=>t.type==='scienceCenter').length,25);assert.equal(c.stats.civicJobs,375);assert.equal(c.stats.civicEmployed,375);assert.equal(c.stats.residentialCap.limit,25000);assert.equal(c.stats.education,before.education);assert.equal(c.stats.childEducationCoverage,before.school);assert.equal(rewardWasteProduction(c,root),8);assert.equal(build(c,'scienceCenter',[{x:30,y:30}]).ok,false);
+assert.ok(Math.abs(home.scienceCenterLandValue-10*6/11)<1e-9);assert.ok(c.tiles[17*48+26].scienceCenterLandValue>0);assert.equal(c.tiles[17*48+27].scienceCenterLandValue,0);assert.ok(home.airPollution>before.air);assert.ok(home.waterPollution>before.water);assert.match(rewardNeighborhoodReport(home),/Science Center/);
+const value=home.landValue;recompute(c);assert.equal(home.landValue,value);home.radiation=true;recompute(c);assert.equal(home.environmentLandValue,1);assert.equal(home.scienceCenterLandValue,0);home.radiation=false;recompute(c);
+const saved=JSON.parse(serializeCity(c));assert.equal(saved.version,144);assert.equal(serializeCity(validateSave(saved)),serializeCity(c));const old=structuredClone(saved);old.version=143;assert.throws(()=>validateSave(old),/144/);
+const corner=c.tiles[24*48+24];corner.fire=5;recompute(c);assert.equal(c.stats.civicJobs,0);assert.equal(home.scienceCenterLandValue,0);assert.equal(rewardWasteProduction(c,root),0);corner.fire=0;recompute(c);put('bulldoze',{x:24,y:24});funds=c.funds;put('scienceCenter',{x:20,y:20});assert.equal(c.funds,funds-75000);
+const legacy=JSON.parse(serializeCity(createCity('Legacy science',false)));legacy.version=143;delete legacy.rewards.earned.scienceCenter;delete legacy.rewards.streaks.scienceCenter;assert.equal(validateSave(legacy).rewards.earned.scienceCenter,null);legacy.version=144;assert.throws(()=>validateSave(legacy));
+assert.ok(rewardGeometry('scienceCenter').length>250);for(let r=0;r<4;r++)assert.ok(rasterizeReward('scienceCenter',r).data.some((n,i)=>i%4===3&&n>0));
+const query=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8').split(' if(REWARDS[t.type]){')[1].split(' if(POWER_PLANTS[t.type])')[0];let html='';new Function('REWARDS','rewardGarbageInspection','city','t','dialog','rewardActive','money','structureSize','{'+query)(REWARDS,rewardGarbageInspection,c,c.tiles[20*48+20],(_,body)=>html=body,rewardActive,n=>'§'+n,structureSize);assert.match(html,/375 civic jobs/);assert.match(html,/does not teach students/);
+console.log('PASS: Science Center year/EQ/approval gates, no population gate, durable paid unique offer, 375 jobs, neighborhood effects, waste, damage/rebuild, exact saves, migration and four-view model.');

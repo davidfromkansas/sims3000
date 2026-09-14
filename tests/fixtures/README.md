@@ -7,3 +7,9 @@ Its construction history follows the metropolis, education/reward, garbage, port
 `npm run test:financial-center` loads this checkpoint, uses ordinary construction to expand three districts, exposes declining utility output, replaces old facilities, reaches 200,000, and places the earned Stock Exchange. It does not grant money, edit population or force reward eligibility. This is a longer optional acceptance run, separate from the default regression suite.
 
 Uncompressed SHA-256: `973e7f70d3cd979134724afe2564977124a9e09b93b78fb25b7774e46da508e2`
+
+## Financial-center checkpoint
+
+`ordinary-city-month-749.json.gz` is the unedited month-749 result of the ordinary Stock Exchange acceptance route: 204,784 residents, §21,158,445, schema 143. It supplies the starting city for the longer Science Center education/renewal audit. Like the month-640 checkpoint, it contains only generated game state and retains the earlier migration history; it is not a new empty-map claim.
+
+Uncompressed SHA-256: `beec5e91a4b361f3689ed5b079cb1ee145e61d64ab74e2353969c122f4f4db4c`

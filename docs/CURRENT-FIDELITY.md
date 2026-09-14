@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 253 regression suites, save schema 128. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 300 regression suites, save schema 144 (Science Center milestone). Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -1069,3 +1069,9 @@ The twelfth reward adds a park-area/approval unlock, a unique 5×5 site, jobs, r
 ## Stock Exchange
 
 The thirteenth reward adds population, approval and treasury gates, 480 jobs and commercial demand satisfaction, differentiated sector land-value effects, pollution, adjacent crime pressure, aura and garbage handling. The growth guide includes a 200,000-resident checkpoint. Schema 143 migrates previous cities, and the original model has four verified views. The repeatable ordinary-checkpoint acceptance reaches 204,784 residents with served utilities, no loans, zero backlog and the exchange operating; see [Stock Exchange](STOCK-EXCHANGE-MILESTONE.md).
+
+## Science Center
+
+The fourteenth reward implements the source date/EQ/approval gates, paid 5×5 placement, 375 jobs, land-value and pollution tradeoffs, and full-footprint waste handling. The model is an original planetarium/research campus. Schema 144 preserves old cities. All 300 regular suites and the complete optional ordinary-city education route passed. See [Science Center](SCIENCE-CENTER-MILESTONE.md).
+
+Science Center acceptance update: the staged ordinary city earned its offer at month 1421 (90.009 EQ), paid for placement, and passed twelve months of operation with 375 jobs filled, full utilities, zero garbage backlog and exact save continuity. Browser review verified all four preview rotations, corrected three reward-card descriptions, and imported the resulting city with its earned/placed reward intact. The complete optional fixture replay passed with the same result. In-map inspection, navigation, all four city rotations, and advancing the large city while using camera controls also passed browser review. Cache graph: science-center-2. See [Science Center milestone](SCIENCE-CENTER-MILESTONE.md).

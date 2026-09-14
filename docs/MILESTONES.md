@@ -4,6 +4,23 @@ The aim is a manual-led reconstruction of SimCity 3000 Unlimited's systems with 
 
 Source: https://excalet.com/technology/game_manuals/simcity_3000_unlimited.pdf
 
+## Remaining release groups
+
+Future commits and PRs should close a substantial playable release group, rather than treating each reward, asset or small rule correction as a separate release. The Science Center closeout passed its complete ordinary-city progression and browser checks. These groups organize the remaining scope and do not declare existing features complete or remove any manual requirements.
+
+| Release group | Step-change for the player | Evidence needed before calling it complete |
+| --- | --- | --- |
+| Responsive metropolis | Build, inspect, navigate and manage a large city while the simulation advances without prolonged interface stalls | Measured large-city interaction and simulation performance; road/rail/utility outcomes preserved; browser playthrough and save continuity |
+| Complete city career and economy | Use the remaining civic rewards, business opportunities and ordinances through late-game growth, with understandable costs and neighborhood tradeoffs | Source-to-catalog coverage, ordinary progression including late-game gates, policy/deal recovery exercises and player feedback |
+| Architecture and landmark collection | Build distinct city styles, place the complete referenced landmark catalog, and meaningfully customize building appearance | Catalog and four-view asset coverage, working replacement/editor flows, visual review at actual game scale and saved customization |
+| Living city and holidays | See seasonal events and holidays, richer city activity, and coherent original music and sound during play | Documented calendar/event behavior, pause and reduced-motion behavior, audio controls, visual/audio review and performance measurements |
+| Complete scenario play and authoring | Play the referenced challenge types and author the documented conditions, variables, blocks and actions needed for complex scenarios | Manual command/condition inventory, representative complete scenarios, editor-to-play tests, outcomes, portable saves and user-authored challenge feedback |
+| Whole-game release | Play the complete requested reconstruction across supported browsers and screen sizes, recover from failures, and reliably resume saved cities | Requirement-by-requirement manual audit, unresolved fidelity gaps handled, long city/disaster/economy playthroughs, accessibility/browser acceptance, publication and user feedback |
+
+Simulation fidelity corrections belong to the affected release group and must retain explicit distinctions between documented rules and reconstruction calibration. Catalog coverage, visual quality, performance and player acceptance are separate evidence requirements; passing regression suites alone cannot satisfy them. The existing six feedback checkpoints below remain useful exercises during these releases.
+
+Publication after live version 150 remains blocked on the previously requested Sites source-export authorization. Work present in the checkout or GitHub must not be described as live until publication is verified. Player feedback has not been assumed from silence or automatic continuations.
+
 ## Current playable feedback checkpoints
 
 All six milestones contain playable functionality. None is a claim of full original-game parity, and player feedback is still pending. See [CURRENT-FIDELITY.md](CURRENT-FIDELITY.md) for implementation evidence and remaining scope.

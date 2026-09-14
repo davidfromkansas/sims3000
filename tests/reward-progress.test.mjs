@@ -1,6 +1,8 @@
 import assert from 'node:assert/strict';
 import {REWARDS,REWARD_APPROVAL,freshRewards,rewardCondition,rewardProgress,advanceRewards} from '../dist/rewards.js';
-import {rewardChecklist} from '../dist/rewards-ui.js';
+import {rewardChecklist,REWARD_EFFECTS} from '../dist/rewards-ui.js';
+assert.deepEqual(Object.keys(REWARD_EFFECTS).sort(),Object.keys(REWARDS).sort(),'each reward needs its own effects explanation');
+assert.match(REWARD_EFFECTS.scienceCenter,/375 civic jobs/);assert.match(REWARD_EFFECTS.scienceCenter,/does not add teaching/);assert.match(REWARD_EFFECTS.stockExchange,/480 civic jobs/);assert.match(REWARD_EFFECTS.geyserPark,/50 civic jobs/);
 const c={month:0,startYear:2000,tiles:[],rewards:freshRewards(),stats:{population:20000,aura:REWARD_APPROVAL,balance:0,education:65,activeServices:{college:1}}};
 let p=rewardProgress(c,'mayorHouse');
 assert.deepEqual(p.requirements.map(r=>r.met),[true,true]);

@@ -1,4 +1,4 @@
-import {cityLibrary,cityRecord,CITY_LIMIT} from './city-library.js?v=stock-exchange-1';
+import {cityLibrary,cityRecord,CITY_LIMIT} from './city-library.js?v=science-center-2';
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 let sequence=0;
 export async function showCityLibrary({city,dialog,close,restore,validate,download,notify,isCurrent}){

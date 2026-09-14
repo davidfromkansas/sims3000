@@ -1,11 +1,11 @@
-import {FACILITIES} from './facilities.js?v=stock-exchange-1';
-import {POWER_PLANTS} from './power.js?v=stock-exchange-1';
-import {RECREATION} from './recreation.js?v=stock-exchange-1';
-import {SERVICES,civicRoadIds} from './civic-footprints.js?v=stock-exchange-1';
-import {REWARDS,rewardRoots,rewardSize,rewardActive} from './rewards.js?v=stock-exchange-1';
+import {FACILITIES} from './facilities.js?v=science-center-2';
+import {POWER_PLANTS} from './power.js?v=science-center-2';
+import {RECREATION} from './recreation.js?v=science-center-2';
+import {SERVICES,civicRoadIds} from './civic-footprints.js?v=science-center-2';
+import {REWARDS,rewardRoots,rewardSize,rewardActive} from './rewards.js?v=science-center-2';
 // Prima table 14-2, pp.216–217: structure garbage weights divided by 100.
 // This maps source proportions to monthly simulation units, not original tonnage.
-export const REWARD_WASTE={stockExchange:6.4,geyserPark:10,cityHall:1.44,countryClub:10,lighthouse:1.6,medicalResearch:2.88,performingArts:1.6,stadium:36,university:88,themePark:144};
+export const REWARD_WASTE={scienceCenter:8,stockExchange:6.4,geyserPark:10,cityHall:1.44,countryClub:10,lighthouse:1.6,medicalResearch:2.88,performingArts:1.6,stadium:36,university:88,themePark:144};
 export function rewardWasteProduction(c,t){return REWARD_WASTE[t.type]&&t.root===t.y*c.size+t.x&&rewardActive(c,t)?REWARD_WASTE[t.type]:0;}
 // Old waste remains collectable even while a reward has stopped operating.
 export function garbageSourceRoads(c,t){if(FACILITIES[t.type]){if(c.finance.roadCondition<=20)return [];const plot=c.stats.facilityPlots?.find(p=>p.root===t.facilityRoot);return plot?[...new Set(plot.ids.flatMap(i=>c.tiles[i].roadIds||[]))]:t.roadIds||[];}if(SERVICES[t.type])return c.finance.roadCondition>20?civicRoadIds(c,t):[];if(['busStop','trainStation','subwayStation','railTransfer','recycling'].includes(t.type)&&c.finance.roadCondition<=20)return [];if((!REWARDS[t.type]&&!RECREATION[t.type]&&!POWER_PLANTS[t.type])||!Number.isInteger(t.root))return t.roadIds||[];if(c.finance.roadCondition<=20)return [];const root=c.tiles[t.root];if(!root||root.type!==t.type)return t.roadIds||[];const ids=new Set(),size=REWARDS[root.type]?rewardSize(root):(RECREATION[root.type]||POWER_PLANTS[root.type]).size;for(let y=root.y;y<root.y+size;y++)for(let x=root.x;x<root.x+size;x++){const member=c.tiles[y*c.size+x];if(member?.root===root.root)for(const id of member.roadIds||[])ids.add(id);}return [...ids];}

@@ -1,9 +1,9 @@
-import {SERVICES,civicSize} from './civic-footprints.js?v=stock-exchange-1';
-import {LANDMARKS} from './landmarks.js?v=stock-exchange-1';
-import {BUSINESSES} from './business.js?v=stock-exchange-1';
-import {REWARDS,rewardSize} from './rewards.js?v=stock-exchange-1';
-import {POWER_PLANTS} from './power.js?v=stock-exchange-1';
-import {RECREATION} from './recreation.js?v=stock-exchange-1';
+import {SERVICES,civicSize} from './civic-footprints.js?v=science-center-2';
+import {LANDMARKS} from './landmarks.js?v=science-center-2';
+import {BUSINESSES} from './business.js?v=science-center-2';
+import {REWARDS,rewardSize} from './rewards.js?v=science-center-2';
+import {POWER_PLANTS} from './power.js?v=science-center-2';
+import {RECREATION} from './recreation.js?v=science-center-2';
 // Fixed-footprint ploppable structures share construction, damage and save validation.
 export const STRUCTURES={...LANDMARKS,...POWER_PLANTS,...RECREATION,...REWARDS,...BUSINESSES,...SERVICES};
 
