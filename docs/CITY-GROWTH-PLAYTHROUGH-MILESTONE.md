@@ -20,3 +20,7 @@ Under the earlier pre-137 thresholds, Mayor’s House was earned in month 53 and
 This establishes one ordinary-construction route beyond 25,000. It does not prove original balance, all map types, mobile performance, 150,000-resident progression or long-term stability after this run. Education and hospital development are absent from this particular strategy. Earlier one-coal-plant exploration failed from overload; the reproducible route uses adequate supply. More landfill alone was not a permanent disposal solution.
 
 Town-guide behavior and the longer acceptance run are checked separately. The initial milestone changed no simulation formulas or save schema (135). The civic-garbage milestone adds public-service waste; the table now reflects that updated route, with schema 141. Browser review remains pending while the Mac is locked; Sites publication remains blocked by automatic approval review pending explicit source-export authorization.
+
+## Infrastructure waste replay
+
+The current route adds power-plant collection roads and two waste-to-energy facilities at month 120. It reaches 32,016 residents and §866,604 at month 144, with zero garbage backlog, fully served utilities, no loans or grants, and an exact final-year save/load replay. Earlier milestones through month 120 remain unchanged; prior final figures above describe the pre-infrastructure-waste model. Plants without collection roads now accumulate waste, and connecting them requires sufficient processing capacity.

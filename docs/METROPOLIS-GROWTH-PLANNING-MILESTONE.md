@@ -17,3 +17,7 @@ This proves one path through the current simulation, not original-game balance, 
 Feedback focus: open the town guide in a developed city, follow its current growth warnings, and compare the resulting demand and service reports after running another month. No save schema change (135). Browser review remains pending while the Mac is locked. Sites publication remains blocked by automatic approval review pending explicit source-export authorization.
 
 Current replay after civic garbage integration: `npm run test:metropolis` passed at 151,672 residents in month 345, with §14,056,342, no loans, no garbage backlog, served power/water and an exact save round trip. Construction remained unchanged; only the early population checkpoints were re-baselined for the corrected waste model (6,672 / 5,776 / 32,128). Earlier figures in this document describe the original pre-civic-waste run.
+
+## Infrastructure waste replay
+
+The current acceptance route adds collection roads beside power-plant corridors and two waste-to-energy plants at month 120. It passes at month 343 with 150,872 residents, §13,749,866, no loans or grants, no garbage backlog, fully served utilities and an exact final save round trip. Its month-144 foundation is 32,016 residents and §866,604. Earlier results above are historical.

@@ -1053,3 +1053,7 @@ Police/fire stations, hospitals, schools, jails, colleges, libraries and museums
 ## Recreation and transit waste
 
 Ten recreation/transit types now contribute guide-derived, per-building waste to city disposal and history. Utilities and inspection expose production and waiting garbage. Recreation collection uses its full footprint; passenger-only rail/subway access cannot substitute for road collection. Transit damage closes passenger operation and new waste production. See [the milestone](PUBLIC-SPACE-GARBAGE-MILESTONE.md) for rates and calibration limits.
+
+## Infrastructure waste
+
+Coal, oil, gas, nuclear, microwave and fusion plants now generate 8 garbage units/month per intact building; wind and solar generate none. Operating recycling centers add .72. Plant collection uses the full footprint and requires disposal-connected roads. Utilities/inspection show output and backlog. These guide-derived weights retain the reconstruction's monthly scaling. See [infrastructure garbage](INFRASTRUCTURE-GARBAGE-MILESTONE.md).

@@ -1,4 +1,4 @@
-import {validateScenarioArea} from './scenario-area.js?v=public-space-garbage-1';
+import {validateScenarioArea} from './scenario-area.js?v=infrastructure-garbage-1';
 export function focusScenarioArea(renderer,area){
  const checked=validateScenarioArea(area,{spatial:true},renderer.getCity?.()?.size||48);if(!checked)throw Error('Choose a neighborhood goal.');
  renderer.goalArea={city:renderer.getCity(),area:checked};const p=renderer.project(checked.x,checked.y);
