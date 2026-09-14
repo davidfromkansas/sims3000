@@ -747,3 +747,7 @@ Disposal planning checkpoint: locate aging recycling and incineration facilities
 ## Reward progress checklist
 
 Current values, missing requirements and consecutive-month guidance now explain how to earn each reward. Earned and placed states explain deferred placement and rebuilding. See [milestone details](REWARD-PROGRESS-MILESTONE.md). Feedback: is the next action needed to earn a reward clear?
+
+## University reward progression
+
+University offers now depend on education alone, arrive on the next qualifying month and cost nothing to place. Saved offers and campuses are preserved. See [milestone details](UNIVERSITY-PROGRESSION-MILESTONE.md).

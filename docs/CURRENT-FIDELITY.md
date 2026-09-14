@@ -937,3 +937,7 @@ A ninth original challenge starts a supplied 96×96 city at 25,000 residents and
 ### Reward progress checklist — schema 130, 269 suites
 
 Reward inspection now shares exact eligibility comparisons with monthly awards and explains missing conditions, streak resets and durable offers. Existing reward balancing remains reconstruction tuning; original stadium and university prerequisites, prices and footprints still need migration-aware reconciliation.
+
+### University progression — schema 131, 270 suites
+
+University unlock now uses normalized original EQ eligibility (105/150 → 70/100), no population/college gate, no six-month delay, and free construction. Earned offers and existing buildings migrate safely. The original 10×10 footprint and exact original education/proximity models remain incomplete.
