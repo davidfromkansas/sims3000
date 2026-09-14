@@ -1,8 +1,8 @@
-import {prepareGrowthCapCity} from './growth-cap-city.js?v=learning-maps-1';
-import {takeLoan} from './economy.js?v=learning-maps-1';
-import {recordWaterService} from './water-service.js?v=learning-maps-1';
-import {createCity,recompute,build,planBuild,selection,idx} from './engine.js?v=learning-maps-1';
-import {SCENARIOS,freshScenario} from './scenarios.js?v=learning-maps-1';
+import {prepareGrowthCapCity} from './growth-cap-city.js?v=mayor-house-1';
+import {takeLoan} from './economy.js?v=mayor-house-1';
+import {recordWaterService} from './water-service.js?v=mayor-house-1';
+import {createCity,recompute,build,planBuild,selection,idx} from './engine.js?v=mayor-house-1';
+import {SCENARIOS,freshScenario} from './scenarios.js?v=mayor-house-1';
 export function createScenario(id){const definition=SCENARIOS[id];if(!definition)throw Error('Unknown scenario.');const c=createCity(definition.title,!['growth','roadless','roomToGrow'].includes(id),id==='roomToGrow'?96:48);c.scenario=freshScenario(id);c.emergency.randomFires=false;if(id==='roomToGrow')prepareGrowthCapCity(c);if(id==='pollution'){c.business.toxicWaste={offered:0,accepted:true,declinedUntil:0};const site=[...c.tiles].sort((a,b)=>Math.hypot(a.x-25,a.y-20)-Math.hypot(b.x-25,b.y-20)).find(t=>planBuild(c,'toxicWaste',[t]).ok);if(!site||!build(c,'toxicWaste',[site]).ok)throw Error('Could not prepare the pollution challenge.');c.funds=10000;}if(id==='learningCity'){if(!build(c,'landfill',selection('landfill',{x:32,y:28},{x:34,y:29})).ok)throw Error('Could not prepare learning challenge.');c.funds=8000;}if(id==='firstRepayment'){const landfill=build(c,'landfill',selection('landfill',{x:32,y:28},{x:34,y:29}));if(!landfill.ok||!takeLoan(c,25000).ok)throw Error('Could not prepare repayment challenge.');c.funds=2500;}if(id==='waterRecovery')prepareWaterRecovery(c);if(id==='roadless')prepareRoadless(c);if(id==='harbor')prepareHarbor(c);if(id==='streets'){c.finance.roadCondition=15;c.finance.roadFunding=25;c.funds=20000;}recompute(c);return c;}
 
 function prepareHarbor(c){
