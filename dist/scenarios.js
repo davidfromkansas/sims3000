@@ -1,14 +1,14 @@
-import {captureResultGoals,validateResultGoals} from './scenario-result-goals.js?v=room-to-grow-1';
-import {validateTextOverrides} from './scenario-dialog-text.js?v=room-to-grow-1';
-import {validateProgramInvocations} from './scenario-program-invocations.js?v=room-to-grow-1';
-import {validateGoalMarks} from './scenario-goal-marks.js?v=room-to-grow-1';
-import {validateGoalActivations} from './scenario-goal-activation.js?v=room-to-grow-1';
-import {validateScenarioStart} from './scenario-replay.js?v=room-to-grow-1';
-import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=room-to-grow-1';
-import {validateVariableValues} from './scenario-variables.js?v=room-to-grow-1';
-import {businessRoots} from './business.js?v=room-to-grow-1';
-import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=room-to-grow-1';
-import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=room-to-grow-1';
+import {captureResultGoals,validateResultGoals} from './scenario-result-goals.js?v=bungalow-style-1';
+import {validateTextOverrides} from './scenario-dialog-text.js?v=bungalow-style-1';
+import {validateProgramInvocations} from './scenario-program-invocations.js?v=bungalow-style-1';
+import {validateGoalMarks} from './scenario-goal-marks.js?v=bungalow-style-1';
+import {validateGoalActivations} from './scenario-goal-activation.js?v=bungalow-style-1';
+import {validateScenarioStart} from './scenario-replay.js?v=bungalow-style-1';
+import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=bungalow-style-1';
+import {validateVariableValues} from './scenario-variables.js?v=bungalow-style-1';
+import {businessRoots} from './business.js?v=bungalow-style-1';
+import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=bungalow-style-1';
+import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=bungalow-style-1';
 // Original challenges using the manual's scenario/status model; not shipped SC3KU scenarios.
 export const SCENARIOS={
  roomToGrow:{title:'Room to grow',months:12,description:'A city of 25,000 has reached its residential limit. Create capacity for 26,000 and welcome at least 200 more residents within a year.',briefing:'This 96 × 96 city starts at its residential capacity of 25,000, with 100 vacant home sites, wind power, industry, roads and landfill already prepared. Low-density homes can start without water. The treasury holds §20,000. Open City desk → Zone development to review capacity. Parks and recreation create room for new residents; a clear site begins at tile 86, 3 near the northeast corner, or choose your own locations. Raise residential capacity to at least 26,000, grow to 25,200 residents and keep at least §5,000 within twelve months. More capacity does not guarantee demand or services: watch the budget, power and waste as the town grows. Random disasters start off. This is an original challenge for the reconstruction.'},
