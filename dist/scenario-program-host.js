@@ -1,7 +1,7 @@
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=architecture-collection-58';
-import {PROGRAM_LIMITS} from './scenario-programs.js?v=architecture-collection-58';
-import {startProgramInvocation,advanceProgramInvocation,programInvocationFinished,pendingProgramMessage,programActionSources} from './scenario-program-history.js?v=architecture-collection-58';
-import {activeProgramInvocation} from './scenario-program-invocations.js?v=architecture-collection-58';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=responsive-metropolis-3';
+import {PROGRAM_LIMITS} from './scenario-programs.js?v=responsive-metropolis-3';
+import {startProgramInvocation,advanceProgramInvocation,programInvocationFinished,pendingProgramMessage,programActionSources} from './scenario-program-history.js?v=responsive-metropolis-3';
+import {activeProgramInvocation} from './scenario-program-invocations.js?v=responsive-metropolis-3';
 export const hasProgramPopup=s=>s?.programInvocations?.some(run=>pendingProgramMessage(run)>=0)||false;
 export function runProgramEvent(c,index){
  const s=c.scenario,e=s.definition.events[index],programs=compileGameScenarioPrograms(s.definition.programs,{size:s.definition.mapSize,objectives:s.definition.objectives});let run=activeProgramInvocation(s);

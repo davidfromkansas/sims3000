@@ -1,7 +1,9 @@
-import {tunnelEdges} from './tunnels.js?v=architecture-collection-58';
+import {tunnelEdges} from './tunnels.js?v=responsive-metropolis-3';
+// Absent network nodes share an immutable list; only real tracks/roads allocate adjacency.
+const EMPTY_EDGES=Object.freeze([]);
 export function rampCrossings(tiles,t){const n=Math.sqrt(tiles.length),out=[];for(const dx of [-1,1])for(const dy of [-1,1]){const x=t.x+dx,y=t.y+dy;if(x<0||y<0||x>=n||y>=n)continue;const i=y*n+x,u=tiles[i];if(u.type==='road'&&u.highway&&u.terrain==='land')out.push(i);}return out;}
-export function streetGraph(c){const tiles=c.tiles,N=tiles.length,n=Math.sqrt(N),edges=Array.from({length:N*2},()=>[]),present=i=>i<N?tiles[i].type==='road':tiles[i-N].highway;
- for(let i=0;i<N*2;i++){if(!present(i))continue;const t=tiles[i%N],elevated=i>=N;for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy;if(x<0||y<0||x>=n||y>=n)continue;const j=y*n+x+(elevated?N:0);if(!present(j))continue;const u=tiles[j%N],axis=dx?'x':'y',a=elevated?t.highwayAxis:t.bridgeAxis,b=elevated?u.highwayAxis:u.bridgeAxis;if(t.terrain==='water'&&a!==axis||u.terrain==='water'&&b!==axis)continue;edges[i].push(j);}}
+export function streetGraph(c){const tiles=c.tiles,N=tiles.length,n=Math.sqrt(N),edges=Array(N*2).fill(EMPTY_EDGES),present=i=>i<N?tiles[i].type==='road':tiles[i-N].highway;
+ for(let i=0;i<N*2;i++){if(!present(i))continue;edges[i]=[];const t=tiles[i%N],elevated=i>=N;for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy;if(x<0||y<0||x>=n||y>=n)continue;const j=y*n+x+(elevated?N:0);if(!present(j))continue;const u=tiles[j%N],axis=dx?'x':'y',a=elevated?t.highwayAxis:t.bridgeAxis,b=elevated?u.highwayAxis:u.bridgeAxis;if(t.terrain==='water'&&a!==axis||u.terrain==='water'&&b!==axis)continue;edges[i].push(j);}}
  for(const t of tiles){t.rampActive=false;if(t.type!=='ramp')continue;for(const i of rampCrossings(tiles,t)){edges[i].push(i+N);edges[i+N].push(i);t.rampActive=true;}}
  for(const mode of ['road','highway'])for(const [a,b]of tunnelEdges(c,mode)){const offset=mode==='highway'?N:0;edges[a+offset].push(b+offset);edges[b+offset].push(a+offset);}
  const groups=new Int32Array(N*2).fill(-1);let count=0;for(let i=0;i<N*2;i++){if(!present(i)||groups[i]>=0)continue;const q=[i];groups[i]=count;for(let k=0;k<q.length;k++)for(const j of edges[q[k]])if(groups[j]<0){groups[j]=count;q.push(j);}count++;}return{edges,groups,count};}

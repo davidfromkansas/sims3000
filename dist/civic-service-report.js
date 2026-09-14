@@ -1,12 +1,12 @@
-import {civicGarbageInspection} from './civic-waste.js?v=architecture-collection-58';
-import {jailCapacity,jailReport} from './jail.js?v=architecture-collection-58';
-import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=architecture-collection-58';
-import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=architecture-collection-58';
-import {SERVICE_JOBS} from './civic-jobs.js?v=architecture-collection-58';
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=architecture-collection-58';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=architecture-collection-58';
-import {occupancy} from './utilities.js?v=architecture-collection-58';
-import {educationServiceDemand} from './education.js?v=architecture-collection-58';
+import {civicGarbageInspection} from './civic-waste.js?v=responsive-metropolis-3';
+import {jailCapacity,jailReport} from './jail.js?v=responsive-metropolis-3';
+import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=responsive-metropolis-3';
+import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=responsive-metropolis-3';
+import {SERVICE_JOBS} from './civic-jobs.js?v=responsive-metropolis-3';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=responsive-metropolis-3';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=responsive-metropolis-3';
+import {occupancy} from './utilities.js?v=responsive-metropolis-3';
+import {educationServiceDemand} from './education.js?v=responsive-metropolis-3';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  t=civicRoot(c,t);const definition=SERVICES[t.type];if(!definition)return null;

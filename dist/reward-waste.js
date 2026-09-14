@@ -1,8 +1,8 @@
-import {FACILITIES} from './facilities.js?v=architecture-collection-58';
-import {POWER_PLANTS} from './power.js?v=architecture-collection-58';
-import {RECREATION} from './recreation.js?v=architecture-collection-58';
-import {SERVICES,civicRoadIds} from './civic-footprints.js?v=architecture-collection-58';
-import {REWARDS,rewardRoots,rewardSize,rewardActive} from './rewards.js?v=architecture-collection-58';
+import {FACILITIES} from './facilities.js?v=responsive-metropolis-3';
+import {POWER_PLANTS} from './power.js?v=responsive-metropolis-3';
+import {RECREATION} from './recreation.js?v=responsive-metropolis-3';
+import {SERVICES,civicRoadIds} from './civic-footprints.js?v=responsive-metropolis-3';
+import {REWARDS,rewardRoots,rewardSize,rewardActive} from './rewards.js?v=responsive-metropolis-3';
 // Prima table 14-2, pp.216–217: structure garbage weights divided by 100.
 // This maps source proportions to monthly simulation units, not original tonnage.
 export const REWARD_WASTE={scienceCenter:8,stockExchange:6.4,geyserPark:10,cityHall:1.44,countryClub:10,lighthouse:1.6,medicalResearch:2.88,performingArts:1.6,stadium:36,university:88,themePark:144};
