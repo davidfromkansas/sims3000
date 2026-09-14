@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {createScenario} from '../dist/scenario-setup.js';
+import {scenarioGoals} from '../dist/scenarios.js';
+import {build,selection,tick,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+const water=c=>{for(const [tool,a,b]of [['pump',{x:34,y:9}],['pump',{x:34,y:10}],['powerline',{x:34,y:11},{x:34,y:26}],['pipe',{x:34,y:9},{x:34,y:26}],['pipe',{x:22,y:26},{x:34,y:26}],['pipe',{x:22,y:14},{x:22,y:30}]])assert.ok(build(c,tool,selection(tool,a,b||a)).ok);};
+const rezone=(c,sectors)=>{for(const t of c.tiles.filter(t=>sectors.includes(t.type)))assert.ok(build(c,t.type,[t],2).ok);};
+const c=createScenario('growingUpward');assert.equal(c.month,0);assert.equal(c.stats.population,224);assert.equal(c.funds,10000);assert.equal(c.emergency.randomFires,false);assert.equal(c.stats.connectedLandfillTiles,6);assert.equal(serializeCity(c),serializeCity(createScenario('growingUpward')));
+water(c);rezone(c,['residential','commercial','industrial']);for(let i=0;i<4;i++)tick(c);const loaded=validateSave(JSON.parse(serializeCity(c)));while(c.scenario.status==='playing'){tick(c);tick(loaded);}assert.equal(c.scenario.status,'won');assert.equal(c.scenario.endedMonth,8);assert.ok(scenarioGoals(c).every(g=>g.done));assert.equal(c.stats.population,728);assert.equal(serializeCity(c),serializeCity(loaded));assert.equal(validateSave(JSON.parse(serializeCity(c))).scenario.status,'won');
+const noWater=createScenario('growingUpward');rezone(noWater,['residential','commercial','industrial']);for(let i=0;i<24;i++)tick(noWater);assert.equal(noWater.scenario.status,'lost');assert.equal(scenarioGoals(noWater)[1].done,false);
+const noJobs=createScenario('growingUpward');water(noJobs);rezone(noJobs,['residential']);for(let i=0;i<24;i++)tick(noJobs);assert.equal(noJobs.scenario.status,'lost');assert.equal(scenarioGoals(noJobs)[0].done,false);
+const restart=createScenario('growingUpward');assert.equal(restart.month,0);assert.equal(restart.funds,10000);assert.equal(restart.scenario.status,'playing');
+console.log('PASS: densification challenge setup, ordinary water and RCI upgrades, eight-month victory, saved continuation, no-water/no-job-growth losses and fresh restart.');
