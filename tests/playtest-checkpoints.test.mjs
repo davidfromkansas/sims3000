@@ -23,7 +23,10 @@ assert.ok(!readPlaytestFeedback(storage,7).checked.includes('ground'));assert.ma
 
 for(const key of ['solid_paint','detail_stroke','construct_navigation'])assert.ok(!readPlaytestFeedback(storage,7).checked.includes(key),'new exercises are not marked tried from prior feedback');
 const {importBuildingDesign}=await import('../dist/building-designs.js');
-globalThis.document={getElementById:id=>controls[id],querySelectorAll:s=>s==='[data-playtest-step]'?checks:buttons};showPlaytestFeedback(ui,7);const samples=[...html.matchAll(/href="\.\/assets\/building-reviews\/([^"/]+)" download=/g)].map(m=>m[1]);assert.equal(samples.length,3);
+globalThis.document={getElementById:id=>controls[id],querySelectorAll:s=>s==='[data-playtest-step]'?checks:buttons};showPlaytestFeedback(ui,7);const samples=[...html.matchAll(/href="\.\/assets\/building-reviews\/([^"/]+\.building\.json)" download=/g)].map(m=>m[1]);assert.equal(samples.length,3);
 const models=samples.map(name=>importBuildingDesign(readFileSync(new URL('../dist/assets/building-reviews/'+name,import.meta.url),'utf8')));assert.equal(models[0].paintColors.length,4);assert.equal(models[1].roofDetails.length,3);assert.ok(models[2].voxels);
 assert.match(feedbackText(7,'New tools review',['detail_stroke']),/\[x\] Place and size wall details/);
 console.log('PASS: new architecture exercises preserve earlier feedback without marking new work tried, and all three downloadable study models import with their intended features.');
+
+const {validateSave}=await import('../dist/engine.js');const challenge=validateSave(JSON.parse(readFileSync(new URL('../dist/assets/building-reviews/chicago-museum-collection.city.json',import.meta.url),'utf8')));assert.equal(challenge.name,'Chicago museum collection');assert.equal(challenge.scenario.status,'playing');assert.match(html,/chicago-museum-collection\.city\.json/);
+console.log('PASS: the checkpoint offers a valid, unstarted Chicago museum city challenge separately from portable building models.');

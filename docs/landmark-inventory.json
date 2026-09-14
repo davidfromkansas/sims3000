@@ -17,7 +17,7 @@
       "name": "Adler Planetarium",
       "edition": "standard",
       "directorySource": "gamefaqs",
-      "runtimeType": null,
+      "runtimeType": "adlerPlanetarium",
       "originalFootprint": null
     },
     {
@@ -52,7 +52,7 @@
       "name": "Art Institute of Chicago",
       "edition": "standard",
       "directorySource": "gamefaqs",
-      "runtimeType": null,
+      "runtimeType": "artInstituteChicago",
       "originalFootprint": null
     },
     {
@@ -184,7 +184,7 @@
       "originalFootprint": null
     },
     {
-      "name": "Gedächtniskirche",
+      "name": "Ged\u00e4chtniskirche",
       "edition": "standard",
       "directorySource": "gamefaqs",
       "runtimeType": null,
@@ -384,7 +384,7 @@
       "name": "Shedd Aquarium",
       "edition": "standard",
       "directorySource": "prima",
-      "runtimeType": null,
+      "runtimeType": "sheddAquarium",
       "originalFootprint": null
     },
     {

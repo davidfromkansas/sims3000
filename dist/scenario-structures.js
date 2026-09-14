@@ -1,9 +1,9 @@
-import {STRUCTURES} from './structures.js?v=architecture-collection-57';
-import {SERVICES} from './civic.js?v=architecture-collection-57';
-import {STATIONS} from './rail.js?v=architecture-collection-57';
-import {WATER_STRUCTURES,WASTE_STRUCTURES} from './utilities.js?v=architecture-collection-57';
-import {FACILITIES} from './facilities.js?v=architecture-collection-57';
-import {inScenarioArea} from './scenario-area.js?v=architecture-collection-57';
+import {STRUCTURES} from './structures.js?v=architecture-collection-58';
+import {SERVICES} from './civic.js?v=architecture-collection-58';
+import {STATIONS} from './rail.js?v=architecture-collection-58';
+import {WATER_STRUCTURES,WASTE_STRUCTURES} from './utilities.js?v=architecture-collection-58';
+import {FACILITIES} from './facilities.js?v=architecture-collection-58';
+import {inScenarioArea} from './scenario-area.js?v=architecture-collection-58';
 export const COUNTED_STRUCTURES={...STRUCTURES,...SERVICES,...STATIONS,...WATER_STRUCTURES,...WASTE_STRUCTURES,...FACILITIES,busStop:{name:'Bus stop'},park:{name:'Small park'}};
 // Count a fixed-footprint building once at its origin, even without service.
 // Airport and seaport zoning must develop before it represents a building.

@@ -1,4 +1,4 @@
-import {MUSIC_TRACKS,musicScore} from './music-score.js?v=architecture-collection-57';
+import {MUSIC_TRACKS,musicScore} from './music-score.js?v=architecture-collection-58';
 export {MUSIC_TRACKS};
 const KEY='sims3000-music',ids=Object.keys(MUSIC_TRACKS);
 export function createGameMusic(){

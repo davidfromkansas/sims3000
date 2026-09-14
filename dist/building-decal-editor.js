@@ -1,9 +1,9 @@
-import {roofPlane,projectedRoofAnchor,anchoredRoofDetail,roofDetailPolygonsOnFace,roofWorldPoint} from './building-roof-details.js?v=architecture-collection-57';
-import {detailPaletteHTML,mountBuildingDetailPalette} from './building-detail-palette.js?v=architecture-collection-57';
-import {DECAL_NAMES,MAX_BUILDING_DECALS,anchoredDecal,projectedWallAnchor,validateBuildingDecals,wallWorldPoint,decalPolygonsOnFace} from './building-decals.js?v=architecture-collection-57';
-import {projectedBuildingSurfaces,pickBuildingSurface,pointInBuildingSurface} from './building-surface-picking.js?v=architecture-collection-57';
-import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=architecture-collection-57';
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-57';
+import {roofPlane,projectedRoofAnchor,anchoredRoofDetail,roofDetailPolygonsOnFace,roofWorldPoint} from './building-roof-details.js?v=architecture-collection-58';
+import {detailPaletteHTML,mountBuildingDetailPalette} from './building-detail-palette.js?v=architecture-collection-58';
+import {DECAL_NAMES,MAX_BUILDING_DECALS,anchoredDecal,projectedWallAnchor,validateBuildingDecals,wallWorldPoint,decalPolygonsOnFace} from './building-decals.js?v=architecture-collection-58';
+import {projectedBuildingSurfaces,pickBuildingSurface,pointInBuildingSurface} from './building-surface-picking.js?v=architecture-collection-58';
+import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=architecture-collection-58';
+import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-58';
 export const anchoredDetailMode=mode=>['anchored-detail','sample-decal','erase-decal'].includes(mode);
 export function mountBuildingDecalEditor(root,canvas,{get,camera,mode,material,apply,applyRoof,render,status}){
  root.innerHTML=`<fieldset id="anchoredDetailControls"><legend>Anchored details</legend><label>Surface<select id="decalSurface"><option value="wall">Wall</option><option value="roof">Roof</option></select></label>${detailPaletteHTML()}<div class="block-editor-controls"><label>Width (tiles)<input id="decalWidth" type="number" min=".25" max="10" step=".25" value="2"></label><label><span id="decalSizeLabel">Height (floors)</span><input id="decalHeight" type="number" min=".25" max="25" step=".25" value="2"></label></div><label><input id="decalSnap" type="checkbox"> Snap anchor to surface tile</label><p class="fine">The cross marks the lower-left corner at the cursor. Enable snapping to align with surface tiles. Details extend right and up, clipping at surface edges, gaps and slopes. On roofs, choose Skylight or Vent grille. Click and release to place; Shift or Escape cancels. Select an anchored detail to reuse its design and size. Drag Erase across details and release to remove them together; Undo restores the whole stroke.</p></fieldset>`;

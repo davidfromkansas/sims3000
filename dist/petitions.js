@@ -1,8 +1,8 @@
-import {utilityTrendSnapshot} from './utility-trends.js?v=architecture-collection-57';
-import {ORDINANCES,changeCivic,ordinanceCost} from './civic.js?v=architecture-collection-57';
-import {recompute,validateSave} from './engine.js?v=architecture-collection-57';
-import {serializeCity} from './save.js?v=architecture-collection-57';
-import {healthOutlook} from './health.js?v=architecture-collection-57';
+import {utilityTrendSnapshot} from './utility-trends.js?v=architecture-collection-58';
+import {ORDINANCES,changeCivic,ordinanceCost} from './civic.js?v=architecture-collection-58';
+import {recompute,validateSave} from './engine.js?v=architecture-collection-58';
+import {serializeCity} from './save.js?v=architecture-collection-58';
+import {healthOutlook} from './health.js?v=architecture-collection-58';
 export const POLICY_PETITIONS={
  freeClinics:{who:'Residents’ health committee',why:'Hospital access is limited. Help residents with free clinics while expanding care.',enact:true,needed:c=>c.stats.healthCoverage<60},
  reading:{who:'Parents and readers association',why:'Education remains low. Support a reading campaign alongside schools and libraries.',enact:true,needed:c=>c.civic.education<50},

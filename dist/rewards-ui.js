@@ -1,5 +1,5 @@
-import {drawCityReward} from './reward-models.js?v=architecture-collection-57';
-import {REWARDS,rewardCondition,rewardProgress} from './rewards.js?v=architecture-collection-57';
+import {drawCityReward} from './reward-models.js?v=architecture-collection-58';
+import {REWARDS,rewardCondition,rewardProgress} from './rewards.js?v=architecture-collection-58';
 export const REWARD_EFFECTS=Object.freeze({
  scienceCenter:'An operating Science Center supplies 375 civic jobs and improves nearby residential and commercial land value. It produces local air and water pollution and 8 garbage units per month. It does not add teaching places or an education bonus.',
  stockExchange:'An operating Stock Exchange supplies 480 civic jobs and satisfies commercial demand. Nearby commercial value and wellbeing improve, but residential and industrial value fall, with local pollution and crime pressure. It produces 6.4 garbage units per month.',

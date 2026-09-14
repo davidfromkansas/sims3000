@@ -1,6 +1,6 @@
-import {showDevelopmentAdvisor} from './development-advisors.js?v=architecture-collection-57';
-import {showFinancialAdvisor} from './financial-advisor.js?v=architecture-collection-57';
-import {showTransportationAdvisor} from './transport-advisor.js?v=architecture-collection-57';
-import {showCivicAdvisor} from './civic-advisors.js?v=architecture-collection-57';
+import {showDevelopmentAdvisor} from './development-advisors.js?v=architecture-collection-58';
+import {showFinancialAdvisor} from './financial-advisor.js?v=architecture-collection-58';
+import {showTransportationAdvisor} from './transport-advisor.js?v=architecture-collection-58';
+import {showCivicAdvisor} from './civic-advisors.js?v=architecture-collection-58';
 export const ADVISOR_ROSTER=[['finance','Mortimer Green','Finances','mortimer'],['transport','Moe Biehl','Transportation','moe'],['planning','Constance Lee','City planning','constance'],['environment','Karen Frawl','Environment','karen'],['safety','Maria Montoya','Public safety','maria'],['hea','Randall Shoop','Health, education & aura','randall'],['utilities','Gus Oddman','Utilities','gus']];
 export function showAdvisorDesk(ui){ui.dialog('Meet your advisors',`<p>Meet a department advisor to review current city conditions and follow up with maps, reports or planning tools.</p><div class="advisor-roster">${ADVISOR_ROSTER.map(([key,name,role,portrait])=>`<button data-meet-advisor="${key}"><img src="assets/${portrait}-advisor.png" width="72" height="72" alt=""><span><strong>${name}</strong><br>${role}</span></button>`).join('')}</div><button id="advisorDeskBack">Back to city desk</button>`);document.querySelector('#advisorDeskBack').onclick=ui.back;document.querySelectorAll('[data-meet-advisor]').forEach(button=>button.onclick=()=>{const key=button.dataset.meetAdvisor;if(key==='finance')showFinancialAdvisor(ui,ui.budget);else if(key==='transport')showTransportationAdvisor(ui,ui.transport);else if(key==='safety'||key==='hea')showCivicAdvisor(ui,key,ui.civic);else showDevelopmentAdvisor(ui,key,()=>showAdvisorDesk(ui));});}

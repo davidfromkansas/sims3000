@@ -1,4 +1,4 @@
-import {SERVICES,civicRoots,civicRoot,civicMembers,isCivicRoot,civicServiceOperating} from './civic-footprints.js?v=architecture-collection-57';
+import {SERVICES,civicRoots,civicRoot,civicMembers,isCivicRoot,civicServiceOperating} from './civic-footprints.js?v=architecture-collection-58';
 // Prima structure garbage weights / 100; fixed monthly load per operating building.
 export const CIVIC_WASTE={police:2.7,fire:2.7,hospital:2.16,school:3.6,jail:5.76,college:5.04,library:1.2,museum:1.2};
 export function civicWasteProduction(c,t){return CIVIC_WASTE[t.type]&&isCivicRoot(t)&&civicServiceOperating(c,t)?CIVIC_WASTE[t.type]:0;}
