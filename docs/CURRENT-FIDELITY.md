@@ -1041,3 +1041,7 @@ The reward catalog now includes ten playable rewards. Country Club adds the orig
 ## Theme Park
 
 Eleven playable rewards now include the Theme Park, with an 80,000-resident/strong-approval gate, 10×10 footprint, §125,000 price, 400 jobs and 200,000 residential capacity relief. Original procedural rides include a moving observation wheel on the existing scenery clock. Neighborhood value, pollution, crime and aura tradeoffs are represented, with documented scale/falloff/upkeep assumptions. Save schema 141 preserves older cities. Coaster/carousel motion, exact original waste generation and browser performance acceptance remain unfinished; see THEME-PARK-MILESTONE.md.
+
+## Reward building waste
+
+Eight reward types with established source rates now generate garbage, including Theme Park, University and Stadium. Garbage stored at a campus root can use the whole footprint's roads for local disposal, rail freight or export. Generation and backlog are visible in building and utilities inspection, and included in the monthly ledger. Rates use documented /100 normalization; waste from other public structures and exact original tonnage/balance remain unfinished. See REWARD-GARBAGE-MILESTONE.md.

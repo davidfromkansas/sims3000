@@ -1,9 +1,10 @@
-import {landfillRailFreight} from './rail-freight.js?v=theme-park-1';
-import {waterBaseNeed} from './utility-demand.js?v=theme-park-1';
-import {pipeCoverage} from './water-coverage.js?v=theme-park-1';
-import {conservationDemand} from './conservation.js?v=theme-park-1';
-import {industrialJobs} from './industry.js?v=theme-park-1';
-import {tradeCapacity} from './region.js?v=theme-park-1';
+import {rewardWasteProduction,garbageSourceRoads} from './reward-waste.js?v=reward-garbage-1';
+import {landfillRailFreight} from './rail-freight.js?v=reward-garbage-1';
+import {waterBaseNeed} from './utility-demand.js?v=reward-garbage-1';
+import {pipeCoverage} from './water-coverage.js?v=reward-garbage-1';
+import {conservationDemand} from './conservation.js?v=reward-garbage-1';
+import {industrialJobs} from './industry.js?v=reward-garbage-1';
+import {tradeCapacity} from './region.js?v=reward-garbage-1';
 // Manual pp. 16–17, 103, 115, 117–118. Capacities/rates are explicit model approximations.
 export const WATER_CAPACITY=500,LANDFILL_CAPACITY=200,LANDFILL_DECAY=.5;
 export const occupancy=level=>[0,1,3,8][level]||0;
@@ -30,13 +31,13 @@ export function recomputeWater(c){
  }
  return{waterDemand,waterConserved,pumps,activePumps,pipes,waterCapacity,waterUsed,waterUpkeep,treatmentPlants,activeTreatment,watered:tiles.filter(t=>isZone(t)&&t.watered).length,waterNetworks:networks};
 }
-export function wasteProduction(t){return t.type==='industrial'&&t.industry==='farm'?industrialJobs(t)*.02:isZone(t)?occupancy(t.level)*(t.type==='residential'?.24:t.type==='industrial'?.72:.36):0;}
-export function garbageStats(c){const dumps=c.tiles.filter(t=>t.type==='landfill');return{wasteUpkeep:c.tiles.reduce((v,t)=>v+(WASTE_STRUCTURES[t.type]?.upkeep||0),0),recycled:c.tiles.reduce((v,t)=>v+(t.type==='recycling'?t.recycledLastMonth||0:0),0),incinerated:c.tiles.reduce((v,t)=>v+(WASTE_STRUCTURES[t.type]?t.burnedLastMonth||0:0),0),wastePower:c.tiles.reduce((v,t)=>v+wastePower(t),0),landfillTiles:dumps.length,landfillCapacity:dumps.length*LANDFILL_CAPACITY,landfillStored:dumps.reduce((a,t)=>a+t.garbage,0),uncollectedWaste:c.tiles.reduce((a,t)=>a+t.waste,0),wasteProduction:c.tiles.reduce((a,t)=>a+wasteProduction(t),0),connectedLandfillTiles:dumps.filter(t=>t.roadIds?.length).length};}
+export function wasteProduction(t,c){return t.type==='industrial'&&t.industry==='farm'?industrialJobs(t)*.02:isZone(t)?occupancy(t.level)*(t.type==='residential'?.24:t.type==='industrial'?.72:.36):c?rewardWasteProduction(c,t):0;}
+export function garbageStats(c){const dumps=c.tiles.filter(t=>t.type==='landfill');return{wasteUpkeep:c.tiles.reduce((v,t)=>v+(WASTE_STRUCTURES[t.type]?.upkeep||0),0),recycled:c.tiles.reduce((v,t)=>v+(t.type==='recycling'?t.recycledLastMonth||0:0),0),incinerated:c.tiles.reduce((v,t)=>v+(WASTE_STRUCTURES[t.type]?t.burnedLastMonth||0:0),0),wastePower:c.tiles.reduce((v,t)=>v+wastePower(t),0),landfillTiles:dumps.length,landfillCapacity:dumps.length*LANDFILL_CAPACITY,landfillStored:dumps.reduce((a,t)=>a+t.garbage,0),uncollectedWaste:c.tiles.reduce((a,t)=>a+t.waste,0),wasteProduction:c.tiles.reduce((a,t)=>a+wasteProduction(t,c),0),connectedLandfillTiles:dumps.filter(t=>t.roadIds?.length).length};}
 export function processGarbage(c){
  const freight=landfillRailFreight(c),dumps=c.tiles.filter(t=>t.type==='landfill'),plants=c.tiles.filter(t=>wasteActive(c,t)),recyclers=plants.filter(t=>t.type==='recycling'),burners=plants.filter(t=>t.type!=='recycling'),remaining=new Map(plants.map(t=>[t,wasteCapacity(c,t)]));for(const t of c.tiles){if(WASTE_STRUCTURES[t.type]){t.burnedLastMonth=0;t.recycledLastMonth=0;}if(t.type==='landfill')t.garbage=Math.max(0,t.garbage-LANDFILL_DECAY);}
- let collected=0;for(const t of c.tiles){const production=wasteProduction(t);let recyclable=production*(c.civic.ordinances.trashPresort?.45:.3);for(const r of recyclers){if(!t.roadIds.some(id=>r.roadIds.includes(id)))continue;const amount=Math.min(recyclable,remaining.get(r));recyclable-=amount;remaining.set(r,remaining.get(r)-amount);r.recycledLastMonth+=amount;}const recycled=production*(c.civic.ordinances.trashPresort?.45:.3)-recyclable;t.waste+=production-recycled;collected+=recycled;if(t.waste<=0)continue;
- for(const p of burners){if(!t.roadIds.some(id=>p.roadIds.includes(id)))continue;const amount=Math.min(t.waste,remaining.get(p));remaining.set(p,remaining.get(p)-amount);p.burnedLastMonth+=amount;t.waste-=amount;collected+=amount;}
- for(const d of dumps){if(!t.roadIds?.some(id=>d.roadIds?.includes(id))&&!freight.accepts(t,d))continue;const amount=Math.min(t.waste,LANDFILL_CAPACITY-d.garbage);if(amount<=0)continue;d.garbage+=amount;t.waste-=amount;collected+=amount;if(t.waste<1e-8){t.waste=0;break;}}}return collected;
+ let collected=0;for(const t of c.tiles){const production=wasteProduction(t,c);if(production<=0&&t.waste<=0)continue;const roadIds=garbageSourceRoads(c,t);let recyclable=production*(c.civic.ordinances.trashPresort?.45:.3);for(const r of recyclers){if(!roadIds.some(id=>r.roadIds.includes(id)))continue;const amount=Math.min(recyclable,remaining.get(r));recyclable-=amount;remaining.set(r,remaining.get(r)-amount);r.recycledLastMonth+=amount;}const recycled=production*(c.civic.ordinances.trashPresort?.45:.3)-recyclable;t.waste+=production-recycled;collected+=recycled;if(t.waste<=0)continue;
+ for(const p of burners){if(!roadIds.some(id=>p.roadIds.includes(id)))continue;const amount=Math.min(t.waste,remaining.get(p));remaining.set(p,remaining.get(p)-amount);p.burnedLastMonth+=amount;t.waste-=amount;collected+=amount;}
+ for(const d of dumps){if(!roadIds.some(id=>d.roadIds?.includes(id))&&!freight.accepts({...t,roadIds},d))continue;const amount=Math.min(t.waste,LANDFILL_CAPACITY-d.garbage);if(amount<=0)continue;d.garbage+=amount;t.waste-=amount;collected+=amount;if(t.waste<1e-8){t.waste=0;break;}}}return collected;
 }
 export const WASTE_STRUCTURES={recycling:{name:'Recycling center',cost:1200,upkeep:10,capacity:60,year:1970},incinerator:{name:'Incinerator',cost:2500,upkeep:30,capacity:100,year:1920},wasteEnergy:{name:'Waste-to-energy incinerator',cost:6000,upkeep:55,capacity:180,year:2000}};
 export const wasteCapacity=(c,t)=>WASTE_STRUCTURES[t.type]?Math.round(WASTE_STRUCTURES[t.type].capacity*waterEfficiency(t)*(t.type==='recycling'&&c.civic.ordinances.trashPresort?1.5:1)):0;
