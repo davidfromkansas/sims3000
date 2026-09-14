@@ -1,0 +1,22 @@
+import assert from 'node:assert/strict';
+import {createCity,build,recompute,validateSave} from '../dist/engine.js';
+import {serviceRadius} from '../dist/civic.js';
+import {ignite,stepFire} from '../dist/emergency.js';
+import {serializeCity} from '../dist/save.js';
+import {precinctCoverageNote} from '../dist/service-areas.js';
+import {civicFacilityReport} from '../dist/civic-service-report.js';
+const c=createCity('Fire coverage',false,96);c.funds=1e6;c.emergency.randomFires=false;
+for(const t of c.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});
+for(const [type,x,y] of [['coal',8,8],['powerline',15,15],['road',23,17],['fire',20,20]])assert.ok(build(c,type,[{x,y}]).ok);
+const at=(x,y)=>c.tiles[y*96+x],station=at(20,20);
+for(const [x,y] of [[22,25],[45,21],[46,21],[47,21]])Object.assign(at(x,y),{type:'residential',level:1});
+recompute(c);assert.equal(serviceRadius(c,station),25);assert.equal(at(22,25).fireCoverage,100);assert.equal(at(45,21).fireCoverage,100);assert.equal(at(46,21).fireCoverage,100,'25-tile boundary is covered');assert.equal(at(47,21).fireCoverage,0);
+const single=structuredClone(c);assert.ok(build(c,'fire',[{x:24,y:20}]).ok);assert.equal(at(45,21).fireCoverage,100,'coverage percentage stays bounded');assert.equal(at(45,21).fireProtection,200,'overlap retains both crews');
+for(const city of [single,c]){assert.ok(ignite(city,45,21).ok);city.tiles[21*96+45].fire=60;stepFire(city);}
+assert.equal(single.tiles[21*96+45].fire-c.tiles[21*96+45].fire,16,'second station strengthens actual suppression');
+const loaded=validateSave(JSON.parse(serializeCity(c)));assert.equal(loaded.tiles[21*96+45].fireProtection,200);assert.equal(loaded.stats.fireCoverage,c.stats.fireCoverage);
+c.civic.funding.fire=25;recompute(c);assert.equal(serviceRadius(c,station),12.5);assert.equal(at(45,21).fireProtection,0);
+c.civic.funding.fire=110;recompute(c);const range=serviceRadius(c,station);c.civic.funding.fire=150;recompute(c);assert.ok(serviceRadius(c,station)>range);assert.ok(serviceRadius(c,station)-range<1,'range gains taper above 110%');
+c.civic.underfunded.fire=6;recompute(c);assert.equal(at(22,25).fireProtection,0);assert.equal(serviceRadius(c,station),0);
+assert.match(precinctCoverageNote('fire'),/uniform/);assert.match(precinctCoverageNote('police'),/falls/);assert.match(civicFacilityReport(c,station),/Overlapping stations/);
+console.log('PASS: uniform 25-tile fire protection, precise boundary, stronger overlapping fire suppression, funding range and taper, strike shutdown and save reconstruction.');
