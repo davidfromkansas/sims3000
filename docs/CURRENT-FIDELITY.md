@@ -1045,3 +1045,7 @@ Eleven playable rewards now include the Theme Park, with an 80,000-resident/stro
 ## Reward building waste
 
 Eight reward types with established source rates now generate garbage, including Theme Park, University and Stadium. Garbage stored at a campus root can use the whole footprint's roads for local disposal, rail freight or export. Generation and backlog are visible in building and utilities inspection, and included in the monthly ledger. Rates use documented /100 normalization; waste from other public structures and exact original tonnage/balance remain unfinished. See REWARD-GARBAGE-MILESTONE.md.
+
+## Civic service waste
+
+Police/fire stations, hospitals, schools, jails, colleges, libraries and museums now generate waste once per operating footprint, with whole-building collection access and visible production/backlog. Readiness matches service coverage, including strikes and zero funding. Source weights use /100 normalization. See CIVIC-GARBAGE-MILESTONE.md for validation and limits; power/transit/recreation waste and exact original balance remain unfinished.

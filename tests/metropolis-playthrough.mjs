@@ -24,7 +24,7 @@ place('park',{x:11,y:15},{x:29,y:15});place('park',{x:11,y:25},{x:29,y:25});plac
 place('road',{x:51,y:30},{x:66,y:30});place('powerline',{x:55,y:25},{x:63,y:25});place('powerline',{x:63,y:26});place('jail',{x:63,y:27});
 place('landfill',{x:41,y:31},{x:49,y:34});
 place('surfaceWater',{x:54,y:25},{x:54,y:29});for(let y=24;y<=29;y++)place('pump',{x:53,y});place('pipe',{x:53,y:24},{x:53,y:29});
-run(24);assert.equal(c.stats.population,6520);
+run(24);assert.equal(c.stats.population,6672);
 const expand=base=>{
  for(let y=26+(base-40)/20*24;y<=44+(base-40)/20*24;y+=6)place('coal',{x:2,y});
  place('powerline',{x:6,y:base-15},{x:6,y:base+7});
@@ -34,10 +34,10 @@ const expand=base=>{
  place('landfill',{x:41,y:base+7},{x:49,y:base+9});
  place('surfaceWater',{x:54,y:base-5},{x:54,y:base+9});for(let y=base-4;y<=base+9;y++)place('pump',{x:53,y});place('pipe',{x:53,y:base-10},{x:53,y:base+9});place('pipe',{x:10,y:base},{x:53,y:base});
 };
-expand(40);run(24);assert.ok(c.stats.uncollectedWaste>0);assert.equal(c.stats.population,5656);
+expand(40);run(24);assert.ok(c.stats.uncollectedWaste>0);assert.equal(c.stats.population,5776);
 place('road',{x:67,y:30},{x:89,y:30});for(let x=70;x<90;x+=2)place('wasteEnergy',{x,y:31});place('powerline',{x:67,y:29},{x:89,y:29});
 expand(60);run(24);expand(80);run(24);
-assert.equal(c.stats.population,32296);
+assert.equal(c.stats.population,32128);
 place('powerline',{x:6,y:0},{x:6,y:249});place('powerline',{x:6,y:0},{x:124,y:0});place('powerline',{x:124,y:1},{x:124,y:249});
 let plant=16;
 for(const base of [100,120,140,160,180,200,220,240]){
