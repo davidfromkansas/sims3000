@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 240 regression suites, save schema 125. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 241 regression suites, save schema 125. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -875,3 +875,9 @@ Seven-advisor checkpoint: all named departments are reachable through one portra
 Sloped construction checkpoint: independent layers support cubes and four oriented wedges, with undo/draft retention, projected surfaces, coplanar fill and format-eight export. 239 suites passed across full/targeted validation; browser draft placement/undo/retention checked. Full fourteen-block catalog and triangular-wall detail projection remain incomplete. See `SLOPED-BUILDING-BLOCKS-MILESTONE.md`. Schema125; publication pending.
 
 Shaped decoration checkpoint: wedge walls now clip material patterns, default windows and all wall details to their triangular boundary. Orientation/view boundary checks and browser production-renderer samples verified. See `SHAPED-SURFACE-DETAILS-MILESTONE.md`. The fourteen-block palette remains incomplete. Schema125; publication pending.
+
+## First repayment challenge checkpoint
+
+The eighth prepared challenge, “The first repayment,” turns dated loan commitments into a playable twelve-month budget exercise. Start with 224 residents, §2,500 and a §25,000 loan; pay the first §3,750 installment while retaining 224 residents, 80% road condition and §500 cash, without another loan. This is an original challenge using the manual’s scenario format and loan rules, not a shipped scenario.
+
+All 241 suites pass. A browser playthrough applied 12% sector taxes, consulted Mortimer, and won after twelve months with 224 residents, 100% roads and §715. Automated checks cover unchanged-budget loss, extra-borrowing disqualification, reserve/road boundaries and identical saved continuation. Save schema remains 125. See FIRST-REPAYMENT-SCENARIO-MILESTONE.md for the feedback exercise.
