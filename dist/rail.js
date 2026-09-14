@@ -1,8 +1,8 @@
-import {civicSize} from './civic-footprints.js?v=civic-garbage-1';
-import {REWARDS,rewardSize} from './rewards.js?v=civic-garbage-1';
-import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=civic-garbage-1';
-import {tunnelEdges,routeLength} from './tunnels.js?v=civic-garbage-1';
-import {MinQueue} from './highway.js?v=civic-garbage-1';
+import {civicSize} from './civic-footprints.js?v=public-space-garbage-1';
+import {REWARDS,rewardSize} from './rewards.js?v=public-space-garbage-1';
+import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=public-space-garbage-1';
+import {tunnelEdges,routeLength} from './tunnels.js?v=public-space-garbage-1';
+import {MinQueue} from './highway.js?v=public-space-garbage-1';
 export const STATIONS={trainStation:{name:'Train station',cost:500,upkeep:10},subwayStation:{name:'Subway station',cost:500,upkeep:10},railTransfer:{name:'Rail–subway connection',cost:1000,upkeep:20}};
 export function railNetwork(c){
  const tiles=c.tiles,N=tiles.length,n=Math.sqrt(N),enabled=c.transport.funding>0&&c.transport.condition>20&&c.transport.underfunded<6,edges=Array.from({length:N*2},()=>[]),present=i=>i<N?tiles[i].rail:tiles[i-N].subway;
@@ -12,7 +12,7 @@ export function railNetwork(c){
  const transfers=new Map();
  const stations=tiles.filter(t=>STATIONS[t.type]);
  for(const t of tiles){t.railRiders=0;t.subwayRiders=0;t.stationRiders=0;t.stationActive=false;t.stationGroups=[];t.railAccess=false;}
- for(const s of stations){const rail=nearby(s,'rail'),subway=nearby(s,'subway',true);s.stationNodes=s.type==='trainStation'?rail:s.type==='subwayStation'?subway:rail.length&&subway.length?[...rail,...subway]:[];s.stationActive=enabled&&s.stationNodes.length>0;if(s.type==='railTransfer'&&s.stationActive){for(const a of rail)for(const b of subway){edges[a].push(b);edges[b].push(a);transfers.set(a+':'+b,s);transfers.set(b+':'+a,s);}}}
+ for(const s of stations){const rail=nearby(s,'rail'),subway=nearby(s,'subway',true);s.stationNodes=s.type==='trainStation'?rail:s.type==='subwayStation'?subway:rail.length&&subway.length?[...rail,...subway]:[];s.stationActive=enabled&&!s.fire&&!s.rubble&&!s.radiation&&s.stationNodes.length>0;if(s.type==='railTransfer'&&s.stationActive){for(const a of rail)for(const b of subway){edges[a].push(b);edges[b].push(a);transfers.set(a+':'+b,s);transfers.set(b+':'+a,s);}}}
  const groups=new Int32Array(N*2).fill(-1);let g=0;for(let i=0;i<N*2;i++){if(!present(i)||groups[i]>=0)continue;const q=[i];groups[i]=g;for(let k=0;k<q.length;k++)for(const j of edges[q[k]])if(groups[j]<0){groups[j]=g;q.push(j);}g++;}
  const railNetworks={};
  for(const s of stations){s.stationGroups=[...new Set(s.stationNodes.map(i=>groups[i]).filter(id=>id>=0))];for(const id of s.stationGroups){railNetworks[id]??={id,railTiles:0,subwayTiles:0,stations:[]};railNetworks[id].stations.push(s.y*n+s.x);}}

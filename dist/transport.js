@@ -1,13 +1,13 @@
-import {civicSize} from './civic-footprints.js?v=civic-garbage-1';
-import {REWARDS,rewardSize} from './rewards.js?v=civic-garbage-1';
-import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=civic-garbage-1';
-import {JobCapacity} from './job-capacity.js?v=civic-garbage-1';
-import {workforceShare} from './workforce.js?v=civic-garbage-1';
-import {routeLength} from './tunnels.js?v=civic-garbage-1';
-import {industrialJobs} from './industry.js?v=civic-garbage-1';
-import {streetGraph,MinQueue} from './highway.js?v=civic-garbage-1';
-import {railNetwork,STATIONS} from './rail.js?v=civic-garbage-1';
-import {occupancy} from './utilities.js?v=civic-garbage-1';
+import {civicSize} from './civic-footprints.js?v=public-space-garbage-1';
+import {REWARDS,rewardSize} from './rewards.js?v=public-space-garbage-1';
+import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=public-space-garbage-1';
+import {JobCapacity} from './job-capacity.js?v=public-space-garbage-1';
+import {workforceShare} from './workforce.js?v=public-space-garbage-1';
+import {routeLength} from './tunnels.js?v=public-space-garbage-1';
+import {industrialJobs} from './industry.js?v=public-space-garbage-1';
+import {streetGraph,MinQueue} from './highway.js?v=public-space-garbage-1';
+import {railNetwork,STATIONS} from './rail.js?v=public-space-garbage-1';
+import {occupancy} from './utilities.js?v=public-space-garbage-1';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const freshTransport=()=>({funding:100,condition:100,underfunded:0});
 export function changeTransit(c,value){if(!Number.isInteger(value)||value<0||value>150)return{ok:false,error:'Transit funding must be 0–150%.'};c.transport.funding=value;return{ok:true};}
@@ -19,7 +19,7 @@ export function recomputeTransport(c){
  const tiles=c.tiles,n=Math.sqrt(tiles.length),transit=c.transport,stops=tiles.filter(t=>t.type==='busStop'),strike=transit.underfunded>=6;
  const roadsNear=(t,r)=>{const size=REWARDS[t.type]?.jobs?rewardSize(t):civicSize(t),out=[];for(let y=Math.max(0,t.y-r);y<=Math.min(n-1,t.y+size-1+r);y++)for(let x=Math.max(0,t.x-r);x<=Math.min(n-1,t.x+size-1+r);x++)if(tiles[y*n+x].type==='road')out.push(y*n+x);return out;};
  for(const t of tiles){t.traffic=0;t.highwayTraffic=0;t.busRiders=0;t.commuteLength=0;t.commuters=0;t.unemployed=0;t.stopActive=false;t.civicEmployed=0;}
- for(const s of stops){s.stopRoads=[];for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=s.x+dx,y=s.y+dy;if(x>=0&&y>=0&&x<n&&y<n&&tiles[y*n+x].type==='road'&&tiles[y*n+x].terrain==='land')s.stopRoads.push(y*n+x);}s.stopActive=s.stopRoads.length>0&&transit.funding>0&&transit.condition>20&&!strike&&c.finance.roadCondition>20;}
+ for(const s of stops){s.stopRoads=[];for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=s.x+dx,y=s.y+dy;if(x>=0&&y>=0&&x<n&&y<n&&tiles[y*n+x].type==='road'&&tiles[y*n+x].terrain==='land')s.stopRoads.push(y*n+x);}s.stopActive=!s.fire&&!s.rubble&&!s.radiation&&s.stopRoads.length>0&&transit.funding>0&&transit.condition>20&&!strike&&c.finance.roadCondition>20;}
  const street=streetGraph(c),groups=street.groups,N=tiles.length;
  const network=railNetwork(c);
  const capacity=t=>t.type==='commercial'?occupancy(t.level)*6:t.type==='industrial'?industrialJobs(t):civicJobCapacity(t);
