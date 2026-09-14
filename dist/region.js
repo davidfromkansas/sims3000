@@ -1,8 +1,8 @@
-import {surfaceRailGroups} from './rail-freight.js?v=fire-land-value-1';
-import {allocateUtilityContracts,disposalContractOrder} from './regional-allocation.js?v=fire-land-value-1';
-import {contractQuote,contractRate,PRICE_BANDS} from './regional-pricing.js?v=fire-land-value-1';
-import {freshNeighborEconomies,validateNeighborEconomies,neighborSupply,advanceNeighborEconomies} from './neighbor-economies.js?v=fire-land-value-1';
-import {streetGraph} from './highway.js?v=fire-land-value-1';
+import {surfaceRailGroups} from './rail-freight.js?v=power-allocation-1';
+import {allocateUtilityContracts,disposalContractOrder} from './regional-allocation.js?v=power-allocation-1';
+import {contractQuote,contractRate,PRICE_BANDS} from './regional-pricing.js?v=power-allocation-1';
+import {freshNeighborEconomies,validateNeighborEconomies,neighborSupply,advanceNeighborEconomies} from './neighbor-economies.js?v=power-allocation-1';
+import {streetGraph} from './highway.js?v=power-allocation-1';
 export const freshRegion=(month=0)=>({neighbors:freshNeighborEconomies(month),connections:[],deals:[],nextId:1,totalPenalties:0});
 export const NEIGHBORS={north:'Northvale',east:'Eastborough',south:'Southport',west:'Westhaven',sea:'Overseas ports'};
 export function connectionCandidates(c){const n=Math.sqrt(c.tiles.length),out=[];for(let i=0;i<c.tiles.length;i++){const t=c.tiles[i];if(t.terrain==='water')continue;const side=t.y===0?'north':t.x===n-1?'east':t.y===n-1?'south':t.x===0?'west':null;if(!side)continue;for(const [kind,yes]of [['power',t.type==='powerline'],['water',t.pipe],['road',t.type==='road'],['highway',t.highway],['rail',t.rail]])if(yes)out.push({tile:i,kind,side});}for(const p of c.stats?.facilityPlots||[])if(p.type==='seaport'&&p.operating)out.push({tile:p.root,kind:'seaport',side:'sea'});return out;}
