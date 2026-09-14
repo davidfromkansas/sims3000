@@ -973,3 +973,7 @@ Original transparent Imagegen artwork adds a medium-density residential variatio
 ## Courtyard building lots
 
 Mixed apartment buildings now covers larger residential lots with an original rotating courtyard model, alongside the generated single-tile sprite. Footprint-specific replacements and custom models retain priority. See COURTYARD-BUILDING-LOTS-MILESTONE.md. No simulation or schema change.
+
+## Jail overcrowding
+
+Jails now use 300 cells / 360 maximum, §2,500 construction and §75 monthly upkeep. Overcrowding reduces police coverage and is visible in city/facility reports. Demand remains a disclosed 1%-of-population estimate; penalties between guide thresholds are tuned. See JAIL-OVERCROWDING-MILESTONE.md. Schema remains 134.

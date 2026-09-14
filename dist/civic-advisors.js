@@ -1,7 +1,7 @@
-import {showOrdinanceAnalysis} from './ordinance-analysis-ui.js?v=courtyard-building-lots-1';
-import {educationServiceDemand} from './education.js?v=courtyard-building-lots-1';
-import {DEPARTMENTS,SERVICES} from './civic.js?v=courtyard-building-lots-1';
-import {escapeAnnouncement as escape} from './scenario-announcements.js?v=courtyard-building-lots-1';
+import {showOrdinanceAnalysis} from './ordinance-analysis-ui.js?v=jail-overcrowding-1';
+import {educationServiceDemand} from './education.js?v=jail-overcrowding-1';
+import {DEPARTMENTS,SERVICES} from './civic.js?v=jail-overcrowding-1';
+import {escapeAnnouncement as escape} from './scenario-announcements.js?v=jail-overcrowding-1';
 const advisors={safety:{name:'Maria Montoya',role:'Public safety advisor',portrait:'assets/maria-advisor.png',departments:['police','fire']},hea:{name:'Randall Shoop',role:'Health, education & aura advisor',portrait:'assets/randall-advisor.png',departments:['health','education']}};
 export function civicAdvisorBriefing(c,kind){
  const advisor=advisors[kind];if(!advisor)throw Error('Choose a civic advisor.');const s=c.stats,issues=[],add=(title,text,tool,layer)=>issues.push({title,text,tool,layer});
@@ -10,7 +10,7 @@ export function civicAdvisorBriefing(c,kind){
  else if(kind==='safety'){
   if(s.policeCoverage<50)add('Police coverage',`Average coverage is ${Math.round(s.policeCoverage)}%. Place stations near uncovered homes and check their electricity, roads and funding.`,'police','police');
   if(s.fireCoverage<50)add('Fire preparedness',`Average fire coverage is ${Math.round(s.fireCoverage)}%. Build stations near uncovered homes. Water service also lowers building flammability.`,'fire','fire');
-  if((s.serviceCapacities?.jail||0)<s.jailNeed)add('Jail capacity',`${Math.round(s.serviceCapacities?.jail||0)} places are available for an estimated need of ${s.jailNeed}. A shortage reduces police effectiveness.`,'jail','crime');
+  if((s.serviceCapacities?.jail||0)<s.jailNeed)add('Jail capacity',`${Math.round(s.serviceCapacities?.jail||0)} places are available for an estimated need of ${s.jailNeed}. Jail conditions currently allow ${Math.round((s.jails?.policeEffectiveness??1)*100)}% police effectiveness. Restore inactive jails or add capacity; funding above 100% cannot add cells.`,'jail','crime');
   if(s.averageCrime>25)add('Crime pressure',`Crime averages ${Math.round(s.averageCrime)} out of 100. Neighborhood watch, education and policing can help; inspect the crime map before placing another station.`,'police','crime');
  }else{
   if(s.healthCoverage<60)add('Healthcare access',`Only ${Math.round(s.healthCoverage)}% of residents have hospital access. Connect hospitals to neighborhood roads and electricity, and maintain healthcare funding.`,'hospital','health');
