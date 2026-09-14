@@ -1,0 +1,16 @@
+import assert from 'node:assert/strict';
+import {createCity,build,selection,recompute,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {auraBreakdown} from '../dist/aura.js';
+const c=createCity('Campus neighbors',false);c.funds=200000;c.startYear=2000;c.rewards.earned.university=0;for(const t of c.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});
+const place=(type,a,b=a)=>assert.ok(build(c,type,selection(type,a,b),3).ok);
+place('solar',{x:35,y:15});place('powerline',{x:8,y:16},{x:34,y:16});place('road',{x:8,y:20},{x:38,y:20});place('residential',{x:22,y:18},{x:26,y:19});place('commercial',{x:22,y:21},{x:25,y:22});place('industrial',{x:22,y:23},{x:25,y:24});
+for(const t of c.tiles)if(['residential','commercial','industrial'].includes(t.type)){t.level=1;t.age=10;}recompute(c);const home=c.tiles[19*48+26],shop=c.tiles[22*48+25],factory=c.tiles[24*48+25];const before={air:home.airPollution,water:home.waterPollution};
+place('university',{x:27,y:21});assert.equal(c.stats.activeUniversity,true);assert.equal(c.stats.civicJobs,500);assert.ok(home.airPollution>before.air);assert.ok(home.universityLandValue>0);assert.ok(shop.universityLandValue>home.universityLandValue);assert.equal(factory.universityLandValue,0);assert.ok(home.universityCrimePressure>0);assert.ok(auraBreakdown(c,home).factors.university>0);
+const inner=c.tiles[26*48+32];assert.equal(inner.universityCrimePressure,15);assert.ok(inner.waterPollution>=60);assert.equal(c.tiles[47*48+47].universityAura,0);
+const values=[home.crime,home.landValue,home.airPollution];recompute(c);assert.deepEqual([home.crime,home.landValue,home.airPollution],values,'recomputing does not compound campus impacts');
+const loaded=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual([loaded.tiles[home.y*48+home.x].crime,loaded.tiles[home.y*48+home.x].landValue],values.slice(0,2));
+const corner=c.tiles[30*48+36];corner.fire=5;recompute(c);assert.equal(c.stats.activeUniversity,false);assert.equal(home.universityLandValue,0);assert.equal(home.universityCrimePressure,0);assert.equal(home.universityAura,0);assert.equal(home.airPollution,before.air);corner.fire=0;recompute(c);assert.equal(c.stats.activeUniversity,true);
+const unpoliced=home.crime;place('police',{x:18,y:21});assert.ok(home.crime<unpoliced,'policing mitigates total crime including campus pressure');
+home.radiation=true;recompute(c);assert.equal(home.environmentLandValue,1);assert.equal(home.universityLandValue,0);
+console.log('PASS: University sector-specific land value, local pollution, mitigated crime pressure, aura, noncompounding recompute, save reconstruction, full-footprint readiness and radiation protection.');

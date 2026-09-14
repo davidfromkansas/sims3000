@@ -1009,3 +1009,7 @@ The town guide now tracks population through 150,000 and links current growth wa
 ## Medical Research Center
 
 The sixth reward adds a paid 3 × 3 research center gated by year, population, life expectancy and approval, with 135 accessible jobs and local environmental effects. Original four-view procedural artwork is included. Schema 136 migrates older reward histories. The ordinary metropolis earned Stadium/Courthouse at month 368 and the new research offer after migration at month 467; University progression remains unproven. See MEDICAL-RESEARCH-CENTER-MILESTONE.md.
+
+## University neighborhood tradeoffs and ordinary unlock
+
+Operating universities now apply sector-specific land-value benefits, local pollution, police-mitigated crime pressure and direct aura rather than a uniform amenity bonus. The ordinary metropolis earned University at month 545 with 70.03 EQ and 171,720 residents, without grants or edited education. This supersedes earlier statements that University reachability was unproven; maximum education and original balance remain unproven. See UNIVERSITY-NEIGHBORHOOD-MILESTONE.md. Schema remains 136.

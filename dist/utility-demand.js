@@ -1,10 +1,10 @@
-import {civicSize} from './civic-footprints.js?v=medical-research-center-1';
+import {civicSize} from './civic-footprints.js?v=university-neighborhood-1';
 // Shared base consumption used by network allocation and scenario queries.
-import {occupancy,WATER_STRUCTURES} from './utilities.js?v=medical-research-center-1';
-import {SERVICES} from './civic.js?v=medical-research-center-1';
-import {FACILITIES} from './facilities.js?v=medical-research-center-1';
-import {BUSINESSES} from './business.js?v=medical-research-center-1';
-import {REWARDS} from './rewards.js?v=medical-research-center-1';
+import {occupancy,WATER_STRUCTURES} from './utilities.js?v=university-neighborhood-1';
+import {SERVICES} from './civic.js?v=university-neighborhood-1';
+import {FACILITIES} from './facilities.js?v=university-neighborhood-1';
+import {BUSINESSES} from './business.js?v=university-neighborhood-1';
+import {REWARDS} from './rewards.js?v=university-neighborhood-1';
 const isZone=t=>['residential','commercial','industrial'].includes(t.type);
 export const powerBaseNeed=t=>isZone(t)?1+occupancy(t.level):FACILITIES[t.type]||BUSINESSES[t.type]||REWARDS[t.type]?3:SERVICES[t.type]?8/civicSize(t)**2:WATER_STRUCTURES[t.type]||t.type==='recycling'?8:0;
 export const waterBaseNeed=t=>isZone(t)?1+occupancy(t.level)*3:FACILITIES[t.type]?3:0;
