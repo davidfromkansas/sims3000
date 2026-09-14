@@ -1,5 +1,5 @@
-import {ADVISOR_PORTRAIT,validatePresenter,validatePortrait,presenterMarkup} from './scenario-presenters.js?v=bungalow-style-1';
-import {escapeAnnouncement} from './scenario-announcements.js?v=bungalow-style-1';
+import {ADVISOR_PORTRAIT,validatePresenter,validatePortrait,presenterMarkup} from './scenario-presenters.js?v=museum-capacity-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=museum-capacity-1';
 export const presenterFields=i=>`<fieldset id="presenterFields${i}" class="presenter-editor"><legend>Message presenter</legend><label><input id="presenterEnabled${i}" type="checkbox">Include a presenter</label><label>Name<input id="presenterName${i}" maxlength="60" value="Planning advisor"></label><label>Role<input id="presenterRole${i}" maxlength="80" value="City planning department"></label><img id="presenterPortrait${i}" src="${ADVISOR_PORTRAIT}" width="96" height="96" alt="Presenter portrait preview"><label>Use your own portrait<input id="presenterFile${i}" type="file" accept="image/png,image/jpeg"></label><p>PNG or JPEG, up to 5 MB. Your image is cropped to a square and included in exported city files.</p><div class="actions"><button id="presenterReset${i}" type="button">Use advisor portrait</button><button id="presenterPreview${i}" type="button">Preview message</button></div><p id="presenterError${i}" role="status"></p><div id="presenterPreviewContent${i}"></div></fieldset>`;
 export function installPresenterEditor(i,$=s=>document.querySelector(s)){
  let portrait='advisor',pending=false,revision=0;

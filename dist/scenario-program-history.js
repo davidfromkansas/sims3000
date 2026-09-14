@@ -1,5 +1,5 @@
-import {PROGRAM_LIMITS,startScenarioProgram,nextScenarioProgramAction,validateScenarioProgramCursor} from './scenario-programs.js?v=bungalow-style-1';
-import {executeScenarioAction,eventConditionMet,validateEventProgress} from './scenario-events.js?v=bungalow-style-1';
+import {PROGRAM_LIMITS,startScenarioProgram,nextScenarioProgramAction,validateScenarioProgramCursor} from './scenario-programs.js?v=museum-capacity-1';
+import {executeScenarioAction,eventConditionMet,validateEventProgress} from './scenario-events.js?v=museum-capacity-1';
 export const PROGRAM_TEXT_HISTORY=32;
 export function startProgramInvocation(programs,entry,month,id){if(!Number.isInteger(month)||month<1||!Number.isInteger(id)||id<0||id>=48)throw Error('Invalid routine invocation.');return{id,startedMonth:month,cursor:startScenarioProgram(programs,entry),branches:[],receipts:[],text:[],ended:false,finishedMonth:null};}
 export const pendingProgramMessage=run=>run.receipts.findIndex(r=>r.acknowledged===false);

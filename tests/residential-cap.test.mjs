@@ -1,3 +1,4 @@
+import {civicFacilityReport} from '../dist/civic-service-report.js';
 import assert from 'node:assert/strict';
 import {createCity,build,recompute,tick,validateSave} from '../dist/engine.js';
 import {serializeCity} from '../dist/save.js';
@@ -19,3 +20,8 @@ const home=large.tiles.find(t=>t.type==='residential'&&t.level);home.level=0;rec
 const park=large.tiles.find(t=>t.type==='commercial');Object.assign(park,{type:'park',level:0});recompute(large);assert.equal(large.stats.residentialCap.limit,25250);assert.ok(large.stats.demand.residential>0,'capacity relief restores positive underlying demand');
 assert.equal(residentialCap(large).limit,25250);
 console.log('PASS: residential base and recreation relief, operating-state removal, report/save continuity, multi-tile capacity, real 25,000-resident cap and monthly no-overshoot enforcement.');
+
+const cultural=createCity('Museum capacity'),base=cultural.stats.residentialCap.limit;assert.ok(build(cultural,'museum',[{x:20,y:21}]).ok);const museum=cultural.tiles[21*48+20];assert.equal(museum.serviceActive,true);assert.equal(cultural.stats.residentialCap.limit,base+9000);assert.match(residentialCapReport(cultural),/Museum × 1: \+9,000/);assert.equal(validateSave(JSON.parse(serializeCity(cultural))).stats.residentialCap.limit,base+9000);
+const population=cultural.stats.population;cultural.civic.funding.education=0;recompute(cultural);assert.equal(cultural.stats.residentialCap.limit,base);assert.equal(cultural.stats.population,population,'losing capacity does not evict residents');cultural.civic.funding.education=100;recompute(cultural);assert.equal(cultural.stats.residentialCap.limit,base+9000);museum.fire=10;recompute(cultural);assert.equal(cultural.stats.residentialCap.limit,base);museum.fire=0;recompute(cultural);assert.equal(cultural.stats.residentialCap.limit,base+9000);assert.ok(build(cultural,'museum',[{x:20,y:23}]).ok);assert.equal(cultural.stats.residentialCap.limit,base+18000,'operating museums add capacity independently');
+
+assert.match(civicFacilityReport(cultural,museum),/Residential growth capacity: <strong>\+9,000 residents/);cultural.civic.funding.education=0;recompute(cultural);assert.match(civicFacilityReport(cultural,museum),/Residential growth capacity: <strong>\+0 residents/);

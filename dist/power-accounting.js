@@ -1,4 +1,4 @@
-import {POWER_PLANTS} from './power.js?v=bungalow-style-1';
+import {POWER_PLANTS} from './power.js?v=museum-capacity-1';
 export const POWER_SOURCES={...Object.fromEntries(Object.entries(POWER_PLANTS).map(([key,value])=>[key,value.name])),wasteEnergy:'Waste-to-energy'};
 export const generationKey=key=>'powerGenerated'+key[0].toUpperCase()+key.slice(1);
 export function powerMonth(c){const s=c.stats;return{powerGenerated:s.powerGenerated,powerImported:s.powerImported,powerExported:s.powerExported,powerServed:s.powerServed,...Object.fromEntries(Object.keys(POWER_SOURCES).map(key=>[generationKey(key),s.powerGenerationByType[key]||0]))};}
