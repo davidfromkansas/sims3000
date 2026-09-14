@@ -1,5 +1,6 @@
-import {tunnelEdges,routeLength} from './tunnels.js?v=city-hall-1';
-import {MinQueue} from './highway.js?v=city-hall-1';
+import {REWARDS,rewardJobSites} from './rewards.js?v=civic-employment-1';
+import {tunnelEdges,routeLength} from './tunnels.js?v=civic-employment-1';
+import {MinQueue} from './highway.js?v=civic-employment-1';
 export const STATIONS={trainStation:{name:'Train station',cost:500,upkeep:10},subwayStation:{name:'Subway station',cost:500,upkeep:10},railTransfer:{name:'Rail–subway connection',cost:1000,upkeep:20}};
 export function railNetwork(c){
  const tiles=c.tiles,N=tiles.length,n=Math.sqrt(N),enabled=c.transport.funding>0&&c.transport.condition>20&&c.transport.underfunded<6,edges=Array.from({length:N*2},()=>[]),present=i=>i<N?tiles[i].rail:tiles[i-N].subway;
@@ -14,9 +15,9 @@ export function railNetwork(c){
  const railNetworks={};
  for(const s of stations){s.stationGroups=[...new Set(s.stationNodes.map(i=>groups[i]).filter(id=>id>=0))];for(const id of s.stationGroups){railNetworks[id]??={id,railTiles:0,subwayTiles:0,stations:[]};railNetworks[id].stations.push(s.y*n+s.x);}}
  if(stations.length)for(let i=0;i<N*2;i++){const group=railNetworks[groups[i]];if(group)group[i<N?'railTiles':'subwayTiles']++;}
- const nearStations=t=>stations.filter(s=>s.stationActive&&Math.max(Math.abs(s.x-t.x),Math.abs(s.y-t.y))<=3),zoneGroups=new Map(),uses=Array.from({length:g},()=>new Set());
- for(const t of tiles.filter(t=>['residential','commercial','industrial'].includes(t.type))){const gs=new Set(nearStations(t).flatMap(s=>s.stationNodes.map(i=>groups[i])));zoneGroups.set(t,gs);for(const id of gs)uses[id].add(t.type);}
- for(const [t,gs]of zoneGroups){t.railAccess=[...gs].some(id=>uses[id].has('residential')&&(uses[id].has('commercial')||uses[id].has('industrial')));t.access=t.access||t.railAccess;}
+ const nearStations=t=>stations.filter(s=>s.stationActive&&Math.max(t.x-s.x,s.x-t.x-((REWARDS[t.type]?.jobs?REWARDS[t.type].size:1)-1),t.y-s.y,s.y-t.y-((REWARDS[t.type]?.jobs?REWARDS[t.type].size:1)-1))<=3),zoneGroups=new Map(),uses=Array.from({length:g},()=>new Set());
+ for(const t of [...tiles.filter(t=>['residential','commercial','industrial'].includes(t.type)),...rewardJobSites(c)]){const gs=new Set(nearStations(t).flatMap(s=>s.stationNodes.map(i=>groups[i])));zoneGroups.set(t,gs);for(const id of gs)uses[id].add(REWARDS[t.type]?.jobs?'civicJobs':t.type);}
+ for(const [t,gs]of zoneGroups){t.railAccess=[...gs].some(id=>uses[id].has('residential')&&(uses[id].has('commercial')||uses[id].has('industrial')||uses[id].has('civicJobs')));t.access=t.access||t.railAccess;}
  function allocate(home,workplaces,remaining,maxPassengers){if(!home.railAccess||maxPassengers<=0)return{passengers:0,travel:0};const starts=nearStations(home),prev=new Int32Array(N*2).fill(-2),origin=new Map(),q=new MinQueue(),distance=new Float64Array(N*2).fill(Infinity);for(const s of starts)for(const i of s.stationNodes)if(prev[i]===-2){prev[i]=-1;distance[i]=0;q.push(i,0);origin.set(i,s);}const destinations=new Map();for(const w of workplaces){if(!remaining.get(w))continue;for(const s of nearStations(w))for(const i of s.stationNodes){if(!destinations.has(i))destinations.set(i,[]);destinations.get(i).push({work:w,station:s});}}
  let passengers=0,travel=0;
  while(q.length&&passengers<maxPassengers){const item=q.pop(),i=item.node;if(item.cost!==distance[i])continue;for(const {work,station}of destinations.get(i)||[]){const from=origin.get(i);if(from===station)continue;const count=Math.min(maxPassengers-passengers,remaining.get(work)||0);if(count<=0)continue;const path=[];for(let j=i;j>=0;j=prev[j])path.push(j);for(const j of path){if(j<N)tiles[j].railRiders+=count;else tiles[j-N].subwayRiders+=count;}for(let k=1;k<path.length;k++){const transfer=transfers.get(path[k-1]+':'+path[k]);if(transfer)transfer.stationRiders+=count;}from.stationRiders+=count;station.stationRiders+=count;remaining.set(work,remaining.get(work)-count);passengers+=count;travel+=count*routeLength(c,path);}
