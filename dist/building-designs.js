@@ -1,17 +1,17 @@
-import {validateRoofDetails,encodeRoofDetails,decodeRoofDetails} from './building-roof-details.js?v=scripted-ending-ranks-1';
-import {validatePaintColors,validatePaintReferences} from './building-paint-colors.js?v=scripted-ending-ranks-1';
-import {towerSolids} from './building-tower-geometry.js?v=scripted-ending-ranks-1';
-import {validateBuildingDecals,encodeBuildingDecals,decodeBuildingDecals} from './building-decals.js?v=scripted-ending-ranks-1';
-import {validateGroundPaint,drawGroundPaint} from './building-ground-paint.js?v=scripted-ending-ranks-1';
-import {validateBuildingProps,encodeBuildingProps,decodeBuildingProps,drawBuildingProps} from './building-props.js?v=scripted-ending-ranks-1';
-import {validateBlockGeometry} from './building-block-geometry.js?v=scripted-ending-ranks-1';
-import {validateSurfaceDetails} from './building-surface-details.js?v=scripted-ending-ranks-1';
-import {validateFloorPaint} from './building-floor-paint.js?v=scripted-ending-ranks-1';
-import {validateBuildingVoxels,drawBuildingVoxels} from './building-voxels.js?v=scripted-ending-ranks-1';
-import {buildingSlot,parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=scripted-ending-ranks-1';
-import {validateBuildingMaterials,usesLandscapeMaterials} from './building-materials.js?v=scripted-ending-ranks-1';
-import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=scripted-ending-ranks-1';
-import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=scripted-ending-ranks-1';
+import {validateRoofDetails,encodeRoofDetails,decodeRoofDetails} from './building-roof-details.js?v=live-scenario-comparisons-2';
+import {validatePaintColors,validatePaintReferences} from './building-paint-colors.js?v=live-scenario-comparisons-2';
+import {towerSolids} from './building-tower-geometry.js?v=live-scenario-comparisons-2';
+import {validateBuildingDecals,encodeBuildingDecals,decodeBuildingDecals} from './building-decals.js?v=live-scenario-comparisons-2';
+import {validateGroundPaint,drawGroundPaint} from './building-ground-paint.js?v=live-scenario-comparisons-2';
+import {validateBuildingProps,encodeBuildingProps,decodeBuildingProps,drawBuildingProps} from './building-props.js?v=live-scenario-comparisons-2';
+import {validateBlockGeometry} from './building-block-geometry.js?v=live-scenario-comparisons-2';
+import {validateSurfaceDetails} from './building-surface-details.js?v=live-scenario-comparisons-2';
+import {validateFloorPaint} from './building-floor-paint.js?v=live-scenario-comparisons-2';
+import {validateBuildingVoxels,drawBuildingVoxels} from './building-voxels.js?v=live-scenario-comparisons-2';
+import {buildingSlot,parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=live-scenario-comparisons-2';
+import {validateBuildingMaterials,usesLandscapeMaterials} from './building-materials.js?v=live-scenario-comparisons-2';
+import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=live-scenario-comparisons-2';
+import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=live-scenario-comparisons-2';
 export function defaultBuildingDesign(key=2){const {source,footprint}=parseBuildingSlot(key);return{name:REPLACEABLE_STYLES[source]?.level===1?'My neighborhood building':'My building',floors:[0,2,6,12][REPLACEABLE_STYLES[source]?.level||3],width:8,depth:8,roof:'step',facade:'#b6c4bd',windows:'#3c6b79',accent:'#dab572',...(footprint.width!==1||footprint.height!==1?{footprint}:{})};}
 // Original procedural artwork for larger lots; style swaps select a matching
 // footprint model, never enlarge a legacy single-tile image.

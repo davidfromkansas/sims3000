@@ -1,4 +1,4 @@
-import {tick} from './engine.js?v=scripted-ending-ranks-1';
+import {tick} from './engine.js?v=live-scenario-comparisons-2';
 const TILE_BATCH=2048;
 let transfer=null;
 self.onmessage=({data})=>{

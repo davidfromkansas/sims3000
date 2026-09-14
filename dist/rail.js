@@ -1,8 +1,8 @@
-import {civicSize} from './civic-footprints.js?v=scripted-ending-ranks-1';
-import {REWARDS,rewardSize} from './rewards.js?v=scripted-ending-ranks-1';
-import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=scripted-ending-ranks-1';
-import {tunnelEdges,routeLength} from './tunnels.js?v=scripted-ending-ranks-1';
-import {MinQueue} from './highway.js?v=scripted-ending-ranks-1';
+import {civicSize} from './civic-footprints.js?v=live-scenario-comparisons-2';
+import {REWARDS,rewardSize} from './rewards.js?v=live-scenario-comparisons-2';
+import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=live-scenario-comparisons-2';
+import {tunnelEdges,routeLength} from './tunnels.js?v=live-scenario-comparisons-2';
+import {MinQueue} from './highway.js?v=live-scenario-comparisons-2';
 // Absent network nodes share an immutable list; only real tracks/roads allocate adjacency.
 const EMPTY_EDGES=Object.freeze([]);
 export const STATIONS={trainStation:{name:'Train station',cost:500,upkeep:10},subwayStation:{name:'Subway station',cost:500,upkeep:10},railTransfer:{name:'Rail–subway connection',cost:1000,upkeep:20}};

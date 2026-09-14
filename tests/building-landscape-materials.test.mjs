@@ -16,13 +16,13 @@ for(const material of [5,6]){
   assert.equal(file.version,11);assert.deepEqual(importBuildingDesign(JSON.stringify(file)),d);
   for(const version of [3,6,9,10])assert.throws(()=>importBuildingDesign(JSON.stringify({...file,version})));
  }
- const city=createCity();city.buildingDesigns[2]=design;const saved=JSON.parse(serializeCity(city));assert.equal(saved.version,159);assert.deepEqual(validateSave(saved).buildingDesigns[2],design);
+ const city=createCity();city.buildingDesigns[2]=design;const saved=JSON.parse(serializeCity(city));assert.equal(saved.version,160);assert.deepEqual(validateSave(saved).buildingDesigns[2],design);
  saved.version=149;assert.throws(()=>validateSave(saved),/150/);
  // Both storage forms independently require the new version.
  delete saved.buildingDesigns[2].surfacePaint;assert.throws(()=>validateSave(saved),/150/);
  saved.buildingDesigns[2]={...base,surfacePaint:design.surfacePaint};assert.throws(()=>validateSave(saved),/150/);
 }
-const old=JSON.parse(serializeCity(createCity()));old.version=149;assert.equal(validateSave(old).version,159);
+const old=JSON.parse(serializeCity(createCity()));old.version=149;assert.equal(validateSave(old).version,160);
 assert.equal(JSON.parse(exportBuildingDesign(base)).version,2,'old palette exports keep compatible versions');
 console.log('PASS: grass/asphalt roof fill, independent floor overrides, portable format 11 with optional props, downgrade rejection and city-save migration.');
 

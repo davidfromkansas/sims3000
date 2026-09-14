@@ -1,5 +1,5 @@
-import {readCustomBuildingLibrary,saveCustomBuildingLibrary,customBuildingIdentity,MAX_CUSTOM_BUILDINGS} from './custom-building-library.js?v=scripted-ending-ranks-1';
-import {sameBuildingFootprint} from './building-footprints.js?v=scripted-ending-ranks-1';
+import {readCustomBuildingLibrary,saveCustomBuildingLibrary,customBuildingIdentity,MAX_CUSTOM_BUILDINGS} from './custom-building-library.js?v=live-scenario-comparisons-2';
+import {sameBuildingFootprint} from './building-footprints.js?v=live-scenario-comparisons-2';
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function mountCustomBuildingLibrary({host,footprint,getDraft,selectDesign,storage}){
  let saved,models,pending=null;

@@ -1,21 +1,22 @@
-import {endingRankChoices,remapEndingRank} from './scenario-ending-ranks.js?v=scripted-ending-ranks-1';
-import {removeScenarioVariable,scenarioVariableIndex} from './scenario-variable-references.js?v=scripted-ending-ranks-1';
-import {PROGRAM_LIMITS} from './scenario-programs.js?v=scripted-ending-ranks-1';
-import {defaultTornadoSettings,TORNADO_DIRECTIONS,TORNADO_SPEEDS} from './tornado-settings.js?v=scripted-ending-ranks-1';
-import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=scripted-ending-ranks-1';
-import {CUSTOM_METRICS} from './scenario-metrics.js?v=scripted-ending-ranks-1';
-import {CALCULATIONS} from './scenario-variables.js?v=scripted-ending-ranks-1';
-import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=scripted-ending-ranks-1';
-import {BUSINESSES} from './business.js?v=scripted-ending-ranks-1';
-import {REWARDS} from './rewards.js?v=scripted-ending-ranks-1';
-import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=scripted-ending-ranks-1';
-import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=scripted-ending-ranks-1';
+import {endingRankChoices,remapEndingRank} from './scenario-ending-ranks.js?v=live-scenario-comparisons-2';
+import {removeScenarioVariable,scenarioVariableIndex} from './scenario-variable-references.js?v=live-scenario-comparisons-2';
+import {PROGRAM_LIMITS} from './scenario-programs.js?v=live-scenario-comparisons-2';
+import {defaultTornadoSettings,TORNADO_DIRECTIONS,TORNADO_SPEEDS} from './tornado-settings.js?v=live-scenario-comparisons-2';
+import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=live-scenario-comparisons-2';
+import {CUSTOM_METRICS} from './scenario-metrics.js?v=live-scenario-comparisons-2';
+import {CALCULATIONS} from './scenario-variables.js?v=live-scenario-comparisons-2';
+import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=live-scenario-comparisons-2';
+import {BUSINESSES} from './business.js?v=live-scenario-comparisons-2';
+import {REWARDS} from './rewards.js?v=live-scenario-comparisons-2';
+import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=live-scenario-comparisons-2';
+import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=live-scenario-comparisons-2';
 const leaf=()=>({metric:'population',operator:'gte',target:100});
 const optionsOf=items=>Object.entries(items).map(([value,label])=>[value,typeof label==='string'?label:label.name]);
 const primitiveOptions=optionsOf(SCENARIO_EVENTS).filter(([key])=>key!=='program');
 const visitSteps=(steps,fn)=>{for(const step of steps){fn(step);if(step.kind==='if'){visitSteps(step.then,fn);visitSteps(step.else,fn);}}};
 export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[],availableRanks=[],ranks=()=>[],entryTargets=()=>[],variables=()=>Array.from({length:4},(_,i)=>({name:'Variable '+(i+1),initial:0})),onChange=()=>{}}={}){
  const metricChoices=items=>optionsOf(items).filter(([key])=>{const index=scenarioVariableIndex(key);return index===null||index<variables().length;}).map(([key,label])=>{const index=scenarioVariableIndex(key);return [key,index===null?label:(variables()[index].name||'Unnamed variable')+' · '+key];});
+ const comparisonDrafts=new WeakMap();
  let routines=structuredClone(initial),clipboard=null,availableError='';available=structuredClone(available);const status=document.createElement('p');status.setAttribute('role','status');
  const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
  const button=(parent,text,handler)=>{const b=el('button',text);b.type='button';b.onclick=()=>{try{handler();status.textContent='Draft updated. Start the challenge to apply it.';}catch(e){status.textContent=e.message;}};parent.append(b);return b;};
@@ -70,9 +71,12 @@ export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[]
  function conditionFields(parent,c,replace,depth=1){
   const group=el('fieldset');parent.append(group);group.append(el('legend','Condition'));
   if(c.conditions){field(group,'Match',c.match,v=>c.match=v,{choices:[['all','All conditions (AND)'],['any','Any condition (OR)']]});c.conditions.forEach((child,i)=>{conditionFields(group,child,v=>{c.conditions[i]=v;render();},depth+1);if(c.conditions.length>1)button(group,'Remove condition '+(i+1),()=>{c.conditions.splice(i,1);render();});});button(group,'Add condition',()=>{c.conditions.push(leaf());render();});button(group,'Use one condition',()=>{replace(c.conditions[0]||leaf());});return;}
-  field(group,'City or scenario value',c.metric,v=>{c.metric=v;c.target=CONDITION_METRICS[v].initial??0;c.operator='gte';delete c.area;render();},{choices:metricChoices(CONDITION_METRICS)});
+  field(group,'City or scenario value',c.metric,v=>{c.metric=v;if(!c.right)c.target=CONDITION_METRICS[v].initial??0;c.operator='gte';delete c.area;render();},{choices:metricChoices(CONDITION_METRICS)});
   field(group,'Comparison',c.operator,v=>c.operator=v,{choices:[['gte','At least'],['lte','At most'],['gt','Greater than'],['lt','Less than'],['eq','Equals'],['ne','Not equal']]});
-  const m=CONDITION_METRICS[c.metric];field(group,'Threshold',m.date?dateInputValue(c.target):c.target,v=>{try{c.target=m.states?Number(v):readMetricTarget(m,String(v));}catch{c.target=NaN;}},m.states?{choices:m.states.map((v,i)=>[i,v])}:{type:m.date?'month':'number',step:m.integer?'1':'any'});
+  const m=CONDITION_METRICS[c.metric];
+  field(group,'Compare with',c.right?'metric':'constant',value=>{const cached=comparisonDrafts.get(c)||{};if(value==='metric'){cached.target=c.target;delete c.target;c.right=cached.right||{metric:'population'};}else{cached.right=c.right;delete c.right;c.target=cached.target??m.initial??0;}comparisonDrafts.set(c,cached);render();},{choices:[['constant','Fixed threshold'],['metric','Another city or scenario value']]});
+  if(c.right){field(group,'Comparison value',c.right.metric,value=>{c.right={metric:value};render();},{choices:metricChoices(CONDITION_METRICS)});const rightMetric=CONDITION_METRICS[c.right.metric];if(rightMetric.spatial){check(group,'Limit comparison value to a map area',!!c.right.area,value=>{c.right.area=value?{x:0,y:0,radius:0}:null;render();});if(c.right.area)for(const key of ['x','y','radius'])field(group,'Comparison area '+key,key==='radius'?c.right.area[key]:c.right.area[key]+1,value=>c.right.area[key]=key==='radius'?value:value-1,{type:'number',min:key==='radius'?0:1,max:key==='radius'?Math.ceil((size-1)*Math.SQRT2):size});}}
+  else field(group,'Threshold',m.date?dateInputValue(c.target):c.target,v=>{try{c.target=m.states?Number(v):readMetricTarget(m,String(v));}catch{c.target=NaN;}},m.states?{choices:m.states.map((v,i)=>[i,v])}:{type:m.date?'month':'number',step:m.integer?'1':'any'});
   if(m.spatial){check(group,'Limit to a map area',!!c.area,v=>{c.area=v?{x:0,y:0,radius:0}:null;render();});if(c.area)for(const key of ['x','y','radius'])field(group,'Area '+key,key==='radius'?c.area[key]:c.area[key]+1,v=>c.area[key]=key==='radius'?v:v-1,{type:'number',min:key==='radius'?0:1,max:key==='radius'?Math.ceil((size-1)*Math.SQRT2):size});}
   if(depth<8)button(group,'Combine conditions',()=>replace({match:'all',conditions:[structuredClone(c),leaf()]}));
  }
@@ -108,5 +112,5 @@ export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[]
  const next=removeScenarioVariable(draft,index);let nextAvailable=available,nextError=availableError;
  if(!availableError)try{nextAvailable=removeScenarioVariable({variables:definitions,programs:available},index).programs;}catch{nextError='The source routines use a variable removed from this draft. Reopen the editor to copy those routines with their original variables.';}
  return()=>{available=nextAvailable;availableError=nextError;routines=next.programs.slice(0,routines.length);clipboard=clipboard?next.programs.at(-1).steps[0]:null;};
- },read(goalRows=[0,1,2,3],rankRows=[0,1,2,3]){const draft=structuredClone(routines),remap=i=>{const target=goalRows.indexOf(i);if(target<0)throw Error('A routine refers to an empty goal row.');return target;};const condition=c=>{if(c.conditions)c.conditions.forEach(condition);else if(/^goalStatus[1-4]$/.test(c.metric))c.metric='goalStatus'+(remap(Number(c.metric.slice(-1))-1)+1);};draft.forEach(r=>visitSteps(r.steps,s=>{if(s.kind==='if')condition(s.condition);if(s.kind==='action')remapEndingRank(s.action,rankRows);if(s.kind==='action'&&['addGoal','markGoal'].includes(s.action.type))s.action.goal=remap(s.action.goal);}));return validateScenarioProgramDefinitions(draft,{size,objectives:goalRows.map(()=>({}))});},draft:()=>structuredClone(routines)};
+ },read(goalRows=[0,1,2,3],rankRows=[0,1,2,3]){const draft=structuredClone(routines),remap=i=>{const target=goalRows.indexOf(i);if(target<0)throw Error('A routine refers to an empty goal row.');return target;};const condition=c=>{if(c.conditions)c.conditions.forEach(condition);else for(const operand of [c,c.right].filter(Boolean))if(/^goalStatus[1-4]$/.test(operand.metric))operand.metric='goalStatus'+(remap(Number(operand.metric.slice(-1))-1)+1);};draft.forEach(r=>visitSteps(r.steps,s=>{if(s.kind==='if')condition(s.condition);if(s.kind==='action')remapEndingRank(s.action,rankRows);if(s.kind==='action'&&['addGoal','markGoal'].includes(s.action.type))s.action.goal=remap(s.action.goal);}));return validateScenarioProgramDefinitions(draft,{size,objectives:goalRows.map(()=>({}))});},draft:()=>structuredClone(routines)};
 }

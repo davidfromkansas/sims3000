@@ -1,9 +1,9 @@
-import {SERVICES,civicSize} from './civic-footprints.js?v=scripted-ending-ranks-1';
-import {LANDMARKS} from './landmarks.js?v=scripted-ending-ranks-1';
-import {BUSINESSES} from './business.js?v=scripted-ending-ranks-1';
-import {REWARDS,rewardSize} from './rewards.js?v=scripted-ending-ranks-1';
-import {POWER_PLANTS} from './power.js?v=scripted-ending-ranks-1';
-import {RECREATION} from './recreation.js?v=scripted-ending-ranks-1';
+import {SERVICES,civicSize} from './civic-footprints.js?v=live-scenario-comparisons-2';
+import {LANDMARKS} from './landmarks.js?v=live-scenario-comparisons-2';
+import {BUSINESSES} from './business.js?v=live-scenario-comparisons-2';
+import {REWARDS,rewardSize} from './rewards.js?v=live-scenario-comparisons-2';
+import {POWER_PLANTS} from './power.js?v=live-scenario-comparisons-2';
+import {RECREATION} from './recreation.js?v=live-scenario-comparisons-2';
 // Fixed-footprint ploppable structures share construction, damage and save validation.
 export const STRUCTURES={...LANDMARKS,...POWER_PLANTS,...RECREATION,...REWARDS,...BUSINESSES,...SERVICES};
 

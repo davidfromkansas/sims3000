@@ -10,7 +10,7 @@ const blank=()=>{const c=generateCity({startYear:2000,water:0,mountains:0,trees:
 const c=blank();assert.equal(REWARDS.university.size,10);
 assert.ok(build(c,'solar',[{x:10,y:20}]).ok);assert.ok(build(c,'powerline',selection('powerline',{x:14,y:20},{x:19,y:20})).ok);assert.ok(build(c,'road',selection('road',{x:20,y:19},{x:29,y:19})).ok);
 assert.ok(build(c,'university',[{x:20,y:20}]).ok);const root=c.tiles[20*48+20],members=c.tiles.filter(t=>t.type==='university');assert.equal(members.length,100);assert.ok(members.every(t=>t.universitySize===10));assert.ok(rewardActive(c,root));assert.equal(c.stats.civicJobs,500);assert.equal(c.stats.rewardUpkeep,40);
-const saved=JSON.parse(serializeCity(c));assert.equal(saved.version,159);assert.equal(validateSave(saved).stats.civicJobs,500);
+const saved=JSON.parse(serializeCity(c));assert.equal(saved.version,160);assert.equal(validateSave(saved).stats.civicJobs,500);
 for(const mutate of [s=>delete s.tiles[20*48+20].universitySize,s=>s.tiles[29*48+29].universitySize=4,s=>s.tiles[29*48+29].type=null,s=>s.tiles[20*48+20].universitySize=11]){const bad=structuredClone(saved);mutate(bad);assert.throws(()=>validateSave(bad));}
 const edge=c.tiles[29*48+29];edge.fire=10;recompute(c);assert.equal(rewardActive(c,root),false);assert.equal(c.stats.civicJobs,0);edge.fire=0;recompute(c);assert.equal(c.stats.civicJobs,500);
 assert.ok(build(c,'bulldoze',[{x:29,y:29}]).ok);assert.equal(c.tiles.filter(t=>t.type==='university').length,0);assert.ok(members.every(t=>t.universitySize===undefined));assert.ok(build(c,'university',[{x:20,y:20}]).ok);
