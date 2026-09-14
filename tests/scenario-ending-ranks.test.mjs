@@ -1,0 +1,24 @@
+import assert from 'node:assert/strict';
+import {createCity,tick,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {attachCustomScenario,validateCustomDefinition} from '../dist/custom-scenarios.js';
+import {restartCustomScenario} from '../dist/scenario-replay.js';
+const ranks=[{name:'Standard recovery',outcome:'won',message:'Standard result',condition:null},{name:'Harbor rescuer',outcome:'won',message:'Signals recorded: {variable1}.',condition:{metric:'population',operator:'gte',target:999999}}];
+const definition={title:'A chosen ending',months:12,completionMode:'scripted',objectives:[{metric:'population',target:999999}],ranks,events:[{type:'ending',outcome:'won',rankIndex:1,month:2,message:'The harbor is safe.'}]};
+const city=createCity();attachCustomScenario(city,definition);tick(city);const saved=JSON.parse(serializeCity(city));
+const restored=validateSave(saved);tick(city);tick(restored);assert.deepEqual(restored.scenario,city.scenario);
+assert.equal(city.scenario.rank,'Harbor rescuer','explicit rank overrides the earlier automatic rule and its own automatic condition');
+assert.equal(city.scenario.rankOutcome.index,1);assert.equal(city.scenario.rankOutcome.message,'Signals recorded: 0.');
+assert.deepEqual(validateSave(JSON.parse(serializeCity(city))).scenario,city.scenario);
+const corrupt=JSON.parse(serializeCity(city));corrupt.scenario.rank='Standard recovery';corrupt.scenario.rankOutcome.index=0;
+assert.throws(()=>validateSave(corrupt),/does not match the scripted ending/);
+const restarted=restartCustomScenario(city);assert.equal(restarted.scenario.rank,null);assert.equal(restarted.scenario.rankOutcome,null);
+tick(restarted);tick(restarted);assert.deepEqual(restarted.scenario.rankOutcome,city.scenario.rankOutcome);
+const automatic=createCity(),legacy=structuredClone(definition);delete legacy.events[0].rankIndex;attachCustomScenario(automatic,legacy);tick(automatic);tick(automatic);assert.equal(automatic.scenario.rank,'Standard recovery');
+const branching={...definition,events:[{type:'program',month:1,routine:0}],programs:[{name:'Resolve recovery',steps:[{kind:'if',condition:{metric:'funds',operator:'gte',target:40000},then:[{kind:'action',action:{type:'ending',outcome:'won',rankIndex:1,message:'Exceptional recovery.'}}],else:[{kind:'action',action:{type:'ending',outcome:'won',rankIndex:0,message:'Partial recovery.'}}]}]}]};
+for(const funds of [50000,1000]){const c=createCity();c.funds=funds;attachCustomScenario(c,branching);tick(c);assert.equal(c.scenario.rankOutcome.index,funds===50000?1:0);assert.deepEqual(validateSave(JSON.parse(serializeCity(c))).scenario,c.scenario);}
+for(const rankIndex of [-1,4,0.5,'1',null])assert.throws(()=>validateCustomDefinition({...definition,events:[{...definition.events[0],rankIndex}]}));
+assert.throws(()=>validateCustomDefinition({...definition,ranks:[ranks[0]]}),/undefined rank/);
+assert.throws(()=>validateCustomDefinition({...definition,ranks:[ranks[0],{...ranks[1],outcome:'lost'}]}),/victory or loss/);
+const forged=structuredClone(saved);forged.version=158;assert.throws(()=>validateSave(forged),/version 159/);
+console.log('PASS explicit ending ranks: scheduled and branching outcomes, automatic fallback, saved provenance, replay and compatibility gate');

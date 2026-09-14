@@ -1,4 +1,4 @@
-import {validateScenarioVariables,MAX_SCENARIO_VARIABLES} from './scenario-variables.js?v=scenario-variable-manager-1';
+import {validateScenarioVariables,MAX_SCENARIO_VARIABLES} from './scenario-variables.js?v=scripted-ending-ranks-1';
 // Walk only fields that the scenario runtime interprets as variable references.
 // Literal titles, goal names and routine names must not be rewritten.
 export function scenarioVariableIndex(metric){

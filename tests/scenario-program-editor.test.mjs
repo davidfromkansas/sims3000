@@ -51,3 +51,20 @@ const blockedRoot=new Node('div');let blockedVariables=Array.from({length:6},(_,
 const blockedEditor=mountScenarioProgramEditor(blockedRoot,{variables:()=>blockedVariables,available:[{name:'Source routine',steps:[{kind:'action',action:{type:'variable',variable:5,operation:'add',value:1}}]}]});
 const applyBlockedRemoval=blockedEditor.prepareVariableRemoval(blockedVariables,5);blockedVariables.pop();applyBlockedRemoval();blockedEditor.refreshVariables();click(blockedRoot,'Copy routines from current challenge');
 assert.deepEqual(blockedEditor.draft(),[]);assert.ok(walk(blockedRoot).some(n=>n.textContent.includes('source routines use a variable removed')));
+// Named ending ranks retain row identity through renames, empty rows and copies.
+const rankRoot=new Node('div');let rankRows=[{index:1,name:'Recovery',outcome:'won'},{index:3,name:'Harbor rescuer',outcome:'won'}];
+const rankEditor=mountScenarioProgramEditor(rankRoot,{ranks:()=>rankRows,initial:[{name:'Ending',steps:[{kind:'action',action:{type:'ending',outcome:'won',rankIndex:3,message:'Rescued.'}}]}]});
+assert.equal(rankEditor.read([0],[1,3])[0].steps[0].action.rankIndex,1);
+assert.equal(rankEditor.draft()[0].steps[0].action.rankIndex,3);
+rankRows[1].name='Coast guardian';rankEditor.refreshRanks();assert.ok(control(rankRoot,'Award rank').children.some(n=>n.textContent.includes('Coast guardian')));
+const endingRow=walk(rankRoot).find(n=>n.tag==='section');click(endingRow,'Copy step');rankRows[1].name='';rankEditor.refreshRanks();
+assert.equal(control(rankRoot,'Award rank').value,'3');assert.ok(control(rankRoot,'Award rank').children.some(n=>n.textContent.includes('is empty')));
+assert.throws(()=>rankEditor.read([0],[1]),/empty rank row 4/);
+rankRows[1].name='Coast guardian';rankEditor.refreshRanks();const endingBox=walk(rankRoot).find(n=>n.tag==='legend'&&n.textContent==='Actions').parent;click(endingBox,'Paste at end');
+assert.deepEqual(rankEditor.read([0],[1,3])[0].steps.map(s=>s.action.rankIndex),[1,1]);
+console.log('PASS ending-rank editor: named selections, sparse row mapping, rename, empty-row rejection and copied references');
+const importRankRoot=new Node('div'),sourceRank=[{name:'Harbor award',outcome:'won'}],sourceRoutine=[{name:'Source ending',steps:[{kind:'action',action:{type:'ending',rankIndex:0,outcome:'won',message:'Done'}}]}];
+let destinationRanks=[];const importRanks=mountScenarioProgramEditor(importRankRoot,{available:sourceRoutine,availableRanks:sourceRank,ranks:()=>destinationRanks});
+click(importRankRoot,'Copy routines from current challenge');assert.deepEqual(importRanks.draft(),[]);assert.ok(walk(importRankRoot).some(n=>n.textContent.includes('Create a rank named Harbor award')));
+destinationRanks=[{index:3,name:'Harbor award',outcome:'won'}];importRanks.refreshRanks();click(importRankRoot,'Copy routines from current challenge');
+assert.equal(importRanks.draft()[0].steps[0].action.rankIndex,3);assert.equal(importRanks.read([0],[3])[0].steps[0].action.rankIndex,0);

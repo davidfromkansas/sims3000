@@ -1,12 +1,12 @@
-import {civicGarbageInspection} from './civic-waste.js?v=scenario-variable-manager-1';
-import {jailCapacity,jailReport} from './jail.js?v=scenario-variable-manager-1';
-import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=scenario-variable-manager-1';
-import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=scenario-variable-manager-1';
-import {SERVICE_JOBS} from './civic-jobs.js?v=scenario-variable-manager-1';
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=scenario-variable-manager-1';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=scenario-variable-manager-1';
-import {occupancy} from './utilities.js?v=scenario-variable-manager-1';
-import {educationServiceDemand} from './education.js?v=scenario-variable-manager-1';
+import {civicGarbageInspection} from './civic-waste.js?v=scripted-ending-ranks-1';
+import {jailCapacity,jailReport} from './jail.js?v=scripted-ending-ranks-1';
+import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=scripted-ending-ranks-1';
+import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=scripted-ending-ranks-1';
+import {SERVICE_JOBS} from './civic-jobs.js?v=scripted-ending-ranks-1';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=scripted-ending-ranks-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=scripted-ending-ranks-1';
+import {occupancy} from './utilities.js?v=scripted-ending-ranks-1';
+import {educationServiceDemand} from './education.js?v=scripted-ending-ranks-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  t=civicRoot(c,t);const definition=SERVICES[t.type];if(!definition)return null;

@@ -1,4 +1,4 @@
-import {tick} from './engine.js?v=scenario-variable-manager-1';
+import {tick} from './engine.js?v=scripted-ending-ranks-1';
 const TILE_BATCH=2048;
 let transfer=null;
 self.onmessage=({data})=>{

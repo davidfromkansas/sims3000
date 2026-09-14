@@ -25,7 +25,7 @@ const added=addScenarioVariable(renamed);assert.equal(added.variables.length,7);
 const city=createCity();attachCustomScenario(city,definition);tick(city);
 assert.deepEqual(city.scenario.variables,[91,1,2,7,2,2]);
 const raw=JSON.parse(serializeCity(city)),restored=validateSave(raw);
-assert.equal(raw.version,158);assert.deepEqual(restored.scenario,city.scenario);
+assert.equal(raw.version,159);assert.deepEqual(restored.scenario,city.scenario);
 for(let i=0;i<3;i++){tick(city);tick(restored);assert.deepEqual(restored.scenario,city.scenario);}
 assert.equal(city.scenario.status,'won');assert.equal(city.scenario.variables[5],8);
 assert.equal(city.scenario.events[2].message,'Produced 8; score 8');

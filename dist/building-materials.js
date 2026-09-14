@@ -1,4 +1,4 @@
-import {BUILDING_MATERIAL_LIMIT,solidPaintColor} from './building-paint-colors.js?v=scenario-variable-manager-1';
+import {BUILDING_MATERIAL_LIMIT,solidPaintColor} from './building-paint-colors.js?v=scripted-ending-ranks-1';
 export const BUILDING_MATERIALS=['Original facade','Brick','Stucco','Glass','Roof tiles','Grass','Asphalt'];
 export const SURFACE_NAMES=['North wall','East wall','South wall','West wall','Roof'];
 export function validateBuildingMaterials(value){if(!Array.isArray(value)||value.length!==500||!Array.from(value).every(v=>Number.isInteger(v)&&v>=0&&v<BUILDING_MATERIAL_LIMIT))throw Error('Building paint needs 500 valid surface materials.');return [...value];}
