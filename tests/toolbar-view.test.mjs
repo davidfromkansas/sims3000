@@ -1,6 +1,6 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {cancelKeyboardRange} from '../dist/keyboard-construction.js';
+import {cancelKeyboardRange,releaseKeyboardCursor} from '../dist/keyboard-construction.js';
 import {installToolbarView} from '../dist/toolbar-view.js';
 import {backgroundInteractionAllowed,nativeSpaceTarget} from '../dist/background-controls.js';
 import {CityRenderer} from '../dist/renderer.js';
@@ -23,6 +23,6 @@ const city=createCity(),saved=serializeCity(city),load=CityRenderer.prototype.lo
 globalThis.matchMedia=()=>({matches:true});globalThis.requestAnimationFrame=()=>{};globalThis.devicePixelRatio=1;globalThis.ResizeObserver=class{constructor(callback){resize=callback;}observe(){resize();}};CityRenderer.prototype.loadSprites=()=>{};
 const renderer=new CityRenderer(canvas,()=>city);CityRenderer.prototype.loadSprites=load;renderer.zoom=1.6;renderer.rotation=2;renderer.pan={x:47,y:-28};const p=renderer.pick(renderer.w/2,renderer.h/2),pan={...renderer.pan};canvas.clientWidth=1300;canvas.clientHeight=900;resize();assert.deepEqual(renderer.pick(renderer.w/2,renderer.h/2),p);assert.deepEqual(renderer.pan,pan);assert.equal(renderer.zoom,1.6);assert.equal(renderer.rotation,2);assert.equal(serializeCity(city),saved);
 const app=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8'),gestureBody=app.split('function cancelMapGesture(){')[1].split('}\nconst toolbarView')[0];
-let released;const cancelActual=new Function('canvas','cancelKeyboardRange','let pointer={id:7},space=true,spacePanned=true,renderer={drag:{x:2,y:3},hover:{x:2,y:3}};'+gestureBody+';return {pointer,space,spacePanned,renderer};');
-assert.deepEqual(cancelActual({hasPointerCapture:id=>id===7,releasePointerCapture:id=>released=id},cancelKeyboardRange),{pointer:null,space:false,spacePanned:false,renderer:{drag:null,hover:null,keyboardRange:null,dirty:true}});assert.equal(released,7);
+let released;const cancelActual=new Function('canvas','cancelKeyboardRange','releaseKeyboardCursor','let pointer={id:7},space=true,spacePanned=true,renderer={drag:{x:2,y:3},hover:{x:2,y:3}};'+gestureBody+';return {pointer,space,spacePanned,renderer};');
+assert.deepEqual(cancelActual({hasPointerCapture:id=>id===7,releasePointerCapture:id=>released=id},cancelKeyboardRange,releaseKeyboardCursor),{pointer:null,space:false,spacePanned:false,renderer:{drag:null,hover:null,keyboardCursorCity:null,keyboardRange:null,dirty:true}});assert.equal(released,7);
 console.log('PASS: actual toolbar toggle/restore handlers, Escape and guarded H shortcut, repeat/input/dialog protection, drag cancellation and canvas focus, background-month restoration and camera/city preservation on viewport resize.');

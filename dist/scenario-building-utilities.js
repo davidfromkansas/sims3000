@@ -1,5 +1,5 @@
-import {powerBaseNeed,waterBaseNeed} from './utility-demand.js?v=subway-neighbors-1';
-import {inScenarioArea} from './scenario-area.js?v=subway-neighbors-1';
+import {powerBaseNeed,waterBaseNeed} from './utility-demand.js?v=keyboard-cursor-1';
+import {inScenarioArea} from './scenario-area.js?v=keyboard-cursor-1';
 // Group missing service by the building's origin. Empty zoning consumes a small
 // planning allowance but does not yet represent a building. Existing abandoned
 // buildings still need restoration and remain eligible.

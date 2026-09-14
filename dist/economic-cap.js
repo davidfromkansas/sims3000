@@ -1,5 +1,5 @@
-import {connected} from './region.js?v=subway-neighbors-1';
-import {occupancy} from './utilities.js?v=subway-neighbors-1';
+import {connected} from './region.js?v=keyboard-cursor-1';
+import {occupancy} from './utilities.js?v=keyboard-cursor-1';
 // Prima pp.163–165: zone populations, border routes and developed port tiles.
 export const ECONOMIC_BASE={commercial:25000,industrial:70000};
 export const ECONOMIC_RELIEF={road:{commercial:12000,industrial:12000},highway:{commercial:20000,industrial:14000},rail:{commercial:0,industrial:25000},subway:{commercial:25000,industrial:0},airport:{commercial:500,industrial:100},seaport:{commercial:100,industrial:250}};

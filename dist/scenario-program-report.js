@@ -1,11 +1,11 @@
-import {dialogTextTarget} from './scenario-dialog-text.js?v=subway-neighbors-1';
-import {tornadoSettingsLabel} from './tornado-settings.js?v=subway-neighbors-1';
-import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=subway-neighbors-1';
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=subway-neighbors-1';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=subway-neighbors-1';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=subway-neighbors-1';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=subway-neighbors-1';
-import {escapeAnnouncement} from './scenario-announcements.js?v=subway-neighbors-1';
+import {dialogTextTarget} from './scenario-dialog-text.js?v=keyboard-cursor-1';
+import {tornadoSettingsLabel} from './tornado-settings.js?v=keyboard-cursor-1';
+import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=keyboard-cursor-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=keyboard-cursor-1';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=keyboard-cursor-1';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=keyboard-cursor-1';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=keyboard-cursor-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=keyboard-cursor-1';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';

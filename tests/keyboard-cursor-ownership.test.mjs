@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createCity,build} from '../dist/engine.js';
+import {moveKeyboardCursor,takeKeyboardSelection,keyboardOwnsCursor,releaseKeyboardCursor,cancelKeyboardRange} from '../dist/keyboard-construction.js';
+const city=createCity('Cursor ownership',false);for(const t of city.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});
+const renderer={getCity:()=>city,hover:{x:20,y:20},transform:(x,y)=>[x,y],inverse:(x,y)=>[x,y],project:(x,y)=>({x:x*10,y:y*10}),pick:()=>({x:5,y:5}),pan:{x:0,y:0},w:800,h:600,unit:10};
+const app=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8'),elements={};
+const scope={renderer,pointer:null,keyboardOwnsCursor,releaseKeyboardCursor,cancelKeyboardRange,localPoint:()=>({x:0,y:0}),$:id=>elements[id]??={},LABEL:{road:'Road'},tool:'road',canvas:{focus(){},setPointerCapture(){}},monthlyUpdate:false,space:false};
+const moveBody=app.split("canvas.addEventListener('pointermove',e=>{")[1].split("});\ncanvas.addEventListener('pointerup'")[0];
+const leaveBody=app.split("canvas.addEventListener('pointerleave',()=>{")[1].split('});')[0];
+const downBody=app.split("canvas.addEventListener('pointerdown',e=>{")[1].split("});\ncanvas.addEventListener('pointermove'")[0];
+const run=(body,event={})=>new Function('scope','e','with(scope){'+body+'}')(scope,event);
+const selected=moveKeyboardCursor(renderer,'ArrowRight');assert.ok(keyboardOwnsCursor(renderer));run(moveBody);assert.deepEqual(renderer.hover,selected,'passive pointer motion cannot redirect keyboard placement');run(leaveBody);assert.deepEqual(renderer.hover,selected,'pointer departure cannot erase keyboard selection');const points=takeKeyboardSelection(renderer,'road');assert.deepEqual(points,[selected]);assert.ok(build(city,'road',points).ok);assert.equal(city.tiles[20*48+21].type,'road');assert.equal(city.tiles[5*48+5].type,null);
+run(downBody,{pointerId:1,button:0});assert.equal(keyboardOwnsCursor(renderer),false);assert.deepEqual(renderer.hover,{x:5,y:5},'explicit pointer gesture takes control');scope.pointer=null;run(leaveBody);assert.equal(renderer.hover,null);
+moveKeyboardCursor(renderer,'ArrowRight');releaseKeyboardCursor(renderer);assert.equal(keyboardOwnsCursor(renderer),false);run(moveBody);assert.deepEqual(renderer.hover,{x:5,y:5});
+moveKeyboardCursor(renderer,'ArrowRight');renderer.getCity=()=>createCity('Replacement',false);assert.equal(keyboardOwnsCursor(renderer),false,'ownership does not survive replacing the city');
+assert.match(app,/function cancelMapGesture\(\)\{releaseKeyboardCursor\(renderer\)/);
+console.log('PASS: actual pointer handlers preserve keyboard construction through passive movement/leave, explicit clicks resume mouse control, cancellation and city replacement release ownership.');
