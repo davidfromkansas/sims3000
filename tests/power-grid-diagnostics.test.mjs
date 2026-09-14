@@ -10,7 +10,7 @@ const place=(c,type,x,y,xx=x,yy=y)=>assert.ok(build(c,type,selection(type,{x,y},
 const c=base();place(c,'coal',8,8);place(c,'wind',36,36);place(c,'residential',35,35,39,35);for(let x=35;x<=39;x++)c.tiles[35*48+x].level=3;recompute(c);
 assert.equal(c.stats.powerNetworks.length,2);assert.ok(c.stats.powerCapacity>c.stats.powerDemand);
 const wind=c.tiles[36*48+36];let grid=c.stats.powerNetworks[wind.powerNetwork];assert.ok(grid.unpowered>0);assert.equal(gridStatus(grid),'Blackout');assert.ok(grid.margin<0);assert.equal(c.tiles[grid.anchor].powered,false);
-wind.stress=4;recompute(c);grid=c.stats.powerNetworks[wind.powerNetwork];assert.equal(gridStatus(grid),'Failure risk');
+wind.stress=17;recompute(c);assert.notEqual(gridStatus(c.stats.powerNetworks[wind.powerNetwork]),'Failure risk');wind.stress=18;recompute(c);grid=c.stats.powerNetworks[wind.powerNetwork];assert.equal(gridStatus(grid),'Failure risk');
 close(c.stats.powerNetworks.reduce((n,g)=>n+g.demand,0),c.stats.powerDemand);close(c.stats.powerNetworks.reduce((n,g)=>n+g.served,0),c.stats.powerServed);
 assert.match(powerGridReport(c),/View blackout/);assert.match(powerGridSummary(c,wind),/unpowered lots/);
 place(c,'powerline',13,13,36,13);place(c,'powerline',36,14,36,32);recompute(c);assert.equal(c.stats.powerNetworks.length,1);grid=c.stats.powerNetworks[0];assert.equal(grid.unpowered,0);assert.equal(gridStatus(grid),'Supplied','restored capacity is no longer an immediate failure risk');

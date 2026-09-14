@@ -997,3 +997,7 @@ Single-tile small dirty factories can mix in an original sawtooth-roof sprite th
 ## Verified ordinary city progression
 
 An empty 96 × 96 easy city reaches 32,296 residents by month 144 using ordinary construction and ticks, with no grants or loans. It earns Mayor’s House and City Hall, recovers from landfill exhaustion and preserves the final year through save/load. This is one verified route, not proof of original balance or 150k progression. The town guide now includes live population practice targets and expansion guidance. See CITY-GROWTH-PLAYTHROUGH-MILESTONE.md and test:city-progression. Schema remains 135.
+
+## Power overload grace
+
+Overload explosions now follow the guide’s 18-month grace period and certain failure at month 30. The intermediate probability curve is tuned; deterministic draws preserve save/load continuation. Plant inspections and grid reports show the next-month risk. Prices, capacities and aging remain approximate. See POWER-OVERLOAD-GRACE-MILESTONE.md. Schema remains 135.
