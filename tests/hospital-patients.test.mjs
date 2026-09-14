@@ -22,7 +22,7 @@ for(const t of c.tiles){t.airPollution=100;t.waterPollution=100;}
 assert.ok(Math.abs(hospitalizationRate(c)-.1499)<1e-12);recomputeCivic(c);d=civicFacilityDetails(c,h);assert.ok(d.combinedCoverage<32,'pollution raises patient demand without population growth');
 assert.ok(Math.abs(d.contribution-d.combinedCoverage)<1e-9,'query and simulation agree');assert.match(civicFacilityReport(c,h),/does not add beds/);
 h.fire=10;recomputeCivic(c);assert.equal(civicFacilityDetails(c,h).capacity,0);assert.equal(c.tiles[1].healthCoverage,0);
-const saved=createCity();assert.ok(build(saved,'hospital',[{x:20,y:21}]).ok);saved.civic.funding.health=75;recompute(saved);
+const saved=createCity();assert.ok(build(saved,'hospital',[{x:23,y:25}]).ok);saved.civic.funding.health=75;recompute(saved);
 const restored=validateSave(JSON.parse(serializeCity(saved))),root=saved.tiles.find(t=>t.type==='hospital'),loaded=restored.tiles.find(t=>t.type==='hospital');
 assert.deepEqual(civicFacilityDetails(restored,loaded),civicFacilityDetails(saved,root));
 assert.equal(restored.stats.healthCoverage,saved.stats.healthCoverage);

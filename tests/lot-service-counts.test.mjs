@@ -14,7 +14,7 @@ for(const size of [48,96]){
  // Its northwest origin is outside: root-only filtering would wrongly report zero.
  station.x=15;let d=stationDetails(c,station);assert.equal(d.local.homes,1);assert.equal(d.local.workplaces,1);assert.equal(d.local.residents,3*occupancy(2)*8);assert.equal(d.local.jobs,2*occupancy(2)*6);
  station.x=13;d=stationDetails(c,station);assert.equal(d.local.homes,1);assert.equal(d.local.workplaces,1);assert.equal(d.local.residents,9*occupancy(2)*8);assert.equal(d.local.jobs,6*occupancy(2)*6);station.x=16;
- const hospital=at(18,18);Object.assign(hospital,{type:'hospital',powered:true,roadIds:[7],serviceActive:true});
+ const hospital=at(18,18);Object.assign(hospital,{type:'hospital',root:18*size+18,civicSize:1,powered:true,roadIds:[7],serviceActive:true});
  for(const t of c.tiles)if(t!==hospital)t.roadIds=[];
  for(const id of residential.ids)Object.assign(c.tiles[id],{roadIds:[7,8],healthCoverage:60});
  let h=civicFacilityDetails(c,hospital);assert.equal(h.homes,1);assert.equal(h.residents,9*occupancy(2)*8);assert.equal(h.combinedCoverage,60);
