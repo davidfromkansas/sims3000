@@ -12,7 +12,7 @@ assert.deepEqual(advanceRewards(c),[],'same month does not offer again');
 c.stats.education=0;c.month++;advanceRewards(c);assert.equal(c.rewards.earned.university,2);
 c.funds=0;assert.equal(REWARDS.university.cost,0);assert.equal(build(c,'university',[{x:20,y:20}]).ok,true,'earned university needs no construction funds');assert.equal(c.funds,0);
 assert.equal(build(c,'university',[{x:30,y:30}]).ok,false,'one university per city');
-recompute(c);let saved=JSON.parse(serializeCity(c));assert.equal(saved.version,138);
+recompute(c);let saved=JSON.parse(serializeCity(c));assert.equal(saved.version,139);
 const old=structuredClone(saved);old.version=130;for(let i=0;i<old.tiles.length;i++){const t=old.tiles[i];if(t.type==='university'&&(t.x>=24||t.y>=24))old.tiles[i]={...old.tiles[0],x:t.x,y:t.y};delete old.tiles[i].universitySize;}old.rewards.streaks.university=6;
 const restored=validateSave(old);assert.equal(restored.rewards.earned.university,2);assert.equal(restored.rewards.streaks.university,1);assert.equal(restored.tiles.filter(t=>t.type==='university').length,16,'existing campus stays intact');assert.deepEqual(validateSave(JSON.parse(serializeCity(restored))).rewards,restored.rewards);
 const pending=freshRewards();pending.lastMonth=5;pending.streaks.university=5;

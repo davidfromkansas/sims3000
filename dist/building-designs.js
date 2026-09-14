@@ -1,11 +1,11 @@
-import {validateBlockGeometry} from './building-block-geometry.js?v=performing-arts-center-1';
-import {validateSurfaceDetails} from './building-surface-details.js?v=performing-arts-center-1';
-import {validateFloorPaint} from './building-floor-paint.js?v=performing-arts-center-1';
-import {validateBuildingVoxels,drawBuildingVoxels} from './building-voxels.js?v=performing-arts-center-1';
-import {parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=performing-arts-center-1';
-import {validateBuildingMaterials} from './building-materials.js?v=performing-arts-center-1';
-import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=performing-arts-center-1';
-import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=performing-arts-center-1';
+import {validateBlockGeometry} from './building-block-geometry.js?v=civic-landmarks-1';
+import {validateSurfaceDetails} from './building-surface-details.js?v=civic-landmarks-1';
+import {validateFloorPaint} from './building-floor-paint.js?v=civic-landmarks-1';
+import {validateBuildingVoxels,drawBuildingVoxels} from './building-voxels.js?v=civic-landmarks-1';
+import {parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=civic-landmarks-1';
+import {validateBuildingMaterials} from './building-materials.js?v=civic-landmarks-1';
+import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=civic-landmarks-1';
+import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=civic-landmarks-1';
 export function defaultBuildingDesign(key=2){const {source,footprint}=parseBuildingSlot(key);return{name:REPLACEABLE_STYLES[source]?.level===1?'My neighborhood building':'My building',floors:[0,2,6,12][REPLACEABLE_STYLES[source]?.level||3],width:8,depth:8,roof:'step',facade:'#b6c4bd',windows:'#3c6b79',accent:'#dab572',...(footprint.width!==1||footprint.height!==1?{footprint}:{})};}
 // Original procedural artwork for larger lots; style swaps select a matching
 // footprint model, never enlarge a legacy single-tile image.

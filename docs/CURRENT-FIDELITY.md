@@ -1025,3 +1025,7 @@ Schema 137 applies original strong approval to City Hall and Mayor’s House and
 ## Performing Arts Center
 
 The seventh reward adds a free 2 × 2 cultural venue with 40 accessible jobs and 48,000 residential capacity relief, plus source-based local benefits/pollution and an original four-view theater model. Schema 138 migrates older reward histories. See PERFORMING-ARTS-CENTER-MILESTONE.md. Full original reward/building catalogs and browser review remain unfinished.
+
+## Civic landmarks
+
+Lighthouse and Historic Statue are now playable rewards, bringing the reward catalog to nine. Their original population/approval gates, footprint, cost, jobs, residential cap relief and local effects are represented, with four-rotation original procedural models. Schema 139 preserves older cities. Local value falloff, normalized environmental scales and zero upkeep remain reconstruction assumptions; see CIVIC-LANDMARKS-MILESTONE.md. This does not complete the original reward catalog or establish browser/AAA visual acceptance.

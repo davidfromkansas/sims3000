@@ -1,6 +1,6 @@
-import {stadiumMatchPixels} from './stadium-match.js?v=performing-arts-center-1';
-import {rasterizeMiniature} from './miniature-raster.js?v=performing-arts-center-1';
-export const MODELED_REWARDS=new Set(['performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
+import {stadiumMatchPixels} from './stadium-match.js?v=civic-landmarks-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=civic-landmarks-1';
+export const MODELED_REWARDS=new Set(['historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){
  if(!MODELED_REWARDS.has(type))throw Error('Unknown reward model.');
@@ -10,7 +10,25 @@ export function rewardGeometry(type){
  const hall=(x,y,w,d,h,color)=>{box(x,y,.05,w,d,h,color);roof(x,y,h+.05,w+.02,d+.02,.075,'#647c83');for(const side of [-1,1])for(let i=0;i<Math.floor(w/.07);i++)for(const z of [.12,.23])if(z+.045<h+.05)box(x-w/2+.045+i*.07,y+side*(d/2+.003),z,.028,.007,.048,'#547e8a');};
  const tree=(x,y)=>{box(x,y,.06,.015,.015,.09,'#796449');for(const [z,w]of [[.14,.085],[.19,.065],[.23,.035]])box(x,y,z,w,w,.035,'#537a50');};
  box(0,0,0,.97,.97,.04,'#aaa993');box(0,0,.04,.93,.93,.015,'#81966d');
- if(type==='performingArts'){
+ if(type==='historicStatue'){
+  // Original bronze civic figure with book, on a limestone memorial plinth.
+  box(0,0,.055,.76,.76,.035,'#cac4b1');box(0,0,.09,.49,.49,.06,'#b2ad99');
+  box(0,0,.15,.29,.29,.25,'#d6ccb2');box(0,0,.40,.35,.35,.035,'#e2d7bb');
+  box(0,.151,.23,.15,.007,.09,'#667b70');box(0,0,.435,.20,.17,.045,'#657e6b');
+  box(-.055,0,.48,.06,.085,.19,'#597867');box(.055,0,.48,.06,.085,.19,'#597867');
+  box(0,0,.65,.18,.13,.20,'#648b76');box(0,0,.85,.06,.07,.035,'#729781');box(0,0,.885,.105,.095,.11,'#71957d');
+  box(-.115,0,.68,.055,.07,.16,'#567b66');box(.115,.04,.71,.055,.14,.065,'#72977c');box(.115,.09,.76,.10,.075,.10,'#a09d7b');
+  for(const x of [-.34,.34]){box(x,0,.10,.065,.27,.055,'#7c8068');tree(x,-.34);}
+ }else if(type==='lighthouse'){
+  // Original twelve-sided banded tower, lantern gallery and keeper's cottage.
+  const ring=(radius,z)=>Array.from({length:12},(_,i)=>[-.12+radius*Math.cos(i*Math.PI/6),-.07+radius*Math.sin(i*Math.PI/6),z]);
+  const tier=(r1,r2,z,h,color)=>{const a=ring(r1,z),b=ring(r2,z+h);for(let i=0;i<12;i++)add([a[i],a[(i+1)%12],b[(i+1)%12],b[i]],shade(color,.74+.22*(i%4)/3));add(b,color);};
+  box(0,0,.055,.86,.84,.02,'#beb8a1');tier(.19,.17,.075,.22,'#e9ddbf');tier(.17,.15,.295,.19,'#af6250');tier(.15,.13,.485,.20,'#e9ddbf');
+  tier(.20,.20,.685,.035,'#818d83');tier(.12,.12,.72,.14,'#79a5ab');
+  for(let i=0;i<12;i++){const a=i*Math.PI/6;box(-.12+.12*Math.cos(a),-.07+.12*Math.sin(a),.72,.012,.012,.14,'#d6cdb5');}
+  tier(.17,0,.86,.12,'#586f70');box(-.12,-.07,.98,.014,.014,.065,'#62766b');
+  hall(.27,.17,.30,.29,.16,'#d9c8a6');box(-.12,.105,.095,.055,.009,.105,'#596c67');tree(.34,-.34);
+ }else if(type==='performingArts'){
   // Original theater: copper barrel-vault auditorium, glazed foyer and sculpture court.
   box(0,.29,.055,.84,.29,.012,'#c9c0ab');box(-.10,-.06,.055,.58,.56,.215,'#a98e79');
   const arc=Array.from({length:13},(_,i)=>[-.10+.31*Math.cos(i*Math.PI/12),.27+.16*Math.sin(i*Math.PI/12)]);
