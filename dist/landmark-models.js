@@ -1,5 +1,5 @@
 // Original low-poly landmark geometry. Gallery illustrations are separate Imagegen art.
-export const MODELED_LANDMARKS=new Set(['bigBen','statueLiberty','chryslerBuilding']);
+export const MODELED_LANDMARKS=new Set(['bigBen','statueLiberty','chryslerBuilding','arcDeTriomphe']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function landmarkGeometry(type){
  const faces=[],add=(points,color)=>faces.push({points,color});
@@ -49,13 +49,41 @@ export function landmarkGeometry(type){
   }
   ring(0,0,6.85,.13,.32,.07,silver);ring(0,0,7.17,.07,.58,.002,'#d9e2e2');
   for(const x of [-1,1])for(const y of [-1,1]){beam([x*.55,y*.55,4.85],[x*.85,y*.85,4.9],.07,silver);beam([x*.85,y*.85,4.9],[x*.95,y*.95,4.84],.035,silver);}
+ }else if(type==='arcDeTriomphe'){
+  const limestone='#cbbb99',light='#decfad',relief='#d2c19f';
+  box(0,0,.15,2.65,2.65,.08,'#b8b3a4');
+  // Four masonry piers preserve open passages in both directions.
+  for(const x of [-.96,.96])for(const y of [-.53,.53]){box(x,y,.23,.72,.4,.14,light);box(x,y,.37,.65,.35,1.4,limestone);box(x,y,1.77,.7,.4,.08,light);}
+  for(const x of [-.96,.96])box(x,0,1.4,.7,1.42,.95,limestone);
+  function arch(cx,cy,axis,r,z,thickness,depth){
+   const point=(a,rr,offset)=>axis==='x'?[cx+Math.cos(a)*rr,cy+offset,z+Math.sin(a)*rr]:[cx+offset,cy+Math.cos(a)*rr,z+Math.sin(a)*rr];
+   for(let i=0;i<16;i++){
+    const a=i*Math.PI/16,b=(i+1)*Math.PI/16;
+    for(const side of [-1,1]){const face=[point(a,r,side*depth/2),point(b,r,side*depth/2),point(b,r+thickness,side*depth/2),point(a,r+thickness,side*depth/2)];if(axis==='x'?side<0:side>0)face.reverse();add(face,shade(light,.85+(i%2)*.1));}
+    add([point(a,r,-depth/2),point(b,r,-depth/2),point(b,r,depth/2),point(a,r,depth/2)],shade(limestone,.7));
+    for(const side of [-1,1]){const pa=point(a,r+thickness,side*depth/2),pb=point(b,r+thickness,side*depth/2);const face=[pa,pb,[pb[0],pb[1],z+r+thickness],[pa[0],pa[1],z+r+thickness]];if(axis==='x'?side<0:side>0)face.reverse();add(face,limestone);}
+   }
+  }
+  arch(0,0,'x',.61,1.55,.2,1.43);
+  for(const x of [-.96,.96])arch(x,0,'y',.3,1.02,.13,.72);
+  box(0,0,2.36,2.68,1.57,.13,light);box(0,0,2.49,2.57,1.5,.24,limestone);
+  for(const side of [-1,1])for(let x=-1.18;x<=1.18;x+=.13)box(x,side*.77,2.51,.08,.045,.14,relief);
+  box(0,0,2.73,2.75,1.65,.1,light);box(0,0,2.83,2.55,1.46,.38,limestone);
+  for(const side of [-1,1])for(let x=-1.12;x<1.2;x+=.32){box(x,side*.75,2.89,.23,.035,.24,light);ring(x,side*.77,3.01,.055,.015,.055,relief,8);}
+  box(0,0,3.21,2.72,1.64,.12,light);box(0,0,3.33,2.5,1.42,.07,'#a79d86');
+  // Relief groups on the principal piers, kept legible at city scale.
+  for(const x of [-.96,.96])for(const side of [-1,1]){
+   box(x,side*.738,.48,.52,.07,.13,light);
+   for(let i=0;i<3;i++){const xx=x+(i-1)*.14,z=.62+(.12*(i%2));ring(xx,side*.79,z,.085,.48,.045,relief,6);ring(xx,side*.79,z+.48,.07,.11,.045,light,8);beam([xx,side*.79,z+.36],[xx+(i-1)*.08,side*.82,z+.72],.035,relief);}
+   box(x,side*.741,1.88,.48,.04,.27,light);
+  }
  }else throw Error('Unknown modeled landmark.');
  return faces;
 }
 export function drawLandmarkModel(ctx,type,rotation=0){
  const turn=([x,y,z])=>rotation===0?[x,y,z]:rotation===1?[-y,x,z]:rotation===2?[-x,-y,z]:[y,-x,z];
  const project=([x,y,z])=>[256+(x-y)*80,720+(x+y)*40-z*80];
- const faces=landmarkGeometry(type).map(f=>({...f,points:f.points.map(turn)}));
+ const faces=landmarkGeometry(type).map(f=>({...f,points:f.points.map(turn)})).filter(f=>{if(type!=='arcDeTriomphe')return true;const [a,b,c]=f.points,u=b.map((v,i)=>v-a[i]),v=c.map((n,i)=>n-a[i]),normal=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]];return normal[0]+normal[1]+normal[2]>0;});
  // Painter ordering includes height so cornices, clocks and upper tiers cover their supports.
  faces.sort((a,b)=>a.points.reduce((n,p)=>n+p[0]+p[1]+p[2]*2,0)/a.points.length-b.points.reduce((n,p)=>n+p[0]+p[1]+p[2]*2,0)/b.points.length);
  for(const f of faces){ctx.beginPath();f.points.map(project).forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y));ctx.closePath();ctx.fillStyle=f.color;ctx.fill();}

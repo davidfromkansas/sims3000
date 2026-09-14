@@ -1,4 +1,4 @@
-import {populationCohorts,INITIAL_CENSUS_SHARES,CENSUS_AGES} from './demographics.js?v=education-capacity-1';
+import {populationCohorts,INITIAL_CENSUS_SHARES,CENSUS_AGES} from './demographics.js?v=arc-landmark-1';
 // Original age participation calibration, normalized to the former 50% starting baseline.
 const PARTICIPATION=[0,.35,.78,.8,.8,.65,.2,.04],NORMALIZER=.5/INITIAL_CENSUS_SHARES.reduce((sum,w,i)=>sum+w*PARTICIPATION[i],0);
 const healthFactor=c=>(.5+(Math.max(45,Math.min(90,c.civic.lifeExpectancy))-59)*.004)/.5;
