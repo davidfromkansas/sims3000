@@ -1,4 +1,4 @@
-import {occupancy} from './utilities.js?v=city-hall-1';
+import {occupancy} from './utilities.js?v=civic-employment-1';
 export const NEIGHBORHOOD_RADII=[2,4,8,16];
 const fields=['policeCoverage','fireCoverage','healthCoverage','childEducationCoverage','collegeEducationCoverage','adultEducationCoverage','airPollution','waterPollution','crime','landValue'];
 export function neighborhoodSnapshot(city,center,radius=4){

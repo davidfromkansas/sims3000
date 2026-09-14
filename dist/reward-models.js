@@ -1,4 +1,4 @@
-import {rasterizeMiniature} from './miniature-raster.js?v=city-hall-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=civic-employment-1';
 export const MODELED_REWARDS=new Set(['cityHall','mayorHouse','stadium','university']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){

@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 235 regression suites, save schema 123. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 236 regression suites, save schema 123. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -859,3 +859,7 @@ Advisor browser follow-up: Mortimerâ€™s portrait and ten-year horizon, Randallâ€
 Visible development checkpoint: static finishing-work barriers mark newly developed buildings in City view, follow camera rotation and can be hidden in Play preferences. See [recent construction](RECENT-CONSTRUCTION-MILESTONE.md). 234 suites passed across full-run and affected-fixture validation; live separate-origin growth, rotation and toggle verified. Source only, publication pending.
 
 Reward catalog checkpoint: City Hall adds a permanent 20,000-resident unlock, original four-view model, free unique placement, connected local amenity and version-123 save migration. See [City Hall](CITY-HALL-MILESTONE.md). 235 suites passed across full-run and preview-fixture validation; browser preview/rotation and old-save opening verified. Original additional City Hall effects and the full reward catalog remain incomplete. Source only, publication pending.
+
+## City Hall employment checkpoint
+
+City Hall now supplies 36 finite civic jobs while operating. Homes can reach them through roads, buses or rail, sharing the worker pool with commercial and industrial workplaces. Its entire footprint is used for transport access, but capacity is counted once. Reports, inspection, demand and save restoration include civic employment. See `CITY-HALL-EMPLOYMENT-MILESTONE.md`. Other original reward effects and the full reward catalog remain incomplete.

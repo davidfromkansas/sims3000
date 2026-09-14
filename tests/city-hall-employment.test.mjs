@@ -1,0 +1,17 @@
+import {freshDemographics} from '../dist/demographics.js';
+import assert from 'node:assert/strict';
+import {createCity,build,selection,recompute,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {reportSnapshot} from '../dist/reports.js';
+const c=createCity('Civic commuters',false);c.funds=100000;for(const t of c.tiles){t.terrain='land';t.elevation=0;t.nature=false;}c.rewards.earned.cityHall=0;
+assert.ok(build(c,'coal',[{x:35,y:15}]).ok);assert.ok(build(c,'powerline',selection('powerline',{x:8,y:16},{x:34,y:16})).ok);assert.ok(build(c,'road',selection('road',{x:8,y:20},{x:30,y:20})).ok);
+assert.ok(build(c,'residential',selection('residential',{x:8,y:18},{x:23,y:18})).ok);for(const t of c.tiles)if(t.type==='residential'){t.level=1;t.age=10;}recompute(c);assert.equal(c.stats.unemployed,c.stats.commuters);assert.equal(c.stats.jobs,0);
+assert.ok(build(c,'cityHall',[{x:27,y:17}]).ok);assert.equal(c.stats.civicJobs,36);assert.equal(c.stats.civicEmployed,36);assert.equal(c.stats.jobs,36);assert.equal(c.stats.commercialEmployed,0);assert.equal(c.stats.industrialEmployed,0);assert.ok(c.stats.peakTraffic>0);assert.ok(Math.abs(c.stats.commuters-c.stats.unemployed-36)<1e-8);assert.equal(c.tiles[17*c.size+27].civicEmployed,36);assert.equal(c.tiles.filter(t=>t.type==='cityHall').reduce((sum,t)=>sum+t.civicEmployed,0),36);
+const restored=validateSave(JSON.parse(serializeCity(c)));assert.equal(restored.stats.civicEmployed,36);assert.equal(reportSnapshot(c).civicJobs,36);assert.equal(reportSnapshot(c).civicEmployed,36);
+assert.ok(build(c,'busStop',[{x:12,y:19}]).ok);assert.ok(c.stats.busRiders>0);assert.equal(c.stats.civicEmployed,36);
+assert.ok(build(c,'bulldoze',[{x:35,y:15}]).ok);assert.equal(c.stats.civicJobs,0);assert.equal(c.stats.civicEmployed,0);assert.equal(c.stats.unemployed,c.stats.commuters);assert.equal(c.tiles[17*c.size+27].civicEmployed,0);
+const r=createCity('Rail civic commuters',false);r.funds=100000;for(const t of r.tiles){t.terrain='land';t.elevation=0;t.nature=false;}Object.assign(r.tiles[18*r.size+12],{type:'residential',level:3,density:3});r.demographics=freshDemographics(64,0);r.rewards.earned.cityHall=0;
+for(const [tool,x,y]of [['coal',34,10],['road',38,17],['cityHall',34,16]])assert.ok(build(r,tool,[{x,y}]).ok);
+assert.ok(build(r,'powerline',selection('powerline',{x:12,y:15},{x:33,y:15})).ok);assert.ok(build(r,'rail',selection('rail',{x:12,y:20},{x:38,y:20})).ok);assert.ok(build(r,'trainStation',[{x:12,y:19}]).ok);assert.ok(build(r,'trainStation',[{x:38,y:19}]).ok);assert.equal(r.stats.trainRiders,32);assert.equal(r.stats.civicEmployed,32);assert.equal(r.stats.unemployed,0);assert.equal(r.tiles[18*r.size+12].roadAccess,false,'home uses rail rather than a shared road');
+assert.ok(build(r,'removeRail',[{x:25,y:20}]).ok);assert.equal(r.stats.civicJobs,36);assert.equal(r.stats.civicEmployed,0);assert.equal(r.stats.unemployed,32);
+console.log('PASS: City Hall supplies one finite 36-job pool, road, bus and footprint-aware rail commutes fill it, sector totals remain separate, power loss clears jobs and save/report continuity preserves employment.');

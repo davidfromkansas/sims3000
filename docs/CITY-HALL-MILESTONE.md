@@ -20,3 +20,5 @@ The full run passed 234 suites; one preview fixture assumed exactly three reward
 Browser review verified an older starter save opening successfully, the City Hall requirement and locked placement state, plus the original preview and rotation. No browser errors or warnings; the user's city was not advanced or saved. A complete 20,000-resident browser playthrough remains unverified.
 
 Save schema 123 migrates older reward records with City Hall unearned. Version-123 records require its history fields. GitHub/local-preview milestone only; Sites publication awaits explicit source-export authorization.
+
+Follow-up: `CITY-HALL-EMPLOYMENT-MILESTONE.md` implements the 36-job employment effect. Other omitted original effects remain pending.
