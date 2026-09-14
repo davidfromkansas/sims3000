@@ -1,5 +1,5 @@
-import {LANDMARKS} from './landmarks.js?v=live-scenario-comparisons-2';
-import {MODELED_LANDMARKS,drawLandmarkPreview} from './landmark-models.js?v=live-scenario-comparisons-2';
+import {LANDMARKS} from './landmarks.js?v=east-asian-landmarks-1';
+import {MODELED_LANDMARKS,drawLandmarkPreview} from './landmark-models.js?v=east-asian-landmarks-1';
 const directions=['North','East','South','West'];
 export function showLandmarks({city,dialog,close,setTool}){
  const c=city(),placedTypes=new Set(c.tiles.map(t=>t.type));

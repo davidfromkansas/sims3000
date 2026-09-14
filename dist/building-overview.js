@@ -1,4 +1,4 @@
-import {drawBuildingDesign} from './building-designs.js?v=live-scenario-comparisons-2';
+import {drawBuildingDesign} from './building-designs.js?v=east-asian-landmarks-1';
 export function overviewViewport(camera){return{x:-camera.x/camera.zoom,y:-camera.y/camera.zoom,width:256/camera.zoom,height:384/camera.zoom};}
 export function mountBuildingOverview(canvas,{get,camera,center,reset,construct=()=>false}){
  let key=null,frame=null;

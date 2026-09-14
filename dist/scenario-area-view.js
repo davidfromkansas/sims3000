@@ -1,4 +1,4 @@
-import {validateScenarioArea} from './scenario-area.js?v=live-scenario-comparisons-2';
+import {validateScenarioArea} from './scenario-area.js?v=east-asian-landmarks-1';
 export function focusScenarioArea(renderer,area){
  const checked=validateScenarioArea(area,{spatial:true},renderer.getCity?.()?.size||48);if(!checked)throw Error('Choose a neighborhood goal.');
  renderer.goalArea={city:renderer.getCity(),area:checked};const p=renderer.project(checked.x,checked.y);

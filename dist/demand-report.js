@@ -1,4 +1,4 @@
-import {rewardJobSites} from './rewards.js?v=live-scenario-comparisons-2';
+import {rewardJobSites} from './rewards.js?v=east-asian-landmarks-1';
 const sectors=['residential','commercial','industrial'];
 const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 export function applyDemand(stats,sector,entries,min=-100,max=100){
