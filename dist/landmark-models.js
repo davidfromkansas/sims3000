@@ -1,9 +1,9 @@
-import {SKYLINE_LANDMARK_GEOMETRY} from './skyline-landmark-models.js?v=architecture-collection-41';
-import {US_MEMORIAL_GEOMETRY} from './us-memorial-models.js?v=architecture-collection-41';
-import {eiffelTowerGeometry} from './eiffel-tower-model.js?v=architecture-collection-41';
-import {greatPyramidGeometry} from './great-pyramid-model.js?v=architecture-collection-41';
-import {rasterizeMiniature} from './miniature-raster.js?v=architecture-collection-41';
-import {helsinkiCathedralGeometry} from './helsinki-cathedral-model.js?v=architecture-collection-41';
+import {SKYLINE_LANDMARK_GEOMETRY} from './skyline-landmark-models.js?v=architecture-collection-43';
+import {US_MEMORIAL_GEOMETRY} from './us-memorial-models.js?v=architecture-collection-43';
+import {eiffelTowerGeometry} from './eiffel-tower-model.js?v=architecture-collection-43';
+import {greatPyramidGeometry} from './great-pyramid-model.js?v=architecture-collection-43';
+import {rasterizeMiniature} from './miniature-raster.js?v=architecture-collection-43';
+import {helsinkiCathedralGeometry} from './helsinki-cathedral-model.js?v=architecture-collection-43';
 // Original landmark geometry shared by the city renderer and gallery previews.
 export const MODELED_LANDMARKS=new Set(['bigBen','statueLiberty','chryslerBuilding','arcDeTriomphe','helsinkiCathedral','eiffelTower','greatPyramid',...Object.keys(US_MEMORIAL_GEOMETRY),...Object.keys(SKYLINE_LANDMARK_GEOMETRY)]);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');

@@ -1,5 +1,5 @@
-import {powerBaseNeed,waterBaseNeed} from './utility-demand.js?v=architecture-collection-41';
-import {inScenarioArea} from './scenario-area.js?v=architecture-collection-41';
+import {powerBaseNeed,waterBaseNeed} from './utility-demand.js?v=architecture-collection-43';
+import {inScenarioArea} from './scenario-area.js?v=architecture-collection-43';
 // Group missing service by the building's origin. Empty zoning consumes a small
 // planning allowance but does not yet represent a building. Existing abandoned
 // buildings still need restoration and remain eligible.

@@ -1133,3 +1133,12 @@ Composed ground-paint workflow verified through actual designer handlers in both
 
 
 Paint-palette follow-up verified: all 320 registered regression commands passed with 329 PASS records and terminal exit 0 in `/tmp/sims3000-paint-palette-tests.log` (session 66956 closed). Product source remained unchanged during the run. Cache architecture-collection-41/schema 151. This checkpoint includes the visual material palette, the designer ground-paint preservation correction, composed painting/Apply/save coverage and the eighth architecture feedback exercise. Browser acceptance and publication remain pending.
+
+
+Anchored-detail foundation: bounded world-plane records, per-face clipping, painter-order rendering, compact format 13/schema 152 and editor history support are implemented locally. Wide windows/cornices were reviewed in four views; focused geometry/save/history tests passed. No player-facing placement controls exist yet, so this is not a playable feature checkpoint. Cache 42, 321 commands registered; previous full run remains 320 at cache 41.
+
+
+Anchored wall details now have local placement/size/sample/erase controls with keyboard support, cancellation and shared Undo/Redo. Composed designer tests cover placement through Apply and city restoration in both construction modes. Cache 43/schema 152; 322 commands registered. Full regression/browser review remain pending; variable-size roof decals, arbitrary sub-tile positioning and original detail catalog/visual palettes remain incomplete.
+
+
+Anchored-detail checkpoint verified: all 322 registered regression commands passed with 331 PASS records and terminal exit code 0 in `/tmp/sims3000-anchored-detail-tests.log` (session 31412 closed). Product source stayed unchanged during the run. A separate seeded stress check covered 13,820 wall faces and 19,330 clipped polygons across 12 layered buildings and four rotations; every emitted point stayed inside its wall polygon. Cache architecture-collection-43, schema 152. The grouped checkpoint includes saved anchored details, rendering, placement/size/sample/erase controls, shared history, composed Apply/save tests and the Cornice pavilion review artifact. Browser acceptance and publication remain pending.

@@ -1,19 +1,19 @@
-import {jailCapacity,jailStatus} from './jail.js?v=architecture-collection-41';
-import {SERVICES,civicRoots,isCivicRoot,civicMembers,civicRoadIds,civicCenter,civicServiceOperating} from './civic-footprints.js?v=architecture-collection-41';
-import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=architecture-collection-41';
-import {activeCityHalls,cityHallCrimeRelief,activeCourthouses,courthouseCrimeRelief} from './rewards.js?v=architecture-collection-41';
-import {auraBreakdown} from './aura.js?v=architecture-collection-41';
-import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=architecture-collection-41';
-import {healthOutlook} from './health.js?v=architecture-collection-41';
-import {casinoCrime,businessRoots} from './business.js?v=architecture-collection-41';
-import {occupancy} from './utilities.js?v=architecture-collection-41';
+import {jailCapacity,jailStatus} from './jail.js?v=architecture-collection-43';
+import {SERVICES,civicRoots,isCivicRoot,civicMembers,civicRoadIds,civicCenter,civicServiceOperating} from './civic-footprints.js?v=architecture-collection-43';
+import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=architecture-collection-43';
+import {activeCityHalls,cityHallCrimeRelief,activeCourthouses,courthouseCrimeRelief} from './rewards.js?v=architecture-collection-43';
+import {auraBreakdown} from './aura.js?v=architecture-collection-43';
+import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=architecture-collection-43';
+import {healthOutlook} from './health.js?v=architecture-collection-43';
+import {casinoCrime,businessRoots} from './business.js?v=architecture-collection-43';
+import {occupancy} from './utilities.js?v=architecture-collection-43';
 // Manual pp.106–113 describes relationships; radii, capacities and rates below are calibration approximations.
-export {SERVICES,civicServiceOperating} from './civic-footprints.js?v=architecture-collection-41';
+export {SERVICES,civicServiceOperating} from './civic-footprints.js?v=architecture-collection-43';
 
 export function serviceRadius(c,t){const d=SERVICES[t.type],funding=d?c.civic.funding[d.department]:0,effective=Math.min(110,funding)+Math.max(0,funding-110)*.1;return t.serviceActive&&d?.radius?d.radius*Math.sqrt(effective/100):0;}
 export const DEPARTMENTS={police:'Police',fire:'Fire',health:'Healthcare',education:'Education'};
-import {ORDINANCES} from './ordinances.js?v=architecture-collection-41';
-export {ORDINANCES} from './ordinances.js?v=architecture-collection-41';
+import {ORDINANCES} from './ordinances.js?v=architecture-collection-43';
+export {ORDINANCES} from './ordinances.js?v=architecture-collection-43';
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 // Manual p.106 links good fire coverage with land value; eight points is reconstruction tuning.
 export function applyFireLandValue(t){const before=t.landValue;t.landValue=clamp(before+(t.terrain!=='water'&&!t.radiation?t.fireCoverage*.08:0),1,100);t.fireLandBonus=t.landValue-before;}

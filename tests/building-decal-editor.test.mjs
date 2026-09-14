@@ -1,0 +1,18 @@
+import assert from 'node:assert/strict';
+import {mountBuildingDecalEditor} from '../dist/building-decal-editor.js';
+import {defaultBuildingDesign} from '../dist/building-designs.js';
+import {projectedBuildingSurfaces} from '../dist/building-surface-picking.js';
+import {decalPolygonsOnFace} from '../dist/building-decals.js';
+import {projectBuildingPoint} from '../dist/building-footprints.js';
+let draft={...defaultBuildingDesign(),blocks:Array(100).fill(0),rotation:0},writes=0;for(let i=42;i<=47;i++)draft.blocks[i]=4;
+const nodes=new Map(),node=id=>{if(!nodes.has(id))nodes.set(id,{value:'',hidden:false});return nodes.get(id);},mode={value:'anchored-detail'},material={},status={},camera={zoom:1,x:0,y:0},canvas={width:256,height:384,style:{},getBoundingClientRect:()=>({left:10,top:20,width:512,height:768}),focus(){},setPointerCapture(){}};
+const editor=mountBuildingDecalEditor({set innerHTML(v){},querySelector:s=>node(s.slice(1))},canvas,{get:()=>draft,camera:()=>camera,mode,material,status,apply:d=>{draft={...draft,decals:d};writes++;},render(){}});node('decalKind').value='1';node('decalWidth').value='3';node('decalHeight').value='2';
+const face=projectedBuildingSurfaces(draft).find(f=>f.side===2&&f.x===3&&f.from===1),point=face.polygon.reduce((p,[x,y])=>({x:p.x+x/4,y:p.y+y/4}),{x:0,y:0}),event=p=>({button:0,pointerId:1,clientX:10+p.x*2,clientY:20+p.y*2,preventDefault(){}}),e=event(point);
+canvas.onpointerdown(e);assert.equal(writes,0);canvas.onpointerup({...e,shiftKey:true});assert.equal(writes,0);canvas.onpointerdown(e);canvas.onpointerup(e);assert.equal(writes,1);assert.equal(draft.decals[0].width,3);assert.equal(draft.decals[0].height,.28);
+canvas.onpointerdown(e);node('decalWidth').value='4';node('decalWidth').oninput();canvas.onpointerup(e);assert.equal(writes,1,'size change cancels pending placement');node('decalWidth').value='NaN';canvas.onpointerdown(e);canvas.onpointerup(e);assert.equal(writes,1);assert.match(status.textContent,/valid/);
+const polygon=decalPolygonsOnFace(face,draft.decals,draft).at(-1).points.map(p=>projectBuildingPoint(p,0));const p=polygon.reduce((p,[x,y])=>({x:p.x+x/polygon.length,y:p.y+y/polygon.length}),{x:0,y:0}),pick=event(p);
+mode.value='sample-decal';mode.onchange();canvas.onpointerdown(pick);assert.equal(node('decalWidth').value,'3');assert.equal(node('decalHeight').value,'2');assert.equal(writes,1);assert.match(status.textContent,/unchanged/);
+mode.value='erase-decal';mode.onchange();canvas.onpointerdown(pick);canvas.onpointerup(pick);assert.equal(writes,2);assert.deepEqual(draft.decals,[]);
+mode.value='anchored-detail';mode.onchange();canvas.onpointerdown(e);draft={...draft,rotation:1};canvas.onpointerup(e);assert.equal(writes,2,'camera rotation cancels stale placement');draft={...draft,rotation:0};canvas.onpointermove(e);canvas.onkeydown({key:'Enter',preventDefault(){},stopPropagation(){}});assert.equal(writes,3);assert.equal(draft.decals.length,1);
+editor.reset();assert.equal(node('anchoredDetailControls').hidden,false);mode.value='pan';mode.onchange();assert.equal(node('anchoredDetailControls').hidden,true);
+console.log('PASS: anchored placement sizing, scaled pointer, release/cancel, input validation, visible-detail sampling/erase, stale-camera cancellation and keyboard placement.');

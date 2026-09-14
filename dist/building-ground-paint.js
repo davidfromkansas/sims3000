@@ -1,5 +1,5 @@
-import {BUILDING_MATERIALS,materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-41';
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-41';
+import {BUILDING_MATERIALS,materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-43';
+import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-43';
 export function validateGroundPaint(value){if(typeof value!=='string'||value.length!==100||/[^0-7]/.test(value))throw Error('Ground paint needs 100 valid material entries.');return value;}
 export function groundMaterial(design,index){return Number(design.groundPaint?.[index]||0)-1;}
 export function groundFaces(design,rotation=0){return Array.from({length:100},(_,index)=>{const x=index%10,y=Math.floor(index/10),a=x/10-.5,b=y/10-.5,points=[[a,b,0],[a+.1,b,0],[a+.1,b+.1,0],[a,b+.1,0]];return{index,x,y,side:4,from:0,to:1,points,polygon:points.map(p=>projectBuildingPoint(p,rotation,design.footprint))};});}

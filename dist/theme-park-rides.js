@@ -1,4 +1,4 @@
-import {projectMiniature} from './miniature-raster.js?v=architecture-collection-41';
+import {projectMiniature} from './miniature-raster.js?v=architecture-collection-43';
 export const WHEEL={center:[-.18,-.12,.39],radius:.24};
 // Cosmetic operational-state indication; reuse the paused scenery clock, no new timer.
 export function themeParkRideState(renderer,root){const c=renderer.getCity();let access=false,active=root.type==='themePark'&&renderer.layer==='city'&&c.finance.roadCondition>20;for(let y=root.y;y<root.y+10;y++)for(let x=root.x;x<root.x+10;x++){const t=c.tiles[y*c.size+x];if(!t||t.root!==root.root||!t.powered||t.fire||t.rubble||t.radiation)active=false;access ||= !!t?.roadIds?.length;}return{active:active&&access,time:renderer.preferences?.sceneryAnimations===false||renderer.reducedMotion.matches?0:renderer.vehicleTime};}

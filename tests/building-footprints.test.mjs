@@ -46,7 +46,7 @@ assert.equal(JSON.stringify(expanded.tiles),expandedBefore.tiles);assert.equal(J
 const expandedSave=serializeCity(expanded),expandedRestored=validateSave(JSON.parse(expandedSave));assert.equal(expandedRestored.buildingLots.get(expandedLot.root).ids.length,25);assert.equal(serializeCity(expandedRestored),expandedSave);
 const oldExpanded=JSON.parse(expandedSave);oldExpanded.version=145;assert.throws(()=>validateSave(oldExpanded),/146/);oldExpanded.buildingDesigns={};assert.throws(()=>validateSave(oldExpanded),/146/);
 tick(expandedRestored);assert.equal(serializeCity(validateSave(JSON.parse(serializeCity(expandedRestored)))),serializeCity(expandedRestored));assert.equal(build(expandedRestored,'bulldoze',[{x:34,y:34}]).ok,true);assert.ok(expandedLot.ids.every(id=>expandedRestored.tiles[id].lotRoot==null&&expandedRestored.tiles[id].level===0),'demolishing a distant member removes the entire five-tile building');
-const olderOrdinary=JSON.parse(serializeCity(createCity()));olderOrdinary.version=145;assert.equal(validateSave(olderOrdinary).version,151);
+const olderOrdinary=JSON.parse(serializeCity(createCity()));olderOrdinary.version=145;assert.equal(validateSave(olderOrdinary).version,152);
 for(const footprint of [{width:5,height:1},{width:1,height:5},{width:5,height:5}])for(let rotation=0;rotation<4;rotation++){
  const d=defaultBuildingDesign(buildingSlot(4,footprint)),points=[],ctx={beginPath(){},closePath(){},fill(){},stroke(){},moveTo(...p){points.push(p);},lineTo(...p){points.push(p);}};drawBuildingDesign(ctx,d,rotation);assert.ok(points.every(([x,y])=>x>=0&&x<=256&&y>=0&&y<=384));
 }
@@ -112,4 +112,16 @@ for(const layered of [false,true]){
  node('previewTool').value='sample-ground';node('previewTool').onchange();node('previewMaterial').value='0';canvas.onpointerdown(event);assert.equal(node('previewMaterial').value,'5');
  node('previewTool').value='erase-ground';node('previewTool').onchange();canvas.onpointerdown(event);canvas.onpointerup(event);node(layered?'voxelUndo':'blockUndo').onclick();node('applyDesign').onclick();assert.equal(paintedCity.buildingDesigns[2].groundPaint[99],'6','undo restores ground through the composed editor');
  const saved=validateSave(JSON.parse(serializeCity(paintedCity)));assert.equal(saved.buildingDesigns[2].groundPaint[99],'6');
+}
+const {projectedBuildingSurfaces}=await import('../dist/building-surface-picking.js');
+for(const layered of [false,true]){
+ const detailCity=createCity(),layout=Array(100).fill(0);for(let i=42;i<=47;i++)layout[i]=layered?15:4;const model={...defaultBuildingDesign(2),...(layered?{voxels:layout}:{blocks:layout})};detailCity.buildingDesigns[2]=model;
+ showBuildingDesigner({city:detailCity,dialog(){node('designSource').value='2';node('designFootprint').value='1x1';},apply(){},close(){}},2);
+ const canvas=node('designPreview');Object.assign(canvas,{getBoundingClientRect:()=>({left:0,top:0,width:256,height:384}),focus(){},setPointerCapture(){}});
+ node('previewTool').value='anchored-detail';node('previewTool').onchange();node('decalKind').value='5';node('decalWidth').value='3';node('decalHeight').value='1';
+ const face=projectedBuildingSurfaces(model).find(f=>f.side===2&&f.x===3&&f.from===1),p=face.polygon.reduce((sum,[x,y])=>({x:sum.x+x/4,y:sum.y+y/4}),{x:0,y:0}),e={button:0,pointerId:88,clientX:p.x,clientY:p.y,preventDefault(){}};
+ canvas.onpointerdown(e);canvas.onpointerup(e);assert.equal(detailCity.buildingDesigns[2].decals,undefined);
+ node('designName').value='Cornice test';node('designName').oninput();node('applyDesign').onclick();assert.equal(detailCity.buildingDesigns[2].decals.length,1);assert.equal(detailCity.buildingDesigns[2].decals[0].kind,5);
+ node(layered?'voxelUndo':'blockUndo').onclick();node('applyDesign').onclick();assert.equal(detailCity.buildingDesigns[2].decals,undefined);node(layered?'voxelRedo':'blockRedo').onclick();node('applyDesign').onclick();assert.equal(detailCity.buildingDesigns[2].decals.length,1);
+ assert.deepEqual(validateSave(JSON.parse(serializeCity(detailCity))).buildingDesigns[2].decals,detailCity.buildingDesigns[2].decals);
 }
