@@ -1,7 +1,7 @@
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=museum-capacity-1';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=museum-capacity-1';
-import {projectBuildingPoint} from './building-footprints.js?v=museum-capacity-1';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=museum-capacity-1';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=adult-learning-1';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=adult-learning-1';
+import {projectBuildingPoint} from './building-footprints.js?v=adult-learning-1';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=adult-learning-1';
 export const BLOCK_GRID_SIZE=10;
 export function validateBuildingBlocks(value){if(!Array.isArray(value)||value.length!==100||!Array.from(value).every(h=>Number.isInteger(h)&&h>=0&&h<=24)||!value.some(h=>h>0))throw Error('A block layout needs 100 heights from 0–24 and at least one occupied square.');return [...value];}
 export function towerToBlocks(d){return Array.from({length:100},(_,i)=>{const x=i%10+.5-5,y=Math.floor(i/10)+.5-5;if(Math.abs(x)>d.width/2||Math.abs(y)>d.depth/2)return 0;return d.roof==='step'&&(Math.abs(x)>d.width*.35||Math.abs(y)>d.depth*.35)?Math.ceil(d.floors*.65):d.floors;});}

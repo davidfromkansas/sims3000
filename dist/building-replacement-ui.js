@@ -1,8 +1,8 @@
-import {tileBuildingFootprint} from './building-footprints.js?v=museum-capacity-1';
-import {isBuildingLotRoot} from './building-lots.js?v=museum-capacity-1';
-import {buildingDesignCanvas,defaultLotDesign} from './building-designs.js?v=museum-capacity-1';
-import {baseZonedSprite,buildingStyleKey,zonedSprite,REPLACEABLE_STYLES,replaceBuildingStyle,canReplaceBuilding} from './building-art.js?v=museum-capacity-1';
-export {canReplaceBuilding} from './building-art.js?v=museum-capacity-1';
+import {tileBuildingFootprint} from './building-footprints.js?v=adult-learning-1';
+import {isBuildingLotRoot} from './building-lots.js?v=adult-learning-1';
+import {buildingDesignCanvas,defaultLotDesign} from './building-designs.js?v=adult-learning-1';
+import {baseZonedSprite,buildingStyleKey,zonedSprite,REPLACEABLE_STYLES,replaceBuildingStyle,canReplaceBuilding} from './building-art.js?v=adult-learning-1';
+export {canReplaceBuilding} from './building-art.js?v=adult-learning-1';
 function preview(renderer,index){const s=renderer.sprites[index];if(!s)return '';const canvas=document.createElement('canvas');canvas.width=180;canvas.height=200;const ctx=canvas.getContext('2d'),scale=Math.min(160/s.w,180/s.h);ctx.drawImage(s.atlas,s.x,s.y,s.w,s.h,(180-s.w*scale)/2,190-s.h*scale,s.w*scale,s.h*scale);return canvas.toDataURL('image/png');}
 export function showBuildingReplacement({city,renderer,dialog,apply,back},tile){
  const source=baseZonedSprite(tile,city.seed),key=buildingStyleKey(city,tile),footprint=tileBuildingFootprint(city,tile),current=zonedSprite(tile,city.seed,city.buildingReplacements,city),style=REPLACEABLE_STYLES[source],count=city.tiles.filter(t=>canReplaceBuilding(t)&&isBuildingLotRoot(city,t)&&buildingStyleKey(city,t)===key).length;const artwork=index=>tile.lotRoot==null?preview(renderer,index):buildingDesignCanvas(defaultLotDesign(index,footprint)).toDataURL('image/png');
