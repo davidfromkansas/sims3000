@@ -1,4 +1,4 @@
-import {scenarioAllowsBackground} from './scenario-background-rules.js?v=power-overload-grace-1';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=metropolis-growth-planning-1';
 // Manual pp.90,92,106: petitioner offers, stipend while standing, and casino crime.
 // Eligibility, size, stipend and crime falloff are original calibration.
 export const BUSINESSES={casino:{name:'Casino',size:3,cost:0,upkeep:0,sprite:64,stipend:150},toxicWaste:{name:'Toxic Waste Conversion Plant',size:3,cost:0,upkeep:0,sprite:70,stipend:300}};

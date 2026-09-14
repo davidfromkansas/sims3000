@@ -1001,3 +1001,7 @@ An empty 96 × 96 easy city reaches 32,296 residents by month 144 using ordinary
 ## Power overload grace
 
 Overload explosions now follow the guide’s 18-month grace period and certain failure at month 30. The intermediate probability curve is tuned; deterministic draws preserve save/load continuation. Plant inspections and grid reports show the next-month risk. Prices, capacities and aging remain approximate. See POWER-OVERLOAD-GRACE-MILESTONE.md. Schema remains 135.
+
+## Metropolis growth planning
+
+The town guide now tracks population through 150,000 and links current growth warnings to utility, budget and transport reports or construction tools. A staged ordinary-construction audit reached 151,720 residents on an empty 256 map at month 346 without grants or loans. A fresh uninterrupted replay of test:metropolis reproduces that endpoint and passes save round-trip validation. This does not establish Stadium eligibility, original balance or browser performance. See METROPOLIS-GROWTH-PLANNING-MILESTONE.md. Schema remains 135.

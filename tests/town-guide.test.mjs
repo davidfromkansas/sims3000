@@ -1,4 +1,4 @@
-import {cityGrowthTargets,cityGrowthGuide} from '../dist/city-growth-guide.js';
+import {cityGrowthTargets,cityGrowthGuide,cityGrowthIssues} from '../dist/city-growth-guide.js';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {createScenario} from '../dist/scenario-setup.js';
@@ -20,6 +20,19 @@ const calls=[],buttons=townGoals(c).map(g=>({getAttribute:()=>g.action})),ids={r
 globalThis.document={querySelectorAll:()=>buttons,getElementById:id=>ids[id]};
 const before=JSON.stringify(c);let html='';showTownGuide({city:()=>c,dialog:(title,body)=>{assert.equal(title,'Build your first town');html=body;},close:()=>calls.push('close'),tool:k=>calls.push(k),...Object.fromEntries(['utilities','transport','budget','play','review'].map(k=>[k,()=>calls.push(k)]))});
 buttons.forEach(b=>b.onclick());ids.returnPlay.onclick();ids.reviewFromGuide.onclick();
-assert.deepEqual(calls,['close','road','close','residential','utilities','play','utilities','transport','utilities','budget','close','review']);assert.match(html,/A functioning town/);assert.match(html,/From town to city/);assert.deepEqual(cityGrowthTargets(c).map(t=>t.done),[false,false,false]);const grown=structuredClone(c);grown.stats.population=25000;assert.deepEqual(cityGrowthTargets(grown).map(t=>t.done),[true,true,true]);grown.stats.population=10000;assert.deepEqual(cityGrowthTargets(grown).map(t=>t.done),[true,false,false]);assert.match(cityGrowthGuide(grown),/Landfills fill over time/);assert.equal(JSON.stringify(c),before);delete globalThis.document;
+assert.deepEqual(calls,['close','road','close','residential','utilities','play','utilities','transport','utilities','budget','close','review']);assert.match(html,/A functioning town/);assert.match(html,/From town to city/);assert.deepEqual(cityGrowthTargets(c).map(t=>t.done),[false,false,false,false,false,false]);const grown=structuredClone(c);grown.stats.population=25000;assert.deepEqual(cityGrowthTargets(grown).map(t=>t.done),[true,true,true,false,false,false]);grown.stats.population=10000;assert.deepEqual(cityGrowthTargets(grown).map(t=>t.done),[true,false,false,false,false,false]);assert.match(cityGrowthGuide(grown),/Landfills fill over time/);assert.equal(JSON.stringify(c),before);delete globalThis.document;
+const constrained=structuredClone(c);constrained.stats.population=140000;constrained.stats.demand.residential=-100;constrained.stats.demandBreakdown.residential=[{label:'Available jobs',amount:31000},{label:'Existing residents',amount:-32000},{label:'Congested roads and highways',amount:-35}];constrained.stats.economicCaps.commercial.remaining=4;
+assert.ok(cityGrowthIssues(constrained).some(i=>i.id==='workplaces'&&i.action==='industrial'));
+assert.ok(cityGrowthIssues(constrained).some(i=>i.id==='commercial-cap'&&i.action==='transport'));
+assert.ok(cityGrowthIssues(constrained).some(i=>i.id==='traffic'));
+constrained.stats.demandBreakdown.residential[0].amount=33000;
+assert.ok(!cityGrowthIssues(constrained).some(i=>i.id==='workplaces'),'negative demand alone does not prove insufficient jobs');
+constrained.stats.population=150000;assert.ok(cityGrowthTargets(constrained).every(t=>t.done));constrained.stats.population=149999;assert.equal(cityGrowthTargets(constrained).at(-1).done,false);
+assert.match(cityGrowthGuide(constrained),/do not predict/);
+constrained.stats.residentialCap.remaining=0;constrained.stats.demandBreakdown.residential[0].amount=31000;
+const issueButtons=cityGrowthIssues(constrained).map(i=>({getAttribute:()=>i.action})),issued=[];
+globalThis.document={querySelectorAll:()=>issueButtons,getElementById:()=>({})};
+showTownGuide({city:()=>constrained,dialog:()=>{},close:()=>issued.push('close'),tool:k=>issued.push(k),transport:()=>issued.push('transport'),utilities:()=>issued.push('utilities'),budget:()=>issued.push('budget'),review:()=>{}});
+issueButtons.forEach(b=>b.onclick());assert.ok(issued.includes('park'));assert.ok(issued.includes('industrial'));assert.ok(issued.includes('transport'));delete globalThis.document;
 const app=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8');assert.match(app,/if\(city.scenario\)return scenarioPanel\(\)/);assert.match(app,/transport:showTransit/);
 console.log('PASS: first-town construction, live service regression, collection proof, report shortcuts and scenario routing.');
