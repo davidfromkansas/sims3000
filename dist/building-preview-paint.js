@@ -1,8 +1,8 @@
-import {BUILDING_DETAILS,detailFitsSurface,placeSurfaceDetails} from './building-surface-details.js?v=corner-shop-1';
-import {connectedBuildingSurfaces} from './building-surface-fill.js?v=corner-shop-1';
-import {floorPaintKey,floorSurfaceMaterial,paintFloorSurfaces,surfaceLevel} from './building-floor-paint.js?v=corner-shop-1';
-import {projectedBuildingSurfaces,pickBuildingSurface,paintPickedSurfaces} from './building-surface-picking.js?v=corner-shop-1';
-import {BUILDING_MATERIALS,SURFACE_NAMES} from './building-materials.js?v=corner-shop-1';
+import {BUILDING_DETAILS,detailFitsSurface,placeSurfaceDetails} from './building-surface-details.js?v=hospital-patients-1';
+import {connectedBuildingSurfaces} from './building-surface-fill.js?v=hospital-patients-1';
+import {floorPaintKey,floorSurfaceMaterial,paintFloorSurfaces,surfaceLevel} from './building-floor-paint.js?v=hospital-patients-1';
+import {projectedBuildingSurfaces,pickBuildingSurface,paintPickedSurfaces} from './building-surface-picking.js?v=hospital-patients-1';
+import {BUILDING_MATERIALS,SURFACE_NAMES} from './building-materials.js?v=hospital-patients-1';
 export function mountBuildingPreviewPaint(canvas,{get,camera,apply,applyFloor,applyDetails,detail,render,mode,material,status,scope}){
  const base=Object.fromEntries(['onpointerdown','onpointermove','onpointerup','onpointercancel','onkeydown','onwheel'].map(k=>[k,canvas[k]]));let hover=null,stroke=null,geometry=null;
  const point=e=>{const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};};
