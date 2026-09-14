@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {createCity,build,recompute,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {adultEducationGain,advanceEducation,educationReport,ADULT_DECAY_FACTOR} from '../dist/education.js';
+const near=(a,b)=>assert.ok(Math.abs(a-b)<1e-10,`${a} != ${b}`);
+const c=createCity();assert.equal(adultEducationGain(c),0);
+assert.ok(build(c,'library',[{x:20,y:21}]).ok);near(c.stats.libraryEducationCoverage,100);near(c.stats.museumEducationCoverage,0);near(adultEducationGain(c),.09);
+assert.ok(build(c,'museum',[{x:20,y:23}]).ok);near(c.stats.libraryEducationCoverage,100);near(c.stats.museumEducationCoverage,100);near(adultEducationGain(c),.16);
+assert.ok(build(c,'library',[{x:21,y:22}]).ok);near(adultEducationGain(c),.16,'extra libraries cannot stack beyond full coverage');
+c.civic.ordinances.reading=true;near(adultEducationGain(c),.17);const before=c.civic.ageEducation[2];advanceEducation(c);near(c.civic.ageEducation[2],before*ADULT_DECAY_FACTOR+.17);
+const saved=validateSave(JSON.parse(serializeCity(c)));near(adultEducationGain(saved),.17);advanceEducation(c);advanceEducation(saved);assert.deepEqual(c.civic.ageEducation,saved.civic.ageEducation);
+c.civic.funding.education=0;recompute(c);near(c.stats.libraryEducationCoverage,0);near(c.stats.museumEducationCoverage,0);near(adultEducationGain(c),.01);c.civic.ordinances.reading=false;const eq=c.civic.ageEducation[2];for(let i=0;i<12;i++)advanceEducation(c);near(c.civic.ageEducation[2],eq*(1-.0191));
+assert.match(educationReport(saved),/Library access: 100.0%. Museum access: 100.0%/);
+console.log('PASS: independent adult library/museum learning, no duplicate stacking, reading contribution, annual decay, shutdowns, report and saved continuation.');

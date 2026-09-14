@@ -4,12 +4,12 @@ import {advanceEducation,advanceEducationCohorts,initialAgeEducation,educationRe
 import {serializeCity} from '../dist/save.js';
 import {advanceDemographics} from '../dist/demographics.js';
 function month(c){c.month++;advanceEducation(c);advanceEducationCohorts(c,advanceDemographics(c));}
-const c=createCity();c.civic.ageEducation=initialAgeEducation(30,30);c.civic.youthEducation=30;c.civic.adultEducation=30;c.civic.education=30;c.stats.childEducationCoverage=100;c.stats.collegeEducationCoverage=100;c.stats.adultEducationCoverage=100;
+const c=createCity();c.civic.ageEducation=initialAgeEducation(30,30);c.civic.youthEducation=30;c.civic.adultEducation=30;c.civic.education=30;c.stats.childEducationCoverage=100;c.stats.collegeEducationCoverage=100;c.stats.adultEducationCoverage=100;c.stats.libraryEducationCoverage=100;c.stats.museumEducationCoverage=100;
 for(let m=0;m<120;m++)month(c);
 const eq=c.civic.ageEducation;assert.ok(eq[1]>eq[2]&&eq[2]>eq[3]&&eq[3]>eq[7],'education improvements pass through successive ages instead of changing all adults at once');
-const saved=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(saved.civic.ageEducation,eq);saved.stats.childEducationCoverage=100;saved.stats.collegeEducationCoverage=100;saved.stats.adultEducationCoverage=100;
+const saved=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(saved.civic.ageEducation,eq);saved.stats.childEducationCoverage=100;saved.stats.collegeEducationCoverage=100;saved.stats.adultEducationCoverage=100;saved.stats.libraryEducationCoverage=100;saved.stats.museumEducationCoverage=100;
 for(let m=0;m<120;m++){month(c);month(saved);}assert.deepEqual(saved.civic.ageEducation,c.civic.ageEducation,'save continuation retains cohort history');
-const supported=structuredClone(c),unsupported=structuredClone(c);unsupported.stats.adultEducationCoverage=0;
+const supported=structuredClone(c),unsupported=structuredClone(c);unsupported.stats.adultEducationCoverage=0;unsupported.stats.libraryEducationCoverage=0;unsupported.stats.museumEducationCoverage=0;
 for(let m=0;m<240;m++){month(supported);month(unsupported);}assert.ok(supported.civic.ageEducation[7]>unsupported.civic.ageEducation[7]);
 const before=c.civic.ageEducation[1];c.stats.childEducationCoverage=0;c.stats.collegeEducationCoverage=0;for(let m=0;m<120;m++)month(c);assert.ok(c.civic.ageEducation[1]<before);assert.ok(c.civic.ageEducation[2]>c.civic.ageEducation[1],'previously educated adults retain the effects of earlier schooling');
 assert.equal((educationReport(c).match(/<meter /g)||[]).length,8);
