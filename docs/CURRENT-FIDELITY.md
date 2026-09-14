@@ -1029,3 +1029,7 @@ The seventh reward adds a free 2 × 2 cultural venue with 40 accessible jobs and
 ## Civic landmarks
 
 Lighthouse and Historic Statue are now playable rewards, bringing the reward catalog to nine. Their original population/approval gates, footprint, cost, jobs, residential cap relief and local effects are represented, with four-rotation original procedural models. Schema 139 preserves older cities. Local value falloff, normalized environmental scales and zero upkeep remain reconstruction assumptions; see CIVIC-LANDMARKS-MILESTONE.md. This does not complete the original reward catalog or establish browser/AAA visual acceptance.
+
+## Courthouse neighborhoods and reward inspection
+
+County Courthouse now adds direct residential/commercial value (20/25 strengths) alongside its existing crime reduction and 135 jobs. The 30-tile value falloff is explicit reconstruction tuning. Zone inspection now shows signed direct reward value contributions and explains final-value limits. See COURTHOUSE-NEIGHBORHOOD-MILESTONE.md; this is not a complete original land-value model.

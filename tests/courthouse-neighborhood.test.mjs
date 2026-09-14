@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {createCity,build,selection,recompute,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {rewardNeighborhoodReport} from '../dist/reward-neighborhood.js';
+const c=createCity('Justice district',false);c.startYear=2000;c.funds=100000;c.rewards.earned.countyCourthouse=0;for(const t of c.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});
+const place=(k,a,b=a)=>assert.ok(build(c,k,selection(k,a,b)).ok);place('solar',{x:35,y:15});place('powerline',{x:8,y:16},{x:34,y:16});place('road',{x:8,y:20},{x:30,y:20});place('residential',{x:24,y:18});place('commercial',{x:24,y:19});place('industrial',{x:24,y:21});
+const homes=c.tiles[18*48+24],shop=c.tiles[19*48+24],factory=c.tiles[21*48+24];const before=[homes.airPollution,homes.waterPollution,homes.landValue,homes.crime];place('countyCourthouse',{x:27,y:17});
+assert.ok(Math.abs(homes.courthouseLandValue-20*27/31)<1e-9);assert.ok(Math.abs(shop.courthouseLandValue-25*27/31)<1e-9);assert.equal(factory.courthouseLandValue,0);assert.equal(homes.civicRewardAura,0);assert.equal(homes.airPollution,before[0]);assert.equal(homes.waterPollution,before[1]);assert.ok(homes.landValue>before[2]);assert.ok(homes.crime<before[3]);
+const value=homes.landValue;recompute(c);assert.equal(homes.landValue,value);assert.equal(validateSave(JSON.parse(serializeCity(c))).tiles[18*48+24].landValue,value);
+const report=rewardNeighborhoodReport(homes);assert.match(report,/Courthouse/);assert.match(report,/\+17\.4 points/);assert.match(report,/limited to 1–100/);assert.match(rewardNeighborhoodReport({...homes,stadiumLandValue:-12}),/-12\.0 points/);assert.equal(rewardNeighborhoodReport({type:'road'}),'');
+homes.radiation=10;recompute(c);assert.equal(homes.courthouseLandValue,0);assert.equal(homes.landValue,1);homes.radiation=0;
+const corner=c.tiles[19*48+29];corner.fire=5;recompute(c);assert.equal(homes.courthouseLandValue,0);assert.match(rewardNeighborhoodReport(homes),/No active reward/);corner.fire=0;c.finance.roadCondition=0;recompute(c);assert.equal(homes.courthouseLandValue,0);c.finance.roadCondition=100;recompute(c);assert.ok(homes.courthouseLandValue>0);
+place('bulldoze',{x:29,y:19});assert.equal(homes.courthouseLandValue,0);place('countyCourthouse',{x:27,y:17});assert.ok(homes.courthouseLandValue>0);
+console.log('PASS: courthouse sector land value, no direct aura/pollution, crime interaction, live shutdown/rebuild, radiation, stable saves and signed reward neighborhood inspection.');
