@@ -38,7 +38,7 @@ const {createCity,validateSave}=await import('../dist/engine.js');const {seriali
 const decorated={...design,roofDetails:[detail]},portable=exportBuildingDesign(decorated);assert.equal(JSON.parse(portable).version,15);assert.deepEqual(importBuildingDesign(portable),decorated);
 for(const version of [12,13,14])assert.throws(()=>importBuildingDesign(JSON.stringify({...JSON.parse(portable),version})));
 assert.throws(()=>validateBuildingDesign({...decorated,decals:Array(32).fill({kind:1,side:2,plane:5,u:0,z:0,width:1,height:.14})}),/combined/);
-const city=createCity();city.buildingDesigns[2]=decorated;const saved=JSON.parse(serializeCity(city));assert.equal(saved.version,159);assert.deepEqual(validateSave(saved).buildingDesigns[2],decorated);saved.version=155;assert.throws(()=>validateSave(saved),/156/);delete saved.buildingDesigns[2].roofDetails;assert.equal(validateSave(saved).version,159);
+const city=createCity();city.buildingDesigns[2]=decorated;const saved=JSON.parse(serializeCity(city));assert.equal(saved.version,160);assert.deepEqual(validateSave(saved).buildingDesigns[2],decorated);saved.version=155;assert.throws(()=>validateSave(saved),/156/);delete saved.buildingDesigns[2].roofDetails;assert.equal(validateSave(saved).version,160);
 for(let rotation=0;rotation<4;rotation++){
  const render=d=>{const commands=[];drawBuildingDesign({beginPath(){},closePath(){},stroke(){},moveTo(x,y){commands.push([x,y]);},lineTo(x,y){commands.push([x,y]);},fill(){commands.push(this.fillStyle);}},d,rotation);return commands;};
  const plain=render(design),roof=render(decorated);assert.ok(roof.length>plain.length);assert.ok(roof.flat().filter(n=>typeof n==='number').every(Number.isFinite));

@@ -1,6 +1,6 @@
-import {BUILDING_MATERIAL_LIMIT,encodePaintMaterial,decodePaintMaterial} from './building-paint-colors.js?v=scripted-ending-ranks-1';
-import {BUILDING_MATERIALS,materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=scripted-ending-ranks-1';
-import {projectBuildingPoint} from './building-footprints.js?v=scripted-ending-ranks-1';
+import {BUILDING_MATERIAL_LIMIT,encodePaintMaterial,decodePaintMaterial} from './building-paint-colors.js?v=live-scenario-comparisons-2';
+import {BUILDING_MATERIALS,materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=live-scenario-comparisons-2';
+import {projectBuildingPoint} from './building-footprints.js?v=live-scenario-comparisons-2';
 export function validateGroundPaint(value){if(typeof value!=='string'||value.length!==100||/[^0-9a-z]/.test(value))throw Error('Ground paint needs 100 valid material entries.');return value;}
 export function groundMaterial(design,index){return decodePaintMaterial(design.groundPaint?.[index]||'0');}
 export function groundFaces(design,rotation=0){return Array.from({length:100},(_,index)=>{const x=index%10,y=Math.floor(index/10),a=x/10-.5,b=y/10-.5,points=[[a,b,0],[a+.1,b,0],[a+.1,b+.1,0],[a,b+.1,0]];return{index,x,y,side:4,from:0,to:1,points,polygon:points.map(p=>projectBuildingPoint(p,rotation,design.footprint))};});}

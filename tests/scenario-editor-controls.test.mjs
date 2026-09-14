@@ -75,3 +75,16 @@ $('rankName3').value='Coast guardian';$('rankName3').oninput();assert.equal($('e
 $('rankName3').value='';$('rankName3').oninput();assert.equal($('eventRank0').value,'3');assert.match($('eventRank0').optionsHTML,/is empty/);$('startCustom').onclick();assert.match($('customError').textContent,/rank/);
 $('rankName3').value='Coast guardian';$('rankName3').oninput();$('customError').textContent='';$('startCustom').onclick();assert.equal($('customError').textContent,'');assert.equal(city.scenario.definition.events[0].rankIndex,1);tick(city);assert.equal(city.scenario.rank,'Coast guardian');
 console.log('PASS scheduled ending rank: sparse named rows, retained rename, missing-row rejection and actual awarded outcome');
+showCustomScenarioEditor({city:()=>city,dialog:(_,html)=>parse(html),exportCity(){},save(){},update(){}},()=>{});
+change('customEvent0','announcement');$('eventMessage0').value='Live comparison matched.';$('eventMonth0').value=1;change('eventCondition0','funds');$('eventThreshold0').value='123';
+change('eventTargetKind0','metric');change('eventRightMetric0','population');assert.equal($('eventRightFields0').hidden,false);assert.equal($('eventThreshold0').closest('label').hidden,true);
+change('eventTargetKind0','constant');assert.equal($('eventThreshold0').value,'123');change('eventTargetKind0','metric');assert.equal($('eventRightMetric0').value,'population');
+$('startCustom').onclick();assert.equal($('customError').textContent,'');assert.equal(city.scenario.definition.events[0].condition.conditions[0].right.metric,'population');assert.equal(Object.hasOwn(city.scenario.definition.events[0].condition.conditions[0],'target'),false);tick(city);assert.equal(city.scenario.events[0].message,'Live comparison matched.');
+showCustomScenarioEditor({city:()=>city,dialog:(_,html)=>parse(html),exportCity(){},save(){},update(){}},()=>{});
+change('customEvent0','announcement');$('eventMessage0').value='Area comparison';$('eventMonth0').value=1;change('eventCondition0','landmarks');change('areaModeevent0','near');$('areaXevent0').value='5';$('areaYevent0').value='6';$('areaRadiusevent0').value='2';
+change('eventTargetKind0','metric');change('eventRightMetric0','landmarks');change('areaModeeventRight0','near');$('areaXeventRight0').value='15';$('areaYeventRight0').value='16';$('areaRadiuseventRight0').value='3';
+$('startCustom').onclick();assert.equal($('customError').textContent,'');assert.deepEqual(city.scenario.definition.events[0].condition.conditions[0].area,{x:4,y:5,radius:2});assert.deepEqual(city.scenario.definition.events[0].condition.conditions[0].right.area,{x:14,y:15,radius:3});
+showCustomScenarioEditor({city:()=>city,dialog:(_,html)=>parse(html),exportCity(){},save(){},update(){}},()=>{});
+change('customMetric2','funds');change('customEvent0','announcement');$('eventMessage0').value='Goal comparison';$('eventMonth0').value=1;change('eventCondition0','goalStatus1');change('eventTargetKind0','metric');change('eventRightMetric0','goalStatus3');
+$('startCustom').onclick();assert.equal($('customError').textContent,'');assert.equal(city.scenario.definition.events[0].condition.conditions[0].right.metric,'goalStatus2');
+console.log('PASS live-comparison form: retained thresholds, real conditional event, independent areas and sparse goal references');

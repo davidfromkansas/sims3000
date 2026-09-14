@@ -133,3 +133,5 @@ dialog:has(.building-designer){width:min(1120px,calc(100% - 30px))}
  .building-designer .building-overview canvas{width:56px;height:84px;max-width:56px;max-height:84px}
  .building-designer .building-overview p,.building-designer>div:first-child>p{font-size:12px;line-height:1.4}
 }
+
+#dialogBody [id^="eventThresholdLabel"][hidden]{display:none}

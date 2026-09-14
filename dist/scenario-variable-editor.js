@@ -1,11 +1,11 @@
-import {defaultScenarioVariables,MAX_SCENARIO_VARIABLES} from './scenario-variables.js?v=scripted-ending-ranks-1';
-import {scenarioVariableIndex} from './scenario-variable-references.js?v=scripted-ending-ranks-1';
+import {defaultScenarioVariables,MAX_SCENARIO_VARIABLES} from './scenario-variables.js?v=live-scenario-comparisons-2';
+import {scenarioVariableIndex} from './scenario-variable-references.js?v=live-scenario-comparisons-2';
 
 export function mountScenarioVariableEditor(root,{scope=document,programEditor,initial=defaultScenarioVariables(),onChange=()=>{}}={}){
  let variables=structuredClone(initial),rows=[];
  const el=(tag,text)=>{const node=document.createElement(tag);if(text!==undefined)node.textContent=text;return node;};
  const status=el('p');status.setAttribute('role','status');
- const metricSelects=()=>[...scope.querySelectorAll('select')].filter(n=>/^(customMetric|eventCondition|eventCopyMetric|eventOperandMetric|storyValue)/.test(n.id));
+ const metricSelects=()=>[...scope.querySelectorAll('select')].filter(n=>/^(customMetric|eventCondition|eventRightMetric|eventCopyMetric|eventOperandMetric|storyValue)/.test(n.id));
  const targets=()=>[...scope.querySelectorAll('select')].filter(n=>/^eventVariable\d+$/.test(n.id));
  const messages=()=>[...scope.querySelectorAll('input,textarea')].filter(n=>/^(customBriefing|customWinMessage|customLossMessage|goalDescription\d+|eventMessage\d+|rankMessage\d+)$/.test(n.id));
  const read=()=>rows.map(({name,value})=>({name:name.value,initial:value.value.trim()===''?NaN:Number(value.value)}));

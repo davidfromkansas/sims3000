@@ -1,9 +1,9 @@
-import {STRUCTURES} from './structures.js?v=scripted-ending-ranks-1';
-import {SERVICES} from './civic.js?v=scripted-ending-ranks-1';
-import {STATIONS} from './rail.js?v=scripted-ending-ranks-1';
-import {WATER_STRUCTURES,WASTE_STRUCTURES} from './utilities.js?v=scripted-ending-ranks-1';
-import {FACILITIES} from './facilities.js?v=scripted-ending-ranks-1';
-import {inScenarioArea} from './scenario-area.js?v=scripted-ending-ranks-1';
+import {STRUCTURES} from './structures.js?v=live-scenario-comparisons-2';
+import {SERVICES} from './civic.js?v=live-scenario-comparisons-2';
+import {STATIONS} from './rail.js?v=live-scenario-comparisons-2';
+import {WATER_STRUCTURES,WASTE_STRUCTURES} from './utilities.js?v=live-scenario-comparisons-2';
+import {FACILITIES} from './facilities.js?v=live-scenario-comparisons-2';
+import {inScenarioArea} from './scenario-area.js?v=live-scenario-comparisons-2';
 export const COUNTED_STRUCTURES={...STRUCTURES,...SERVICES,...STATIONS,...WATER_STRUCTURES,...WASTE_STRUCTURES,...FACILITIES,busStop:{name:'Bus stop'},park:{name:'Small park'}};
 // Count a fixed-footprint building once at its origin, even without service.
 // Airport and seaport zoning must develop before it represents a building.

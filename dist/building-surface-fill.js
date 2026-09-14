@@ -1,4 +1,4 @@
-import {floorPaintKey,floorSurfaceMaterial,surfaceLevel} from './building-floor-paint.js?v=scripted-ending-ranks-1';
+import {floorPaintKey,floorSurfaceMaterial,surfaceLevel} from './building-floor-paint.js?v=live-scenario-comparisons-2';
 // Face adjacency is measured in model coordinates, independent of projection.
 // Walls traverse horizontally and vertically on one plane; roofs traverse x/y
 // at one height. A gap, corner, step or different material stops the fill.

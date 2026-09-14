@@ -9,6 +9,6 @@ export function readGoalStatus(c,index,metrics){
 }
 export function goalConditionIndex(metric){const match=/^goalStatus([1-4])$/.exec(metric);return match?Number(match[1])-1:null;}
 export function validateGoalStatusReferences(definition){
- const check=condition=>{if(!condition)return;if(condition.conditions){condition.conditions.forEach(check);return;}const index=goalConditionIndex(condition.metric);if(index!==null&&index>=definition.objectives.length)throw Error('A goal-status condition refers to an undefined goal.');};
+ const check=condition=>{if(!condition)return;if(condition.conditions){condition.conditions.forEach(check);return;}for(const metric of [condition.metric,condition.right?.metric]){const index=goalConditionIndex(metric);if(index!==null&&index>=definition.objectives.length)throw Error('A goal-status condition refers to an undefined goal.');}};
  definition.events.forEach(e=>check(e.condition));definition.ranks.forEach(r=>check(r.condition));return definition;
 }

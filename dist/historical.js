@@ -1,4 +1,4 @@
-import {buildingLotMembers,updateBuildingLot} from './building-lots.js?v=scripted-ending-ranks-1';
+import {buildingLotMembers,updateBuildingLot} from './building-lots.js?v=live-scenario-comparisons-2';
 const zones=['residential','commercial','industrial'];
 export const canPreserve=t=>zones.includes(t.type)&&t.industry!=='farm'&&!t.rubble&&!t.fire&&(t.level>0||t.historicalLevel>0);
 export function designateHistorical(c,index,value){

@@ -1,4 +1,4 @@
-import {DECAL_NAMES,decalPolygonsOnFace,wallWorldPoint,wallCoordinates} from './building-decals.js?v=scripted-ending-ranks-1';
+import {DECAL_NAMES,decalPolygonsOnFace,wallWorldPoint,wallCoordinates} from './building-decals.js?v=live-scenario-comparisons-2';
 export const DETAIL_GROUPS={all:{name:'All details',ids:[1,2,3,4,5]},openings:{name:'Windows and doors',ids:[1,2,4]},trim:{name:'Trim and ventilation',ids:[3,5]}};
 export function detailPaletteHTML(){return `<div class="building-detail-palette"><label>Detail set<select id="detailSet">${Object.entries(DETAIL_GROUPS).map(([key,g])=>`<option value="${key}">${g.name}</option>`).join('')}</select></label><input id="decalKind" type="hidden" value="1"><div class="material-swatches">${DECAL_NAMES.slice(1).map((name,i)=>`<button type="button" id="detailSwatch${i+1}" aria-pressed="${i===0}"><span id="detailTexture${i+1}" aria-hidden="true"></span><span id="detailName${i+1}">${name}</span></button>`).join('')}</div></div>`;}
 export function detailSwatchSVG(kind,design){

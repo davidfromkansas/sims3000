@@ -68,3 +68,12 @@ let destinationRanks=[];const importRanks=mountScenarioProgramEditor(importRankR
 click(importRankRoot,'Copy routines from current challenge');assert.deepEqual(importRanks.draft(),[]);assert.ok(walk(importRankRoot).some(n=>n.textContent.includes('Create a rank named Harbor award')));
 destinationRanks=[{index:3,name:'Harbor award',outcome:'won'}];importRanks.refreshRanks();click(importRankRoot,'Copy routines from current challenge');
 assert.equal(importRanks.draft()[0].steps[0].action.rankIndex,3);assert.equal(importRanks.read([0],[3])[0].steps[0].action.rankIndex,0);
+const comparisonRoot=new Node('div');const comparisonEditor=mountScenarioProgramEditor(comparisonRoot,{initial:[{name:'Compare',steps:[{kind:'if',condition:{metric:'variable1',operator:'gte',target:7},then:[],else:[]}]}]});
+change(comparisonRoot,'Compare with','metric');change(comparisonRoot,'Comparison value','variable2');
+assert.equal(comparisonEditor.read()[0].steps[0].condition.right.metric,'variable2');assert.equal(Object.hasOwn(comparisonEditor.read()[0].steps[0].condition,'target'),false);
+change(comparisonRoot,'Compare with','constant');assert.equal(control(comparisonRoot,'Threshold').value,'7');
+change(comparisonRoot,'Compare with','metric');assert.equal(control(comparisonRoot,'Comparison value').value,'variable2');change(comparisonRoot,'City or scenario value','variable3');
+assert.equal(Object.hasOwn(comparisonEditor.read()[0].steps[0].condition,'target'),false);
+assert.throws(()=>comparisonEditor.prepareVariableRemoval(Array.from({length:4},(_,i)=>({name:'Counter '+i,initial:0})),1),/comparison value/);
+change(comparisonRoot,'Comparison value','goalStatus4');assert.equal(comparisonEditor.read([0,3])[0].steps[0].condition.right.metric,'goalStatus2');assert.throws(()=>comparisonEditor.read([0]),/empty goal row/);
+console.log('PASS live-comparison routine controls: draft retention, both operand references and sparse goal mapping');

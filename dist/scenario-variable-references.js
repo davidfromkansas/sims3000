@@ -1,4 +1,4 @@
-import {validateScenarioVariables,MAX_SCENARIO_VARIABLES} from './scenario-variables.js?v=scripted-ending-ranks-1';
+import {validateScenarioVariables,MAX_SCENARIO_VARIABLES} from './scenario-variables.js?v=live-scenario-comparisons-2';
 // Walk only fields that the scenario runtime interprets as variable references.
 // Literal titles, goal names and routine names must not be rewritten.
 export function scenarioVariableIndex(metric){
@@ -18,7 +18,7 @@ function visitReferences(definition,visit){
  const condition=(value,path)=>{
   if(!value)return;
   if(value.conditions)value.conditions.forEach((child,i)=>condition(child,`${path} / condition ${i+1}`));
-  else metric(value,'metric',path);
+  else {metric(value,'metric',path);metric(value.right,'metric',`${path} / comparison value`);}
  };
  const action=(value,path)=>{
   condition(value.condition,`${path} / condition`);
