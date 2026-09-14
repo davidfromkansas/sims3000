@@ -1057,3 +1057,7 @@ Ten recreation/transit types now contribute guide-derived, per-building waste to
 ## Infrastructure waste
 
 Coal, oil, gas, nuclear, microwave and fusion plants now generate 8 garbage units/month per intact building; wind and solar generate none. Operating recycling centers add .72. Plant collection uses the full footprint and requires disposal-connected roads. Utilities/inspection show output and backlog. These guide-derived weights retain the reconstruction's monthly scaling. See [infrastructure garbage](INFRASTRUCTURE-GARBAGE-MILESTONE.md).
+
+## Airport and seaport waste
+
+Operating airport/seaport tiles now produce garbage (.48/.32 units per tile/month), derived from the guide's relative zone weights with reconstruction scaling. Full-facility road access handles collection, and Utilities/inspection expose each facility's production and backlog. Development, service loss, damage and reopening govern production; adjacent plots count separately. See [port garbage](PORT-GARBAGE-MILESTONE.md).

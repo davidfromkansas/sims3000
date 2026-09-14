@@ -1,5 +1,5 @@
-import {activePolicyPetitions,POLICY_PETITIONS,respondToPetition,petitionImpact,petitionReturnMonth} from './petitions.js?v=infrastructure-garbage-1';
-import {ORDINANCES} from './ordinances.js?v=infrastructure-garbage-1';
+import {activePolicyPetitions,POLICY_PETITIONS,respondToPetition,petitionImpact,petitionReturnMonth} from './petitions.js?v=port-garbage-1';
+import {ORDINANCES} from './ordinances.js?v=port-garbage-1';
 export function showPolicyPetitions(ui,back,analysis=null){const c=ui.city(),pending=activePolicyPetitions(c),fmt=n=>Number(n||0).toLocaleString(undefined,{maximumFractionDigits:1});
  const utility=analysis?.id==='powerConservation'?'power':analysis?.id==='waterConservation'?'water':null;
  const utilityNote=utility?`<p>${analysis.after[utility+'Unserved']>1e-7?'Unmet demand remains after conservation. Inspect utility networks: spare supply cannot cross a broken connection, and conservation does not build pipes or power lines.':'At current development, this decision leaves no unmet demand. New growth and source aging may change that.'}</p>`:'';
