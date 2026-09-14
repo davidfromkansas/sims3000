@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createCity} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {civicAdvisorBriefing,showCivicAdvisor} from '../dist/civic-advisors.js';
+const city=createCity(),before=serializeCity(city),safety=civicAdvisorBriefing(city,'safety'),hea=civicAdvisorBriefing(city,'hea');assert.equal(safety.name,'Maria Montoya');assert.equal(hea.name,'Randall Shoop');assert.ok(safety.issues.some(i=>i.tool==='police'));assert.ok(hea.issues.some(i=>i.tool==='hospital'));assert.ok(hea.issues.some(i=>i.tool==='school'));assert.equal(serializeCity(city),before);assert.throws(()=>civicAdvisorBriefing(city,'invalid'));
+const empty=createCity('Empty',false);for(const kind of ['safety','hea'])assert.deepEqual(civicAdvisorBriefing(empty,kind).issues.map(i=>i.tool),['residential']);
+city.stats.strikes=['health','fire'];assert.equal(civicAdvisorBriefing(city,'safety').issues[0].title,'Fire strike');assert.equal(civicAdvisorBriefing(city,'hea').issues[0].title,'Healthcare strike');assert.ok(!civicAdvisorBriefing(city,'safety').issues.some(i=>i.title==='Healthcare strike'));
+city.stats.strikes=[];city.stats.policeCoverage=100;city.stats.fireCoverage=100;city.stats.averageCrime=0;city.stats.jailNeed=0;assert.equal(civicAdvisorBriefing(city,'safety').issues[0].title,'Maintain the progress');
+for(const advisor of [safety,hea]){const png=readFileSync(new URL('../dist/'+advisor.portrait,import.meta.url));assert.equal(png.subarray(1,4).toString(),'PNG');assert.ok(png.readUInt32BE(16)>=512);}
+let html='',mapped=null,tool=null,closed=0,returned=0;const controls=new Map(),nodes=(attribute)=>Array.from(html.matchAll(new RegExp(attribute+'="(\\d+)"','g'))).map(match=>({dataset:{[attribute==='data-advisor-map'?'advisorMap':'advisorBuild']:match[1]}}));let maps=[],builds=[];globalThis.document={querySelectorAll:s=>s==='[data-advisor-map]'?(maps=nodes('data-advisor-map')):(builds=nodes('data-advisor-build')),querySelector:s=>{if(!controls.has(s))controls.set(s,{});return controls.get(s);}};
+showCivicAdvisor({city:()=>createCity(),dialog:(title,body)=>html=body,close:()=>closed++,setLayer:l=>mapped=l,setTool:t=>tool=t},'hea',()=>returned++);assert.match(html,/randall-advisor.png/);assert.match(html,/Healthcare access/);maps[0].onclick();assert.equal(mapped,'health');builds[0].onclick();assert.equal(tool,'hospital');assert.equal(closed,2);controls.get('#advisorFunding').onclick();assert.equal(returned,1);
+console.log('PASS: city-specific civic advisor priorities, empty-city planning, department-specific strikes, healthy-service fallback, portrait assets and actionable map/build/funding links.');
