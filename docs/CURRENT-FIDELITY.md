@@ -1021,3 +1021,7 @@ Stadiums now trade local pollution, crime pressure and lower residential value f
 ## Corrected civic reward gates
 
 Schema 137 applies original strong approval to City Hall and Mayor’s House and removes the latter’s arbitrary three-month delay. Existing earned offers survive migration. Sector-specific land-value and direct aura effects replace uniform amenity bonuses. Earlier ordinary-play reward dates at months 53/115 belong to pre-137 rules; the growth route remains a population test, not proof of those early unlocks. See CIVIC-REWARD-FIDELITY-MILESTONE.md.
+
+## Performing Arts Center
+
+The seventh reward adds a free 2 × 2 cultural venue with 40 accessible jobs and 48,000 residential capacity relief, plus source-based local benefits/pollution and an original four-view theater model. Schema 138 migrates older reward histories. See PERFORMING-ARTS-CENTER-MILESTONE.md. Full original reward/building catalogs and browser review remain unfinished.

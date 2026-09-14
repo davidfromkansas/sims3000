@@ -1,6 +1,6 @@
-import {stadiumMatchPixels} from './stadium-match.js?v=civic-reward-fidelity-1';
-import {rasterizeMiniature} from './miniature-raster.js?v=civic-reward-fidelity-1';
-export const MODELED_REWARDS=new Set(['medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
+import {stadiumMatchPixels} from './stadium-match.js?v=performing-arts-center-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=performing-arts-center-1';
+export const MODELED_REWARDS=new Set(['performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){
  if(!MODELED_REWARDS.has(type))throw Error('Unknown reward model.');
@@ -10,7 +10,19 @@ export function rewardGeometry(type){
  const hall=(x,y,w,d,h,color)=>{box(x,y,.05,w,d,h,color);roof(x,y,h+.05,w+.02,d+.02,.075,'#647c83');for(const side of [-1,1])for(let i=0;i<Math.floor(w/.07);i++)for(const z of [.12,.23])if(z+.045<h+.05)box(x-w/2+.045+i*.07,y+side*(d/2+.003),z,.028,.007,.048,'#547e8a');};
  const tree=(x,y)=>{box(x,y,.06,.015,.015,.09,'#796449');for(const [z,w]of [[.14,.085],[.19,.065],[.23,.035]])box(x,y,z,w,w,.035,'#537a50');};
  box(0,0,0,.97,.97,.04,'#aaa993');box(0,0,.04,.93,.93,.015,'#81966d');
- if(type==='medicalResearch'){
+ if(type==='performingArts'){
+  // Original theater: copper barrel-vault auditorium, glazed foyer and sculpture court.
+  box(0,.29,.055,.84,.29,.012,'#c9c0ab');box(-.10,-.06,.055,.58,.56,.215,'#a98e79');
+  const arc=Array.from({length:13},(_,i)=>[-.10+.31*Math.cos(i*Math.PI/12),.27+.16*Math.sin(i*Math.PI/12)]);
+  for(let i=0;i<12;i++){const [x1,z1]=arc[i],[x2,z2]=arc[i+1];add([[x2,-.36,z2],[x1,-.36,z1],[x1,.24,z1],[x2,.24,z2]],shade(i%2?'#cdb58a':'#dac69e',.78+.22*Math.sin((i+.5)*Math.PI/12)));}
+  add(arc.map(([x,z])=>[x,-.36,z]),'#897b69');add(arc.map(([x,z])=>[x,.24,z]).reverse(),'#b9a887');
+  box(-.08,.24,.06,.62,.18,.16,'#4f7882');box(-.08,.24,.22,.68,.21,.018,'#dad4bd');
+  for(const x of [-.34,-.24,-.14,-.04,.06,.16])box(x,.332,.07,.011,.007,.15,'#b3c4bd');
+  box(.31,-.09,.06,.22,.46,.24,'#c9b89a');box(.31,-.09,.30,.25,.49,.022,'#a79171');
+  for(const y of [-.23,-.08,.07]){box(.424,y,.105,.006,.09,.13,'#697c80');box(.429,y,.125,.004,.075,.08,y<0?'#bc8b65':'#8eb0a4');}
+  box(.30,.30,.07,.12,.12,.045,'#9b9480');for(let tier=0;tier<4;tier++)box(.30+(tier%2?.016:-.016),.30,.115+tier*.035,.045,.045,.04,'#71918b');
+  for(const x of [-.36,-.28])box(x,.39,.07,.06,.035,.018,'#a49b85');tree(.36,-.36);tree(-.40,.35);
+ }else if(type==='medicalResearch'){
   // Original modern laboratory campus: glazed research tower, clinic wing and rooftop plant.
   box(0,.25,.055,.78,.35,.014,'#c5c8be');box(-.10,-.12,.055,.56,.49,.40,'#d5ded7');
   for(const z of [.13,.22,.31,.40]){box(-.10,.129,z,.48,.009,.052,'#497f8a');box(-.384,-.12,z,.009,.42,.052,'#527e8a');box(.184,-.12,z,.009,.42,.052,'#608e98');box(-.10,-.369,z,.48,.009,.052,'#537e89');}
