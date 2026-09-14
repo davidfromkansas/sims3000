@@ -863,3 +863,5 @@ Reward catalog checkpoint: City Hall adds a permanent 20,000-resident unlock, or
 ## City Hall employment checkpoint
 
 City Hall now supplies 36 finite civic jobs while operating. Homes can reach them through roads, buses or rail, sharing the worker pool with commercial and industrial workplaces. Its entire footprint is used for transport access, but capacity is counted once. Reports, inspection, demand and save restoration include civic employment. See `CITY-HALL-EMPLOYMENT-MILESTONE.md`. Other original reward effects and the full reward catalog remain incomplete.
+
+Abandoned recovery checkpoint: filter and locate abandoned RCI buildings, inspect current recovery blockers, and distinguish them from vacant zoning. Shared simulation checks and real abandonment-to-recovery tests cover the flow. Original historical cause recording remains unfinished. See `ABANDONED-RECOVERY-MILESTONE.md`. Schema123; publication pending.
