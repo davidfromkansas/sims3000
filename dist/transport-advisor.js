@@ -1,4 +1,4 @@
-import {showOrdinanceAnalysis} from './ordinance-analysis-ui.js?v=stadium-match-day-1';
+import {showOrdinanceAnalysis} from './ordinance-analysis-ui.js?v=civic-reward-fidelity-1';
 const number=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:1});
 export function transportationBriefing(c){
  const s=c.stats,issues=[],add=(title,text,action,layer,tool)=>issues.push({title,text,action,layer,tool});
