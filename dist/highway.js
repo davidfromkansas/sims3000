@@ -1,4 +1,4 @@
-import {tunnelEdges} from './tunnels.js?v=architecture-workspace-1';
+import {tunnelEdges} from './tunnels.js?v=scenario-variable-manager-1';
 // Absent network nodes share an immutable list; only real tracks/roads allocate adjacency.
 const EMPTY_EDGES=Object.freeze([]);
 export function rampCrossings(tiles,t){const n=Math.sqrt(tiles.length),out=[];for(const dx of [-1,1])for(const dy of [-1,1]){const x=t.x+dx,y=t.y+dy;if(x<0||y<0||x>=n||y>=n)continue;const i=y*n+x,u=tiles[i];if(u.type==='road'&&u.highway&&u.terrain==='land')out.push(i);}return out;}

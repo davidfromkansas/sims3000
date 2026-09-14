@@ -30,3 +30,24 @@ change(box('Actions'),'Action','earthquake');assert.equal(trade.read()[0].steps[
 change(box('Actions'),'Action','tornado');change(box('Actions'),'Travel direction','southwest');change(box('Actions'),'Tornado intensity (1–100)',80);change(box('Actions'),'Travel distance (tiles)',12);change(box('Actions'),'Travel speed','fast');const warning=control(box('Actions'),'Early tornado warning');warning.checked=false;warning.onchange();assert.deepEqual(trade.read()[0].steps[0].action.tornado,{direction:'southwest',intensity:80,distance:12,speed:'fast',warning:false});
 
 change(box('Actions'),'Action','resultText');change(box('Actions'),'Result message for','lost');const message=control(box('Actions'),'Message text');assert.equal(message.maxLength,1500);change(box('Actions'),'Message text','A different ending: {variable1}');assert.equal(trade.read()[0].steps[0].action.outcome,'lost');assert.equal(trade.read()[0].steps[0].action.message,'A different ending: {variable1}');change(box('Actions'),'Action','dialogText');assert.equal(trade.read()[0].steps[0].action.x,0);
+// A cut step remains a variable reference until cleared or pasted.
+const collectionRoot=new Node('div');let variableDefinitions=Array.from({length:6},(_,i)=>({name:'Counter '+(i+1),initial:0}));
+const collection=mountScenarioProgramEditor(collectionRoot,{variables:()=>variableDefinitions,initial:[{name:'Score routine',steps:[{kind:'action',action:{type:'variable',variable:5,operation:'copy',metric:'variable2'}}]}]});
+const initialRow=walk(collectionRoot).find(n=>n.tag==='section');click(initialRow,'Cut step');
+assert.equal(collection.draft()[0].steps.length,0);
+assert.throws(()=>collection.prepareVariableRemoval(variableDefinitions,5),/Cannot remove Counter 6/);
+const applyRemoval=collection.prepareVariableRemoval(variableDefinitions,0);variableDefinitions.shift();applyRemoval();collection.refreshVariables();
+const actionBox=walk(collectionRoot).find(n=>n.tag==='legend'&&n.textContent==='Actions').parent;click(actionBox,'Paste at end');
+assert.equal(collection.draft()[0].steps[0].action.variable,4);
+assert.equal(collection.draft()[0].steps[0].action.metric,'variable1');
+const variableControl=control(collectionRoot,'Variable slot');assert.equal(variableControl.children.length,5);assert.equal(variableControl.children.at(-1).textContent,'Counter 6');
+console.log('PASS variable collection in routine editor: named choices, copied-step deletion guard and atomic reference remapping');
+// Copyable source routines retain counter identities after unused-row removal.
+const sourceRoot=new Node('div');let sourceVariables=Array.from({length:6},(_,i)=>({name:'Source '+i,initial:0}));
+const sourceEditor=mountScenarioProgramEditor(sourceRoot,{variables:()=>sourceVariables,available:[{name:'Source routine',steps:[{kind:'action',action:{type:'variable',variable:5,operation:'add',value:1}}]}]});
+const applySourceRemoval=sourceEditor.prepareVariableRemoval(sourceVariables,0);sourceVariables.shift();applySourceRemoval();sourceEditor.refreshVariables();click(sourceRoot,'Copy routines from current challenge');
+assert.equal(sourceEditor.draft()[0].steps[0].action.variable,4);
+const blockedRoot=new Node('div');let blockedVariables=Array.from({length:6},(_,i)=>({name:'Source '+i,initial:0}));
+const blockedEditor=mountScenarioProgramEditor(blockedRoot,{variables:()=>blockedVariables,available:[{name:'Source routine',steps:[{kind:'action',action:{type:'variable',variable:5,operation:'add',value:1}}]}]});
+const applyBlockedRemoval=blockedEditor.prepareVariableRemoval(blockedVariables,5);blockedVariables.pop();applyBlockedRemoval();blockedEditor.refreshVariables();click(blockedRoot,'Copy routines from current challenge');
+assert.deepEqual(blockedEditor.draft(),[]);assert.ok(walk(blockedRoot).some(n=>n.textContent.includes('source routines use a variable removed')));

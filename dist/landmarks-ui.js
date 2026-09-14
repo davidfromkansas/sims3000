@@ -1,5 +1,5 @@
-import {LANDMARKS} from './landmarks.js?v=architecture-workspace-1';
-import {MODELED_LANDMARKS,drawLandmarkPreview} from './landmark-models.js?v=architecture-workspace-1';
+import {LANDMARKS} from './landmarks.js?v=scenario-variable-manager-1';
+import {MODELED_LANDMARKS,drawLandmarkPreview} from './landmark-models.js?v=scenario-variable-manager-1';
 const directions=['North','East','South','West'];
 export function showLandmarks({city,dialog,close,setTool}){
  const c=city(),placedTypes=new Set(c.tiles.map(t=>t.type));

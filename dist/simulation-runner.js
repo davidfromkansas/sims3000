@@ -1,8 +1,8 @@
-import {tick} from './engine.js?v=architecture-workspace-1';
+import {tick} from './engine.js?v=scenario-variable-manager-1';
 const TILE_BATCH=2048;
 // Callers hold simulation inputs fixed while busy. The visible city is replaced
 // only after all returned batches arrive; pan/zoom remain free to change.
-export function createSimulationRunner(makeWorker=()=>new Worker(new URL('./simulation-worker.js?v=architecture-workspace-1',import.meta.url),{type:'module'})){
+export function createSimulationRunner(makeWorker=()=>new Worker(new URL('./simulation-worker.js?v=scenario-variable-manager-1',import.meta.url),{type:'module'})){
  let worker=null,pending=null,nextId=0,disabled=false,timer=null;
  const stop=()=>{clearTimeout(timer);timer=null;worker?.terminate();worker=null;};
  return{

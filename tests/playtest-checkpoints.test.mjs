@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import {PLAYTEST_CHECKPOINTS,readPlaytestFeedback,feedbackText,showPlaytestFeedback,showPlaytestRoadmap} from '../dist/playtest-checkpoints.js';
-assert.equal(PLAYTEST_CHECKPOINTS.length,8);assert.equal(new Set(PLAYTEST_CHECKPOINTS.map(c=>c.id)).size,8);for(const c of PLAYTEST_CHECKPOINTS)assert.equal(new Set(c.steps.map(([key])=>key)).size,c.id===7?11:c.id===5?5:3);
+assert.equal(PLAYTEST_CHECKPOINTS.length,8);assert.equal(new Set(PLAYTEST_CHECKPOINTS.map(c=>c.id)).size,8);for(const c of PLAYTEST_CHECKPOINTS)assert.equal(new Set(c.steps.map(([key])=>key)).size,c.id===7?11:[5,8].includes(c.id)?5:3);
 const data=new Map([['sims3000.feedback.m5','Existing transport notes <script>'],['sims3000.feedback.checks.m5','["route","route","unknown"]']]),storage={getItem:key=>data.get(key)??null,setItem:(key,value)=>data.set(key,value)};
 assert.deepEqual(readPlaytestFeedback(storage,5),{notes:'Existing transport notes <script>',checked:['route']});data.set('sims3000.feedback.checks.m5','invalid');assert.deepEqual(readPlaytestFeedback(storage,5).checked,[]);assert.equal(readPlaytestFeedback({getItem(){throw Error('blocked');}},7).notes,'');
 const controls=Object.fromEntries(['reviewNotes','saveReview','exportReview','launchPlaytest','launchBuildingLibrary','launchLandmarks','backPlaytests'].map(k=>[k,{}])),checks=PLAYTEST_CHECKPOINTS[6].steps.map(([key])=>({checked:false,dataset:{playtestStep:key}})),buttons=PLAYTEST_CHECKPOINTS.map(c=>({dataset:{review:String(c.id)}}));globalThis.document={getElementById:id=>controls[id],querySelectorAll:s=>s==='[data-playtest-step]'?checks:buttons};let html='',launch=0,launchTarget,review=0,back=0,download,notice;const ui={storage,dialog:(title,body)=>html=body,notify:message=>notice=message,download:(...args)=>download=args,launch:(id,target)=>{launch=id;launchTarget=target;},roadmap:()=>back++,review:id=>review=id};
@@ -37,3 +37,7 @@ assert.deepEqual(readPlaytestFeedback(storage,5),{notes:"Existing transport note
 const reviewText=feedbackText(5,"City paused immediately; no date loss",["responsive"]);
 assert.match(reviewText,/\[x\] In a 96 × 96/);assert.match(reviewText,/\[ \] Save and reload/);
 console.log("PASS: large-city responsiveness and saved-continuation exercises preserve earlier transport notes without marking new work tried.");
+
+data.set('sims3000.feedback.m8','Existing authoring notes');data.set('sims3000.feedback.checks.m8','["author","change","replay"]');
+assert.deepEqual(readPlaytestFeedback(storage,8),{notes:'Existing authoring notes',checked:['author','change','replay']});
+assert.match(feedbackText(8,'',['author','change','replay']),/\[ \] Add at least six named variables/);

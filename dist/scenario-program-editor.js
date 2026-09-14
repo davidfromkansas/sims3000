@@ -1,19 +1,21 @@
-import {PROGRAM_LIMITS} from './scenario-programs.js?v=architecture-workspace-1';
-import {defaultTornadoSettings,TORNADO_DIRECTIONS,TORNADO_SPEEDS} from './tornado-settings.js?v=architecture-workspace-1';
-import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=architecture-workspace-1';
-import {CUSTOM_METRICS} from './scenario-metrics.js?v=architecture-workspace-1';
-import {CALCULATIONS} from './scenario-variables.js?v=architecture-workspace-1';
-import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=architecture-workspace-1';
-import {BUSINESSES} from './business.js?v=architecture-workspace-1';
-import {REWARDS} from './rewards.js?v=architecture-workspace-1';
-import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=architecture-workspace-1';
-import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=architecture-workspace-1';
+import {removeScenarioVariable,scenarioVariableIndex} from './scenario-variable-references.js?v=scenario-variable-manager-1';
+import {PROGRAM_LIMITS} from './scenario-programs.js?v=scenario-variable-manager-1';
+import {defaultTornadoSettings,TORNADO_DIRECTIONS,TORNADO_SPEEDS} from './tornado-settings.js?v=scenario-variable-manager-1';
+import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=scenario-variable-manager-1';
+import {CUSTOM_METRICS} from './scenario-metrics.js?v=scenario-variable-manager-1';
+import {CALCULATIONS} from './scenario-variables.js?v=scenario-variable-manager-1';
+import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=scenario-variable-manager-1';
+import {BUSINESSES} from './business.js?v=scenario-variable-manager-1';
+import {REWARDS} from './rewards.js?v=scenario-variable-manager-1';
+import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=scenario-variable-manager-1';
+import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=scenario-variable-manager-1';
 const leaf=()=>({metric:'population',operator:'gte',target:100});
 const optionsOf=items=>Object.entries(items).map(([value,label])=>[value,typeof label==='string'?label:label.name]);
 const primitiveOptions=optionsOf(SCENARIO_EVENTS).filter(([key])=>key!=='program');
 const visitSteps=(steps,fn)=>{for(const step of steps){fn(step);if(step.kind==='if'){visitSteps(step.then,fn);visitSteps(step.else,fn);}}};
-export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[],entryTargets=()=>[],onChange=()=>{}}={}){
- let routines=structuredClone(initial),clipboard=null;const status=document.createElement('p');status.setAttribute('role','status');
+export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[],entryTargets=()=>[],variables=()=>Array.from({length:4},(_,i)=>({name:'Variable '+(i+1),initial:0})),onChange=()=>{}}={}){
+ const metricChoices=items=>optionsOf(items).filter(([key])=>{const index=scenarioVariableIndex(key);return index===null||index<variables().length;}).map(([key,label])=>{const index=scenarioVariableIndex(key);return [key,index===null?label:(variables()[index].name||'Unnamed variable')+' · '+key];});
+ let routines=structuredClone(initial),clipboard=null,availableError='';available=structuredClone(available);const status=document.createElement('p');status.setAttribute('role','status');
  const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
  const button=(parent,text,handler)=>{const b=el('button',text);b.type='button';b.onclick=()=>{try{handler();status.textContent='Draft updated. Start the challenge to apply it.';}catch(e){status.textContent=e.message;}};parent.append(b);return b;};
  function field(parent,label,value,set,{type='text',choices,min,max,step='1',multiline=false,maxLength=500}={}){const wrap=el('label',label),input=el(choices?'select':multiline?'textarea':'input');if(choices)for(const [v,name]of choices){const option=el('option',name);option.value=String(v);input.append(option);}else if(!multiline)input.type=type;input.value=String(value??'');if(min!==undefined)input.min=min;if(max!==undefined)input.max=max;input.step=step;if(multiline)input.maxLength=maxLength;const change=()=>set(choices?input.value:type==='number'?(input.value.trim()===''?NaN:Number(input.value)):input.value);if(choices)input.onchange=change;else input.oninput=change;wrap.append(input);parent.append(wrap);return input;}
@@ -53,17 +55,17 @@ export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[]
   if(a.type==='earthquake')text('Earthquake magnitude (1–100)','magnitude',{type:'number',min:1,max:100});
   if(a.type==='camera')field(parent,'Zoom (%)',a.zoom*100,v=>a.zoom=v/100,{type:'number',min:40,max:250,step:5});
   if(a.type==='variable'){
-   field(parent,'Variable slot',a.variable,v=>a.variable=Number(v),{choices:[0,1,2,3].map(i=>[i,'Variable '+(i+1)])});
+   field(parent,'Variable slot',a.variable,v=>a.variable=Number(v),{choices:variables().map((v,i)=>[i,v.name||'Unnamed variable'])});
    field(parent,'Operation',a.operation,v=>{for(const k of ['value','metric','calculation','left','right'])delete a[k];a.operation=v;if(v==='copy')a.metric='population';else if(v==='calculate')Object.assign(a,{calculation:'sum',left:{kind:'constant',value:1},right:{kind:'constant',value:1}});else a.value=1;render();},{choices:[['set','Set'],['add','Add'],['copy','Copy city value'],['calculate','Calculate']]});
    if(['set','add'].includes(a.operation))text('Value','value',{type:'number',min:-1000000,max:1000000});
-   if(a.operation==='copy')text('City value','metric',{choices:optionsOf(CUSTOM_METRICS)});
-   if(a.operation==='calculate'){text('Calculation','calculation',{choices:optionsOf(CALCULATIONS)});for(const side of ['left','right']){const operand=a[side];field(parent,side+' operand',operand.kind,v=>{a[side]=v==='metric'?{kind:v,metric:'population'}:{kind:v,value:1};render();},{choices:[['constant','Number'],['metric','City value']]});field(parent,side+' value',operand.kind==='metric'?operand.metric:operand.value,v=>{operand[operand.kind==='metric'?'metric':'value']=v;},operand.kind==='metric'?{choices:optionsOf(CUSTOM_METRICS)}:{type:'number',min:-1000000,max:1000000});}}
+   if(a.operation==='copy')text('City value','metric',{choices:metricChoices(CUSTOM_METRICS)});
+   if(a.operation==='calculate'){text('Calculation','calculation',{choices:optionsOf(CALCULATIONS)});for(const side of ['left','right']){const operand=a[side];field(parent,side+' operand',operand.kind,v=>{a[side]=v==='metric'?{kind:v,metric:'population'}:{kind:v,value:1};render();},{choices:[['constant','Number'],['metric','City value']]});field(parent,side+' value',operand.kind==='metric'?operand.metric:operand.value,v=>{operand[operand.kind==='metric'?'metric':'value']=v;},operand.kind==='metric'?{choices:metricChoices(CUSTOM_METRICS)}:{type:'number',min:-1000000,max:1000000});}}
   }
  }
  function conditionFields(parent,c,replace,depth=1){
   const group=el('fieldset');parent.append(group);group.append(el('legend','Condition'));
   if(c.conditions){field(group,'Match',c.match,v=>c.match=v,{choices:[['all','All conditions (AND)'],['any','Any condition (OR)']]});c.conditions.forEach((child,i)=>{conditionFields(group,child,v=>{c.conditions[i]=v;render();},depth+1);if(c.conditions.length>1)button(group,'Remove condition '+(i+1),()=>{c.conditions.splice(i,1);render();});});button(group,'Add condition',()=>{c.conditions.push(leaf());render();});button(group,'Use one condition',()=>{replace(c.conditions[0]||leaf());});return;}
-  field(group,'City or scenario value',c.metric,v=>{c.metric=v;c.target=CONDITION_METRICS[v].initial??0;c.operator='gte';delete c.area;render();},{choices:optionsOf(CONDITION_METRICS)});
+  field(group,'City or scenario value',c.metric,v=>{c.metric=v;c.target=CONDITION_METRICS[v].initial??0;c.operator='gte';delete c.area;render();},{choices:metricChoices(CONDITION_METRICS)});
   field(group,'Comparison',c.operator,v=>c.operator=v,{choices:[['gte','At least'],['lte','At most'],['gt','Greater than'],['lt','Less than'],['eq','Equals'],['ne','Not equal']]});
   const m=CONDITION_METRICS[c.metric];field(group,'Threshold',m.date?dateInputValue(c.target):c.target,v=>{try{c.target=m.states?Number(v):readMetricTarget(m,String(v));}catch{c.target=NaN;}},m.states?{choices:m.states.map((v,i)=>[i,v])}:{type:m.date?'month':'number',step:m.integer?'1':'any'});
   if(m.spatial){check(group,'Limit to a map area',!!c.area,v=>{c.area=v?{x:0,y:0,radius:0}:null;render();});if(c.area)for(const key of ['x','y','radius'])field(group,'Area '+key,key==='radius'?c.area[key]:c.area[key]+1,v=>c.area[key]=key==='radius'?v:v-1,{type:'number',min:key==='radius'?0:1,max:key==='radius'?Math.ceil((size-1)*Math.SQRT2):size});}
@@ -93,8 +95,13 @@ export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[]
  function render(removed){root.replaceChildren();root.append(el('h3','Routine scripts'),el('p','Create reusable action sequences. Schedule a routine below. If / Else chooses a path when reached; messages and emergencies pause that path. Goal and variable numbers refer to the rows in this editor.'));
   root.append(el('p',clipboard?`Copied step: ${clipboard.kind==='if'?'If / Else branch':clipboard.kind==='call'?'Call '+(routines[clipboard.routine]?.name||'routine'):SCENARIO_EVENTS[clipboard.action.type]?.name||clipboard.action.type}. Paste into any action block. Copies remain independent; goal and variable references keep their row numbers.`:'No copied step. Copy or cut an action, call or complete If / Else branch. This clipboard stays inside the open editor.'));button(root,'Clear copied step',()=>{clipboard=null;render();}).disabled=!clipboard;
   routines.forEach((r,index)=>{const panel=el('fieldset');panel.append(el('legend','Routine '+(index+1)));root.append(panel);field(panel,'Routine name',r.name,v=>{r.name=v;changed();});button(panel,'Delete routine',()=>{let used=entryTargets().includes(index);if(clipboard)visitSteps([clipboard],s=>{if(s.kind==='call'&&s.routine===index)used=true;});routines.forEach(other=>visitSteps(other.steps,s=>{if(s.kind==='call'&&s.routine===index)used=true;}));if(used)throw Error('Remove scheduled entries and subroutine calls to this routine before deleting it. Clear the copied step if it contains a call to this routine.');routines.splice(index,1);if(clipboard)visitSteps([clipboard],s=>{if(s.kind==='call'&&s.routine>index)s.routine--;});routines.forEach(other=>visitSteps(other.steps,s=>{if(s.kind==='call'&&s.routine>index)s.routine--;}));render(index);});block(panel,r.steps,'Actions');});
-  if(available.length)button(root,'Copy routines from current challenge',()=>{if(routines.length+available.length>8)throw Error('Copying would exceed eight routines. Remove unused drafts first.');const offset=routines.length,copies=structuredClone(available),names=new Set(routines.map(r=>r.name));for(const routine of copies){const original=routine.name;let suffix=1;while(names.has(routine.name))routine.name=original.slice(0,48)+' copy '+suffix++;names.add(routine.name);visitSteps(routine.steps,s=>{if(s.kind==='call')s.routine+=offset;});}routines.push(...copies);render();});
+  if(available.length)button(root,'Copy routines from current challenge',()=>{if(availableError)throw Error(availableError);if(routines.length+available.length>8)throw Error('Copying would exceed eight routines. Remove unused drafts first.');const offset=routines.length,copies=structuredClone(available),names=new Set(routines.map(r=>r.name));for(const routine of copies){const original=routine.name;let suffix=1;while(names.has(routine.name))routine.name=original.slice(0,48)+' copy '+suffix++;names.add(routine.name);visitSteps(routine.steps,s=>{if(s.kind==='call')s.routine+=offset;});}routines.push(...copies);render();});
   button(root,'Add routine',()=>{if(routines.length>=8)throw Error('You can create at most eight routines.');routines.push({name:'Routine '+(routines.length+1),steps:[]});render();});root.append(status);changed(removed);
  }
- render();return{read(goalRows=[0,1,2,3]){const draft=structuredClone(routines),remap=i=>{const target=goalRows.indexOf(i);if(target<0)throw Error('A routine refers to an empty goal row.');return target;};const condition=c=>{if(c.conditions)c.conditions.forEach(condition);else if(/^goalStatus[1-4]$/.test(c.metric))c.metric='goalStatus'+(remap(Number(c.metric.slice(-1))-1)+1);};draft.forEach(r=>visitSteps(r.steps,s=>{if(s.kind==='if')condition(s.condition);if(s.kind==='action'&&['addGoal','markGoal'].includes(s.action.type))s.action.goal=remap(s.action.goal);}));return validateScenarioProgramDefinitions(draft,{size,objectives:goalRows.map(()=>({}))});},draft:()=>structuredClone(routines)};
+ render();return{refreshVariables(){render();},prepareVariableRemoval(definitions,index){
+ const draft={variables:definitions,programs:[...structuredClone(routines),...(clipboard?[{name:'Copied step',steps:[structuredClone(clipboard)]}]:[])]};
+ const next=removeScenarioVariable(draft,index);let nextAvailable=available,nextError=availableError;
+ if(!availableError)try{nextAvailable=removeScenarioVariable({variables:definitions,programs:available},index).programs;}catch{nextError='The source routines use a variable removed from this draft. Reopen the editor to copy those routines with their original variables.';}
+ return()=>{available=nextAvailable;availableError=nextError;routines=next.programs.slice(0,routines.length);clipboard=clipboard?next.programs.at(-1).steps[0]:null;};
+ },read(goalRows=[0,1,2,3]){const draft=structuredClone(routines),remap=i=>{const target=goalRows.indexOf(i);if(target<0)throw Error('A routine refers to an empty goal row.');return target;};const condition=c=>{if(c.conditions)c.conditions.forEach(condition);else if(/^goalStatus[1-4]$/.test(c.metric))c.metric='goalStatus'+(remap(Number(c.metric.slice(-1))-1)+1);};draft.forEach(r=>visitSteps(r.steps,s=>{if(s.kind==='if')condition(s.condition);if(s.kind==='action'&&['addGoal','markGoal'].includes(s.action.type))s.action.goal=remap(s.action.goal);}));return validateScenarioProgramDefinitions(draft,{size,objectives:goalRows.map(()=>({}))});},draft:()=>structuredClone(routines)};
 }
