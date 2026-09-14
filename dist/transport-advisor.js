@@ -1,4 +1,4 @@
-import {showOrdinanceAnalysis} from './ordinance-analysis-ui.js?v=planned-zone-demand-1';
+import {showOrdinanceAnalysis} from './ordinance-analysis-ui.js?v=demand-explanation-1';
 const number=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:1});
 export function transportationBriefing(c){
  const s=c.stats,issues=[],add=(title,text,action,layer,tool)=>issues.push({title,text,action,layer,tool});

@@ -957,3 +957,7 @@ The fifth reward adds original population, footprint, price, jobs and nominal cr
 ### Planned-zone demand — schema 134, 274 suites
 
 Undeveloped zoning no longer creates vacancy pressure. A verified 270-tile RCI layout now develops instead of remaining entirely empty. Abandoned buildings still affect demand. Original demand formulas and late-game reachability remain unproven.
+
+### Demand explanation — schema 134, 275 suites
+
+The simulation now exposes a reconciled citywide demand ledger in Zone development. It retains existing coefficients and distinguishes local regional bonuses. Original-formula fidelity and late-game reward reachability remain incomplete.
