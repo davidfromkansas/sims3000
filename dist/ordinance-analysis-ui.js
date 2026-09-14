@@ -1,7 +1,7 @@
-import {ADVISOR_POLICIES,ORDINANCES,analyzeOrdinances} from './ordinance-analysis.js?v=abandonment-history-1';
-import {changeCivic,ordinanceCost} from './civic.js?v=abandonment-history-1';
-import {serializeCity} from './save.js?v=abandonment-history-1';
-import {recompute} from './engine.js?v=abandonment-history-1';
+import {ADVISOR_POLICIES,ORDINANCES,analyzeOrdinances} from './ordinance-analysis.js?v=transport-advisor-1';
+import {changeCivic,ordinanceCost} from './civic.js?v=transport-advisor-1';
+import {serializeCity} from './save.js?v=transport-advisor-1';
+import {recompute} from './engine.js?v=transport-advisor-1';
 const immediate=[['Monthly balance (§)','balance'],['Policy spending (§/month)','cost'],['Policy revenue (§/month)','revenue'],['Resident crime / 100','crime'],['Resident aura / 100','aura'],['Average air pollution / 100','air'],['Power demand','powerDemand'],['Water demand','waterDemand'],['Peak road traffic','peakTraffic'],['Cleaner industrial buildings','cleanIndustry'],['Average building flammability / 100','flammability']],longTerm=[['Life expectancy target (years)','lifeTarget'],['School-age education target / 100','schoolTarget'],['College-age education target / 100','collegeTarget']];
 const fmt=n=>n===null?'Not applicable':n.toLocaleString('en-US',{maximumFractionDigits:2});
 export function ordinanceComparisonMarkup(result){const table=rows=>`<div class="table-scroll"><table><thead><tr><th scope="col">Measure</th><th scope="col">Current</th><th scope="col">Proposed</th><th scope="col">Change</th></tr></thead><tbody>${rows.map(([label,key])=>{const a=result.before[key],b=result.after[key],d=a===null||b===null?null:b-a;return `<tr><th scope="row">${label}</th><td>${fmt(a)}</td><td>${fmt(b)}</td><td>${d===null?'—':(d>0?'+':'')+fmt(d)}</td></tr>`;}).join('')}</tbody></table></div>`;return `<h3>Immediate conditions</h3>${table(immediate)}<h3>Long-term targets</h3><p>Targets change immediately; residents’ actual learning and life expectancy change over years. These are current-condition targets, not forecasts.</p>${table(longTerm)}`;}

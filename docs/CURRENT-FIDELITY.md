@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 236 regression suites, save schema 124. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 237 regression suites, save schema 124. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -867,3 +867,5 @@ City Hall now supplies 36 finite civic jobs while operating. Homes can reach the
 Abandoned recovery checkpoint: filter and locate abandoned RCI buildings, inspect current recovery blockers, and distinguish them from vacant zoning. Shared simulation checks and real abandonment-to-recovery tests cover the flow. Original historical cause recording remains unfinished. See `ABANDONED-RECOVERY-MILESTONE.md`. Schema123; publication pending.
 
 Recorded abandonment checkpoint: newly abandoned buildings persist the simulator’s triggering service blockers, severe demand loss or toxic-cloud evacuation. Inspection separates that history from current recovery conditions; old saves retain unknown causes. See `ABANDONMENT-HISTORY-MILESTONE.md`. Schema124; publication pending.
+
+Transportation advisor checkpoint: original Moe Biehl portrait and current transport briefing with job/access distinctions, funding priorities, ranked home/corridor inspection and map/planning shortcuts. Browser portrait, healthy-city facts and traffic map verified. See `TRANSPORTATION-ADVISOR-MILESTONE.md`. Schema124; publication pending.

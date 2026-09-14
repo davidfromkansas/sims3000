@@ -1,8 +1,8 @@
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=abandonment-history-1';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=abandonment-history-1';
-import {projectBuildingPoint} from './building-footprints.js?v=abandonment-history-1';
-import {buildingShapeCells} from './building-shapes.js?v=abandonment-history-1';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=abandonment-history-1';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=transport-advisor-1';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=transport-advisor-1';
+import {projectBuildingPoint} from './building-footprints.js?v=transport-advisor-1';
+import {buildingShapeCells} from './building-shapes.js?v=transport-advisor-1';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=transport-advisor-1';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;
