@@ -1,8 +1,8 @@
-import {utilityTrendSnapshot} from './utility-trends.js?v=geyser-park-1';
-import {ORDINANCES,changeCivic,ordinanceCost} from './civic.js?v=geyser-park-1';
-import {recompute,validateSave} from './engine.js?v=geyser-park-1';
-import {serializeCity} from './save.js?v=geyser-park-1';
-import {healthOutlook} from './health.js?v=geyser-park-1';
+import {utilityTrendSnapshot} from './utility-trends.js?v=stock-exchange-1';
+import {ORDINANCES,changeCivic,ordinanceCost} from './civic.js?v=stock-exchange-1';
+import {recompute,validateSave} from './engine.js?v=stock-exchange-1';
+import {serializeCity} from './save.js?v=stock-exchange-1';
+import {healthOutlook} from './health.js?v=stock-exchange-1';
 export const POLICY_PETITIONS={
  freeClinics:{who:'Residents’ health committee',why:'Hospital access is limited. Help residents with free clinics while expanding care.',enact:true,needed:c=>c.stats.healthCoverage<60},
  reading:{who:'Parents and readers association',why:'Education remains low. Support a reading campaign alongside schools and libraries.',enact:true,needed:c=>c.civic.education<50},

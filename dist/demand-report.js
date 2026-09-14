@@ -1,3 +1,4 @@
+import {rewardJobSites} from './rewards.js?v=stock-exchange-1';
 const sectors=['residential','commercial','industrial'];
 const clamp=(n,min,max)=>Math.max(min,Math.min(max,n));
 export function applyDemand(stats,sector,entries,min=-100,max=100){
@@ -6,8 +7,9 @@ export function applyDemand(stats,sector,entries,min=-100,max=100){
  stats.demand[sector]=value;return value;
 }
 export function baseDemand(c,{pop,jobs,shops,civicJobs}){
+ const exchangeJobs=rewardJobSites(c).filter(t=>t.type==='stockExchange').length*480;
  const vacant=Object.fromEntries(sectors.map(s=>[s,c.tiles.filter(t=>t.type===s&&!t.level&&(t.abandonedLevel>0||t.historicalLevel>0)).length]));
- const entries={residential:[['Baseline',40],['Available jobs',(jobs+shops+civicJobs)*.4],['Existing residents',-pop*.23],['Abandoned buildings',-vacant.residential*.7]],commercial:[['Baseline',18],['Resident customers',pop*.2],['Existing commercial jobs',-shops*.8],['Abandoned buildings',-vacant.commercial*1.4]],industrial:[['Baseline',50],['Resident workforce',pop*.28],['Existing industrial jobs',-jobs*.6],['Abandoned buildings',-vacant.industrial*1.1]]};
+ const entries={residential:[['Baseline',40],['Available jobs',(jobs+shops+civicJobs)*.4],['Existing residents',-pop*.23],['Abandoned buildings',-vacant.residential*.7]],commercial:[['Baseline',18],['Resident customers',pop*.2],['Existing commercial jobs',-shops*.8],['Stock Exchange commercial activity',exchangeJobs?-exchangeJobs*.8:0],['Abandoned buildings',-vacant.commercial*1.4]],industrial:[['Baseline',50],['Resident workforce',pop*.28],['Existing industrial jobs',-jobs*.6],['Abandoned buildings',-vacant.industrial*1.1]]};
  const stats={demand:Object.fromEntries(sectors.map(s=>[s,0])),demandBreakdown:Object.fromEntries(sectors.map(s=>[s,[]]))};
  for(const sector of sectors){applyDemand(stats,sector,entries[sector],-80,100);applyDemand(stats,sector,[['Tax rate',(7-c.finance.taxes[sector])*8]]);}
  return stats;

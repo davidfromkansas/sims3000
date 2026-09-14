@@ -1,0 +1,17 @@
+# Stock Exchange and the 200,000-resident milestone
+
+The reward checklist now includes the Stock Exchange: 200,000 residents, strong approval and at least §50,000 at a monthly evaluation. Its durable offer permits a unique, free 4×4 building and later rebuilding. The growth guide adds a live 200,000-resident checkpoint.
+
+While operating, the exchange supplies 480 jobs and commercial demand satisfaction equivalent to 480 commercial jobs. The demand report lists this activity separately before demand clamping; jobs are counted once in the workforce, not added again by demand satisfaction. Nearby commercial value and approval improve, while residential/industrial value falls and pollution and adjacent crime pressure increase. Waste output is 6.4 units/month, collected through full-footprint road access. Failure of reward operation removes these effects.
+
+The [Prima directory](https://www.scribd.com/doc/303581554/SimCity-3000-Unlimited-Prima-Guide), page 416, supplies prerequisites, cost, footprint, jobs and commercial activity. Land-value effects are −5/35/−4; a 10-tile radius is reconstruction calibration. Air/water source weights 800 normalize to 8, with radii 10/5. Source aura 1 over 15 tiles normalizes by 100/254. The crime effect uses magnitude 3 with falloff across a one-tile border around the footprint; edge distance is an explicit approximation. Table 14-2 supplies garbage weight 640, normalized to 6.4/month.
+
+An original four-view miniature combines a stone colonnade and stepped trading offices. Schema 143 introduces the reward; old cities migrate with no earned exchange. The reward inspector also now describes Geyser Park's specific benefits instead of its previous generic neighborhood text.
+
+Focused checks cover every unlock boundary, durable offers, free unique placement/rebuilding, 480 jobs, demand satisfaction before clamping, sector land values, pollution, crime, aura, garbage, damage, save migration and four-view rendering. Actual inspector text is evaluated for both the exchange and Geyser Park. All 299 regular suites passed, and the focused inspector suites passed after the text update.
+
+The ordinary 200,000-resident acceptance audit passed. Its expansion stage exposed declining output at old utility facilities, so the route includes normal replacement work. Browser inspection is pending while the Mac is locked. No Sites publication is included.
+
+The staged ordinary audit reached 202,344 residents at month 737 with §20,710,592, approval 98.04, fully served power/water, no garbage backlog and an earned exchange offer. Its earlier expansion exposed waste backlog and lost residents; replacing 60 older waste-to-energy facilities, 140 pumps and 20 power plants restored capacity. The exchange was then placed for free with all 480 jobs filled and positive land-value effects on 63 commercial tiles. After another year, the city had 204,784 residents, §21,158,445, served utilities and no backlog; the final save round-tripped exactly.
+
+A compressed ordinary checkpoint and `npm run test:financial-center` preserve the staged construction/renewal/placement route. The combined script passed end to end at month 749 with exactly the same 204,784 residents and §21,158,445, fully served utilities, no loans, zero backlog and exact save continuity. Checkpoint provenance and the distinction from the separate fresh-map 150,000-resident test are documented in `tests/fixtures/README.md`.
