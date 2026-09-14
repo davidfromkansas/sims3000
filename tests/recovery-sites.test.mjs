@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {createCity,build,recompute,idx} from '../dist/engine.js';
+import {createScenario} from '../dist/scenario-setup.js';
+import {recoverySites,recoverySitesReport,installRecoverySites} from '../dist/recovery-sites.js';
+import {serializeCity} from '../dist/save.js';
+const starter=createCity();assert.equal(recoverySites(starter).length,0,'light never-watered development is not a broken water system');
+const water=createScenario('waterRecovery'),before=serializeCity(water);assert.ok(recoverySites(water).some(s=>s.label==='Water interrupted'));recoverySitesReport(water);assert.equal(serializeCity(water),before);assert.ok(build(water,'pipe',[{x:24,y:16}]).ok);assert.ok(!recoverySites(water).some(s=>s.label==='Water interrupted'));
+const c=createCity(),h=c.tiles[idx(20,20)];h.rubble=true;h.level=0;recompute(c);assert.ok(recoverySites(c).some(s=>s.id===idx(20,20)&&s.label==='Rubble'));assert.ok(build(c,'bulldoze',[h]).ok);assert.ok(!recoverySites(c).some(s=>s.id===idx(20,20)));
+const plant=c.tiles.find(t=>t.type==='coal');assert.ok(build(c,'bulldoze',[plant]).ok);assert.ok(recoverySites(c).some(s=>s.label==='Electricity interrupted'));
+Object.assign(c.tiles[100],{radiation:true});Object.assign(c.tiles[101],{rubble:true});Object.assign(c.tiles[102],{abandonedLevel:1});Object.assign(c.tiles[103],{rubble:true,fire:20});const rows=recoverySites(c);assert.equal(rows[0].label,'Contaminated land');assert.equal(rows[1].label,'Rubble');assert.ok(!rows.some(s=>s.id===103));
+Object.assign(c.tiles[104],{lotRoot:104,abandonedLevel:1});Object.assign(c.tiles[105],{lotRoot:104,abandonedLevel:1});assert.equal(recoverySites(c).filter(s=>s.id===104).length,1,'larger buildings appear once');
+const html=recoverySitesReport(c);assert.equal((html.match(/data-recovery-site=/g)||[]).length,12);assert.match(html,/preceded the emergency/);assert.match(html,/Next sites/);assert.match(recoverySitesReport(c,1),/data-recovery-site="12"/);assert.match(recoverySitesReport(c,1),/Previous sites/);let inspected;const buttons=[{dataset:{recoverySite:'0'}}];installRecoverySites(c,(point,layer)=>inspected={point,layer},{querySelectorAll:selector=>selector==='[data-recovery-site]'?buttons:[]});buttons[0].onclick();assert.deepEqual(inspected,{point:{x:4,y:2},layer:'city'});
+console.log('PASS: live recovery sites detect damage and interrupted required utilities, clear after real repairs, deduplicate buildings, exclude active flames, bound display and inspect exact map locations without mutation.');
