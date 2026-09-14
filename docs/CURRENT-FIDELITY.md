@@ -1013,3 +1013,7 @@ The sixth reward adds a paid 3 × 3 research center gated by year, population, l
 ## University neighborhood tradeoffs and ordinary unlock
 
 Operating universities now apply sector-specific land-value benefits, local pollution, police-mitigated crime pressure and direct aura rather than a uniform amenity bonus. The ordinary metropolis earned University at month 545 with 70.03 EQ and 171,720 residents, without grants or edited education. This supersedes earlier statements that University reachability was unproven; maximum education and original balance remain unproven. See UNIVERSITY-NEIGHBORHOOD-MILESTONE.md. Schema remains 136.
+
+## Stadium districts and match activity
+
+Stadiums now trade local pollution, crime pressure and lower residential value for commercial/aura benefits, alongside their existing jobs and growth effects. Operating stadiums show original depth-masked match activity using the paused scenery clock, with static reduced-motion/disabled-scenery states. Source effects and tuning are documented in STADIUM-MATCH-DAY-MILESTONE.md. Browser motion feel remains unverified. Schema remains 136.

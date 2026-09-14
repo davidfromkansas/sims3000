@@ -1,4 +1,5 @@
-import {rasterizeMiniature} from './miniature-raster.js?v=university-neighborhood-1';
+import {stadiumMatchPixels} from './stadium-match.js?v=stadium-match-day-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=stadium-match-day-1';
 export const MODELED_REWARDS=new Set(['medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){
@@ -61,6 +62,6 @@ export function rewardGeometry(type){
  }
  return faces;
 }
-export const rasterizeReward=(type,rotation=0)=>rasterizeMiniature(rewardGeometry(type),rotation);
-const cache=new Map();
-export function drawCityReward(ctx,type,rotation,x,y,width,alpha=1){const key=type+':'+rotation;let canvas=cache.get(key);if(!canvas){canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;const c=canvas.getContext('2d'),raster=rasterizeReward(type,rotation),image=c.createImageData(512,512);image.data.set(raster.data);c.putImageData(image,0,0);cache.set(key,canvas);}ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(canvas,x-width/2,y-320*width/512,width,width);ctx.restore();}
+export const rasterizeReward=(type,rotation=0,includeDepth=false)=>rasterizeMiniature(rewardGeometry(type),rotation,includeDepth);
+const cache=new Map(),stadiumDepth=new Map();
+export function drawCityReward(ctx,type,rotation,x,y,width,alpha=1,match=null){const key=type+':'+rotation;let canvas=cache.get(key);if(!canvas){canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;const c=canvas.getContext('2d'),raster=rasterizeReward(type,rotation,type==='stadium'),image=c.createImageData(512,512);if(type==='stadium')stadiumDepth.set(rotation,raster.depth);image.data.set(raster.data);c.putImageData(image,0,0);cache.set(key,canvas);}ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(canvas,x-width/2,y-320*width/512,width,width);if(type==='stadium'&&match?.active){const scale=width/512;for(const p of stadiumMatchPixels(match.time,rotation,stadiumDepth.get(rotation))){ctx.fillStyle=p.color;ctx.fillRect(x+(p.x-256)*scale,y+(p.y-320)*scale,scale+.1,scale+.1);}}ctx.restore();}

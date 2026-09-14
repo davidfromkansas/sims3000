@@ -1,13 +1,13 @@
-import {civicSize} from './civic-footprints.js?v=university-neighborhood-1';
-import {REWARDS,rewardSize} from './rewards.js?v=university-neighborhood-1';
-import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=university-neighborhood-1';
-import {JobCapacity} from './job-capacity.js?v=university-neighborhood-1';
-import {workforceShare} from './workforce.js?v=university-neighborhood-1';
-import {routeLength} from './tunnels.js?v=university-neighborhood-1';
-import {industrialJobs} from './industry.js?v=university-neighborhood-1';
-import {streetGraph,MinQueue} from './highway.js?v=university-neighborhood-1';
-import {railNetwork,STATIONS} from './rail.js?v=university-neighborhood-1';
-import {occupancy} from './utilities.js?v=university-neighborhood-1';
+import {civicSize} from './civic-footprints.js?v=stadium-match-day-1';
+import {REWARDS,rewardSize} from './rewards.js?v=stadium-match-day-1';
+import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=stadium-match-day-1';
+import {JobCapacity} from './job-capacity.js?v=stadium-match-day-1';
+import {workforceShare} from './workforce.js?v=stadium-match-day-1';
+import {routeLength} from './tunnels.js?v=stadium-match-day-1';
+import {industrialJobs} from './industry.js?v=stadium-match-day-1';
+import {streetGraph,MinQueue} from './highway.js?v=stadium-match-day-1';
+import {railNetwork,STATIONS} from './rail.js?v=stadium-match-day-1';
+import {occupancy} from './utilities.js?v=stadium-match-day-1';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const freshTransport=()=>({funding:100,condition:100,underfunded:0});
 export function changeTransit(c,value){if(!Number.isInteger(value)||value<0||value>150)return{ok:false,error:'Transit funding must be 0–150%.'};c.transport.funding=value;return{ok:true};}
