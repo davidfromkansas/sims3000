@@ -1,7 +1,9 @@
-import {educationServiceDemand} from './education.js?v=education-goals-1';
+import {educationServiceDemand} from './education.js?v=learning-maps-1';
 export const EDUCATION_LAYERS={
  schoolAccess:{name:'School access · ages 0–14',type:'school',field:'childEducationCoverage',facilities:['school'],marker:'S'},
  collegeAccess:{name:'College access · ages 15–24',type:'college',field:'collegeEducationCoverage',facilities:['college'],marker:'C'},
+ libraryAccess:{name:'Library access · adults',type:'library',field:'libraryEducationCoverage',facilities:['library'],marker:'L'},
+ museumAccess:{name:'Museum access · adults',type:'museum',field:'museumEducationCoverage',facilities:['museum'],marker:'M'},
  adultAccess:{name:'Adult learning access · ages 25+',type:'library',field:'adultEducationCoverage',facilities:['library','museum'],marker:'A'}
 };
 export const EDUCATION_LAYER_LEGEND='Occupied homes: red unmet → green served · Gray: no demand · Facility dots: white operating, orange inactive';

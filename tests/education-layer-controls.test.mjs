@@ -11,10 +11,10 @@ const dialog=(_,body)=>{html=body;controls=new Map();buttons=[];for(const m of b
 globalThis.document={querySelector:s=>controls.get(s.slice(1)),querySelectorAll:s=>buttons.filter(b=>s==='[data-'+b.attribute+']')};
 const ui={city:()=>city,dialog,close(){closed++;},update(){},save(){saved++;},clearUndo(){},notify(){},review(){},setTool:v=>tool=v,setLayer:v=>layer=v,setNavigationLayer:v=>navigation=v};
 assert.equal(Object.keys(NAV_LAYERS)[0],'city','new maps do not change the default navigation layer');
-for(const key of ['schoolAccess','collegeAccess','adultAccess']){
+for(const key of ['schoolAccess','collegeAccess','adultAccess','libraryAccess','museumAccess']){
  showCivic(ui);assert.match(html,/not attained education/);buttons.find(b=>b.dataset.civicLayer===key).onclick();assert.equal(layer,key);assert.equal(tool,'road');
  showReports(ui);buttons.find(b=>b.dataset.reportLayer===key).onclick();assert.equal(layer,key);buttons.find(b=>b.dataset.reportNavigation===key).onclick();assert.equal(navigation,key);
  const options=createCityViewOptions(),renderer={layer:key,cityView:options.settings};showCityViewOptions({options,renderer,dialog,close:ui.close,setLayer:ui.setLayer});assert.equal(controls.get('view-layer').value,key);controls.get('view-done').onclick();assert.equal(layer,key);
 }
-assert.equal(closed,12);assert.equal(saved,0);assert.equal(serializeCity(city),before);
-console.log('PASS: actual Civic, City data and City view controls select all three education maps, preserve the construction tool and city state, and retain City as the initial navigation layer.');
+assert.equal(closed,20);assert.equal(saved,0);assert.equal(serializeCity(city),before);
+console.log('PASS: actual Civic, City data and City view controls select all five education maps, preserve the construction tool and city state, and retain City as the initial navigation layer.');

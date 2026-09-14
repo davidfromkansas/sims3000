@@ -1,7 +1,7 @@
-import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=education-goals-1';
-import {validateBuildingDesigns} from './building-designs.js?v=education-goals-1';
-import {parseBuildingSlot} from './building-footprints.js?v=education-goals-1';
-import {isBuildingLotRoot} from './building-lots.js?v=education-goals-1';
+import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=learning-maps-1';
+import {validateBuildingDesigns} from './building-designs.js?v=learning-maps-1';
+import {parseBuildingSlot} from './building-footprints.js?v=learning-maps-1';
+import {isBuildingLotRoot} from './building-lots.js?v=learning-maps-1';
 
 // Read an already validated city. Both maps are copied and validated before
 // either is installed, so a failed import cannot partly change the skyline.

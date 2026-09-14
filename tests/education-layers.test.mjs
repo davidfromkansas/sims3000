@@ -11,7 +11,7 @@ place('coal',8,14);place('road',10,20,35,20);place('powerline',10,22,35,22);plac
 const home=at(12,18),color=layer=>educationLayerColor(home,educationLayerProfile(c,layer));
 assert.equal(color('schoolAccess'),'hsl(120,55%,48%)');assert.equal(color('collegeAccess'),'hsl(0,55%,48%)');assert.equal(color('adultAccess'),'hsl(0,55%,48%)');
 place('college',19,19);assert.equal(color('collegeAccess'),'hsl(120,55%,48%)');assert.equal(color('adultAccess'),'hsl(0,55%,48%)');
-place('library',20,19);place('museum',21,19);assert.equal(color('adultAccess'),'hsl(120,55%,48%)');
+place('library',20,19);assert.equal(color('libraryAccess'),'hsl(120,55%,48%)');assert.equal(color('museumAccess'),'hsl(0,55%,48%)');place('museum',21,19);assert.equal(color('museumAccess'),'hsl(120,55%,48%)');assert.deepEqual(stationAreas(c,'libraryAccess').map(a=>a.label),['L']);assert.deepEqual(stationAreas(c,'museumAccess').map(a=>a.label),['M']);assert.equal(color('adultAccess'),'hsl(120,55%,48%)');
 Object.assign(at(42,42),{type:'residential',density:3,level:1});recompute(c);for(const key of Object.keys(EDUCATION_LAYERS))assert.equal(educationLayerColor(at(42,42),educationLayerProfile(c,key)),'hsl(0,55%,48%)','disconnected neighborhood stays visibly unserved');
 for(const key of Object.keys(EDUCATION_LAYERS)){assert.ok(NAV_LAYERS[key]);assert.match(navigationLegend(key),/no demand/);assert.equal(navigationColor(home,key,educationLayerProfile(c,key)),color(key));assert.equal(educationLayerColor(at(10,20),educationLayerProfile(c,key)),'#6a7770');}
 assert.deepEqual(stationAreas(c,'adultAccess').map(a=>a.label),['L','M']);assert.equal(stationAreas(c,'schoolAccess').length,1);assert.ok(stationAreas(c,'schoolAccess')[0].active);
