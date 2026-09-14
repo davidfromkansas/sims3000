@@ -1,7 +1,19 @@
 // Manual pp.56,124,209 describes offers and deferred placement. Thresholds are original tuning.
 export const REWARDS={cityHall:{name:'City Hall',jobs:36,size:3,cost:0,upkeep:0,radius:10,amenity:25,months:1,requirement:'At least 20,000 residents and 50 approval for one simulation month.'},mayorHouse:{jobs:4,name:"Mayor's House",size:2,cost:0,upkeep:5,sprite:57,radius:7,amenity:20,months:3,requirement:'At least 5,000 residents and 50 approval for three consecutive months.'},stadium:{jobs:200,name:'Stadium',size:4,cost:5000,upkeep:25,sprite:58,radius:10,amenity:20,months:6,requirement:'At least 1,000 residents, 55 approval and a positive monthly balance for six consecutive months.'},university:{jobs:500,name:'University',size:4,cost:4000,upkeep:40,sprite:59,radius:9,amenity:15,months:6,requirement:'At least 500 residents, 65 EQ and an operating college for six consecutive months.'}};
 export const freshRewards=()=>({lastMonth:0,earned:Object.fromEntries(Object.keys(REWARDS).map(k=>[k,null])),streaks:Object.fromEntries(Object.keys(REWARDS).map(k=>[k,0]))});
-export function rewardCondition(c,k){const s=c.stats;return k==='cityHall'?s.population>=20000&&s.aura>=50:k==='mayorHouse'?s.population>=5000&&s.aura>=50:k==='stadium'?s.population>=1000&&s.aura>=55&&s.balance>0:k==='university'?s.population>=500&&s.education>=65&&(s.activeServices?.college||0)>0:false;}
+// The reward offer and its checklist share these exact comparisons.
+export function rewardRequirements(c,k){
+ const s=c.stats, population=n=>({label:'Residents',current:s.population,target:n,met:s.population>=n}),approval=n=>({label:'Approval',current:s.aura,target:n,met:s.aura>=n});
+ return k==='cityHall'?[population(20000),approval(50)]:k==='mayorHouse'?[population(5000),approval(50)]:k==='stadium'?[population(1000),approval(55),{label:'Monthly balance',current:s.balance,target:0,strict:true,money:true,met:s.balance>0}]:k==='university'?[population(500),{label:'Education quotient',current:s.education,target:65,met:s.education>=65},{label:'Operating colleges',current:s.activeServices?.college||0,target:1,met:(s.activeServices?.college||0)>0}]:[];
+}
+export function rewardCondition(c,k){const requirements=rewardRequirements(c,k);return requirements.length>0&&requirements.every(r=>r.met);}
+export function rewardProgress(c,k){
+ const d=REWARDS[k];if(!d)throw Error('Unknown reward.');
+ const requirements=rewardRequirements(c,k),earned=c.rewards.earned[k]!==null,placed=c.tiles.some(t=>t.type===k),qualifying=requirements.every(r=>r.met),streak=c.rewards.streaks[k];
+ const remaining=Math.max(0,d.months-(qualifying?streak:0));
+ const next=placed?'Already placed. You can rebuild if it is demolished or destroyed.':earned?'Your offer is saved. You can place this reward whenever you are ready.':qualifying?`Keep every requirement met for ${remaining} more simulation month${remaining===1?'':'s'}.`:`Meet the requirements marked Missing. ${streak>0?'The recorded streak will reset at the next monthly evaluation if a requirement is still missing.':'The consecutive-month streak begins at the next qualifying monthly evaluation.'}`;
+ return {requirements,earned,placed,qualifying,streak,remaining,next};
+}
 export function advanceRewards(c){if(c.rewards.lastMonth>=c.month)return[];c.rewards.lastMonth=c.month;const unlocked=[];for(const [k,d]of Object.entries(REWARDS)){if(c.rewards.earned[k]!==null)continue;c.rewards.streaks[k]=rewardCondition(c,k)?Math.min(d.months,c.rewards.streaks[k]+1):0;if(c.rewards.streaks[k]>=d.months){c.rewards.earned[k]=c.month;unlocked.push(k);}}return unlocked;}
 export function rewardRoots(c){const n=Math.sqrt(c.tiles.length);return c.tiles.filter(t=>REWARDS[t.type]&&t.root===t.y*n+t.x);}
 export function rewardActive(c,t){const members=c.tiles.filter(u=>u.root===t.root);return members.every(u=>u.powered&&!u.fire&&!u.rubble&&!u.radiation)&&members.some(u=>u.roadIds?.length)&&c.finance.roadCondition>20;}
