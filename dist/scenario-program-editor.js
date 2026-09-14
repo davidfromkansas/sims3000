@@ -1,19 +1,20 @@
-import {removeScenarioVariable,scenarioVariableIndex} from './scenario-variable-references.js?v=scenario-variable-manager-1';
-import {PROGRAM_LIMITS} from './scenario-programs.js?v=scenario-variable-manager-1';
-import {defaultTornadoSettings,TORNADO_DIRECTIONS,TORNADO_SPEEDS} from './tornado-settings.js?v=scenario-variable-manager-1';
-import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=scenario-variable-manager-1';
-import {CUSTOM_METRICS} from './scenario-metrics.js?v=scenario-variable-manager-1';
-import {CALCULATIONS} from './scenario-variables.js?v=scenario-variable-manager-1';
-import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=scenario-variable-manager-1';
-import {BUSINESSES} from './business.js?v=scenario-variable-manager-1';
-import {REWARDS} from './rewards.js?v=scenario-variable-manager-1';
-import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=scenario-variable-manager-1';
-import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=scenario-variable-manager-1';
+import {endingRankChoices,remapEndingRank} from './scenario-ending-ranks.js?v=scripted-ending-ranks-1';
+import {removeScenarioVariable,scenarioVariableIndex} from './scenario-variable-references.js?v=scripted-ending-ranks-1';
+import {PROGRAM_LIMITS} from './scenario-programs.js?v=scripted-ending-ranks-1';
+import {defaultTornadoSettings,TORNADO_DIRECTIONS,TORNADO_SPEEDS} from './tornado-settings.js?v=scripted-ending-ranks-1';
+import {SCENARIO_EVENTS,CONDITION_METRICS} from './scenario-events.js?v=scripted-ending-ranks-1';
+import {CUSTOM_METRICS} from './scenario-metrics.js?v=scripted-ending-ranks-1';
+import {CALCULATIONS} from './scenario-variables.js?v=scripted-ending-ranks-1';
+import {SCENARIO_SOUNDS} from './scenario-sounds.js?v=scripted-ending-ranks-1';
+import {BUSINESSES} from './business.js?v=scripted-ending-ranks-1';
+import {REWARDS} from './rewards.js?v=scripted-ending-ranks-1';
+import {dateInputValue,readMetricTarget} from './scenario-calendar.js?v=scripted-ending-ranks-1';
+import {validateScenarioProgramDefinitions} from './scenario-program-definitions.js?v=scripted-ending-ranks-1';
 const leaf=()=>({metric:'population',operator:'gte',target:100});
 const optionsOf=items=>Object.entries(items).map(([value,label])=>[value,typeof label==='string'?label:label.name]);
 const primitiveOptions=optionsOf(SCENARIO_EVENTS).filter(([key])=>key!=='program');
 const visitSteps=(steps,fn)=>{for(const step of steps){fn(step);if(step.kind==='if'){visitSteps(step.then,fn);visitSteps(step.else,fn);}}};
-export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[],entryTargets=()=>[],variables=()=>Array.from({length:4},(_,i)=>({name:'Variable '+(i+1),initial:0})),onChange=()=>{}}={}){
+export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[],availableRanks=[],ranks=()=>[],entryTargets=()=>[],variables=()=>Array.from({length:4},(_,i)=>({name:'Variable '+(i+1),initial:0})),onChange=()=>{}}={}){
  const metricChoices=items=>optionsOf(items).filter(([key])=>{const index=scenarioVariableIndex(key);return index===null||index<variables().length;}).map(([key,label])=>{const index=scenarioVariableIndex(key);return [key,index===null?label:(variables()[index].name||'Unnamed variable')+' · '+key];});
  let routines=structuredClone(initial),clipboard=null,availableError='';available=structuredClone(available);const status=document.createElement('p');status.setAttribute('role','status');
  const el=(tag,text)=>{const n=document.createElement(tag);if(text!==undefined)n.textContent=text;return n;};
@@ -28,7 +29,11 @@ export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[]
   if(a.type==='resultText')text('Result message for','outcome',{choices:[['both','Victory and loss'],['won','Victory'],['lost','Loss']]});
   if(['dialogText','resultText'].includes(a.type))parent.append(el('p','Replaces saved dialog text without a popup. Live values are captured now, up to 4,000 expanded characters. Restart restores the original messages.'));
   if(a.type==='popup'){check(parent,'Include Scenario status button',a.showStatus!==false,v=>a.showStatus=v);check(parent,'Show advisor presenter',!!a.presenter,v=>{a.presenter=v?{name:'City advisor',role:'City council',portrait:'advisor'}:null;render();});if(a.presenter){field(parent,'Presenter name',a.presenter.name,v=>a.presenter.name=v);field(parent,'Presenter role',a.presenter.role,v=>a.presenter.role=v);}}
-  if(a.type==='ending')text('Scenario result','outcome',{choices:[['won','Victory'],['lost','Loss']]});
+  if(a.type==='ending'){
+   text('Scenario result','outcome',{choices:[['won','Victory'],['lost','Loss']]});
+   field(parent,'Award rank',a.rankIndex??'',value=>{if(value==='')delete a.rankIndex;else a.rankIndex=Number(value);},{choices:endingRankChoices(ranks(),a.rankIndex)});
+   parent.append(el('p','A selected rank overrides automatic rank conditions. Its eligible outcome must match this ending.'));
+  }
   if(['addGoal','markGoal'].includes(a.type))field(parent,'Goal row',a.goal,v=>a.goal=Number(v),{choices:[0,1,2,3].map(i=>[i,'Goal '+(i+1)])});
   if(a.type==='markGoal')text('Goal status','goalStatus',{choices:[['satisfied','Satisfied'],['unsatisfied','Unsatisfied']]});
   if(a.type==='sound')text('Sound','sound',{choices:optionsOf(SCENARIO_SOUNDS)});
@@ -95,13 +100,13 @@ export function mountScenarioProgramEditor(root,{size=48,initial=[],available=[]
  function render(removed){root.replaceChildren();root.append(el('h3','Routine scripts'),el('p','Create reusable action sequences. Schedule a routine below. If / Else chooses a path when reached; messages and emergencies pause that path. Goal and variable numbers refer to the rows in this editor.'));
   root.append(el('p',clipboard?`Copied step: ${clipboard.kind==='if'?'If / Else branch':clipboard.kind==='call'?'Call '+(routines[clipboard.routine]?.name||'routine'):SCENARIO_EVENTS[clipboard.action.type]?.name||clipboard.action.type}. Paste into any action block. Copies remain independent; goal and variable references keep their row numbers.`:'No copied step. Copy or cut an action, call or complete If / Else branch. This clipboard stays inside the open editor.'));button(root,'Clear copied step',()=>{clipboard=null;render();}).disabled=!clipboard;
   routines.forEach((r,index)=>{const panel=el('fieldset');panel.append(el('legend','Routine '+(index+1)));root.append(panel);field(panel,'Routine name',r.name,v=>{r.name=v;changed();});button(panel,'Delete routine',()=>{let used=entryTargets().includes(index);if(clipboard)visitSteps([clipboard],s=>{if(s.kind==='call'&&s.routine===index)used=true;});routines.forEach(other=>visitSteps(other.steps,s=>{if(s.kind==='call'&&s.routine===index)used=true;}));if(used)throw Error('Remove scheduled entries and subroutine calls to this routine before deleting it. Clear the copied step if it contains a call to this routine.');routines.splice(index,1);if(clipboard)visitSteps([clipboard],s=>{if(s.kind==='call'&&s.routine>index)s.routine--;});routines.forEach(other=>visitSteps(other.steps,s=>{if(s.kind==='call'&&s.routine>index)s.routine--;}));render(index);});block(panel,r.steps,'Actions');});
-  if(available.length)button(root,'Copy routines from current challenge',()=>{if(availableError)throw Error(availableError);if(routines.length+available.length>8)throw Error('Copying would exceed eight routines. Remove unused drafts first.');const offset=routines.length,copies=structuredClone(available),names=new Set(routines.map(r=>r.name));for(const routine of copies){const original=routine.name;let suffix=1;while(names.has(routine.name))routine.name=original.slice(0,48)+' copy '+suffix++;names.add(routine.name);visitSteps(routine.steps,s=>{if(s.kind==='call')s.routine+=offset;});}routines.push(...copies);render();});
+  if(available.length)button(root,'Copy routines from current challenge',()=>{if(availableError)throw Error(availableError);if(routines.length+available.length>8)throw Error('Copying would exceed eight routines. Remove unused drafts first.');const offset=routines.length,copies=structuredClone(available),names=new Set(routines.map(r=>r.name));for(const routine of copies){const original=routine.name;let suffix=1;while(names.has(routine.name))routine.name=original.slice(0,48)+' copy '+suffix++;names.add(routine.name);visitSteps(routine.steps,s=>{if(s.kind==='call')s.routine+=offset;if(s.kind==='action'&&s.action.type==='ending'&&s.action.rankIndex!==undefined){const source=availableRanks[s.action.rankIndex],target=ranks().find(row=>source&&row.name.trim()===source.name.trim());if(!target)throw Error('Create a rank named '+(source?.name||'the source rank')+' before copying this routine.');s.action.rankIndex=target.index;}});}routines.push(...copies);render();});
   button(root,'Add routine',()=>{if(routines.length>=8)throw Error('You can create at most eight routines.');routines.push({name:'Routine '+(routines.length+1),steps:[]});render();});root.append(status);changed(removed);
  }
- render();return{refreshVariables(){render();},prepareVariableRemoval(definitions,index){
+ render();return{refreshRanks(){render();},refreshVariables(){render();},prepareVariableRemoval(definitions,index){
  const draft={variables:definitions,programs:[...structuredClone(routines),...(clipboard?[{name:'Copied step',steps:[structuredClone(clipboard)]}]:[])]};
  const next=removeScenarioVariable(draft,index);let nextAvailable=available,nextError=availableError;
  if(!availableError)try{nextAvailable=removeScenarioVariable({variables:definitions,programs:available},index).programs;}catch{nextError='The source routines use a variable removed from this draft. Reopen the editor to copy those routines with their original variables.';}
  return()=>{available=nextAvailable;availableError=nextError;routines=next.programs.slice(0,routines.length);clipboard=clipboard?next.programs.at(-1).steps[0]:null;};
- },read(goalRows=[0,1,2,3]){const draft=structuredClone(routines),remap=i=>{const target=goalRows.indexOf(i);if(target<0)throw Error('A routine refers to an empty goal row.');return target;};const condition=c=>{if(c.conditions)c.conditions.forEach(condition);else if(/^goalStatus[1-4]$/.test(c.metric))c.metric='goalStatus'+(remap(Number(c.metric.slice(-1))-1)+1);};draft.forEach(r=>visitSteps(r.steps,s=>{if(s.kind==='if')condition(s.condition);if(s.kind==='action'&&['addGoal','markGoal'].includes(s.action.type))s.action.goal=remap(s.action.goal);}));return validateScenarioProgramDefinitions(draft,{size,objectives:goalRows.map(()=>({}))});},draft:()=>structuredClone(routines)};
+ },read(goalRows=[0,1,2,3],rankRows=[0,1,2,3]){const draft=structuredClone(routines),remap=i=>{const target=goalRows.indexOf(i);if(target<0)throw Error('A routine refers to an empty goal row.');return target;};const condition=c=>{if(c.conditions)c.conditions.forEach(condition);else if(/^goalStatus[1-4]$/.test(c.metric))c.metric='goalStatus'+(remap(Number(c.metric.slice(-1))-1)+1);};draft.forEach(r=>visitSteps(r.steps,s=>{if(s.kind==='if')condition(s.condition);if(s.kind==='action')remapEndingRank(s.action,rankRows);if(s.kind==='action'&&['addGoal','markGoal'].includes(s.action.type))s.action.goal=remap(s.action.goal);}));return validateScenarioProgramDefinitions(draft,{size,objectives:goalRows.map(()=>({}))});},draft:()=>structuredClone(routines)};
 }

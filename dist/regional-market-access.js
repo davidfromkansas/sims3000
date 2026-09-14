@@ -1,5 +1,5 @@
-import {connected,connectionRailStations} from './region.js?v=scenario-variable-manager-1';
-import {streetGraph} from './highway.js?v=scenario-variable-manager-1';
+import {connected,connectionRailStations} from './region.js?v=scripted-ending-ranks-1';
+import {streetGraph} from './highway.js?v=scripted-ending-ranks-1';
 const sectorBonus=(sector,land,airports,seaports)=>Math.min(15,land*3)+Math.min(40,airports*(sector==='commercial'?20:5)+seaports*(sector==='commercial'?8:20));
 export function regionalMarketAccess(c){const N=c.tiles.length,street=streetGraph(c),roadsOpen=c.finance.roadCondition>20,gates=[];
  for(const con of c.region.connections){if(!['road','highway','rail'].includes(con.kind)||!connected(c,con))continue;if(con.kind==='rail'){const stations=connectionRailStations(c,con),groups=new Set(roadsOpen?stations.flatMap(t=>t.roadIds):[]);if(stations.length)gates.push({kind:'land',side:con.side,groups,stations});}else if(roadsOpen){const group=street.groups[con.tile+(con.kind==='highway'?N:0)];if(group>=0)gates.push({kind:'land',side:con.side,groups:new Set([group]),stations:[]});}}

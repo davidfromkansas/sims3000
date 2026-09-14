@@ -1,8 +1,8 @@
-import {clipPropGeometry} from './building-prop-clipping.js?v=scenario-variable-manager-1';
-import {projectedBuildingSurfaces} from './building-surface-picking.js?v=scenario-variable-manager-1';
-import {rasterizeMiniature} from './miniature-raster.js?v=scenario-variable-manager-1';
-import {BUILDING_PROPS,propModelGeometry,shadePropFaces} from './building-prop-models.js?v=scenario-variable-manager-1';
-export {BUILDING_PROPS,PROP_CATEGORIES} from './building-prop-models.js?v=scenario-variable-manager-1';
+import {clipPropGeometry} from './building-prop-clipping.js?v=scripted-ending-ranks-1';
+import {projectedBuildingSurfaces} from './building-surface-picking.js?v=scripted-ending-ranks-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=scripted-ending-ranks-1';
+import {BUILDING_PROPS,propModelGeometry,shadePropFaces} from './building-prop-models.js?v=scripted-ending-ranks-1';
+export {BUILDING_PROPS,PROP_CATEGORIES} from './building-prop-models.js?v=scripted-ending-ranks-1';
 export function validateBuildingProps(value){
  if(!Array.isArray(value)||value.length>64)throw Error('A custom building supports up to 64 props.');
  return Array.from(value,p=>{if(!p||!Object.hasOwn(BUILDING_PROPS,p.kind)||!Number.isInteger(p.x)||p.x<0||p.x>9||!Number.isInteger(p.y)||p.y<0||p.y>9||!Number.isFinite(p.z)||p.z<0||p.z>3.480001||!Number.isInteger(p.rotation)||p.rotation<0||p.rotation>3)throw Error('Choose a valid prop, block position, height and rotation.');return{kind:p.kind,x:p.x,y:p.y,z:p.z,rotation:p.rotation};});

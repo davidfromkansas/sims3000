@@ -1,11 +1,11 @@
-import {dialogTextTarget} from './scenario-dialog-text.js?v=scenario-variable-manager-1';
-import {tornadoSettingsLabel} from './tornado-settings.js?v=scenario-variable-manager-1';
-import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=scenario-variable-manager-1';
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=scenario-variable-manager-1';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=scenario-variable-manager-1';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=scenario-variable-manager-1';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=scenario-variable-manager-1';
-import {escapeAnnouncement} from './scenario-announcements.js?v=scenario-variable-manager-1';
+import {dialogTextTarget} from './scenario-dialog-text.js?v=scripted-ending-ranks-1';
+import {tornadoSettingsLabel} from './tornado-settings.js?v=scripted-ending-ranks-1';
+import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=scripted-ending-ranks-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=scripted-ending-ranks-1';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=scripted-ending-ranks-1';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=scripted-ending-ranks-1';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=scripted-ending-ranks-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=scripted-ending-ranks-1';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';
@@ -23,7 +23,7 @@ export function scenarioProgramReport(c){
    if(e.type==='tornado')detail+=' · '+tornadoSettingsLabel(e.tornado);
    if(e.type==='earthquake')detail+=' · Magnitude '+e.magnitude;
    if(e.type==='neighborDeal')detail=' · '+escape(neighborDealLabel(e))+' · '+escape(neighborDealResultText(state.dealResult));
-   if(e.type==='ending')detail=' · '+(e.outcome==='won'?'Victory':'Loss');
+   if(e.type==='ending')detail=' · '+(e.outcome==='won'?'Victory':'Loss')+(e.rankIndex===undefined?' · Automatic rank':' · Award '+escape(s.definition.ranks[e.rankIndex].name));
    const result=state.status==='skipped'?(state.calculationError?'Calculation failed; variable unchanged':'Skipped: no suitable target'):e.type==='popup'?(state.acknowledged?'Acknowledged':'Unread'):'Executed';
    return`<li>Month ${state.month-s.startMonth}: ${SCENARIO_EVENTS[e.type]}${detail} · ${result}${text?`<p style="white-space:pre-wrap">${escape(text)}</p>`:''}</li>`;
   }).join('');

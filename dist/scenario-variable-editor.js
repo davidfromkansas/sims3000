@@ -1,5 +1,5 @@
-import {defaultScenarioVariables,MAX_SCENARIO_VARIABLES} from './scenario-variables.js?v=scenario-variable-manager-1';
-import {scenarioVariableIndex} from './scenario-variable-references.js?v=scenario-variable-manager-1';
+import {defaultScenarioVariables,MAX_SCENARIO_VARIABLES} from './scenario-variables.js?v=scripted-ending-ranks-1';
+import {scenarioVariableIndex} from './scenario-variable-references.js?v=scripted-ending-ranks-1';
 
 export function mountScenarioVariableEditor(root,{scope=document,programEditor,initial=defaultScenarioVariables(),onChange=()=>{}}={}){
  let variables=structuredClone(initial),rows=[];
