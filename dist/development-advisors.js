@@ -1,8 +1,8 @@
-import {showOrdinanceAnalysis} from './ordinance-analysis-ui.js?v=stadium-project-1';
-import {zoneGrowthReport} from './zone-growth.js?v=stadium-project-1';
-import {utilityTrendSnapshot} from './utility-trends.js?v=stadium-project-1';
-import {averageWaterPollution} from './city-measures.js?v=stadium-project-1';
-import {wasteFacilityData} from './waste-facility-report.js?v=stadium-project-1';
+import {showOrdinanceAnalysis} from './ordinance-analysis-ui.js?v=county-courthouse-1';
+import {zoneGrowthReport} from './zone-growth.js?v=county-courthouse-1';
+import {utilityTrendSnapshot} from './utility-trends.js?v=county-courthouse-1';
+import {averageWaterPollution} from './city-measures.js?v=county-courthouse-1';
+import {wasteFacilityData} from './waste-facility-report.js?v=county-courthouse-1';
 const fmt=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:1});
 export const DEVELOPMENT_ADVISORS={planning:{name:'Constance Lee',role:'City planning advisor',portrait:'assets/constance-advisor.png'},environment:{name:'Karen Frawl',role:'Environmental advisor',portrait:'assets/karen-advisor.png'},utilities:{name:'Gus Oddman',role:'Utilities advisor',portrait:'assets/gus-advisor.png'}};
 export function developmentBriefing(c,kind){const advisor=DEVELOPMENT_ADVISORS[kind];if(!advisor)throw Error('Choose a planning, environment or utilities advisor.');const s=c.stats,issues=[],add=(title,text,action,layer,tool)=>issues.push({title,text,action,layer,tool});let facts;

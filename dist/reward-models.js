@@ -1,5 +1,5 @@
-import {rasterizeMiniature} from './miniature-raster.js?v=stadium-project-1';
-export const MODELED_REWARDS=new Set(['cityHall','mayorHouse','stadium','university']);
+import {rasterizeMiniature} from './miniature-raster.js?v=county-courthouse-1';
+export const MODELED_REWARDS=new Set(['cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){
  if(!MODELED_REWARDS.has(type))throw Error('Unknown reward model.');
@@ -24,6 +24,17 @@ export function rewardGeometry(type){
   roof(0,.14,.33,.43,.15,.065,'#719086');box(0,.073,.06,.07,.006,.17,'#49615e');
   box(0,.36,.055,.18,.23,.01,'#c5bda4');for(const x of [-.34,.34])for(const y of [-.34,.32])tree(x,y);
   for(const x of [-.24,.24]){box(x,.34,.06,.055,.055,.035,'#afad9d');box(x,.34,.095,.009,.009,.29,'#c5c9ba');box(x+.042,.34,.31,.08,.005,.06,x<0?'#658b9b':'#c09264');}
+ }else if(type==='countyCourthouse'){
+  // Original courthouse: masonry wings, limestone portico and stepped copper cupola.
+  box(0,.15,.055,.65,.56,.012,'#c7bfab');hall(0,-.12,.77,.38,.32,'#c5b7a0');
+  for(const x of [-.31,.31])hall(x,.04,.17,.36,.25,'#baaa95');
+  for(let step=0;step<4;step++)box(0,.27+step*.032,.057,.43,.16-step*.027,.014*(step+1),'#d8cfb9');
+  for(const x of [-.18,-.108,-.036,.036,.108,.18]){box(x,.15,.09,.032,.032,.25,'#e9dfc7');box(x,.15,.335,.045,.055,.026,'#ddd3bb');}
+  box(0,.14,.36,.48,.18,.034,'#ded2b8');roof(0,.14,.394,.50,.20,.08,'#c4b89d');
+  box(0,-.12,.38,.27,.27,.07,'#b2ad94');for(let tier=0;tier<5;tier++)box(0,-.12,.45+tier*.027,.25-tier*.034,.25-tier*.034,.028,'#789b8d');
+  box(0,-.12,.585,.055,.055,.04,'#d9c9a9');box(0,-.12,.625,.012,.012,.075,'#bdad87');
+  for(const x of [-.10,0,.10])box(x,.075,.067,.057,.009,.16,'#526d71');
+  for(const x of [-.40,.40]){tree(x,-.36);tree(x,.33);}box(.32,.36,.06,.11,.07,.025,'#b7a58d');box(.32,.36,.085,.014,.014,.18,'#927f66');box(.32,.36,.265,.05,.05,.03,'#c2ab82');
  }else if(type==='university'){
   box(0,0,.056,.65,.69,.009,'#c6b89c');box(0,.08,.066,.28,.33,.005,'#829b6b');hall(0,-.26,.77,.24,.28,'#c3a27d');for(const x of [-.29,.29])hall(x,.09,.19,.46,.22,'#bca07e');
   hall(0,-.24,.16,.20,.49,'#cbb595');box(0,-.24,.565,.19,.23,.025,'#dad0ab');roof(0,-.24,.59,.20,.24,.11,'#597779');for(const side of [-1,1]){box(0,-.24+side*.105,.425,.063,.005,.063,'#e0dbbe');box(0,-.24+side*.109,.452,.025,.005,.007,'#536568');}

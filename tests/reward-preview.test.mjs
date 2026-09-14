@@ -9,4 +9,4 @@ globalThis.document={createElement:()=>({getContext:()=>ctx}),getElementById:id=
 const c=createCity('Reward previews',false);c.rewards.earned.mayorHouse=0;const before=serializeCity(c);
 showRewards({city:()=>c,dialog(title,html){assert.match(title,/Rewards/);for(const k of Object.keys(REWARDS)){assert.ok(html.includes('rewardPreview-'+k));canvases.set('rewardPreview-'+k,{getContext:()=>ctx});rotate.set('[data-reward-rotate="'+k+'"]',{});place.push({dataset:{reward:k}});}},close(){closed++;},setTool:v=>tool=v});
 assert.equal(renders,Object.keys(REWARDS).length);for(const b of rotate.values())for(let i=0;i<4;i++)b.onclick();assert.equal(renders,Object.keys(REWARDS).length*5);assert.equal(serializeCity(c),before,'inspection never changes the city');place.find(b=>b.dataset.reward==='mayorHouse').onclick();assert.equal(tool,'mayorHouse');assert.equal(closed,1);
-console.log('PASS: reward panel previews all four rewards, rotates each through four views without city mutation, and retains placement controls.');
+console.log('PASS: reward panel previews every reward, rotates each through four views without city mutation, and retains placement controls.');
