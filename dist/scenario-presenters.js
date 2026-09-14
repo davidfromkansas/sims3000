@@ -1,4 +1,4 @@
-import {escapeAnnouncement} from './scenario-announcements.js?v=architecture-collection-51';
+import {escapeAnnouncement} from './scenario-announcements.js?v=architecture-collection-53';
 export const ADVISOR_PORTRAIT='assets/scenario-advisor.png';
 export const MAX_PORTRAIT_BYTES=300000;
 export function validatePortrait(value){

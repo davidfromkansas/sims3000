@@ -1,6 +1,6 @@
-import {scenarioAllowsBackground} from './scenario-background-rules.js?v=architecture-collection-51';
-import {recordHazard} from './emergency-order.js?v=architecture-collection-51';
-import {beginEmergencySession} from './emergency-session.js?v=architecture-collection-51';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=architecture-collection-53';
+import {recordHazard} from './emergency-order.js?v=architecture-collection-53';
+import {beginEmergencySession} from './emergency-session.js?v=architecture-collection-53';
 export const freshSpaceJunk=()=>({randomSpaceJunk:false,spaceJunk:null,spaceJunkFalls:0,spaceJunkImpacts:0});
 export function startSpaceJunk(c,x,y){const n=Math.sqrt(c.tiles.length),e=c.emergency;if(e.spaceJunk)return{ok:false,error:'This disaster type is already active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n)return{ok:false,error:'Choose a tile inside the city.'};beginEmergencySession(c);recordHazard(e,'spaceJunk');Object.assign(e,{spaceJunk:{x,y,originX:x,originY:y,age:0}});e.spaceJunkFalls++;return{ok:true};}
 export function stepSpaceJunk(c,impact){const e=c.emergency,s=e.spaceJunk;if(!s)return 0;s.age++;if(s.age%4)return 0;const damage=impact(c,s.x,s.y);e.spaceJunkImpacts++;if(s.age===24){e.spaceJunk=null;return damage;}const n=Math.sqrt(c.tiles.length),k=s.age/4;let seed=Math.imul(c.seed+e.spaceJunkFalls,1664525)^Math.imul(k,1013904223);const dx=((seed>>>0)%13)-6,dy=(((seed>>>8)>>>0)%13)-6;s.x=Math.max(0,Math.min(n-1,s.originX+dx));s.y=Math.max(0,Math.min(n-1,s.originY+dy));return damage;}

@@ -46,7 +46,7 @@ assert.equal(JSON.stringify(expanded.tiles),expandedBefore.tiles);assert.equal(J
 const expandedSave=serializeCity(expanded),expandedRestored=validateSave(JSON.parse(expandedSave));assert.equal(expandedRestored.buildingLots.get(expandedLot.root).ids.length,25);assert.equal(serializeCity(expandedRestored),expandedSave);
 const oldExpanded=JSON.parse(expandedSave);oldExpanded.version=145;assert.throws(()=>validateSave(oldExpanded),/146/);oldExpanded.buildingDesigns={};assert.throws(()=>validateSave(oldExpanded),/146/);
 tick(expandedRestored);assert.equal(serializeCity(validateSave(JSON.parse(serializeCity(expandedRestored)))),serializeCity(expandedRestored));assert.equal(build(expandedRestored,'bulldoze',[{x:34,y:34}]).ok,true);assert.ok(expandedLot.ids.every(id=>expandedRestored.tiles[id].lotRoot==null&&expandedRestored.tiles[id].level===0),'demolishing a distant member removes the entire five-tile building');
-const olderOrdinary=JSON.parse(serializeCity(createCity()));olderOrdinary.version=145;assert.equal(validateSave(olderOrdinary).version,155);
+const olderOrdinary=JSON.parse(serializeCity(createCity()));olderOrdinary.version=145;assert.equal(validateSave(olderOrdinary).version,156);
 for(const footprint of [{width:5,height:1},{width:1,height:5},{width:5,height:5}])for(let rotation=0;rotation<4;rotation++){
  const d=defaultBuildingDesign(buildingSlot(4,footprint)),points=[],ctx={beginPath(){},closePath(){},fill(){},stroke(){},moveTo(...p){points.push(p);},lineTo(...p){points.push(p);}};drawBuildingDesign(ctx,d,rotation);assert.ok(points.every(([x,y])=>x>=0&&x<=256&&y>=0&&y<=384));
 }
@@ -121,7 +121,7 @@ for(const layered of [false,true]){
  node('previewTool').value='anchored-detail';node('previewTool').onchange();node('detailSwatch5').onclick();node('designAccent').value='#123456';node('designAccent').oninput();assert.match(node('detailTexture5').innerHTML,/#123456/,'changing the accent refreshes the actual mounted palette');node('decalWidth').value='3';node('decalHeight').value='1';
  const face=projectedBuildingSurfaces(model).find(f=>f.side===2&&f.x===3&&f.from===1),p=face.polygon.reduce((sum,[x,y])=>({x:sum.x+x/4,y:sum.y+y/4}),{x:0,y:0}),e={button:0,pointerId:88,clientX:p.x,clientY:p.y,preventDefault(){}};
  canvas.onpointerdown(e);canvas.onpointerup(e);assert.equal(detailCity.buildingDesigns[2].decals,undefined);
- node('designName').value='Cornice test';node('designName').oninput();node('applyDesign').onclick();assert.equal(detailCity.buildingDesigns[2].decals.length,1);assert.equal(detailCity.buildingDesigns[2].decals[0].kind,5);
+ node('designName').value='Cornice test';node('designName').oninput();node('applyDesign').onclick();assert.equal(detailCity.buildingDesigns[2].decals.length,1);assert.equal(detailCity.buildingDesigns[2].decals[0].kind,5);assert.equal(detailCity.buildingDesigns[2].decals[0].u%1,.5,'composed pointer places between wall grid lines');
  node(layered?'voxelUndo':'blockUndo').onclick();node('applyDesign').onclick();assert.equal(detailCity.buildingDesigns[2].decals,undefined);node(layered?'voxelRedo':'blockRedo').onclick();node('applyDesign').onclick();assert.equal(detailCity.buildingDesigns[2].decals.length,1);
  assert.deepEqual(validateSave(JSON.parse(serializeCity(detailCity))).buildingDesigns[2].decals,detailCity.buildingDesigns[2].decals);
 }
@@ -156,3 +156,23 @@ for(const method of ['tower','blocks','voxels']){
  node('designName').value='Solid paint workflow';node('designName').oninput();node('applyDesign').onclick();const saved=validateSave(JSON.parse(serializeCity(solidCity)));assert.deepEqual(saved.buildingDesigns[2],solidCity.buildingDesigns[2]);
 }
 console.log('PASS: composed custom-color selection, ground/wall/roof painting, named sampling, palette/paint Undo/Redo, draft isolation, field edits and city restoration.');
+// Roof details share the actual composed editor's transactional model and history.
+const {roofDetailPolygonsOnFace}=await import('../dist/building-roof-details.js');
+for(const layered of [false,true]){
+ const city=createCity(),layout=Array(100).fill(0);for(const i of [44,45,54,55])layout[i]=layered?15:4;
+ const model={...defaultBuildingDesign(2),...(layered?{voxels:layout}:{blocks:layout})};city.buildingDesigns[2]=model;
+ showBuildingDesigner({city,dialog(){node('designSource').value='2';node('designFootprint').value='1x1';},apply(){},close(){}},2);
+ const canvas=node('designPreview');Object.assign(canvas,{getBoundingClientRect:()=>({left:0,top:0,width:256,height:384}),focus(){},setPointerCapture(){}});
+ node('previewTool').value='anchored-detail';node('previewTool').onchange();node('decalSurface').value='roof';node('decalSurface').onchange();node('detailSwatch3').onclick();node('decalWidth').value='2';node('decalHeight').value='2';node('decalSnap').checked=false;
+ const faces=projectedBuildingSurfaces(model),face=faces.find(f=>f.side===4&&f.x===4&&f.y===4),point=face.polygon.reduce((a,[x,y])=>({x:a.x+x/face.polygon.length,y:a.y+y/face.polygon.length}),{x:0,y:0}),event=p=>({button:0,pointerId:101,clientX:p.x,clientY:p.y,preventDefault(){}}),e=event(point);
+ canvas.onpointerdown(e);canvas.onpointerup(e);assert.equal(city.buildingDesigns[2].roofDetails,undefined);node('applyDesign').onclick();
+ assert.equal(city.buildingDesigns[2].roofDetails.length,1);assert.equal(city.buildingDesigns[2].roofDetails[0].u,4.5);assert.equal(city.buildingDesigns[2].roofDetails[0].depth,2);
+ node(layered?'voxelUndo':'blockUndo').onclick();node('applyDesign').onclick();assert.equal(city.buildingDesigns[2].roofDetails,undefined);
+ node(layered?'voxelRedo':'blockRedo').onclick();node('applyDesign').onclick();assert.equal(city.buildingDesigns[2].roofDetails.length,1);
+ node('designName').value='Roof atelier';node('designName').oninput();node('applyDesign').onclick();const saved=validateSave(JSON.parse(serializeCity(city)));assert.deepEqual(saved.buildingDesigns[2],city.buildingDesigns[2]);
+ const polygons=faces.flatMap(f=>roofDetailPolygonsOnFace(f,city.buildingDesigns[2].roofDetails,model)),poly=polygons[0].points.map(p=>projectBuildingPoint(p)),center=poly.reduce((a,[x,y])=>({x:a.x+x/poly.length,y:a.y+y/poly.length}),{x:0,y:0});
+ node('previewTool').value='sample-decal';node('previewTool').onchange();canvas.onpointerdown(event(center));assert.equal(node('decalKind').value,'3');assert.equal(node('decalHeight').value,'2');
+ node('previewTool').value='erase-decal';node('previewTool').onchange();canvas.onpointerdown(event(center));canvas.onpointerup(event(center));node('applyDesign').onclick();assert.deepEqual(city.buildingDesigns[2].roofDetails,[]);
+ node(layered?'voxelUndo':'blockUndo').onclick();node('applyDesign').onclick();assert.equal(city.buildingDesigns[2].roofDetails.length,1);
+}
+console.log('PASS: composed roof-detail placement, draft isolation, exact anchor, sizing, sampling, erase/Undo/Redo, field edits and city-save continuity for blocks and layers.');

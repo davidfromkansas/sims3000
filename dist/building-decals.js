@@ -1,5 +1,7 @@
-import {clipPolygon} from './building-decal-clipping.js?v=architecture-collection-51';
-import {drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-51';
+import {roofDetailPolygonsOnFace} from './building-roof-details.js?v=architecture-collection-53';
+import {clipPolygon} from './building-decal-clipping.js?v=architecture-collection-53';
+import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-53';
+import {drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-53';
 export const MAX_BUILDING_DECALS=32;
 export const DECAL_NAMES=['','Framed window','Entrance door','Vent grille','Window with ledge','Cornice'];
 const bounded=(v,min,max)=>Number.isFinite(v)&&v>=min&&v<=max&&Math.abs(v*1000-Math.round(v*1000))<1e-7;
@@ -9,6 +11,14 @@ export function decodeBuildingDecals(value){if(!Array.isArray(value)||value.leng
 export function wallCoordinates(side,[x,y,z]){return[(side===0?-x:side===1?-y:side===2?x:y)/.085+5,z];}
 export function wallWorldPoint(side,plane,[u,z]){const along=(u-5)*.085,fixed=(plane-5)*.085;return side===0?[-along,fixed,z]:side===1?[fixed,-along,z]:side===2?[along,fixed,z]:[fixed,along,z];}
 export function wallPlane(face){if(face.side===4)return null;return Math.round((face.points[0][face.side%2===0?1:0])/.085+5);}
+// Invert the wall's affine projection so the cursor can anchor between grid lines.
+export function projectedWallAnchor(face,point,design){
+ if(face.side===4)throw Error('Choose a wall for an anchored detail.');
+ const plane=wallPlane(face),project=p=>projectBuildingPoint(wallWorldPoint(face.side,plane,p),design.rotation,design.footprint),o=project([0,0]),a=project([1,0]),b=project([0,1]);
+ const ax=a[0]-o[0],ay=a[1]-o[1],bx=b[0]-o[0],by=b[1]-o[1],det=ax*by-ay*bx,px=point.x-o[0],py=point.y-o[1];
+ if(!Number.isFinite(det)||Math.abs(det)<1e-10)throw Error('Choose a visible wall for an anchored detail.');
+ return {u:Math.round((px*by-py*bx)/det*1000)/1000,z:Math.round((ax*py-ay*px)/det*1000)/1000};
+}
 export function anchoredDecal(face,kind,width=2,height=.28){if(face.side===4)throw Error('Choose a wall for an anchored detail.');const points=face.points.map(p=>wallCoordinates(face.side,p));return validateBuildingDecals([{kind,side:face.side,plane:wallPlane(face),u:Math.round(Math.min(...points.map(p=>p[0]))*1000)/1000,z:Math.round(Math.min(...points.map(p=>p[1]))*1000)/1000,width,height}])[0];}
 export function decalPolygonsOnFace(face,decals,design){if(face.side===4)return[];const plane=wallPlane(face),boundary=face.points.map(p=>wallCoordinates(face.side,p)),result=[];
  for(const [owner,d] of (decals||[]).entries()){
@@ -18,4 +28,4 @@ export function decalPolygonsOnFace(face,decals,design){if(face.side===4)return[
   else drawBuildingSurfaceDetail({points,side:d.side,from:0,to:1},d.kind,design,clip);
  }return result;
 }
-export function drawBuildingDecals(face,design,polygon){for(const p of decalPolygonsOnFace(face,design.decals,design))polygon(p.points,p.color);}
+export function drawBuildingDecals(face,design,polygon){for(const p of (face.side===4?roofDetailPolygonsOnFace(face,design.roofDetails,design):decalPolygonsOnFace(face,design.decals,design)))polygon(p.points,p.color);}
