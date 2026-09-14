@@ -1,11 +1,12 @@
-import {jailCapacity,jailReport} from './jail.js?v=reward-garbage-1';
-import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=reward-garbage-1';
-import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=reward-garbage-1';
-import {SERVICE_JOBS} from './civic-jobs.js?v=reward-garbage-1';
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=reward-garbage-1';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=reward-garbage-1';
-import {occupancy} from './utilities.js?v=reward-garbage-1';
-import {educationServiceDemand} from './education.js?v=reward-garbage-1';
+import {civicGarbageInspection} from './civic-waste.js?v=civic-garbage-1';
+import {jailCapacity,jailReport} from './jail.js?v=civic-garbage-1';
+import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=civic-garbage-1';
+import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=civic-garbage-1';
+import {SERVICE_JOBS} from './civic-jobs.js?v=civic-garbage-1';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=civic-garbage-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=civic-garbage-1';
+import {occupancy} from './utilities.js?v=civic-garbage-1';
+import {educationServiceDemand} from './education.js?v=civic-garbage-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  t=civicRoot(c,t);const definition=SERVICES[t.type];if(!definition)return null;
@@ -21,6 +22,7 @@ export function civicFacilityReport(c,t){
  t=civicRoot(c,t);const d=civicFacilityDetails(c,t);if(!d)return'';const number=n=>n.toLocaleString(undefined,{maximumFractionDigits:1});
  let body=`<p class="fine">Tile ${t.x+1}, ${t.y+1} · ${civicSize(t)} × ${civicSize(t)} lot</p><p>${d.operating?'Operating.':d.reasons.length?'Not operating: '+d.reasons.join('; ')+'.':'Not operating.'}</p><div class="metric-grid"><div><small>${DEPARTMENTS[d.definition.department]} funding</small><strong>${d.funding}%</strong></div><div><small>Monthly upkeep contribution</small><strong>§${number(d.monthlyCost)}</strong></div></div>`;
  body+=`<p>Civic employment: ${number(t.civicEmployed||0)} / ${d.operating?SERVICE_JOBS[t.type]:0} operating jobs filled. Residents need a working commute to fill these positions.</p>`;
+ body+=civicGarbageInspection(c,t);
  if(t.type==='hospital'){const staff=hospitalStaffing(d.funding);body+=`<p>Hospital beds: <strong>${staff.beds.toLocaleString()}</strong> · available while operating: ${d.operating?staff.beds.toLocaleString():0}. Funded doctors: <strong>${number(staff.doctors)}</strong>. Patient demand: ${number(hospitalizationRate(c)*100)}% of residents, including pollution effects.</p><p>Funding pays for doctors; it does not add beds. Each doctor can care for 15 patients. Add a connected hospital when beds are full. Staffing capacity is limited by available beds.</p>`;}
  if(d.capacityService)body+=`<h3>Road-connected service area</h3><div class="metric-grid"><div><small>Occupied homes reached</small><strong>${d.homes}</strong></div><div><small>Residents on these road networks</small><strong>${number(d.residents)}</strong></div><div><small>Demand · ${d.group}</small><strong>${number(d.demand)}</strong></div><div><small>Operating capacity contribution</small><strong>${number(d.capacity)}</strong></div><div><small>This facility’s coverage contribution</small><strong>${number(d.contribution)}%</strong></div><div><small>Combined local coverage</small><strong>${number(d.combinedCoverage)}%</strong></div></div><p>${d.residents?'Each residential building is counted once when any of its tiles is reached. Resident demand includes only the connected tiles, matching the service simulation. This facility shares its capacity across these connected homes. Contributions can overlap other facilities; combined coverage is capped at 100% per home.':'No occupied homes share a road network with this facility. Connecting a road only at the building is not enough to reach a disconnected neighborhood.'}</p>${t.type!=='hospital'&&d.group!=='residents'?'<p>Demand uses the city’s age mix: schools serve ages 0–14, colleges ages 15–24, and libraries and museums support retention for ages 25+. School and college places are separate; adding one does not replace the other. Age cutoffs are reconstruction estimates.</p>':''}<p>${!d.operating?'Restore the missing service conditions to use its funded contribution of '+number(d.fundedCapacity)+'.':d.demand>d.capacity&&d.combinedCoverage<99.9?t.type==='hospital'?'This area has unmet demand. Restore staffing if underfunded; add another connected hospital when beds are full.':'This area has unmet demand. Increase department funding or add another connected facility.':d.demand?'Coverage is sufficient or shared with other facilities. Check other neighborhoods before adding capacity here.':d.residents?'No residents in this age group currently need places.':'Zone and develop homes along a connected road network to use this capacity.'}</p>`;
  else if(t.type==='jail')body+=`<p>This jail contributes ${number(d.capacity)} usable cells and ${number(d.operating?jailCapacity(d.funding).maximum:0)} maximum overcrowded places.</p>${jailReport(c)}`;
