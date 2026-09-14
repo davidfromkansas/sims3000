@@ -1,6 +1,6 @@
-import {civicRoots,civicCenter} from './civic-footprints.js?v=civic-garbage-1';
-import {EDUCATION_LAYERS} from './education-layers.js?v=civic-garbage-1';
-import {serviceRadius} from './civic.js?v=civic-garbage-1';
+import {civicRoots,civicCenter} from './civic-footprints.js?v=public-space-garbage-1';
+import {EDUCATION_LAYERS} from './education-layers.js?v=public-space-garbage-1';
+import {serviceRadius} from './civic.js?v=public-space-garbage-1';
 export const PRECINCT_LAYERS={police:'police',crime:'police',fire:'fire',flammability:'fire'};
 export const PRECINCT_LEGEND='Station dots: operating white, inactive orange · Rings: current service limit';
 export function stationAreas(city,layer){

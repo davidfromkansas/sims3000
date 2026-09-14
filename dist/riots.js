@@ -1,9 +1,9 @@
-import {assignPolice,prunePoliceOrders} from './police-orders.js?v=civic-garbage-1';
-import {policeResponses} from './police-response.js?v=civic-garbage-1';
-import {civicRoots} from './civic-footprints.js?v=civic-garbage-1';
-import {scenarioAllowsBackground} from './scenario-background-rules.js?v=civic-garbage-1';
-import {recordHazard} from './emergency-order.js?v=civic-garbage-1';
-import {beginEmergencySession} from './emergency-session.js?v=civic-garbage-1';
+import {assignPolice,prunePoliceOrders} from './police-orders.js?v=public-space-garbage-1';
+import {policeResponses} from './police-response.js?v=public-space-garbage-1';
+import {civicRoots} from './civic-footprints.js?v=public-space-garbage-1';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=public-space-garbage-1';
+import {recordHazard} from './emergency-order.js?v=public-space-garbage-1';
+import {beginEmergencySession} from './emergency-session.js?v=public-space-garbage-1';
 const developed=t=>t.terrain==='land'&&['residential','commercial','industrial'].includes(t.type)&&t.level>0&&!t.rubble;
 export const freshRiots=()=>({randomRiots:false,unrestMonths:0,riot:null,policeUnits:[],nextPolice:0,riots:0});
 export function startRiot(c,x,y){const n=Math.sqrt(c.tiles.length),e=c.emergency;if(e.riot)return{ok:false,error:'This disaster type is already active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n||!developed(c.tiles[y*n+x]))return{ok:false,error:'Choose an occupied residential, commercial or industrial building.'};beginEmergencySession(c);recordHazard(e,'riot');Object.assign(e,{riot:{x,y,age:0,anger:100}});e.riots++;return{ok:true};}

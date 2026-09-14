@@ -1,12 +1,12 @@
-import {civicGarbageInspection} from './civic-waste.js?v=civic-garbage-1';
-import {jailCapacity,jailReport} from './jail.js?v=civic-garbage-1';
-import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=civic-garbage-1';
-import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=civic-garbage-1';
-import {SERVICE_JOBS} from './civic-jobs.js?v=civic-garbage-1';
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=civic-garbage-1';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=civic-garbage-1';
-import {occupancy} from './utilities.js?v=civic-garbage-1';
-import {educationServiceDemand} from './education.js?v=civic-garbage-1';
+import {civicGarbageInspection} from './civic-waste.js?v=public-space-garbage-1';
+import {jailCapacity,jailReport} from './jail.js?v=public-space-garbage-1';
+import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=public-space-garbage-1';
+import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=public-space-garbage-1';
+import {SERVICE_JOBS} from './civic-jobs.js?v=public-space-garbage-1';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=public-space-garbage-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=public-space-garbage-1';
+import {occupancy} from './utilities.js?v=public-space-garbage-1';
+import {educationServiceDemand} from './education.js?v=public-space-garbage-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  t=civicRoot(c,t);const definition=SERVICES[t.type];if(!definition)return null;

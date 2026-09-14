@@ -1,11 +1,12 @@
-import {civicWasteProduction} from './civic-waste.js?v=civic-garbage-1';
-import {rewardWasteProduction,garbageSourceRoads} from './reward-waste.js?v=civic-garbage-1';
-import {landfillRailFreight} from './rail-freight.js?v=civic-garbage-1';
-import {waterBaseNeed} from './utility-demand.js?v=civic-garbage-1';
-import {pipeCoverage} from './water-coverage.js?v=civic-garbage-1';
-import {conservationDemand} from './conservation.js?v=civic-garbage-1';
-import {industrialJobs} from './industry.js?v=civic-garbage-1';
-import {tradeCapacity} from './region.js?v=civic-garbage-1';
+import {publicSpaceWasteProduction} from './public-space-waste.js?v=public-space-garbage-1';
+import {civicWasteProduction} from './civic-waste.js?v=public-space-garbage-1';
+import {rewardWasteProduction,garbageSourceRoads} from './reward-waste.js?v=public-space-garbage-1';
+import {landfillRailFreight} from './rail-freight.js?v=public-space-garbage-1';
+import {waterBaseNeed} from './utility-demand.js?v=public-space-garbage-1';
+import {pipeCoverage} from './water-coverage.js?v=public-space-garbage-1';
+import {conservationDemand} from './conservation.js?v=public-space-garbage-1';
+import {industrialJobs} from './industry.js?v=public-space-garbage-1';
+import {tradeCapacity} from './region.js?v=public-space-garbage-1';
 // Manual pp. 16–17, 103, 115, 117–118. Capacities/rates are explicit model approximations.
 export const WATER_CAPACITY=500,LANDFILL_CAPACITY=200,LANDFILL_DECAY=.5;
 export const occupancy=level=>[0,1,3,8][level]||0;
@@ -32,7 +33,7 @@ export function recomputeWater(c){
  }
  return{waterDemand,waterConserved,pumps,activePumps,pipes,waterCapacity,waterUsed,waterUpkeep,treatmentPlants,activeTreatment,watered:tiles.filter(t=>isZone(t)&&t.watered).length,waterNetworks:networks};
 }
-export function wasteProduction(t,c){return t.type==='industrial'&&t.industry==='farm'?industrialJobs(t)*.02:isZone(t)?occupancy(t.level)*(t.type==='residential'?.24:t.type==='industrial'?.72:.36):c?rewardWasteProduction(c,t)+civicWasteProduction(c,t):0;}
+export function wasteProduction(t,c){return t.type==='industrial'&&t.industry==='farm'?industrialJobs(t)*.02:isZone(t)?occupancy(t.level)*(t.type==='residential'?.24:t.type==='industrial'?.72:.36):c?rewardWasteProduction(c,t)+civicWasteProduction(c,t)+publicSpaceWasteProduction(c,t):0;}
 export function garbageStats(c){const dumps=c.tiles.filter(t=>t.type==='landfill');return{wasteUpkeep:c.tiles.reduce((v,t)=>v+(WASTE_STRUCTURES[t.type]?.upkeep||0),0),recycled:c.tiles.reduce((v,t)=>v+(t.type==='recycling'?t.recycledLastMonth||0:0),0),incinerated:c.tiles.reduce((v,t)=>v+(WASTE_STRUCTURES[t.type]?t.burnedLastMonth||0:0),0),wastePower:c.tiles.reduce((v,t)=>v+wastePower(t),0),landfillTiles:dumps.length,landfillCapacity:dumps.length*LANDFILL_CAPACITY,landfillStored:dumps.reduce((a,t)=>a+t.garbage,0),uncollectedWaste:c.tiles.reduce((a,t)=>a+t.waste,0),wasteProduction:c.tiles.reduce((a,t)=>a+wasteProduction(t,c),0),connectedLandfillTiles:dumps.filter(t=>t.roadIds?.length).length};}
 export function processGarbage(c){
  const freight=landfillRailFreight(c),dumps=c.tiles.filter(t=>t.type==='landfill'),plants=c.tiles.filter(t=>wasteActive(c,t)),recyclers=plants.filter(t=>t.type==='recycling'),burners=plants.filter(t=>t.type!=='recycling'),remaining=new Map(plants.map(t=>[t,wasteCapacity(c,t)]));for(const t of c.tiles){if(WASTE_STRUCTURES[t.type]){t.burnedLastMonth=0;t.recycledLastMonth=0;}if(t.type==='landfill')t.garbage=Math.max(0,t.garbage-LANDFILL_DECAY);}

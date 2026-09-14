@@ -1049,3 +1049,7 @@ Eight reward types with established source rates now generate garbage, including
 ## Civic service waste
 
 Police/fire stations, hospitals, schools, jails, colleges, libraries and museums now generate waste once per operating footprint, with whole-building collection access and visible production/backlog. Readiness matches service coverage, including strikes and zero funding. Source weights use /100 normalization. See CIVIC-GARBAGE-MILESTONE.md for validation and limits; power/transit/recreation waste and exact original balance remain unfinished.
+
+## Recreation and transit waste
+
+Ten recreation/transit types now contribute guide-derived, per-building waste to city disposal and history. Utilities and inspection expose production and waiting garbage. Recreation collection uses its full footprint; passenger-only rail/subway access cannot substitute for road collection. Transit damage closes passenger operation and new waste production. See [the milestone](PUBLIC-SPACE-GARBAGE-MILESTONE.md) for rates and calibration limits.

@@ -1,10 +1,10 @@
-import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=civic-garbage-1';
-import {blockCornerHeights} from './building-block-geometry.js?v=civic-garbage-1';
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=civic-garbage-1';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=civic-garbage-1';
-import {projectBuildingPoint} from './building-footprints.js?v=civic-garbage-1';
-import {buildingShapeCells} from './building-shapes.js?v=civic-garbage-1';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=civic-garbage-1';
+import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=public-space-garbage-1';
+import {blockCornerHeights} from './building-block-geometry.js?v=public-space-garbage-1';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=public-space-garbage-1';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=public-space-garbage-1';
+import {projectBuildingPoint} from './building-footprints.js?v=public-space-garbage-1';
+import {buildingShapeCells} from './building-shapes.js?v=public-space-garbage-1';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=public-space-garbage-1';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;
