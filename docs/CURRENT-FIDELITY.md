@@ -1005,3 +1005,7 @@ Overload explosions now follow the guide’s 18-month grace period and certain f
 ## Metropolis growth planning
 
 The town guide now tracks population through 150,000 and links current growth warnings to utility, budget and transport reports or construction tools. A staged ordinary-construction audit reached 151,720 residents on an empty 256 map at month 346 without grants or loans. A fresh uninterrupted replay of test:metropolis reproduces that endpoint and passes save round-trip validation. This does not establish Stadium eligibility, original balance or browser performance. See METROPOLIS-GROWTH-PLANNING-MILESTONE.md. Schema remains 135.
+
+## Medical Research Center
+
+The sixth reward adds a paid 3 × 3 research center gated by year, population, life expectancy and approval, with 135 accessible jobs and local environmental effects. Original four-view procedural artwork is included. Schema 136 migrates older reward histories. The ordinary metropolis earned Stadium/Courthouse at month 368 and the new research offer after migration at month 467; University progression remains unproven. See MEDICAL-RESEARCH-CENTER-MILESTONE.md.
