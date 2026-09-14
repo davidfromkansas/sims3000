@@ -1,7 +1,7 @@
-import {compileScenarioPrograms} from './scenario-programs.js?v=power-allocation-1';
-import {validateEventDefinitions,validateEventCondition} from './scenario-events.js?v=power-allocation-1';
-import {validateGoalStatusReferences} from './scenario-goal-status.js?v=power-allocation-1';
-import {MAP_SIZES} from './city-grid.js?v=power-allocation-1';
+import {compileScenarioPrograms} from './scenario-programs.js?v=neighborhood-aura-1';
+import {validateEventDefinitions,validateEventCondition} from './scenario-events.js?v=neighborhood-aura-1';
+import {validateGoalStatusReferences} from './scenario-goal-status.js?v=neighborhood-aura-1';
+import {MAP_SIZES} from './city-grid.js?v=neighborhood-aura-1';
 // Program leaves have no clocks or private conditions: schedule the entry call,
 // and put conditional behavior in an explicit If / Else block.
 export function compileGameScenarioPrograms(value,{size=48,objectives=[]}={}){

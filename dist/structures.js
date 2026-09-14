@@ -1,7 +1,7 @@
-import {LANDMARKS} from './landmarks.js?v=power-allocation-1';
-import {BUSINESSES} from './business.js?v=power-allocation-1';
-import {REWARDS} from './rewards.js?v=power-allocation-1';
-import {POWER_PLANTS} from './power.js?v=power-allocation-1';
-import {RECREATION} from './recreation.js?v=power-allocation-1';
+import {LANDMARKS} from './landmarks.js?v=neighborhood-aura-1';
+import {BUSINESSES} from './business.js?v=neighborhood-aura-1';
+import {REWARDS} from './rewards.js?v=neighborhood-aura-1';
+import {POWER_PLANTS} from './power.js?v=neighborhood-aura-1';
+import {RECREATION} from './recreation.js?v=neighborhood-aura-1';
 // Fixed-footprint ploppable structures share construction, damage and save validation.
 export const STRUCTURES={...LANDMARKS,...POWER_PLANTS,...RECREATION,...REWARDS,...BUSINESSES};
