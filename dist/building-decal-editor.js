@@ -1,8 +1,8 @@
-import {detailPaletteHTML,mountBuildingDetailPalette} from './building-detail-palette.js?v=architecture-collection-47';
-import {DECAL_NAMES,MAX_BUILDING_DECALS,anchoredDecal,decalPolygonsOnFace} from './building-decals.js?v=architecture-collection-47';
-import {projectedBuildingSurfaces,pickBuildingSurface,pointInBuildingSurface} from './building-surface-picking.js?v=architecture-collection-47';
-import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=architecture-collection-47';
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-47';
+import {detailPaletteHTML,mountBuildingDetailPalette} from './building-detail-palette.js?v=architecture-collection-48';
+import {DECAL_NAMES,MAX_BUILDING_DECALS,anchoredDecal,decalPolygonsOnFace} from './building-decals.js?v=architecture-collection-48';
+import {projectedBuildingSurfaces,pickBuildingSurface,pointInBuildingSurface} from './building-surface-picking.js?v=architecture-collection-48';
+import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=architecture-collection-48';
+import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-48';
 export const anchoredDetailMode=mode=>['anchored-detail','sample-decal','erase-decal'].includes(mode);
 export function mountBuildingDecalEditor(root,canvas,{get,camera,mode,material,apply,render,status}){
  root.innerHTML=`<fieldset id="anchoredDetailControls"><legend>Anchored wall details</legend>${detailPaletteHTML()}<div class="block-editor-controls"><label>Width (wall tiles)<input id="decalWidth" type="number" min=".25" max="10" step=".25" value="2"></label><label>Height (floors)<input id="decalHeight" type="number" min=".25" max="25" step=".25" value="2"></label></div><p class="fine">The highlighted wall tile anchors the lower-left corner. Details extend right and up, clipping at wall edges, gaps and slopes. Click and release to place; Shift or Escape cancels. Select an anchored detail to reuse its design and size. Erase removes the selected placement; Undo restores it.</p></fieldset>`;

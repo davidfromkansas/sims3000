@@ -80,7 +80,7 @@
       "name": "Brandenburg Gate",
       "edition": "standard",
       "directorySource": "gamefaqs",
-      "runtimeType": null,
+      "runtimeType": "brandenburgGate",
       "originalFootprint": null
     },
     {
@@ -293,7 +293,7 @@
       "name": "Parthenon",
       "edition": "standard",
       "directorySource": "prima",
-      "runtimeType": null,
+      "runtimeType": "parthenon",
       "originalFootprint": null
     },
     {
@@ -440,7 +440,7 @@
       "name": "Taj Mahal",
       "edition": "standard",
       "directorySource": "prima",
-      "runtimeType": null,
+      "runtimeType": "tajMahal",
       "originalFootprint": null
     },
     {

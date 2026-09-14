@@ -1,6 +1,6 @@
-import {showCustomBuildingEditor} from './custom-building-editor-ui.js?v=architecture-collection-47';
-import {buildingSetCatalog,applyBuildingSet,copyBuildingSet,buildingSetChanges} from './building-sets.js?v=architecture-collection-47';
-import {showBuildingReplacement} from './building-replacement-ui.js?v=architecture-collection-47';
+import {showCustomBuildingEditor} from './custom-building-editor-ui.js?v=architecture-collection-48';
+import {buildingSetCatalog,applyBuildingSet,copyBuildingSet,buildingSetChanges} from './building-sets.js?v=architecture-collection-48';
+import {showBuildingReplacement} from './building-replacement-ui.js?v=architecture-collection-48';
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function showBuildingLibrary({city:target,renderer,dialog,apply,importSet,backup,close},filters={group:'all',width:0,height:0},draft=null){
  const city=draft??{...target,...copyBuildingSet(target)};

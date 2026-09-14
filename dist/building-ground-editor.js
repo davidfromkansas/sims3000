@@ -1,8 +1,8 @@
-import {projectedTowerOcclusion} from './building-tower-geometry.js?v=architecture-collection-47';
-import {groundFaces,groundMaterial,paintGround,connectedGround} from './building-ground-paint.js?v=architecture-collection-47';
-import {projectedBuildingSurfaces,pickBuildingSurface} from './building-surface-picking.js?v=architecture-collection-47';
-import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=architecture-collection-47';
-import {BUILDING_MATERIALS} from './building-materials.js?v=architecture-collection-47';
+import {projectedTowerOcclusion} from './building-tower-geometry.js?v=architecture-collection-48';
+import {groundFaces,groundMaterial,paintGround,connectedGround} from './building-ground-paint.js?v=architecture-collection-48';
+import {projectedBuildingSurfaces,pickBuildingSurface} from './building-surface-picking.js?v=architecture-collection-48';
+import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=architecture-collection-48';
+import {BUILDING_MATERIALS} from './building-materials.js?v=architecture-collection-48';
 export function mountBuildingGroundEditor(canvas,{get,camera,mode,material,status,apply,render}){
  const names=['onpointerdown','onpointermove','onpointerup','onpointercancel','onkeydown','onwheel'],base=Object.fromEntries(names.map(k=>[k,canvas[k]]));let hover=null,stroke=null,cache=null;
  const active=()=>['paint-ground','fill-ground','sample-ground','erase-ground'].includes(mode.value),point=e=>{const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};};

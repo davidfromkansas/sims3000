@@ -1,14 +1,14 @@
-import {captureResultGoals,validateResultGoals} from './scenario-result-goals.js?v=architecture-collection-47';
-import {validateTextOverrides} from './scenario-dialog-text.js?v=architecture-collection-47';
-import {validateProgramInvocations} from './scenario-program-invocations.js?v=architecture-collection-47';
-import {validateGoalMarks} from './scenario-goal-marks.js?v=architecture-collection-47';
-import {validateGoalActivations} from './scenario-goal-activation.js?v=architecture-collection-47';
-import {validateScenarioStart} from './scenario-replay.js?v=architecture-collection-47';
-import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=architecture-collection-47';
-import {validateVariableValues} from './scenario-variables.js?v=architecture-collection-47';
-import {businessRoots} from './business.js?v=architecture-collection-47';
-import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=architecture-collection-47';
-import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=architecture-collection-47';
+import {captureResultGoals,validateResultGoals} from './scenario-result-goals.js?v=architecture-collection-48';
+import {validateTextOverrides} from './scenario-dialog-text.js?v=architecture-collection-48';
+import {validateProgramInvocations} from './scenario-program-invocations.js?v=architecture-collection-48';
+import {validateGoalMarks} from './scenario-goal-marks.js?v=architecture-collection-48';
+import {validateGoalActivations} from './scenario-goal-activation.js?v=architecture-collection-48';
+import {validateScenarioStart} from './scenario-replay.js?v=architecture-collection-48';
+import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=architecture-collection-48';
+import {validateVariableValues} from './scenario-variables.js?v=architecture-collection-48';
+import {businessRoots} from './business.js?v=architecture-collection-48';
+import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=architecture-collection-48';
+import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=architecture-collection-48';
 // Original challenges using the manual's scenario/status model; not shipped SC3KU scenarios.
 export const SCENARIOS={
  restorePeace:{title:'Restore the peace',months:12,description:'Contain an ongoing riot and sustain three months of low crime, restored homes and a cash reserve within one year.',briefing:'A riot is underway at tile 21, 21. Your town has 224 residents, §2,500, a police station, fire station, jail and landfill. Police funding was cut to 25%, and both the volunteer brigade and station squad were dispatched far away. Open Emergency to recall or reposition squads. Restore Police funding in Civic services so the station can cover its precinct; jail cells do not replace police coverage. Contain any resulting fires, clear rubble and let homes recover. Then sustain three consecutive monthly checks with no active emergency or rubble, at least 224 residents, average crime at most 15, and §1,500 cash. You have twelve months. The calendar pauses during emergency response. Random disasters start off. This is an original challenge for the reconstruction.'},
