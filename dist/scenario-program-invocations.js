@@ -1,5 +1,5 @@
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=neighborhood-aura-1';
-import {validateProgramInvocation,programActionSources,programInvocationFinished,pendingProgramMessage} from './scenario-program-history.js?v=neighborhood-aura-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=scenario-results-1';
+import {validateProgramInvocation,programActionSources,programInvocationFinished,pendingProgramMessage} from './scenario-program-history.js?v=scenario-results-1';
 // The enclosing scenario validator must validate event definitions first. Event
 // runs count started occurrences; active invocations separately block victory.
 export function validateProgramInvocations(value,definition,eventStates,startMonth,month){
