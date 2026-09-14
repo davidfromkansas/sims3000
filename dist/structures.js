@@ -1,7 +1,7 @@
-import {LANDMARKS} from './landmarks.js?v=room-to-grow-1';
-import {BUSINESSES} from './business.js?v=room-to-grow-1';
-import {REWARDS} from './rewards.js?v=room-to-grow-1';
-import {POWER_PLANTS} from './power.js?v=room-to-grow-1';
-import {RECREATION} from './recreation.js?v=room-to-grow-1';
+import {LANDMARKS} from './landmarks.js?v=bungalow-style-1';
+import {BUSINESSES} from './business.js?v=bungalow-style-1';
+import {REWARDS} from './rewards.js?v=bungalow-style-1';
+import {POWER_PLANTS} from './power.js?v=bungalow-style-1';
+import {RECREATION} from './recreation.js?v=bungalow-style-1';
 // Fixed-footprint ploppable structures share construction, damage and save validation.
 export const STRUCTURES={...LANDMARKS,...POWER_PLANTS,...RECREATION,...REWARDS,...BUSINESSES};
