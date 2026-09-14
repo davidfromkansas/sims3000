@@ -1,7 +1,7 @@
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=learning-city-1';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=learning-city-1';
-import {occupancy} from './utilities.js?v=learning-city-1';
-import {educationServiceDemand} from './education.js?v=learning-city-1';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=education-goals-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=education-goals-1';
+import {occupancy} from './utilities.js?v=education-goals-1';
+import {educationServiceDemand} from './education.js?v=education-goals-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  const definition=SERVICES[t.type];if(!definition)return null;
