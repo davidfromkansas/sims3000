@@ -1,8 +1,8 @@
-import {BUILDING_DETAILS,detailFitsSurface,placeSurfaceDetails} from './building-surface-details.js?v=sawtooth-factory-1';
-import {connectedBuildingSurfaces} from './building-surface-fill.js?v=sawtooth-factory-1';
-import {floorPaintKey,floorSurfaceMaterial,paintFloorSurfaces,surfaceLevel} from './building-floor-paint.js?v=sawtooth-factory-1';
-import {projectedBuildingSurfaces,pickBuildingSurface,paintPickedSurfaces} from './building-surface-picking.js?v=sawtooth-factory-1';
-import {BUILDING_MATERIALS,SURFACE_NAMES} from './building-materials.js?v=sawtooth-factory-1';
+import {BUILDING_DETAILS,detailFitsSurface,placeSurfaceDetails} from './building-surface-details.js?v=city-growth-guide-1';
+import {connectedBuildingSurfaces} from './building-surface-fill.js?v=city-growth-guide-1';
+import {floorPaintKey,floorSurfaceMaterial,paintFloorSurfaces,surfaceLevel} from './building-floor-paint.js?v=city-growth-guide-1';
+import {projectedBuildingSurfaces,pickBuildingSurface,paintPickedSurfaces} from './building-surface-picking.js?v=city-growth-guide-1';
+import {BUILDING_MATERIALS,SURFACE_NAMES} from './building-materials.js?v=city-growth-guide-1';
 export function mountBuildingPreviewPaint(canvas,{get,camera,apply,applyFloor,applyDetails,detail,render,mode,material,status,scope}){
  const base=Object.fromEntries(['onpointerdown','onpointermove','onpointerup','onpointercancel','onkeydown','onwheel'].map(k=>[k,canvas[k]]));let hover=null,stroke=null,geometry=null;
  const point=e=>{const r=canvas.getBoundingClientRect();return{x:(e.clientX-r.left)*canvas.width/r.width,y:(e.clientY-r.top)*canvas.height/r.height};};

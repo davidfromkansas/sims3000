@@ -1,4 +1,4 @@
-import {rasterizeMiniature} from './miniature-raster.js?v=sawtooth-factory-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=city-growth-guide-1';
 export const TREE_STYLES={broadleaf:'Broadleaf groves',conifer:'Evergreen forest',palm:'Palm groves'};
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 // Original low-poly botanical miniatures, built in world coordinates so each
