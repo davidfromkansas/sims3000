@@ -1,14 +1,14 @@
-import {captureResultGoals,validateResultGoals} from './scenario-result-goals.js?v=residential-cap-1';
-import {validateTextOverrides} from './scenario-dialog-text.js?v=residential-cap-1';
-import {validateProgramInvocations} from './scenario-program-invocations.js?v=residential-cap-1';
-import {validateGoalMarks} from './scenario-goal-marks.js?v=residential-cap-1';
-import {validateGoalActivations} from './scenario-goal-activation.js?v=residential-cap-1';
-import {validateScenarioStart} from './scenario-replay.js?v=residential-cap-1';
-import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=residential-cap-1';
-import {validateVariableValues} from './scenario-variables.js?v=residential-cap-1';
-import {businessRoots} from './business.js?v=residential-cap-1';
-import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=residential-cap-1';
-import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=residential-cap-1';
+import {captureResultGoals,validateResultGoals} from './scenario-result-goals.js?v=economic-cap-1';
+import {validateTextOverrides} from './scenario-dialog-text.js?v=economic-cap-1';
+import {validateProgramInvocations} from './scenario-program-invocations.js?v=economic-cap-1';
+import {validateGoalMarks} from './scenario-goal-marks.js?v=economic-cap-1';
+import {validateGoalActivations} from './scenario-goal-activation.js?v=economic-cap-1';
+import {validateScenarioStart} from './scenario-replay.js?v=economic-cap-1';
+import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=economic-cap-1';
+import {validateVariableValues} from './scenario-variables.js?v=economic-cap-1';
+import {businessRoots} from './business.js?v=economic-cap-1';
+import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=economic-cap-1';
+import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=economic-cap-1';
 // Original challenges using the manual's scenario/status model; not shipped SC3KU scenarios.
 export const SCENARIOS={
  firstRepayment:{title:'The first repayment',months:12,description:'Prepare for a §3,750 loan payment in twelve months. Keep 224 residents, sound roads and §500 after the payment without taking another loan.',briefing:'Your town starts with 224 residents, §2,500 cash and a §25,000 loan issued this month. Its first annual payment of §3,750 is due in January 1951. The borrowed capital has already been spent on the town. Open Budget and meet Mortimer to compare operating income with the repayment calendar. Adjust taxes, grow revenue or manage spending, but preserve at least 224 residents and road condition of 80% when the payment arrives. Finish the twelve months with at least §500 cash after paying. Taking any additional loan disqualifies the challenge, even if it is later repaid. The original loan remains outstanding after this first payment; nine annual payments still follow. Landfill collection is prepared and random disasters start off.'},
