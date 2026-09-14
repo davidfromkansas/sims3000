@@ -1,7 +1,7 @@
-import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=chrysler-landmark-1';
-import {validateBuildingDesigns} from './building-designs.js?v=chrysler-landmark-1';
-import {parseBuildingSlot} from './building-footprints.js?v=chrysler-landmark-1';
-import {isBuildingLotRoot} from './building-lots.js?v=chrysler-landmark-1';
+import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=city-hall-neighborhood-1';
+import {validateBuildingDesigns} from './building-designs.js?v=city-hall-neighborhood-1';
+import {parseBuildingSlot} from './building-footprints.js?v=city-hall-neighborhood-1';
+import {isBuildingLotRoot} from './building-lots.js?v=city-hall-neighborhood-1';
 
 // Read an already validated city. Both maps are copied and validated before
 // either is installed, so a failed import cannot partly change the skyline.
