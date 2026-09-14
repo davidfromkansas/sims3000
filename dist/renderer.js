@@ -1,42 +1,43 @@
-import {drawRecentConstruction} from './recent-construction.js?v=jail-overcrowding-1';
-import {visibleSceneGeometry} from './scene-geometry.js?v=jail-overcrowding-1';
-import {waterViewColor} from './water-view.js?v=jail-overcrowding-1';
-import {drawGarbageBacklog} from './garbage-visuals.js?v=jail-overcrowding-1';
-import {MODELED_WASTE,drawCityWaste,wastePlumeOutput} from './waste-models.js?v=jail-overcrowding-1';
-import {quakeBands} from './earthquake-settings.js?v=jail-overcrowding-1';
-import {MODELED_REWARDS,drawCityReward} from './reward-models.js?v=jail-overcrowding-1';
-import {landscapePalette,landscapeGround} from './city-appearance.js?v=jail-overcrowding-1';
-import {drawCityTrees} from './tree-models.js?v=jail-overcrowding-1';
-import {EDUCATION_LAYERS,educationLayerProfile,educationLayerColor} from './education-layers.js?v=jail-overcrowding-1';
-import {buildingLotPlacement} from './building-lot-view.js?v=jail-overcrowding-1';
-import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=jail-overcrowding-1';
-import {drawCityWater} from './water-models.js?v=jail-overcrowding-1';
-import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=jail-overcrowding-1';
-import {drawCityCivic} from './civic-models.js?v=jail-overcrowding-1';
-import {drawBridgeStructure} from './bridge-structures.js?v=jail-overcrowding-1';
-import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=jail-overcrowding-1';
-import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=jail-overcrowding-1';
-import {stationAreas} from './service-areas.js?v=jail-overcrowding-1';
-import {cityGrid,visibleTileBounds} from './city-grid.js?v=jail-overcrowding-1';
-import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=jail-overcrowding-1';
-import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=jail-overcrowding-1';
-import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=jail-overcrowding-1';
-import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=jail-overcrowding-1';
-import {inScenarioArea} from './scenario-area.js?v=jail-overcrowding-1';
-import {railPaths,railVehicles} from './rail-visuals.js?v=jail-overcrowding-1';
-import {baseZonedSprite,zonedSprite,cityZonedSprite} from './building-art.js?v=jail-overcrowding-1';
-import {trafficPaths,trafficVehicles} from './traffic-visuals.js?v=jail-overcrowding-1';
-import {tunnelAt} from './tunnels.js?v=jail-overcrowding-1';
-import {STRUCTURES,structureSize} from './structures.js?v=jail-overcrowding-1';
-import {LANDSCAPE} from './landscape.js?v=jail-overcrowding-1';
-import {POWER_PLANTS} from './power.js?v=jail-overcrowding-1';
-import {WATER_STRUCTURES} from './utilities.js?v=jail-overcrowding-1';
-import {FACILITIES} from './facilities.js?v=jail-overcrowding-1';
-import {rampCrossings} from './highway.js?v=jail-overcrowding-1';
-import {STATIONS} from './rail.js?v=jail-overcrowding-1';
-import {roadNeighbors} from './transport.js?v=jail-overcrowding-1';
-import {SERVICES} from './civic.js?v=jail-overcrowding-1';
-import {ZONES,selection,planBuild} from './engine.js?v=jail-overcrowding-1';
+import {policeResponses} from './police-response.js?v=automatic-police-response-1';
+import {drawRecentConstruction} from './recent-construction.js?v=automatic-police-response-1';
+import {visibleSceneGeometry} from './scene-geometry.js?v=automatic-police-response-1';
+import {waterViewColor} from './water-view.js?v=automatic-police-response-1';
+import {drawGarbageBacklog} from './garbage-visuals.js?v=automatic-police-response-1';
+import {MODELED_WASTE,drawCityWaste,wastePlumeOutput} from './waste-models.js?v=automatic-police-response-1';
+import {quakeBands} from './earthquake-settings.js?v=automatic-police-response-1';
+import {MODELED_REWARDS,drawCityReward} from './reward-models.js?v=automatic-police-response-1';
+import {landscapePalette,landscapeGround} from './city-appearance.js?v=automatic-police-response-1';
+import {drawCityTrees} from './tree-models.js?v=automatic-police-response-1';
+import {EDUCATION_LAYERS,educationLayerProfile,educationLayerColor} from './education-layers.js?v=automatic-police-response-1';
+import {buildingLotPlacement} from './building-lot-view.js?v=automatic-police-response-1';
+import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=automatic-police-response-1';
+import {drawCityWater} from './water-models.js?v=automatic-police-response-1';
+import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=automatic-police-response-1';
+import {drawCityCivic} from './civic-models.js?v=automatic-police-response-1';
+import {drawBridgeStructure} from './bridge-structures.js?v=automatic-police-response-1';
+import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=automatic-police-response-1';
+import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=automatic-police-response-1';
+import {stationAreas} from './service-areas.js?v=automatic-police-response-1';
+import {cityGrid,visibleTileBounds} from './city-grid.js?v=automatic-police-response-1';
+import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=automatic-police-response-1';
+import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=automatic-police-response-1';
+import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=automatic-police-response-1';
+import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=automatic-police-response-1';
+import {inScenarioArea} from './scenario-area.js?v=automatic-police-response-1';
+import {railPaths,railVehicles} from './rail-visuals.js?v=automatic-police-response-1';
+import {baseZonedSprite,zonedSprite,cityZonedSprite} from './building-art.js?v=automatic-police-response-1';
+import {trafficPaths,trafficVehicles} from './traffic-visuals.js?v=automatic-police-response-1';
+import {tunnelAt} from './tunnels.js?v=automatic-police-response-1';
+import {STRUCTURES,structureSize} from './structures.js?v=automatic-police-response-1';
+import {LANDSCAPE} from './landscape.js?v=automatic-police-response-1';
+import {POWER_PLANTS} from './power.js?v=automatic-police-response-1';
+import {WATER_STRUCTURES} from './utilities.js?v=automatic-police-response-1';
+import {FACILITIES} from './facilities.js?v=automatic-police-response-1';
+import {rampCrossings} from './highway.js?v=automatic-police-response-1';
+import {STATIONS} from './rail.js?v=automatic-police-response-1';
+import {roadNeighbors} from './transport.js?v=automatic-police-response-1';
+import {SERVICES} from './civic.js?v=automatic-police-response-1';
+import {ZONES,selection,planBuild} from './engine.js?v=automatic-police-response-1';
 const COLORS={residential:'#81b96b',commercial:'#79baca',industrial:'#d9ba6b'};
 export class CityRenderer{
  constructor(canvas,getCity){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.rotation=0;this.layer='city';this.tool='road';this.density=1;this.hover=null;this.drag=null;this.sprites=[];this.assetReady=false;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');this.time=0;this.vehicleTime=0;this.previousFrame=null;this.dirty=true;this.w=0;this.h=0;this.resize=new ResizeObserver(()=>{const first=this.w===0;this.w=canvas.clientWidth;this.h=canvas.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);canvas.width=this.w*this.dpr;canvas.height=this.h*this.dpr;if(first)this.center();this.dirty=true;});this.resize.observe(canvas);this.loadSprites();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);}
@@ -154,6 +155,7 @@ export class CityRenderer{
  for(const {t,p} of sorted)if(t.fire>0)this.sprite(27,p.x,p.y+u,u*2);
  for(const [i,unit] of city.emergency.units.entries()){const p=this.project(unit.x,unit.y);this.line([{x:p.x,y:p.y+u/2},{x:p.x,y:p.y-u}], '#f06446',u*.2);c.fillStyle='#fff2d4';c.font='bold 12px sans-serif';c.textAlign='center';c.fillText(String(i+1),p.x,p.y-u*1.2);}
  for(const [i,d] of city.emergency.cropDusters.entries()){const p=this.project(d.x,d.y);if(d.remaining>0){c.strokeStyle=d.delay?'#fff2d4':'#aee6ed';c.lineWidth=2;c.beginPath();c.ellipse(p.x,p.y+u/2,u*8,u*4,0,0,Math.PI*2);c.stroke();this.sprite(66,p.x,p.y-u,u*2.3);c.fillStyle='#fff';c.font='bold 12px sans-serif';c.textAlign='center';c.fillText(`${i+1} · ${d.delay?'en route':'spraying'}`,p.x,p.y-u*3.5);}}
+ const autoPolice=policeResponses(city).filter(p=>p.automatic);if(autoPolice.length){const q=this.project(autoPolice[0].x,autoPolice[0].y);c.fillStyle='#87baff';c.font='bold 12px sans-serif';c.textAlign='center';c.fillText('P AUTO ×'+autoPolice.length,q.x,q.y-u*1.7);}
  for(const [i,p] of city.emergency.policeUnits.entries()){const q=this.project(p.x,p.y);this.line([{x:q.x,y:q.y+u/2},{x:q.x,y:q.y-u}], '#428cfa',u*.2);c.fillStyle='#fff';c.font='bold 12px sans-serif';c.textAlign='center';c.fillText('P'+(i+1),q.x,q.y-u*1.2);}
  const alien=city.emergency.ufo;if(alien){const target=this.project(alien.x,alien.y),reduce=this.reducedMotion.matches,now=reduce?0:time/1000;let v=this.alienVisual;if(!v||v.incident!==city.emergency.ufoAttacks)v=this.alienVisual={incident:city.emergency.ufoAttacks,x:alien.x,y:alien.y,fromX:alien.x,fromY:alien.y,since:time};if(v.x!==alien.x||v.y!==alien.y){v.fromX=v.x;v.fromY=v.y;v.x=alien.x;v.y=alien.y;v.since=time;}const f=reduce?1:Math.min(1,(time-v.since)/700),p=this.project(v.fromX+(v.x-v.fromX)*f,v.fromY+(v.y-v.fromY)*f),hover=reduce?0:Math.sin(now*1.5)*u*.08,base=p.y-u*2+hover;
  c.save();c.fillStyle='#163f4950';c.beginPath();c.ellipse(p.x,p.y+u*.5,u*.9,u*.3,0,0,Math.PI*2);c.fill();if(!alien.warningSteps&&alien.age%4>=2&&f===1){const beam=c.createLinearGradient(p.x,base,p.x,target.y+u*.5);beam.addColorStop(0,'#b4ffddcc');beam.addColorStop(1,'#61ffc733');c.fillStyle=beam;c.beginPath();c.moveTo(p.x-u*.1,base);c.lineTo(target.x-u*.65,target.y+u*.5);c.quadraticCurveTo(target.x,target.y+u*.85,target.x+u*.65,target.y+u*.5);c.lineTo(p.x+u*.1,base);c.fill();c.strokeStyle='#d6ffea';c.lineWidth=2;c.beginPath();c.moveTo(p.x,base);c.lineTo(target.x,target.y+u*.5);c.stroke();}c.restore();this.sprite(71,p.x,base,u*3);c.fillStyle='#f0ffdb';c.font='bold 14px sans-serif';c.textAlign='center';c.fillText(alien.warningSteps?'Alien craft approaching · Sound siren':'Alien attack · '+(6-Math.floor(alien.age/4))+' strikes left',p.x,base-u*1.8);}
