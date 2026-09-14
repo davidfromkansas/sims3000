@@ -11,7 +11,7 @@ assert.ok(build(c,'powerline',selection('powerline',{x:8,y:16},{x:34,y:16})).ok)
 assert.ok(build(c,'road',selection('road',{x:8,y:20},{x:30,y:20})).ok);
 assert.ok(build(c,'residential',[{x:24,y:18}]).ok);c.tiles[18*48+24].level=1;recompute(c);
 const home=c.tiles[18*48+24],root=c.tiles[17*48+27];
-assert.equal(activeCityHalls(c).length,1);assert.equal(cityHallCrimeRelief([root],{x:28,y:18}),20);
+assert.equal(c.stats.residentialCap.limit,34000);assert.equal(activeCityHalls(c).length,1);assert.equal(cityHallCrimeRelief([root],{x:28,y:18}),20);
 assert.equal(cityHallCrimeRelief([root],{x:48,y:18}),0);assert.equal(cityHallCrimeRelief([root],{x:38,y:18}),10);
 // Hold traffic and other emitters fixed to isolate the once-per-footprint field.
 const fieldCity=structuredClone(c);recomputeEnvironment(fieldCity);const on=fieldCity.tiles.map(t=>[t.airPollution,t.waterPollution]);fieldCity.tiles[17*48+27].fire=true;recomputeEnvironment(fieldCity);
@@ -19,7 +19,7 @@ for(const [x,y,air,water] of [[28,18,4.5,4.5],[32,18,4.5*7/11,1.5],[38,18,4.5/11
 assert.ok(home.cityHallCrimeRelief>0);const withHall={crime:home.crime,air:home.airPollution,water:home.waterPollution};
 const values=()=>[home.crime,home.landValue,home.cityHallCrimeRelief,home.airPollution,home.waterPollution];const baseline=values();recompute(c);assert.deepEqual(values(),baseline);recomputeCivic(c);assert.deepEqual(values(),baseline);
 const restored=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(restored.stats,c.stats);assert.equal(restored.tiles[18*48+24].cityHallCrimeRelief,home.cityHallCrimeRelief);
-assert.ok(build(c,'bulldoze',[{x:28,y:18}]).ok);assert.equal(activeCityHalls(c).length,0);assert.equal(home.cityHallCrimeRelief,0);assert.ok(home.crime>withHall.crime);assert.ok(home.airPollution<withHall.air);assert.ok(home.waterPollution<withHall.water);
+assert.ok(build(c,'bulldoze',[{x:28,y:18}]).ok);assert.equal(c.stats.residentialCap.limit,25000);assert.equal(activeCityHalls(c).length,0);assert.equal(home.cityHallCrimeRelief,0);assert.ok(home.crime>withHall.crime);assert.ok(home.airPollution<withHall.air);assert.ok(home.waterPollution<withHall.water);
 assert.ok(build(c,'cityHall',[{x:27,y:17}]).ok);assert.ok(home.cityHallCrimeRelief>0);
-assert.ok(build(c,'bulldoze',[{x:35,y:15}]).ok);assert.equal(activeCityHalls(c).length,0);assert.equal(home.cityHallCrimeRelief,0);assert.equal(home.airPollution,0);assert.equal(home.waterPollution,0);
+assert.ok(build(c,'bulldoze',[{x:35,y:15}]).ok);assert.equal(c.stats.residentialCap.limit,25000);assert.equal(activeCityHalls(c).length,0);assert.equal(home.cityHallCrimeRelief,0);assert.equal(home.airPollution,0);assert.equal(home.waterPollution,0);
 console.log('PASS: City Hall neighborhood crime and pollution tradeoff, radius boundaries, single-footprint effects, repeat recomputation, saved continuation, demolition/rebuilding and power-loss shutdown.');

@@ -1,6 +1,6 @@
-import {buildingLotMembers} from './building-lots.js?v=city-hall-neighborhood-1';
-import {occupancy} from './utilities.js?v=city-hall-neighborhood-1';
-import {industrialJobs} from './industry.js?v=city-hall-neighborhood-1';
+import {buildingLotMembers} from './building-lots.js?v=residential-cap-1';
+import {occupancy} from './utilities.js?v=residential-cap-1';
+import {industrialJobs} from './industry.js?v=residential-cap-1';
 export function buildingLotPlacement(renderer,t){const city=renderer.getCity(),lot=city.buildingLots?.get(t.lotRoot);if(!lot)return null;const end=lot.ids.map(i=>city.tiles[i]).sort((a,b)=>{const aa=renderer.transform(a.x,a.y),bb=renderer.transform(b.x,b.y);return bb[0]+bb[1]-aa[0]-aa[1]||bb[0]-aa[0];})[0];if(t!==end)return null;const center=renderer.project(lot.x+(lot.width-1)/2,lot.y+(lot.height-1)/2);return{lot,root:city.tiles[lot.root],center,scale:(lot.width+lot.height)/2};}
 export function buildingLotReport(city,t){const lot=city.buildingLots.get(t.lotRoot),root=city.tiles[lot.root],members=buildingLotMembers(city,t),sum=fn=>members.reduce((n,u)=>n+fn(u),0),count=key=>sum(u=>u[key]?1:0),average=key=>sum(u=>u[key])/members.length;const residents=root.type==='residential',people=sum(u=>u.type==='industrial'?industrialJobs(u):occupancy(u.level)*(residents?8:6));
  const reasons=[];if(members.some(u=>u.fire))reasons.push('Fire is affecting this building. Dispatch firefighters.');if(count('powered')<members.length)reasons.push('Part of the footprint lacks electricity.');if(count('access')<members.length)reasons.push('Part of the footprint lacks a route between homes and workplaces.');if(count('watered')<members.length)reasons.push('Part of the footprint lacks water; medium and dense growth requires it.');if(members.some(u=>u.waste>=20))reasons.push('Garbage is driving occupants away.');if(!root.level)reasons.push('The building is abandoned. Restore services and demand to allow recovery.');

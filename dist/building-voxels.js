@@ -1,10 +1,10 @@
-import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=city-hall-neighborhood-1';
-import {blockCornerHeights} from './building-block-geometry.js?v=city-hall-neighborhood-1';
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=city-hall-neighborhood-1';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=city-hall-neighborhood-1';
-import {projectBuildingPoint} from './building-footprints.js?v=city-hall-neighborhood-1';
-import {buildingShapeCells} from './building-shapes.js?v=city-hall-neighborhood-1';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=city-hall-neighborhood-1';
+import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=residential-cap-1';
+import {blockCornerHeights} from './building-block-geometry.js?v=residential-cap-1';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=residential-cap-1';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=residential-cap-1';
+import {projectBuildingPoint} from './building-footprints.js?v=residential-cap-1';
+import {buildingShapeCells} from './building-shapes.js?v=residential-cap-1';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=residential-cap-1';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;
