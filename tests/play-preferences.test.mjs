@@ -10,7 +10,7 @@ const copy=preferences.settings;copy.vehicleAnimations=false;assert.equal(prefer
 assert.ok(preferences.set('autoGoToDisasters',false));assert.equal(createPlayPreferences(storage).settings.autoGoToDisasters,false);
 assert.throws(()=>preferences.set('__proto__',true));assert.throws(()=>preferences.set('vehicleAnimations','false'));
 raw='{"autoGoToDisasters":false,"vehicleAnimations":"false","sceneryAnimations":false,"unknown":true}';
-assert.deepEqual(createPlayPreferences(storage).settings,{autoGoToDisasters:false,vehicleAnimations:true,sceneryAnimations:false,trafficMinZoom:.4,pedestriansVisible:true,pedestrianMinZoom:1});
+assert.deepEqual(createPlayPreferences(storage).settings,{constructionDetails:true,autoGoToDisasters:false,vehicleAnimations:true,sceneryAnimations:false,trafficMinZoom:.4,pedestriansVisible:true,pedestrianMinZoom:1});
 raw='invalid';assert.deepEqual(createPlayPreferences(storage).settings,PLAY_DEFAULTS);
 const unavailable=createPlayPreferences({getItem(){throw Error();},setItem(){throw Error();}});assert.equal(unavailable.set('vehicleAnimations',false),false);assert.equal(unavailable.settings.vehicleAnimations,false);
 let focused=0;const focus=()=>focused++;assert.equal(automaticDisasterFocus(preferences,focus),false);assert.equal(focused,0);
@@ -24,7 +24,7 @@ const saved=serializeCity(city),renderer=Object.create(CityRenderer.prototype);l
 const canvasContext=new Proxy(ctx(),{get:(o,k)=>k==='arc'?(...v)=>arcs.push(v):o[k]});
 Object.assign(renderer,{ctx:canvasContext,getCity:()=>city,w:1000,h:800,dpr:1,zoom:1,rotation:0,pan:{x:0,y:0},layer:'city',sprites:[],vehicleTime:4,hover:null,drag:null,tool:'query',reducedMotion:{matches:false},drawVehicle:()=>cars++,drawTrain:()=>trains++,sprite:(id)=>icons.push(id)});renderer.center();
 showPlayPreferences({preferences,renderer,dialog:(title,html)=>{assert.equal(title,'Play preferences');for(const m of html.matchAll(/id="(pref-[^"]+)"/g))nodes['#'+m[1]]={};},notify:m=>messages.push(m)});
-assert.equal(Object.keys(nodes).length,6);
+assert.equal(Object.keys(nodes).length,7);
 const set=(k,v)=>nodes['#pref-'+k].onchange({target:{checked:v}});
 set('vehicleAnimations',false);set('sceneryAnimations',false);set('pedestriansVisible',false);assert.equal(renderer.dirty,true);
 renderer.draw();assert.equal(cars,0);assert.equal(trains,0);assert.equal(renderer.harborStats,undefined,'hidden vehicles skip shipping route generation');
