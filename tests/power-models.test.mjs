@@ -1,3 +1,5 @@
+import {structureSize} from '../dist/structures.js';
+import {SERVICES} from '../dist/civic-footprints.js';
 import {STRUCTURES} from '../dist/structures.js';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -19,7 +21,7 @@ assert.equal(created,32);assert.equal(put,32);assert.equal(drawn,64);assert.equa
 // Execute the actual multi-tile branch for every footprint tile. Each plant must
 // be drawn exactly once at the same footprint center in each rotation.
 const source=readFileSync(new URL('../dist/renderer.js',import.meta.url),'utf8'),body=source.split('else if(STRUCTURES[t.type]){')[1].split('}else if(WATER_STRUCTURES[t.type])')[0],calls=[];
-const actual=new Function('STRUCTURES','MODELED_POWER','drawCityPower','windSceneryTime','return function(city,t,c,p,u,fade){'+body+'}')(STRUCTURES,MODELED_POWER,(...args)=>calls.push(args),()=>null);
+const actual=new Function('structureSize','SERVICES','STRUCTURES','MODELED_POWER','drawCityPower','windSceneryTime','return function(city,t,c,p,u,fade){'+body+'}')(structureSize,SERVICES,STRUCTURES,MODELED_POWER,(...args)=>calls.push(args),()=>null);
 const scene=Object.assign(Object.create(CityRenderer.prototype),{getCity:()=>city,rotation:0,zoom:1,w:1000,h:700,pan:{x:0,y:0}});
 for(let rotation=0;rotation<4;rotation++){scene.rotation=rotation;calls.length=0;for(const t of city.tiles)if(MODELED_POWER.has(t.type))actual.call(scene,city,t,ctx,scene.project(t.x,t.y),scene.unit,.4);assert.equal(calls.length,8);for(const call of calls){const type=call[1],root=city.tiles.find((t,i)=>t.type===type&&t.root===i),size=POWER_PLANTS[type].size,center=scene.project(root.x+(size-1)/2,root.y+(size-1)/2);assert.deepEqual(call,[ctx,type,rotation,center.x,center.y+scene.unit/2,scene.unit*size*2.1,.4,null]);}}
 console.log('PASS: all eight plants in 32 distinct bounded views, transparent rasters and caching, real construction/save/aging continuity, actual once-per-footprint rendering and four-rotation alignment.');

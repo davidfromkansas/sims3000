@@ -19,7 +19,7 @@ const ctx=new Proxy({createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}
 globalThis.document={createElement:()=>({getContext:()=>ctx}),hidden:false,querySelector:()=>null};
 const city=createCity('Visibility',false);city.funds=100000;for(const t of city.tiles){t.terrain='land';t.elevation=0;t.nature=false;}
 for(const [i,type] of ['road','rail','highway','powerline','residential','commercial','pump','fire'].entries())assert.ok(build(city,type,[{x:20+i,y:20}]).ok,type);
-city.tiles[20*48+24].level=1;city.tiles[20*48+28].nature=true;city.tiles[21*48+24].rubble=true;recompute(city);assert.ok(ignite(city,24,20).ok);
+city.tiles[20*48+24].level=1;city.tiles[20*48+31].nature=true;city.tiles[21*48+24].rubble=true;recompute(city);assert.ok(ignite(city,24,20).ok);
 const scene=Object.create(CityRenderer.prototype),draws={};const record=(key,...args)=>(draws[key]??=[]).push(args);
 Object.assign(scene,{getCity:()=>city,ctx,dpr:1,w:1500,h:800,rotation:0,zoom:1,pan:{x:0,y:0},sprites:[],layer:'city',reducedMotion:{matches:true},vehicleTime:0,preferences:{vehicleAnimations:false,pedestriansVisible:false},cityView:{...CITY_VIEW_DEFAULTS},hover:null,tool:'query',sprite:(...args)=>record('sprite',...args),drawRoad:(...args)=>record('road',...args),drawTrack:(...args)=>record('track',...args),drawHighway:(...args)=>record('highway',...args),line:(...args)=>record('line',...args),diamond:(...args)=>record('diamond',...args)});
 const before=serializeCity(city),point=scene.project(26,20),pick=scene.pick(point.x,point.y+scene.unit/2),plan=planBuild(city,'road',[{x:26,y:20}]);

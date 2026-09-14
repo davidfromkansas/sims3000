@@ -7,11 +7,11 @@ import {stationAreas,drawNavigationPrecincts} from '../dist/service-areas.js';
 import {CityRenderer} from '../dist/renderer.js';
 const c=createCity('Education map planning',false);c.funds=1000000;for(const t of c.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});
 const at=(x,y)=>c.tiles[y*48+x],place=(type,x,y,xx=x,yy=y)=>assert.ok(build(c,type,selection(type,{x,y},{x:xx,y:yy}),3).ok,type);
-place('coal',8,14);place('road',10,20,35,20);place('powerline',10,22,35,22);place('residential',12,18,17,18);for(let x=12;x<=17;x++)at(x,18).level=3;place('school',18,19);recompute(c);
+place('coal',8,14);place('road',10,20,35,20);place('powerline',10,22,35,22);place('residential',12,18,17,18);for(let x=12;x<=17;x++)at(x,18).level=3;place('school',18,23);recompute(c);
 const home=at(12,18),color=layer=>educationLayerColor(home,educationLayerProfile(c,layer));
 assert.equal(color('schoolAccess'),'hsl(120,55%,48%)');assert.equal(color('collegeAccess'),'hsl(0,55%,48%)');assert.equal(color('adultAccess'),'hsl(0,55%,48%)');
-place('college',19,19);assert.equal(color('collegeAccess'),'hsl(120,55%,48%)');assert.equal(color('adultAccess'),'hsl(0,55%,48%)');
-place('library',20,19);assert.equal(color('libraryAccess'),'hsl(120,55%,48%)');assert.equal(color('museumAccess'),'hsl(0,55%,48%)');place('museum',21,19);assert.equal(color('museumAccess'),'hsl(120,55%,48%)');assert.deepEqual(stationAreas(c,'libraryAccess').map(a=>a.label),['L']);assert.deepEqual(stationAreas(c,'museumAccess').map(a=>a.label),['M']);assert.equal(color('adultAccess'),'hsl(120,55%,48%)');
+place('college',21,23);assert.equal(color('collegeAccess'),'hsl(120,55%,48%)');assert.equal(color('adultAccess'),'hsl(0,55%,48%)');
+place('library',24,23);assert.equal(color('libraryAccess'),'hsl(120,55%,48%)');assert.equal(color('museumAccess'),'hsl(0,55%,48%)');place('museum',26,23);assert.equal(color('museumAccess'),'hsl(120,55%,48%)');assert.deepEqual(stationAreas(c,'libraryAccess').map(a=>a.label),['L']);assert.deepEqual(stationAreas(c,'museumAccess').map(a=>a.label),['M']);assert.equal(color('adultAccess'),'hsl(120,55%,48%)');
 Object.assign(at(42,42),{type:'residential',density:3,level:1});recompute(c);for(const key of Object.keys(EDUCATION_LAYERS))assert.equal(educationLayerColor(at(42,42),educationLayerProfile(c,key)),'hsl(0,55%,48%)','disconnected neighborhood stays visibly unserved');
 for(const key of Object.keys(EDUCATION_LAYERS)){assert.ok(NAV_LAYERS[key]);assert.match(navigationLegend(key),/no demand/);assert.equal(navigationColor(home,key,educationLayerProfile(c,key)),color(key));assert.equal(educationLayerColor(at(10,20),educationLayerProfile(c,key)),'#6a7770');}
 assert.deepEqual(stationAreas(c,'adultAccess').map(a=>a.label),['L','M']);assert.equal(stationAreas(c,'schoolAccess').length,1);assert.ok(stationAreas(c,'schoolAccess')[0].active);

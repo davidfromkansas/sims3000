@@ -11,7 +11,7 @@ const base=()=>{const c=createCity('Restore services',false);c.funds=500000;for(
 const put=(c,type,x,y)=>assert.ok(build(c,type,selection(type,{x,y},{x,y},c.size)).ok);
 const c=base();put(c,'school',13,12);put(c,'commercial',12,12);c.tiles[12*48+12].level=1;put(c,'residential',40,40);recompute(c);
 assert.equal(buildingsWithout(c,'powered'),2);assert.equal(buildingsWithout(c,'watered'),1);assert.equal(CUSTOM_METRICS.unpoweredHomes.read(c),0);
-assert.equal(powerBaseNeed(c.tiles[12*48+13]),8);assert.equal(waterBaseNeed(c.tiles[12*48+13]),0,'schools currently consume electricity only');
+assert.ok(Math.abs(c.tiles.filter(t=>t.type==='school').reduce((sum,t)=>sum+powerBaseNeed(t),0)-8)<1e-9);assert.equal(waterBaseNeed(c.tiles[12*48+13]),0,'schools currently consume electricity only');
 for(const metric of ['unpoweredBuildings','unwateredBuildings'])assert.equal(eventConditionMet(c,{metric,target:CUSTOM_METRICS[metric].read(c),operator:'eq'}),true);
 const before=serializeCity(c);buildingsWithout(c,'powered');assert.equal(serializeCity(c),before);const loaded=validateSave(JSON.parse(before));assert.equal(buildingsWithout(loaded,'powered'),2);
 // Count each family by its root, including a missing service on the far member.
