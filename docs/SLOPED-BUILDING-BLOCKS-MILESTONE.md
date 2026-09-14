@@ -11,3 +11,5 @@ Schema 125 stores a bounded 2,400-character per-layer geometry map. Individual b
 Validation: 239 suites passed across the full run and targeted schema/geometry reruns. Coverage includes all four shape orientations and camera rotations, back-face visibility, adjacent cube visibility, projected picking, coplanar fill, malformed geometry, portable files and city migration. Browser QA placed two north-rising roof wedges, verified grid labels and preview, undo/redo, method-switch retention and preview rotation. Draft changes were discarded; the normal city remained unchanged. Final visibility/fill changes were covered by targeted geometry and renderer/picking tests.
 
 Feedback: Building designer → Build independent layers → Block geometry. Place a wedge, rotate the preview, try the other directions, then paint its roof. The full fourteen-block palette remains unfinished. Sites publication awaits explicit source-export approval.
+
+Follow-up: `SHAPED-SURFACE-DETAILS-MILESTONE.md` resolves triangular-wall texture/detail clipping. Full palette work remains.

@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 239 regression suites, save schema 125. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 240 regression suites, save schema 125. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -873,3 +873,5 @@ Transportation advisor checkpoint: original Moe Biehl portrait and current trans
 Seven-advisor checkpoint: all named departments are reachable through one portrait directory. Constance, Karen and Gus add live planning, environmental and utility diagnosis with report/map/planning actions. All 238 suites passed; browser directory/new briefings/planning report and dialog scroll verified. See `SEVEN-ADVISOR-DESK-MILESTONE.md`. Original dialogue and broader presentation remain incomplete. Schema124; publication pending.
 
 Sloped construction checkpoint: independent layers support cubes and four oriented wedges, with undo/draft retention, projected surfaces, coplanar fill and format-eight export. 239 suites passed across full/targeted validation; browser draft placement/undo/retention checked. Full fourteen-block catalog and triangular-wall detail projection remain incomplete. See `SLOPED-BUILDING-BLOCKS-MILESTONE.md`. Schema125; publication pending.
+
+Shaped decoration checkpoint: wedge walls now clip material patterns, default windows and all wall details to their triangular boundary. Orientation/view boundary checks and browser production-renderer samples verified. See `SHAPED-SURFACE-DETAILS-MILESTONE.md`. The fourteen-block palette remains incomplete. Schema125; publication pending.
