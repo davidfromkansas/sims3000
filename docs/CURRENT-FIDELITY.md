@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 247 regression suites, save schema 126. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 247 regression suites, save schema 127. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -905,3 +905,7 @@ Scenario goals now retain their ending-month evidence through later city changes
 ## Recovery-site navigation checkpoint
 
 Emergency recovery now includes paginated current damage and interrupted-service sites with exact map/inspection links. Building duplicates and active flames are excluded appropriately, and normal dry starter development is not flagged as interrupted water service. All 247 suites passed; browser paging and second-page inspection verified. Schema126 unchanged. This is current-condition navigation, not historical disaster attribution or automatic reconstruction. See RECOVERY-SITES-MILESTONE.md. Source delivery only.
+
+## Chrysler Building landmark
+
+The fifth landmark adds an original geometric Chrysler Building model with four map rotations and generated gallery artwork. It uses a free, unique 3×3 footprint, whole-footprint demolition, saved continuation and custom scenario landmark metrics. Schema 127 accepts older cities and rejects the new building tagged with an older schema. See CHRYSLER-LANDMARK-MILESTONE.md. Original catalog parity remains incomplete.

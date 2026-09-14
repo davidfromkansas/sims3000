@@ -1,6 +1,6 @@
-import {recompute} from './engine.js?v=recovery-sites-1';
-import {connected} from './region.js?v=recovery-sites-1';
-import {neighborSupply} from './neighbor-economies.js?v=recovery-sites-1';
-import {contractQuote} from './regional-pricing.js?v=recovery-sites-1';
+import {recompute} from './engine.js?v=chrysler-landmark-1';
+import {connected} from './region.js?v=chrysler-landmark-1';
+import {neighborSupply} from './neighbor-economies.js?v=chrysler-landmark-1';
+import {contractQuote} from './regional-pricing.js?v=chrysler-landmark-1';
 
 export function renewDeal(c,id,amount){const d=c.region.deals.find(d=>d.id===id);if(!d||c.month<d.issuedMonth+12)return{ok:false,error:'This contract is not yet eligible for annual review.'};if(![25,50,100].includes(amount))return{ok:false,error:'Choose 25, 50 or 100 units.'};const con=c.region.connections[d.connection];if(!connected(c,con))return{ok:false,error:'Restore the connection before reviewing this deal.'};const availability=d.kind==='garbage'?(d.direction==='export'?neighborSupply(c,con.side,'garbage'):c.region.neighbors[con.side].wasteStored):d.direction==='import'?neighborSupply(c,con.side,d.kind):1;if(availability<=0)return{ok:false,error:'The neighbor cannot offer capacity at present. Keep the old terms or end the deal without a voluntary termination fee.'};const original=structuredClone(c.region),quote=contractQuote(c,con,d.kind,d.direction,amount);Object.assign(d,{amount,rate:quote.rate,minFee:quote.minFee,priceBand:quote.priceBand,issuedMonth:c.month});recompute(c);if(d.failed||c.region.deals.some(deal=>deal.failed&&!original.deals.find(prior=>prior.id===deal.id)?.failed)){c.region=original;recompute(c);return{ok:false,error:'Your connected capacity cannot fulfill these terms while preserving the other contracts. Existing contracts are unchanged.'};}return{ok:true,rate:d.rate,amount:d.amount};}

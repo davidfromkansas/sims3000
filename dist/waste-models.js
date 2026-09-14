@@ -1,4 +1,4 @@
-import {rasterizeMiniature,projectMiniature} from './miniature-raster.js?v=recovery-sites-1';
+import {rasterizeMiniature,projectMiniature} from './miniature-raster.js?v=chrysler-landmark-1';
 export const MODELED_WASTE=new Set(['recycling','incinerator','wasteEnergy']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function wasteGeometry(type){

@@ -10,8 +10,9 @@ for(const [i,type]of [...MODELED_LANDMARKS].entries()){
  const mesh=landmarkGeometry(type);assert.ok(mesh.length>100);assert.ok(mesh.every(f=>f.points.length>=3&&f.points.every(p=>p.length===3&&p.every(Number.isFinite))));
  const views=[];for(let rotation=0;rotation<4;rotation++){const points=[],ctx={beginPath(){},closePath(){},fill(){},moveTo(x,y){points.push([x,y]);},lineTo(x,y){points.push([x,y]);}};drawLandmarkModel(ctx,type,rotation);assert.ok(points.every(([x,y])=>x>=0&&x<=512&&y>=0&&y<=848),'geometry fits cached canvas');views.push(points);}assert.notDeepEqual(views[0],views[1]);
 }
-assert.equal(c.funds,funds);assert.equal(CUSTOM_METRICS.landmarks.max,4);assert.equal(CUSTOM_METRICS.landmarks.read(c),2);
-const saved=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(saved.stats,c.stats);assert.deepEqual(landmarkRoots(saved).map(t=>t.type),['bigBen','statueLiberty']);tick(c);tick(saved);assert.deepEqual(saved.stats,c.stats);
+assert.equal(c.funds,funds);assert.equal(CUSTOM_METRICS.landmarks.max,5);assert.equal(CUSTOM_METRICS.landmarks.read(c),3);
+const oldChrysler=JSON.parse(serializeCity(c));oldChrysler.version=126;assert.throws(()=>validateSave(oldChrysler),/version 127/);
+const saved=validateSave(JSON.parse(serializeCity(c)));assert.deepEqual(saved.stats,c.stats);assert.deepEqual(landmarkRoots(saved).map(t=>t.type),['bigBen','statueLiberty','chryslerBuilding']);tick(c);tick(saved);assert.deepEqual(saved.stats,c.stats);
 assert.ok(build(c,'bulldoze',[{x:11,y:11}]).ok);assert.equal(c.tiles.some(t=>t.type==='bigBen'),false);assert.ok(build(c,'bigBen',[{x:10,y:10}]).ok);
 const forged=JSON.parse(serializeCity(c));for(let y=30;y<33;y++)for(let x=30;x<33;x++)Object.assign(forged.tiles[idx(x,y)],{type:'statueLiberty',root:idx(30,30)});assert.throws(()=>validateSave(forged),/one of each landmark/);
 const legacy=createCity();legacy.version=88;assert.equal(validateSave(JSON.parse(serializeCity(legacy))).version,VERSION);assert.throws(()=>landmarkGeometry('missing'));
