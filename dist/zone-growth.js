@@ -1,6 +1,7 @@
-import {landDensityLimit} from './economy.js?v=abandoned-recovery-1';
-import {needsEstablishedWater} from './water-service.js?v=abandoned-recovery-1';
-import {buildingLotMembers,isBuildingLotRoot} from './building-lots.js?v=abandoned-recovery-1';
+import {abandonmentExplanation} from './abandonment-history.js?v=abandonment-history-1';
+import {landDensityLimit} from './economy.js?v=abandonment-history-1';
+import {needsEstablishedWater} from './water-service.js?v=abandonment-history-1';
+import {buildingLotMembers,isBuildingLotRoot} from './building-lots.js?v=abandonment-history-1';
 export function zoneGrowthConditions(c,t,members=buildingLotMembers(c,t)){
  const blocked=new Set();let demand=Infinity,limit=3;
  for(const u of members){if(u.radiation)blocked.add('radiation');if(u.rubble)blocked.add('rubble');if(u.fire)blocked.add('fire');if(!u.powered)blocked.add('power');if(!(u.access||u.industry==='farm'&&c.tiles[u.farmRoot]?.access))blocked.add('transport');if(u.waste>=20)blocked.add('garbage');if(needsEstablishedWater(u)&&!u.watered)blocked.add('water');if(u.level>landDensityLimit(u))blocked.add('landValue');
@@ -19,4 +20,4 @@ export function abandonedRecovery(c,t){
  if(conditions.demand<=0)reasons.push('demand');
  return {reasons,ready:reasons.length===0,tiles:members.length,text:reasons.length?`Recovery is waiting on: ${reasons.map(key=>GROWTH_REASONS[key]).join('; ')}.`:'Current services and demand permit recovery. Leave the zoning in place and allow time for a growth opportunity.'};
 }
-export function abandonedRecoveryNote(c,t){const recovery=abandonedRecovery(c,t);return recovery?`<p><strong>Abandoned building · recovery</strong></p><p>${recovery.text}</p><p class="fine">These are current recovery conditions, not a recorded cause of the original abandonment. Historical designation preserves appearance but does not restore occupants.</p>`:'';}
+export function abandonedRecoveryNote(c,t){const recovery=abandonedRecovery(c,t);return recovery?`<p><strong>Abandoned building · recovery</strong></p><p>${abandonmentExplanation(t)}</p><p>${recovery.text}</p><p class="fine">Recovery guidance uses current conditions. Historical designation preserves appearance but does not restore occupants.</p>`:'';}

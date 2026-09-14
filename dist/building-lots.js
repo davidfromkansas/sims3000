@@ -2,7 +2,7 @@
 // over members; identity, growth and destruction are shared by the lot.
 const ZONES=new Set(['residential','commercial','industrial']);
 const index=(c,t)=>t.y*c.size+t.x;
-const synchronized=['type','density','level','historicalLevel','abandonedLevel','industry','age','stress'];
+const synchronized=['type','density','level','historicalLevel','abandonedLevel','abandonmentCause','industry','age','stress'];
 const fail=()=>{throw Error('Invalid residential, commercial or industrial building lot.');};
 export function deriveBuildingLots(c){
  const groups=new Map();for(let i=0;i<c.tiles.length;i++){const t=c.tiles[i];if(t.lotRoot==null)continue;if(!Number.isInteger(t.lotRoot)||t.lotRoot<0||t.lotRoot>=c.tiles.length)fail();if(!groups.has(t.lotRoot))groups.set(t.lotRoot,[]);groups.get(t.lotRoot).push(i);}
@@ -19,6 +19,6 @@ export function buildingLotCandidate(c,t,width,height=width){
  const members=[];for(let y=t.y;y<t.y+height;y++)for(let x=t.x;x<t.x+width;x++){const u=c.tiles[y*c.size+x];if(u.type!==t.type||u.density!==t.density||u.elevation!==t.elevation||u.terrain!=='land'||u.level||u.historicalLevel||u.abandonedLevel||u.lotRoot!=null||u.industry==='farm'||u.rubble||u.radiation||u.fire||u.rail||u.highway||!u.powered||!u.watered||!u.access||u.waste>=20)return null;members.push(u);}return members;
 }
 export function formBuildingLot(c,t,width,height=width){const members=buildingLotCandidate(c,t,width,height);if(!members)return null;const root=index(c,t);for(const u of members){u.lotRoot=root;u.level=1;u.age=0;u.stress=0;u.abandonedLevel=0;u.industry=t.industry;u.nature=false;}const lot={root,x:t.x,y:t.y,width,height,ids:members.map(u=>index(c,u))};if(!c.buildingLots)c.buildingLots=new Map();c.buildingLots.set(root,lot);return lot;}
-export function updateBuildingLot(c,t,changes){const allowed=['level','age','stress','abandonedLevel','historicalLevel','industry'];if(Object.keys(changes).some(k=>!allowed.includes(k)))throw Error('Invalid building lifecycle update.');for(const u of buildingLotMembers(c,t))Object.assign(u,changes);}
+export function updateBuildingLot(c,t,changes){const allowed=['level','age','stress','abandonedLevel','abandonmentCause','historicalLevel','industry'];if(Object.keys(changes).some(k=>!allowed.includes(k)))throw Error('Invalid building lifecycle update.');for(const u of buildingLotMembers(c,t))Object.assign(u,changes);}
 export function dissolveBuildingLot(c,t){const members=buildingLotMembers(c,t),root=t.lotRoot;for(const u of members)u.lotRoot=null;if(root!=null)c.buildingLots.delete(root);return members;}
 export const isBuildingLotRoot=(c,t)=>t.lotRoot==null||t.lotRoot===index(c,t);

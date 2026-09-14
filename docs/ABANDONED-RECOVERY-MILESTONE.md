@@ -9,3 +9,5 @@ Validation extends the actual abandonment/recovery simulation test and the devel
 Feedback: open City desk → Zone development → Abandoned buildings, locate a building, inspect its blockers and restore its services. Let the city run to give development time to return. Historical appearance remains protected.
 
 Local/GitHub delivery only. Production publication awaits explicit Sites source-export approval.
+
+Follow-up: `ABANDONMENT-HISTORY-MILESTONE.md` adds recorded causes for new abandonment events. Legacy events remain unknown.
