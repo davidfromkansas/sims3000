@@ -1,10 +1,10 @@
-import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=growing-upward-1';
-import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=growing-upward-1';
-import {SERVICE_JOBS} from './civic-jobs.js?v=growing-upward-1';
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=growing-upward-1';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=growing-upward-1';
-import {occupancy} from './utilities.js?v=growing-upward-1';
-import {educationServiceDemand} from './education.js?v=growing-upward-1';
+import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=courtyard-apartments-1';
+import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=courtyard-apartments-1';
+import {SERVICE_JOBS} from './civic-jobs.js?v=courtyard-apartments-1';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=courtyard-apartments-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=courtyard-apartments-1';
+import {occupancy} from './utilities.js?v=courtyard-apartments-1';
+import {educationServiceDemand} from './education.js?v=courtyard-apartments-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  t=civicRoot(c,t);const definition=SERVICES[t.type];if(!definition)return null;

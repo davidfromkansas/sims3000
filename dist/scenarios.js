@@ -1,14 +1,14 @@
-import {captureResultGoals,validateResultGoals} from './scenario-result-goals.js?v=growing-upward-1';
-import {validateTextOverrides} from './scenario-dialog-text.js?v=growing-upward-1';
-import {validateProgramInvocations} from './scenario-program-invocations.js?v=growing-upward-1';
-import {validateGoalMarks} from './scenario-goal-marks.js?v=growing-upward-1';
-import {validateGoalActivations} from './scenario-goal-activation.js?v=growing-upward-1';
-import {validateScenarioStart} from './scenario-replay.js?v=growing-upward-1';
-import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=growing-upward-1';
-import {validateVariableValues} from './scenario-variables.js?v=growing-upward-1';
-import {businessRoots} from './business.js?v=growing-upward-1';
-import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=growing-upward-1';
-import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=growing-upward-1';
+import {captureResultGoals,validateResultGoals} from './scenario-result-goals.js?v=courtyard-apartments-1';
+import {validateTextOverrides} from './scenario-dialog-text.js?v=courtyard-apartments-1';
+import {validateProgramInvocations} from './scenario-program-invocations.js?v=courtyard-apartments-1';
+import {validateGoalMarks} from './scenario-goal-marks.js?v=courtyard-apartments-1';
+import {validateGoalActivations} from './scenario-goal-activation.js?v=courtyard-apartments-1';
+import {validateScenarioStart} from './scenario-replay.js?v=courtyard-apartments-1';
+import {awardScenarioRank,validateRankOutcome} from './scenario-ranks.js?v=courtyard-apartments-1';
+import {validateVariableValues} from './scenario-variables.js?v=courtyard-apartments-1';
+import {businessRoots} from './business.js?v=courtyard-apartments-1';
+import {validateEventProgress,scenarioEnding} from './scenario-events.js?v=courtyard-apartments-1';
+import {validateCustomDefinition,customGoals,advanceCustomStreak,validateStageProgress} from './custom-scenarios.js?v=courtyard-apartments-1';
 // Original challenges using the manual's scenario/status model; not shipped SC3KU scenarios.
 export const SCENARIOS={
  learningCity:{title:'A city that learns',months:24,description:'Build complementary adult education services. Reach adult EQ 41 with library and museum access of at least 90%, preserve 224 residents and keep §1,000 within two years.',briefing:'Your town starts with 224 residents, adult education of 40 and §8,000. Roads, electricity and landfill collection are prepared. Build a library and a museum near the existing road network; a 2 × 2 library lot at tile 24, 26 and a 3 × 3 museum lot at tile 28, 22 are suitable. Open Civic services and the education report to compare library and museum access. They provide independent adult learning benefits; more copies of one cannot replace the other. Reach at least 41 adult EQ, at least 90% access to each service, at least 224 residents and a §1,000 reserve within 24 months. Keep education funded and allow the calendar to run: learning takes time, and migration and aging affect averages. Pro Reading can help. Random disasters start off. This is an original challenge for the reconstruction.'},
