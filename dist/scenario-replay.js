@@ -1,6 +1,6 @@
-import {serializeCity,TILE_FIELDS} from './save.js?v=restore-peace-1';
-import {validateSave} from './engine.js?v=restore-peace-1';
-import {attachCustomScenario} from './custom-scenarios.js?v=restore-peace-1';
+import {serializeCity,TILE_FIELDS} from './save.js?v=sawtooth-factory-1';
+import {validateSave} from './engine.js?v=sawtooth-factory-1';
+import {attachCustomScenario} from './custom-scenarios.js?v=sawtooth-factory-1';
 // Shared tile keys keep the embedded starting snapshot smaller than a second city JSON.
 export function captureScenarioStart(c){const raw=JSON.parse(serializeCity({...c,scenario:null})),tiles=raw.tiles;delete raw.tiles;return{format:1,city:raw,keys:[...TILE_FIELDS],tiles:tiles.map(t=>TILE_FIELDS.map(k=>Object.hasOwn(t,k)?t[k]:[]))};}
 export function decodeScenarioStart(v,startMonth){const keys=v?.city?.version>=109?TILE_FIELDS:TILE_FIELDS.filter(k=>k!=='lotRoot');if(!v||v.format!==1||!v.city||v.city.scenario!==null||v.city.month!==startMonth||Object.hasOwn(v.city,'tiles')||!Array.isArray(v.keys)||v.keys.length!==keys.length||!v.keys.every((k,i)=>k===keys[i])||!Array.isArray(v.tiles)||v.tiles.length!==(v.city.version>=92?v.city.size:48)**2)throw Error('Invalid challenge starting snapshot.');const tiles=Array.from(v.tiles,row=>{if(!Array.isArray(row)||row.length!==v.keys.length)throw Error('Invalid challenge starting tiles.');return Object.fromEntries(Array.from(row,(value,i)=>{if(Array.isArray(value)){if(value.length)throw Error('Invalid challenge starting tile value.');return null;}return[v.keys[i],value];}).filter(Boolean));});return validateSave({...v.city,tiles});}

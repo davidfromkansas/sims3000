@@ -1,13 +1,13 @@
-import {civicSize} from './civic-footprints.js?v=restore-peace-1';
-import {REWARDS,rewardSize} from './rewards.js?v=restore-peace-1';
-import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=restore-peace-1';
-import {JobCapacity} from './job-capacity.js?v=restore-peace-1';
-import {workforceShare} from './workforce.js?v=restore-peace-1';
-import {routeLength} from './tunnels.js?v=restore-peace-1';
-import {industrialJobs} from './industry.js?v=restore-peace-1';
-import {streetGraph,MinQueue} from './highway.js?v=restore-peace-1';
-import {railNetwork,STATIONS} from './rail.js?v=restore-peace-1';
-import {occupancy} from './utilities.js?v=restore-peace-1';
+import {civicSize} from './civic-footprints.js?v=sawtooth-factory-1';
+import {REWARDS,rewardSize} from './rewards.js?v=sawtooth-factory-1';
+import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=sawtooth-factory-1';
+import {JobCapacity} from './job-capacity.js?v=sawtooth-factory-1';
+import {workforceShare} from './workforce.js?v=sawtooth-factory-1';
+import {routeLength} from './tunnels.js?v=sawtooth-factory-1';
+import {industrialJobs} from './industry.js?v=sawtooth-factory-1';
+import {streetGraph,MinQueue} from './highway.js?v=sawtooth-factory-1';
+import {railNetwork,STATIONS} from './rail.js?v=sawtooth-factory-1';
+import {occupancy} from './utilities.js?v=sawtooth-factory-1';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const freshTransport=()=>({funding:100,condition:100,underfunded:0});
 export function changeTransit(c,value){if(!Number.isInteger(value)||value<0||value>150)return{ok:false,error:'Transit funding must be 0–150%.'};c.transport.funding=value;return{ok:true};}
