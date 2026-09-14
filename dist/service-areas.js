@@ -1,5 +1,5 @@
-import {EDUCATION_LAYERS} from './education-layers.js?v=transport-advisor-1';
-import {serviceRadius} from './civic.js?v=transport-advisor-1';
+import {EDUCATION_LAYERS} from './education-layers.js?v=seven-advisors-1';
+import {serviceRadius} from './civic.js?v=seven-advisors-1';
 export const PRECINCT_LAYERS={police:'police',crime:'police',fire:'fire',flammability:'fire'};
 export const PRECINCT_LEGEND='Station dots: operating white, inactive orange · Rings: current service limit; strength falls toward the edge';
 export function stationAreas(city,layer){
