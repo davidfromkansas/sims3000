@@ -1,4 +1,9 @@
 export const freshBuildingCamera=()=>({zoom:1,x:0,y:0});
+export function fittedBuildingCamera(bounds,width=256,height=384,padding=20){
+ if(!bounds||![bounds.x,bounds.y,bounds.width,bounds.height].every(Number.isFinite)||bounds.width<=0||bounds.height<=0)return freshBuildingCamera();
+ const zoom=Math.max(.5,Math.min(6,(width-padding*2)/bounds.width,(height-padding*2)/bounds.height));
+ return{zoom,x:width/2-(bounds.x+bounds.width/2)*zoom,y:height/2-(bounds.y+bounds.height/2)*zoom};
+}
 export function zoomBuildingCamera(camera,factor,point={x:128,y:346}){if(!Number.isFinite(factor)||factor<=0||![point.x,point.y].every(Number.isFinite))return{...camera};const zoom=Math.max(.5,Math.min(6,camera.zoom*factor)),ratio=zoom/camera.zoom;return{zoom,x:point.x-(point.x-camera.x)*ratio,y:point.y-(point.y-camera.y)*ratio};}
 export function panBuildingCamera(camera,dx,dy){if(![dx,dy].every(Number.isFinite))return{...camera};return{...camera,x:camera.x+dx,y:camera.y+dy};}
 export function mountBuildingPreviewCamera(canvas,{zoomIn,zoomOut,reset,label},draw){
@@ -13,5 +18,5 @@ export function mountBuildingPreviewCamera(canvas,{zoomIn,zoomOut,reset,label},d
  canvas.onpointermove=e=>{if(!drag||drag.id!==e.pointerId)return;const p=point(e);state=panBuildingCamera(drag.camera,p.x-drag.start.x,p.y-drag.start.y);refresh();};
  canvas.onpointerup=e=>{if(drag?.id===e.pointerId){drag=null;canvas.style.cursor='grab';}};canvas.onpointercancel=()=>{if(drag){state=drag.camera;drag=null;canvas.style.cursor='grab';refresh();}};
  canvas.onkeydown=e=>{const moves={ArrowLeft:[24,0],ArrowRight:[-24,0],ArrowUp:[0,24],ArrowDown:[0,-24]};if(!['+','=','-','Home','Escape',...Object.keys(moves)].includes(e.key))return;e.preventDefault();e.stopPropagation();drag=null;canvas.style.cursor='grab';if(e.key==='Home'||e.key==='Escape')resetView();else if(e.key in moves){const [dx,dy]=moves[e.key],step=e.shiftKey?3:1;state=panBuildingCamera(state,dx*step,dy*step);refresh();}else zoom(e.key==='-'?1/1.25:1.25);};
- return{get state(){return state;},pan(dx,dy){drag=null;state=panBuildingCamera(state,dx,dy);refresh();},center(point){if(![point?.x,point?.y].every(Number.isFinite))return;drag=null;state={...state,x:canvas.width/2-point.x*state.zoom,y:canvas.height/2-point.y*state.zoom};canvas.style.cursor='grab';refresh();},reset:resetView};
+ return{get state(){return state;},fit(bounds){drag=null;state=fittedBuildingCamera(bounds,canvas.width,canvas.height);refresh();},pan(dx,dy){drag=null;state=panBuildingCamera(state,dx,dy);refresh();},center(point){if(![point?.x,point?.y].every(Number.isFinite))return;drag=null;state={...state,x:canvas.width/2-point.x*state.zoom,y:canvas.height/2-point.y*state.zoom};canvas.style.cursor='grab';refresh();},reset:resetView};
 }

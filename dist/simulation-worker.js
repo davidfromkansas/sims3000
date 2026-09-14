@@ -1,4 +1,4 @@
-import {tick} from './engine.js?v=responsive-metropolis-3';
+import {tick} from './engine.js?v=architecture-workspace-1';
 const TILE_BATCH=2048;
 let transfer=null;
 self.onmessage=({data})=>{

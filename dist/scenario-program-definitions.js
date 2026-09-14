@@ -1,7 +1,7 @@
-import {compileScenarioPrograms} from './scenario-programs.js?v=responsive-metropolis-3';
-import {validateEventDefinitions,validateEventCondition} from './scenario-events.js?v=responsive-metropolis-3';
-import {validateGoalStatusReferences} from './scenario-goal-status.js?v=responsive-metropolis-3';
-import {MAP_SIZES} from './city-grid.js?v=responsive-metropolis-3';
+import {compileScenarioPrograms} from './scenario-programs.js?v=architecture-workspace-1';
+import {validateEventDefinitions,validateEventCondition} from './scenario-events.js?v=architecture-workspace-1';
+import {validateGoalStatusReferences} from './scenario-goal-status.js?v=architecture-workspace-1';
+import {MAP_SIZES} from './city-grid.js?v=architecture-workspace-1';
 // Program leaves have no clocks or private conditions: schedule the entry call,
 // and put conditional behavior in an explicit If / Else block.
 export function compileGameScenarioPrograms(value,{size=48,objectives=[]}={}){

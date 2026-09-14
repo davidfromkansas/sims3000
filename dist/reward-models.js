@@ -1,7 +1,7 @@
-import {geyserPlumePixels} from './geyser-plume.js?v=responsive-metropolis-3';
-import {WHEEL,themeParkRidePixels} from './theme-park-rides.js?v=responsive-metropolis-3';
-import {stadiumMatchPixels} from './stadium-match.js?v=responsive-metropolis-3';
-import {rasterizeMiniature} from './miniature-raster.js?v=responsive-metropolis-3';
+import {geyserPlumePixels} from './geyser-plume.js?v=architecture-workspace-1';
+import {WHEEL,themeParkRidePixels} from './theme-park-rides.js?v=architecture-workspace-1';
+import {stadiumMatchPixels} from './stadium-match.js?v=architecture-workspace-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=architecture-workspace-1';
 export const MODELED_REWARDS=new Set(['scienceCenter','stockExchange','geyserPark','themePark','countryClub','historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){

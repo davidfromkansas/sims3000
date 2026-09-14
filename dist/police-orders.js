@@ -1,4 +1,4 @@
-import {civicRoots} from './civic-footprints.js?v=responsive-metropolis-3';
+import {civicRoots} from './civic-footprints.js?v=architecture-workspace-1';
 export const policeOwners=c=>[-1,...civicRoots(c).filter(t=>t.type==='police').map(t=>t.y*c.size+t.x)];
 export function prunePoliceOrders(c){const owners=new Set(policeOwners(c));c.emergency.policeUnits=c.emergency.policeUnits.filter(p=>owners.has(p.owner));}
 export function recallPolice(c,owner){const e=c.emergency;if(!e.active)return{ok:false,error:'There is no active emergency.'};if(!e.policeUnits.some(p=>p.owner===owner))return{ok:false,error:'That squad has no dispatch order.'};e.policeUnits=e.policeUnits.filter(p=>p.owner!==owner);return{ok:true};}

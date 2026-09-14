@@ -1,6 +1,6 @@
-import {buildingPropGeometry} from './building-props.js?v=responsive-metropolis-3';
-import {clipPropGeometry} from './building-prop-clipping.js?v=responsive-metropolis-3';
-import {projectedBuildingSurfaces} from './building-surface-picking.js?v=responsive-metropolis-3';
+import {buildingPropGeometry} from './building-props.js?v=architecture-workspace-1';
+import {clipPropGeometry} from './building-prop-clipping.js?v=architecture-workspace-1';
+import {projectedBuildingSurfaces} from './building-surface-picking.js?v=architecture-workspace-1';
 export function buildingPropPickFaces(design,rotation=0){
  const footprint=design.footprint||{width:1,height:1},size=Math.max(footprint.width,footprint.height);
  const buildings=projectedBuildingSurfaces(design,rotation).map(f=>({...f,owner:null,points:f.points.map(([x,y,z])=>[x*footprint.width,y*footprint.height,z])}));

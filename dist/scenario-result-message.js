@@ -1,4 +1,4 @@
-import {scenarioEnding} from './scenario-events.js?v=responsive-metropolis-3';
-import {escapeAnnouncement} from './scenario-announcements.js?v=responsive-metropolis-3';
+import {scenarioEnding} from './scenario-events.js?v=architecture-workspace-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=architecture-workspace-1';
 // Use the captured ending receipt, not live substitutions after completion.
 export function scenarioResultMessage(s){if(!s||s.status==='playing')return '';const ending=scenarioEnding(s);return ending?.message?`<section aria-label="Scenario result message"><h3>Result message</h3><p style="white-space:pre-wrap">${escapeAnnouncement(ending.message)}</p></section>`:'';}
