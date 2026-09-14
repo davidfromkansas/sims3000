@@ -1,4 +1,4 @@
-import {announcementText} from './scenario-announcements.js?v=civic-advisors-2';
+import {announcementText} from './scenario-announcements.js?v=ordinance-comparison-1';
 const targets=['briefing','winMessage','lossMessage'];
 const actionTargets=a=>a.type==='dialogText'?['briefing']:a.outcome==='won'?['winMessage']:a.outcome==='lost'?['lossMessage']:['winMessage','lossMessage'];
 const forbidden=/[\x00-\x08\x0b\x0c\x0e-\x1f]/;

@@ -1,4 +1,4 @@
-import {populationCohorts,populationCensus} from './demographics.js?v=civic-advisors-2';
+import {populationCohorts,populationCensus} from './demographics.js?v=ordinance-comparison-1';
 // Manual pp.68,112–113: education differs by age and follows graduates into adulthood.
 // Learning, newborn and migrant EQ are original calibration; aging uses actual census flows.
 export const EDUCATION_AGES=['0–14','15–24','25–34','35–44','45–54','55–64','65–74','75+'];
@@ -13,8 +13,9 @@ export function educationServiceDemand(c,type,population=c.stats.population){
  return{share:adult,field:'adultEducationCoverage',group:'adult residents aged 25+'};
 }
 export function refreshEducationAverages(c,population=c.stats.population){if(!population)return;const f=c.civic,{counts,youth,adult}=educationWeights(c,population),average=(start,end,fallback)=>{const active=f.ageEducation.slice(start,end).filter((_,i)=>counts[start+i]>0);if(active.length&&active.every(eq=>eq===active[0]))return active[0];let people=0,total=0;for(let i=start;i<end;i++){people+=counts[i];total+=counts[i]*f.ageEducation[i];}return people?clamp(total/people):fallback;};f.youthEducation=average(0,2,f.youthEducation);f.adultEducation=average(2,8,f.adultEducation);f.education=f.youthEducation===f.adultEducation?f.youthEducation:clamp(f.youthEducation*youth+f.adultEducation*adult);}
+export function educationTargets(c){const f=c.civic,s=c.stats;const bonus=(s.activeUniversity?10:0)+(f.ordinances.reading?5:0)+(f.ordinances.juniorSports?3:0);return [s.childEducationCoverage||0,s.collegeEducationCoverage||0].map(coverage=>clamp(30+coverage*.7+bonus));}
 export function advanceEducation(c){const f=c.civic,s=c.stats;if(!s.population)return;
- const bonus=(s.activeUniversity?10:0)+(f.ordinances.reading?5:0)+(f.ordinances.juniorSports?3:0),targets=[s.childEducationCoverage||0,s.collegeEducationCoverage||0].map(coverage=>clamp(30+coverage*.7+bonus));
+ const targets=educationTargets(c);
  const retention=Math.min(1,(s.adultEducationCoverage||0)/100);
  // Teaching/retention happen before the census moves the graduating intake.
  f.ageEducation=f.ageEducation.map((eq,i)=>i<2?clamp(eq+(targets[i]-eq)/36):clamp(eq*(1-(1-retention)/1200)));

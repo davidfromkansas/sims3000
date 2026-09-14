@@ -1,7 +1,7 @@
-import {compileScenarioPrograms} from './scenario-programs.js?v=civic-advisors-2';
-import {validateEventDefinitions,validateEventCondition} from './scenario-events.js?v=civic-advisors-2';
-import {validateGoalStatusReferences} from './scenario-goal-status.js?v=civic-advisors-2';
-import {MAP_SIZES} from './city-grid.js?v=civic-advisors-2';
+import {compileScenarioPrograms} from './scenario-programs.js?v=ordinance-comparison-1';
+import {validateEventDefinitions,validateEventCondition} from './scenario-events.js?v=ordinance-comparison-1';
+import {validateGoalStatusReferences} from './scenario-goal-status.js?v=ordinance-comparison-1';
+import {MAP_SIZES} from './city-grid.js?v=ordinance-comparison-1';
 // Program leaves have no clocks or private conditions: schedule the entry call,
 // and put conditional behavior in an explicit If / Else block.
 export function compileGameScenarioPrograms(value,{size=48,objectives=[]}={}){
