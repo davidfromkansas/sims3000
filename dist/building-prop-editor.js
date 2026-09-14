@@ -1,7 +1,7 @@
-import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=architecture-workspace-1';
-import {PROP_CATEGORIES,BUILDING_PROPS,drawBuildingProps,rasterizePropPreview,addBuildingProp,removeBuildingProp,buildingPropGeometry} from './building-props.js?v=architecture-workspace-1';
-import {projectedBuildingSurfaces,pickBuildingSurface} from './building-surface-picking.js?v=architecture-workspace-1';
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-workspace-1';
+import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=scenario-variable-manager-1';
+import {PROP_CATEGORIES,BUILDING_PROPS,drawBuildingProps,rasterizePropPreview,addBuildingProp,removeBuildingProp,buildingPropGeometry} from './building-props.js?v=scenario-variable-manager-1';
+import {projectedBuildingSurfaces,pickBuildingSurface} from './building-surface-picking.js?v=scenario-variable-manager-1';
+import {projectBuildingPoint} from './building-footprints.js?v=scenario-variable-manager-1';
 export function propPlacementSurfaces(design,rotation=0){
  if(!design.blocks&&!design.voxels)return[];
  const ground=Array.from({length:100},(_,i)=>{const x=i%10,y=Math.floor(i/10),a=(x-5)*.085,b=(y-5)*.085,points=[[a,b,0],[a+.085,b,0],[a+.085,b+.085,0],[a,b+.085,0]];return{x,y,index:i,side:4,points,polygon:points.map(p=>projectBuildingPoint(p,rotation,design.footprint))};});

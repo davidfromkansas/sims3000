@@ -1,11 +1,11 @@
-import {drawBuildingDecals} from './building-decals.js?v=architecture-workspace-1';
-import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=architecture-workspace-1';
-import {blockCornerHeights} from './building-block-geometry.js?v=architecture-workspace-1';
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-workspace-1';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=architecture-workspace-1';
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-workspace-1';
-import {buildingShapeCells} from './building-shapes.js?v=architecture-workspace-1';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-workspace-1';
+import {drawBuildingDecals} from './building-decals.js?v=scenario-variable-manager-1';
+import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=scenario-variable-manager-1';
+import {blockCornerHeights} from './building-block-geometry.js?v=scenario-variable-manager-1';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=scenario-variable-manager-1';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=scenario-variable-manager-1';
+import {projectBuildingPoint} from './building-footprints.js?v=scenario-variable-manager-1';
+import {buildingShapeCells} from './building-shapes.js?v=scenario-variable-manager-1';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=scenario-variable-manager-1';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;
