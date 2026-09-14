@@ -36,9 +36,10 @@ const expand=base=>{
 };
 expand(40);run(24);assert.ok(c.stats.uncollectedWaste>0);assert.equal(c.stats.population,5776);
 place('road',{x:67,y:30},{x:89,y:30});for(let x=70;x<90;x+=2)place('wasteEnergy',{x,y:31});place('powerline',{x:67,y:29},{x:89,y:29});
-expand(60);run(24);expand(80);run(24);
-assert.equal(c.stats.population,32128);
+expand(60);run(24);expand(80);place('bulldoze',{x:8,y:5});place('road',{x:8,y:2},{x:8,y:94});place('road',{x:8,y:30},{x:9,y:30});place('wasteEnergy',{x:89,y:31});place('wasteEnergy',{x:90,y:31});run(24);
+assert.equal(c.stats.population,32016);
 place('powerline',{x:6,y:0},{x:6,y:249});place('powerline',{x:6,y:0},{x:124,y:0});place('powerline',{x:124,y:1},{x:124,y:249});
+place('road',{x:8,y:95},{x:8,y:250});place('bulldoze',{x:124,y:30});place('road',{x:90,y:30},{x:126,y:30});place('road',{x:126,y:2},{x:126,y:34});
 let plant=16;
 for(const base of [100,120,140,160,180,200,220,240]){
  for(let i=0;i<4;i++,plant++)place('nuclear',{x:plant<42?2:120,y:2+(plant%42)*6});

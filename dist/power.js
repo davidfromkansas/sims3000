@@ -8,3 +8,7 @@ export function overloadRoll(c,t){let h=Math.imul(c.seed+97,374761393)^Math.imul
 export function overloadStatus(t){const months=t.stress||0;if(!(t.plantLoad>1))return 'Within capacity';return months<18?`${18-months} months before failure risk begins`:`${Math.round(overloadFailureRisk(months+1)*100)}% failure risk next month if overload continues`;}
 export function advancePower(c){const failures=[],n=Math.sqrt(c.tiles.length);for(const t of c.tiles)if(POWER_PLANTS[t.type]){t.age++;if(t.root===t.y*n+t.x){t.stress=(t.plantLoad||0)>1?t.stress+1:0;if(overloadRoll(c,t)<overloadFailureRisk(t.stress))failures.push(t);}}return failures;}
 export function powerStats(c){const roots=c.tiles.filter(t=>POWER_PLANTS[t.type]&&t.root===t.y*Math.sqrt(c.tiles.length)+t.x);return{overloadedPlants:roots.filter(t=>t.plantLoad>1).length,powerCapacity:roots.reduce((n,t)=>n+plantCapacity(t),0),powerUpkeep:roots.reduce((n,t)=>n+POWER_PLANTS[t.type].upkeep,0)};}
+
+// Prima table 14-2: 800 garbage weight / 100 per intact plant per month.
+export const POWER_WASTE={coal:8,oil:8,gas:8,nuclear:8,microwave:8,fusion:8};
+export function powerWasteProduction(c,t){if(!POWER_WASTE[t.type]||t.root!==t.y*c.size+t.x)return 0;const size=POWER_PLANTS[t.type].size;for(let y=t.y;y<t.y+size;y++)for(let x=t.x;x<t.x+size;x++){const u=c.tiles[y*c.size+x];if(!u||u.root!==t.root||u.type!==t.type||u.fire||u.rubble||u.radiation)return 0;}return POWER_WASTE[t.type];}

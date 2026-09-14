@@ -1,9 +1,9 @@
-import {showFinancialAdvisor} from './financial-advisor.js?v=public-space-garbage-1';
-import {loanScheduleReport} from './loan-schedule.js?v=public-space-garbage-1';
-import {disasterReliefReport} from './disaster-relief.js?v=public-space-garbage-1';
-import {businessIncomeReport} from './business.js?v=public-space-garbage-1';
-import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=public-space-garbage-1';
-import {applyBudget,borrow} from './engine.js?v=public-space-garbage-1';
+import {showFinancialAdvisor} from './financial-advisor.js?v=infrastructure-garbage-1';
+import {loanScheduleReport} from './loan-schedule.js?v=infrastructure-garbage-1';
+import {disasterReliefReport} from './disaster-relief.js?v=infrastructure-garbage-1';
+import {businessIncomeReport} from './business.js?v=infrastructure-garbage-1';
+import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=infrastructure-garbage-1';
+import {applyBudget,borrow} from './engine.js?v=infrastructure-garbage-1';
 const names={residential:'Residential',commercial:'Commercial',industrial:'Industrial'};
 export function showFinance(ui){
  const {city,dialog,close,update,save,clearUndo,notify,review}=ui,c=city(),fmt=n=>'§'+Math.round(n).toLocaleString(),$=s=>document.querySelector(s),f=c.finance;
