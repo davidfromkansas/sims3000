@@ -1,4 +1,4 @@
-import {HISTORY_LIMIT,METRICS} from './reports.js?v=adult-learning-1';
+import {HISTORY_LIMIT,METRICS} from './reports.js?v=civic-damage-1';
 // Persist simulation inputs and history. Networks, coverage and statistics are rebuilt on load.
 const CITY_FIELDS=['appearance','size','petitions','version','buildingDesigns','demographics','buildingReplacements','name','startYear','mayorName','difficulty','month','funds','seed','finance','civic','transport','region','emergency','scenario','business','rewards','tunnels','goals','starter'];
 export const TILE_FIELDS=['abandonmentCause','waterEstablished','lotRoot','facilityAbandoned','abandonedLevel','historicalLevel','industry','farmRoot','x','y','elevation','treeLevel','terrain','waterKind','type','level','density','age','stress','nature','root','pipe','rail','subway','highway','bridgeAxis','railAxis','highwayAxis','waste','garbage','fire','fireAge','rubble','radiation','burnedLastMonth','recycledLastMonth'];

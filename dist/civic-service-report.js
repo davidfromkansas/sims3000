@@ -1,11 +1,12 @@
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=adult-learning-1';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=adult-learning-1';
-import {occupancy} from './utilities.js?v=adult-learning-1';
-import {educationServiceDemand} from './education.js?v=adult-learning-1';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=civic-damage-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=civic-damage-1';
+import {occupancy} from './utilities.js?v=civic-damage-1';
+import {educationServiceDemand} from './education.js?v=civic-damage-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  const definition=SERVICES[t.type];if(!definition)return null;
  const funding=c.civic.funding[definition.department],strike=c.civic.underfunded[definition.department]>=6,reasons=[];
+ if(t.fire)reasons.push('Building is on fire');if(t.rubble)reasons.push('Building is destroyed');if(t.radiation)reasons.push('Site is contaminated by radiation');
  if(!t.powered)reasons.push('No electricity');if(!t.roadIds?.length)reasons.push('No nearby road');if(c.finance.roadCondition<=20)reasons.push('Road network closed by poor condition');if(funding===0)reasons.push('Department funding is zero');if(strike)reasons.push('Department workers are on strike');
  const homes=c.tiles.filter(h=>h.type==='residential'&&h.level&&h.roadIds.some(id=>t.roadIds.includes(id))),residents=homes.reduce((sum,h)=>sum+occupancy(h.level)*8,0),profile=educationServiceDemand(c,t.type),weight=1,share=['school','college','library','museum'].includes(t.type)?profile.share:1;
  const demand=residents*share,fundedCapacity=(definition.capacity||0)*funding/100*weight,capacity=t.serviceActive?fundedCapacity:0;
