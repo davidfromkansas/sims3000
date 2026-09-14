@@ -759,3 +759,7 @@ Reserve 100 tiles for a new university, with campus-wide placement, service chec
 ## Stadium as a major city project
 
 Grow to 150,000 residents with strong approval, then fund a 75,000 stadium on a 5×5 lot. Existing offers and stadiums are preserved. See [milestone details](STADIUM-PROJECT-MILESTONE.md).
+
+## County Courthouse reward
+
+Earn a courthouse at 25,000 residents with strong approval, then place it to supply civic jobs and reduce nearby crime. Includes a new four-view building model. See [milestone details](COUNTY-COURTHOUSE-MILESTONE.md).
