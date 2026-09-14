@@ -1,14 +1,14 @@
-import {civicRoots,civicCenter} from './civic-footprints.js?v=automatic-police-response-1';
-import {civicServiceOperating,serviceRadius} from './civic.js?v=automatic-police-response-1';
-// Dispatch slot 0 is the volunteer brigade; remaining slots follow station order.
+import {civicRoots,civicCenter} from './civic-footprints.js?v=police-squad-recall-1';
+import {civicServiceOperating,serviceRadius} from './civic.js?v=police-squad-recall-1';
+// Orders belong to their station root, so removing another station cannot move them.
 // An explicitly dispatched squad is unavailable for automatic precinct response.
 export function policeResponses(c){
  const e=c.emergency,r=e.riot;if(!e.active||!r)return[];
  const stations=civicRoots(c).filter(t=>t.type==='police'),responses=[];
- const volunteer=e.policeUnits[0];if(volunteer)responses.push({...volunteer,slot:0,automatic:false,strength:1});
+ const volunteer=e.policeUnits.find(p=>p.owner===-1);if(volunteer)responses.push({...volunteer,slot:0,automatic:false,strength:1});
  for(const [i,t] of stations.entries()){
   if(!civicServiceOperating(c,t))continue;
-  const slot=i+1,assigned=e.policeUnits[slot],center=civicCenter(t),radius=serviceRadius(c,{...t,serviceActive:true});
+  const slot=i+1,assigned=e.policeUnits.find(p=>p.owner===t.y*c.size+t.x),center=civicCenter(t),radius=serviceRadius(c,{...t,serviceActive:true});
   if(!assigned&&Math.hypot(r.x-center.x,r.y-center.y)>radius)continue;
   responses.push({...assigned||{x:r.x,y:r.y},slot,automatic:!assigned,station:t.y*c.size+t.x,strength:c.civic.funding.police/100*(c.stats.jails?.policeEffectiveness??.75)});
  }

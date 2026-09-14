@@ -981,3 +981,7 @@ Jails now use 300 cells / 360 maximum, §2,500 construction and §75 monthly upk
 ## Automatic police response
 
 Available operating police stations automatically respond to riots in their coverage; manual dispatch excludes the same squad from automatic service. Live readiness applies to both. The emergency panel and map expose automatic response. Existing ordinal dispatch slots and tuned response timing remain limitations. See AUTOMATIC-POLICE-RESPONSE-MILESTONE.md.
+
+## Police squad recall
+
+Emergency rosters now support individual recall; manual orders persist station roots instead of shifting with station-list positions. Schema 135 migrates older ordinal orders. Exact-site replacement before order pruning still shares the root identity. See POLICE-SQUAD-RECALL-MILESTONE.md.
