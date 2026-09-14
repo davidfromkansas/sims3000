@@ -1,7 +1,7 @@
-import {WATER_STRUCTURES} from './utilities.js?v=reward-progress-1';
-import {waterBaseNeed} from './utility-demand.js?v=reward-progress-1';
-import {conservationDemand} from './conservation.js?v=reward-progress-1';
-import {pipeCoverage} from './water-coverage.js?v=reward-progress-1';
+import {WATER_STRUCTURES} from './utilities.js?v=university-progression-1';
+import {waterBaseNeed} from './utility-demand.js?v=university-progression-1';
+import {conservationDemand} from './conservation.js?v=university-progression-1';
+import {pipeCoverage} from './water-coverage.js?v=university-progression-1';
 const number=n=>n.toLocaleString('en-US',{maximumFractionDigits:1});
 export function waterGridData(city){
  const groups=(city.stats.waterNetworks||[]).map((g,id)=>({...g,id,nodes:[],pipes:[],sources:[]})),uncovered=[];

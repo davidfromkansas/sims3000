@@ -18,10 +18,10 @@ c.stats.aura=55;for(let i=0;i<6;i++){c.month++;advanceRewards(c);}
 c.stats.population=0;p=rewardProgress(c,'stadium');assert.equal(p.earned,true);assert.match(p.next,/offer is saved/);
 c.tiles.push({type:'stadium'});assert.match(rewardProgress(c,'stadium').next,/Already placed/);
 c.tiles=[];assert.match(rewardProgress(c,'stadium').next,/place this reward/);
-c.stats.population=500;c.stats.activeServices.college=0;
-assert.equal(rewardCondition(c,'university'),false);assert.equal(rewardProgress(c,'university').requirements.at(-1).met,false);
-c.stats.activeServices.college=1;assert.equal(rewardCondition(c,'university'),true);
-c.stats.education=64.999;assert.equal(rewardCondition(c,'university'),false);
+c.stats.population=0;c.stats.activeServices.college=0;c.stats.education=70;
+assert.equal(rewardCondition(c,'university'),true,'education alone qualifies');
+assert.equal(rewardProgress(c,'university').requirements.length,1);
+c.stats.education=69.999;assert.equal(rewardCondition(c,'university'),false);
 assert.equal(rewardCondition(c,'unknown'),false);
 for(const k of Object.keys(REWARDS))assert.equal(rewardCondition(c,k),rewardProgress(c,k).requirements.every(r=>r.met));
-console.log('PASS: reward checklist tracks exact eligibility, strict balance, monthly streak reset, retained offers, rebuilding and operating colleges without mutating city state.');
+console.log('PASS: reward checklist tracks exact eligibility, strict balance, monthly streak reset, retained offers, rebuilding and education-only university eligibility without mutating city state.');
