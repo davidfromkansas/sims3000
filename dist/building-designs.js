@@ -1,17 +1,17 @@
-import {validateRoofDetails,encodeRoofDetails,decodeRoofDetails} from './building-roof-details.js?v=architecture-collection-58';
-import {validatePaintColors,validatePaintReferences} from './building-paint-colors.js?v=architecture-collection-58';
-import {towerSolids} from './building-tower-geometry.js?v=architecture-collection-58';
-import {validateBuildingDecals,encodeBuildingDecals,decodeBuildingDecals} from './building-decals.js?v=architecture-collection-58';
-import {validateGroundPaint,drawGroundPaint} from './building-ground-paint.js?v=architecture-collection-58';
-import {validateBuildingProps,encodeBuildingProps,decodeBuildingProps,drawBuildingProps} from './building-props.js?v=architecture-collection-58';
-import {validateBlockGeometry} from './building-block-geometry.js?v=architecture-collection-58';
-import {validateSurfaceDetails} from './building-surface-details.js?v=architecture-collection-58';
-import {validateFloorPaint} from './building-floor-paint.js?v=architecture-collection-58';
-import {validateBuildingVoxels,drawBuildingVoxels} from './building-voxels.js?v=architecture-collection-58';
-import {buildingSlot,parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=architecture-collection-58';
-import {validateBuildingMaterials,usesLandscapeMaterials} from './building-materials.js?v=architecture-collection-58';
-import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=architecture-collection-58';
-import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=architecture-collection-58';
+import {validateRoofDetails,encodeRoofDetails,decodeRoofDetails} from './building-roof-details.js?v=responsive-metropolis-3';
+import {validatePaintColors,validatePaintReferences} from './building-paint-colors.js?v=responsive-metropolis-3';
+import {towerSolids} from './building-tower-geometry.js?v=responsive-metropolis-3';
+import {validateBuildingDecals,encodeBuildingDecals,decodeBuildingDecals} from './building-decals.js?v=responsive-metropolis-3';
+import {validateGroundPaint,drawGroundPaint} from './building-ground-paint.js?v=responsive-metropolis-3';
+import {validateBuildingProps,encodeBuildingProps,decodeBuildingProps,drawBuildingProps} from './building-props.js?v=responsive-metropolis-3';
+import {validateBlockGeometry} from './building-block-geometry.js?v=responsive-metropolis-3';
+import {validateSurfaceDetails} from './building-surface-details.js?v=responsive-metropolis-3';
+import {validateFloorPaint} from './building-floor-paint.js?v=responsive-metropolis-3';
+import {validateBuildingVoxels,drawBuildingVoxels} from './building-voxels.js?v=responsive-metropolis-3';
+import {buildingSlot,parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=responsive-metropolis-3';
+import {validateBuildingMaterials,usesLandscapeMaterials} from './building-materials.js?v=responsive-metropolis-3';
+import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=responsive-metropolis-3';
+import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=responsive-metropolis-3';
 export function defaultBuildingDesign(key=2){const {source,footprint}=parseBuildingSlot(key);return{name:REPLACEABLE_STYLES[source]?.level===1?'My neighborhood building':'My building',floors:[0,2,6,12][REPLACEABLE_STYLES[source]?.level||3],width:8,depth:8,roof:'step',facade:'#b6c4bd',windows:'#3c6b79',accent:'#dab572',...(footprint.width!==1||footprint.height!==1?{footprint}:{})};}
 // Original procedural artwork for larger lots; style swaps select a matching
 // footprint model, never enlarge a legacy single-tile image.

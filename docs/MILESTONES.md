@@ -21,6 +21,12 @@ Simulation fidelity corrections belong to the affected release group and must re
 
 Publication after live version 150 remains blocked on the previously requested Sites source-export authorization. Work present in the checkout or GitHub must not be described as live until publication is verified. Player feedback has not been assumed from silence or automatic continuations.
 
+## Responsive-metropolis review checkpoint
+
+The next grouped performance release reduces network allocations, reuses rail searches and batches worker transfers so view controls can run between city-transfer messages. In a synthetic 256-map transit fixture, monthly Node processing improved from 1,942 to 861 ms; an observed browser maximum frame-callback gap improved from 291.6 to 24.8 ms after transfer batching. These are scoped measurements, not complete metropolis acceptance. See [performance evidence and limitations](SPARSE-NETWORK-GRAPHS-MILESTONE.md).
+
+Checkpoint5 now asks players to pan, zoom, rotate and pause during large-city simulation, then save/reload and continue three months. Existing feedback remains preserved. Long organic-city playthroughs, supported-browser checks and user feedback remain open.
+
 ## Current playable feedback checkpoints
 
 All six milestones contain playable functionality. None is a claim of full original-game parity, and player feedback is still pending. See [CURRENT-FIDELITY.md](CURRENT-FIDELITY.md) for implementation evidence and remaining scope.

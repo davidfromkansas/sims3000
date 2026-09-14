@@ -1,0 +1,48 @@
+{
+  "method": "One observed three-month run per implementation in the same local in-app browser and synthetic fixture. No simultaneous Node regression run during browser measurement. Variability and startup costs remain; this is not sustained FPS acceptance.",
+  "before": {
+    "cache": "responsive-metropolis-1",
+    "dispatchMs": [
+      139.30000007152557,
+      120.10000002384186,
+      121.5
+    ],
+    "monthMs": [
+      2722.8000000715256,
+      2148.600000023842,
+      1145.2999999523163
+    ],
+    "maxDrawMs": 29.299999952316284,
+    "largestFrameGapMs": 291.59999999999854,
+    "p95FrameGapMs": 9.5,
+    "viewInteractions": 2,
+    "restoredPopulation": 19200
+  },
+  "after": {
+    "cache": "responsive-metropolis-2",
+    "dispatchMs": [
+      0.20000004768371582,
+      0,
+      0.09999990463256836
+    ],
+    "monthMs": [
+      1981.2999999523163,
+      1353.7000000476837,
+      1361.7999999523163
+    ],
+    "maxDrawMs": 29.600000023841858,
+    "largestFrameGapMs": 24.80000000000291,
+    "p95FrameGapMs": 9.19999999999709,
+    "viewInteractions": 2,
+    "restoredPopulation": 19200
+  },
+  "eachRun": {
+    "visible": true,
+    "allMonthsUsedWorker": true,
+    "trainRiders": [
+      9028.169518788043,
+      9020.911542736854,
+      9013.013375536766
+    ]
+  }
+}

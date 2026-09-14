@@ -1,6 +1,6 @@
-import {clipPolygon} from './building-decal-clipping.js?v=architecture-collection-58';
-import {drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-58';
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-58';
+import {clipPolygon} from './building-decal-clipping.js?v=responsive-metropolis-3';
+import {drawBuildingSurfaceDetail} from './building-surface-details.js?v=responsive-metropolis-3';
+import {projectBuildingPoint} from './building-footprints.js?v=responsive-metropolis-3';
 
 // Roof coordinates use construction-grid units. A plane [a,b,c] describes
 // world height z=a*u+b*v+c, allowing one detail to cross coplanar roof tiles.

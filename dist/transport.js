@@ -1,13 +1,13 @@
-import {civicSize} from './civic-footprints.js?v=architecture-collection-58';
-import {REWARDS,rewardSize} from './rewards.js?v=architecture-collection-58';
-import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=architecture-collection-58';
-import {JobCapacity} from './job-capacity.js?v=architecture-collection-58';
-import {workforceShare} from './workforce.js?v=architecture-collection-58';
-import {routeLength} from './tunnels.js?v=architecture-collection-58';
-import {industrialJobs} from './industry.js?v=architecture-collection-58';
-import {streetGraph,MinQueue} from './highway.js?v=architecture-collection-58';
-import {railNetwork,STATIONS} from './rail.js?v=architecture-collection-58';
-import {occupancy} from './utilities.js?v=architecture-collection-58';
+import {civicSize} from './civic-footprints.js?v=responsive-metropolis-3';
+import {REWARDS,rewardSize} from './rewards.js?v=responsive-metropolis-3';
+import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=responsive-metropolis-3';
+import {JobCapacity} from './job-capacity.js?v=responsive-metropolis-3';
+import {workforceShare} from './workforce.js?v=responsive-metropolis-3';
+import {routeLength} from './tunnels.js?v=responsive-metropolis-3';
+import {industrialJobs} from './industry.js?v=responsive-metropolis-3';
+import {streetGraph,MinQueue} from './highway.js?v=responsive-metropolis-3';
+import {railNetwork,STATIONS} from './rail.js?v=responsive-metropolis-3';
+import {occupancy} from './utilities.js?v=responsive-metropolis-3';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const freshTransport=()=>({funding:100,condition:100,underfunded:0});
 export function changeTransit(c,value){if(!Number.isInteger(value)||value<0||value>150)return{ok:false,error:'Transit funding must be 0–150%.'};c.transport.funding=value;return{ok:true};}
