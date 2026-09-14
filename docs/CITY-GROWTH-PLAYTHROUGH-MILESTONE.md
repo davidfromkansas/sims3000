@@ -15,7 +15,7 @@ The first-town guide now continues with live 5,000 / 20,000 / 25,000 population 
 | 120 | 22,040 | §383,872 | Waste-to-energy processing and staged expansion restore growth |
 | 144 | 32,296 | §884,638 | Continued expansion passes 25,000 with working utilities and no waste backlog |
 
-Mayor’s House is earned in month 53 and City Hall in month 115. The final year is replayed from a saved city and must exactly match the uninterrupted run. Floating-point utility residuals below 1e-7 count as fully served.
+Under the earlier pre-137 thresholds, Mayor’s House was earned in month 53 and City Hall in month 115. With the corrected original approval requirement, this route leaves both rewards locked; the acceptance run now checks that behavior. The final year is replayed from a saved city and must exactly match the uninterrupted run. Floating-point utility residuals below 1e-7 count as fully served.
 
 This establishes one ordinary-construction route beyond 25,000. It does not prove original balance, all map types, mobile performance, 150,000-resident progression or long-term stability after this run. Education and hospital development are absent from this particular strategy. Earlier one-coal-plant exploration failed from overload; the reproducible route uses adequate supply. More landfill alone was not a permanent disposal solution.
 

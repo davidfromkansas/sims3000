@@ -1017,3 +1017,7 @@ Operating universities now apply sector-specific land-value benefits, local poll
 ## Stadium districts and match activity
 
 Stadiums now trade local pollution, crime pressure and lower residential value for commercial/aura benefits, alongside their existing jobs and growth effects. Operating stadiums show original depth-masked match activity using the paused scenery clock, with static reduced-motion/disabled-scenery states. Source effects and tuning are documented in STADIUM-MATCH-DAY-MILESTONE.md. Browser motion feel remains unverified. Schema remains 136.
+
+## Corrected civic reward gates
+
+Schema 137 applies original strong approval to City Hall and Mayor’s House and removes the latter’s arbitrary three-month delay. Existing earned offers survive migration. Sector-specific land-value and direct aura effects replace uniform amenity bonuses. Earlier ordinary-play reward dates at months 53/115 belong to pre-137 rules; the growth route remains a population test, not proof of those early unlocks. See CIVIC-REWARD-FIDELITY-MILESTONE.md.
