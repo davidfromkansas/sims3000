@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 252 regression suites, save schema 128. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 253 regression suites, save schema 128. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -929,3 +929,7 @@ Subways reaching a dry border can now receive a paid neighbor connection through
 ## Stable keyboard construction cursor
 
 Arrow-key selection now retains control of the map cursor through passive pointer movement and departure. A map click or gesture cancellation releases it. Browser QA placed and inspected a park at tile 48,24 immediately after rapid keyboard movement. See KEYBOARD-CURSOR-MILESTONE.md.
+
+## Room to grow prepared challenge
+
+A ninth original challenge starts a supplied 96×96 city at 25,000 residents and its residential cap. Players raise capacity to 26,000 and reach 25,200 residents with a §5,000 reserve within twelve months. See ROOM-TO-GROW-MILESTONE.md. This is an original tutorial city, not a shipped SC3KU scenario.
