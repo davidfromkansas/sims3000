@@ -1,10 +1,10 @@
-import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=public-jobs-1';
-import {blockCornerHeights} from './building-block-geometry.js?v=public-jobs-1';
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=public-jobs-1';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=public-jobs-1';
-import {projectBuildingPoint} from './building-footprints.js?v=public-jobs-1';
-import {buildingShapeCells} from './building-shapes.js?v=public-jobs-1';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=public-jobs-1';
+import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=reward-jobs-1';
+import {blockCornerHeights} from './building-block-geometry.js?v=reward-jobs-1';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=reward-jobs-1';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=reward-jobs-1';
+import {projectBuildingPoint} from './building-footprints.js?v=reward-jobs-1';
+import {buildingShapeCells} from './building-shapes.js?v=reward-jobs-1';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=reward-jobs-1';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;
