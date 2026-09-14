@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 237 regression suites, save schema 124. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 238 regression suites, save schema 124. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -869,3 +869,5 @@ Abandoned recovery checkpoint: filter and locate abandoned RCI buildings, inspec
 Recorded abandonment checkpoint: newly abandoned buildings persist the simulator’s triggering service blockers, severe demand loss or toxic-cloud evacuation. Inspection separates that history from current recovery conditions; old saves retain unknown causes. See `ABANDONMENT-HISTORY-MILESTONE.md`. Schema124; publication pending.
 
 Transportation advisor checkpoint: original Moe Biehl portrait and current transport briefing with job/access distinctions, funding priorities, ranked home/corridor inspection and map/planning shortcuts. Browser portrait, healthy-city facts and traffic map verified. See `TRANSPORTATION-ADVISOR-MILESTONE.md`. Schema124; publication pending.
+
+Seven-advisor checkpoint: all named departments are reachable through one portrait directory. Constance, Karen and Gus add live planning, environmental and utility diagnosis with report/map/planning actions. All 238 suites passed; browser directory/new briefings/planning report and dialog scroll verified. See `SEVEN-ADVISOR-DESK-MILESTONE.md`. Original dialogue and broader presentation remain incomplete. Schema124; publication pending.

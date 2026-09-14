@@ -1,11 +1,11 @@
-import {REWARDS,rewardJobSites} from './rewards.js?v=transport-advisor-1';
-import {JobCapacity} from './job-capacity.js?v=transport-advisor-1';
-import {workforceShare} from './workforce.js?v=transport-advisor-1';
-import {routeLength} from './tunnels.js?v=transport-advisor-1';
-import {industrialJobs} from './industry.js?v=transport-advisor-1';
-import {streetGraph,MinQueue} from './highway.js?v=transport-advisor-1';
-import {railNetwork,STATIONS} from './rail.js?v=transport-advisor-1';
-import {occupancy} from './utilities.js?v=transport-advisor-1';
+import {REWARDS,rewardJobSites} from './rewards.js?v=seven-advisors-1';
+import {JobCapacity} from './job-capacity.js?v=seven-advisors-1';
+import {workforceShare} from './workforce.js?v=seven-advisors-1';
+import {routeLength} from './tunnels.js?v=seven-advisors-1';
+import {industrialJobs} from './industry.js?v=seven-advisors-1';
+import {streetGraph,MinQueue} from './highway.js?v=seven-advisors-1';
+import {railNetwork,STATIONS} from './rail.js?v=seven-advisors-1';
+import {occupancy} from './utilities.js?v=seven-advisors-1';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const freshTransport=()=>({funding:100,condition:100,underfunded:0});
 export function changeTransit(c,value){if(!Number.isInteger(value)||value<0||value>150)return{ok:false,error:'Transit funding must be 0–150%.'};c.transport.funding=value;return{ok:true};}
