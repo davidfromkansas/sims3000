@@ -1,5 +1,5 @@
 // Original low-poly landmark geometry. Gallery illustrations are separate Imagegen art.
-export const MODELED_LANDMARKS=new Set(['bigBen','statueLiberty']);
+export const MODELED_LANDMARKS=new Set(['bigBen','statueLiberty','chryslerBuilding']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function landmarkGeometry(type){
  const faces=[],add=(points,color)=>faces.push({points,color});
@@ -30,6 +30,25 @@ export function landmarkGeometry(type){
   for(let i=0;i<7;i++){const a=Math.PI+i*Math.PI/6;beam([Math.cos(a)*.18,Math.sin(a)*.18,5.36],[Math.cos(a)*.44,Math.sin(a)*.44,5.68],.025,copper);}
   // Drapery ridges make the robe legible even at the normal city zoom.
   for(let i=0;i<10;i++){const a=i*Math.PI/5;beam([Math.cos(a)*.46,Math.sin(a)*.46,2.4],[Math.cos(a+.12)*.25,Math.sin(a+.12)*.25,4.22],.024,'#88b7a6');}
+ }else if(type==='chryslerBuilding'){
+  const cream='#d1c4a4',silver='#b8c6cb',glass='#354b59';
+  // Setbacks and continuous window bays establish the Art Deco silhouette.
+  const tiers=[[.23,2.2,1],[1.23,1.9,.8],[2.03,1.6,.7],[2.73,1.28,2.2],[4.93,1.05,.55]];
+  for(const [z,w,h] of tiers){for(let floor=0;floor<h;floor+=.115)box(0,0,z+floor,w,w,Math.min(.115,h-floor),cream);box(0,0,z+h-.05,w+.06,w+.06,.05,'#e0d3b5');
+   for(let side=0;side<4;side++)for(let x=-w/2+.16;x<w/2-.1;x+=.22)for(let f=z+.12;f<z+h-.1;f+=.23){const point=(a,b)=>side===0?[a,-w/2-.005,b]:side===1?[w/2+.005,a,b]:side===2?[a,w/2+.005,b]:[-w/2-.005,a,b];add([point(x,f),point(x+.085,f),point(x+.085,f+.14),point(x,f+.14)],glass);}
+  }
+  // Stacked silver arches with triangular sunburst windows on all four faces.
+  for(let tier=0;tier<6;tier++){
+   const w=1.15-tier*.145,z=5.35+tier*.24,h=.55;
+   box(0,0,z,w,w,.17,silver);
+   for(let side=0;side<4;side++){
+    const point=(x,zz)=>side===0?[x,-w/2-.008,zz]:side===1?[w/2+.008,x,zz]:side===2?[x,w/2+.008,zz]:[-w/2-.008,x,zz];
+    const arch=Array.from({length:17},(_,i)=>point(Math.cos(i*Math.PI/16)*w/2,z+.12+Math.sin(i*Math.PI/16)*h));add(arch,shade(silver,[.8,.95,1,.87][side]));
+    for(let ray=1;ray<6;ray++){const a=ray*Math.PI/6;add([point(Math.cos(a-.1)*w*.42,z+.12+Math.sin(a-.1)*h*.83),point(Math.cos(a+.1)*w*.42,z+.12+Math.sin(a+.1)*h*.83),point(Math.cos(a)*w*.15,z+.15+Math.sin(a)*h*.3)],glass);}
+   }
+  }
+  ring(0,0,6.85,.13,.32,.07,silver);ring(0,0,7.17,.07,.58,.002,'#d9e2e2');
+  for(const x of [-1,1])for(const y of [-1,1]){beam([x*.55,y*.55,4.85],[x*.85,y*.85,4.9],.07,silver);beam([x*.85,y*.85,4.9],[x*.95,y*.95,4.84],.035,silver);}
  }else throw Error('Unknown modeled landmark.');
  return faces;
 }
