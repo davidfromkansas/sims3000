@@ -1,20 +1,20 @@
-import {validateTornadoSettings,tornadoVector,validateTornadoMotion} from './tornado-settings.js?v=abandoned-recovery-1';
-import {DEFAULT_QUAKE_MAGNITUDE,validateQuakeMagnitude,quakeBands,quakeDamageChance} from './earthquake-settings.js?v=abandoned-recovery-1';
-import {dissolveBuildingLot} from './building-lots.js?v=abandoned-recovery-1';
-import {freshDisasterRelief,settleDisasterRelief,validateDisasterRelief} from './disaster-relief.js?v=abandoned-recovery-1';
-import {scenarioAllowsBackground} from './scenario-background-rules.js?v=abandoned-recovery-1';
-import {freshEmergencyOrder,recordHazard,recordFire,validateEmergencyOrder} from './emergency-order.js?v=abandoned-recovery-1';
-import {beginEmergencySession,pendingWarnings,refreshShelter,validateHazardWarning} from './emergency-session.js?v=abandoned-recovery-1';
-import {freshUfo,stepUfo,validateUfo} from './ufo.js?v=abandoned-recovery-1';
-import {freshWhirlpool,stepWhirlpool,validateWhirlpool} from './whirlpool.js?v=abandoned-recovery-1';
-import {freshToxicCloud,stepToxicCloud,validateToxicCloud} from './toxic-cloud.js?v=abandoned-recovery-1';
-import {freshSpaceJunk,stepSpaceJunk,validateSpaceJunk} from './space-junk.js?v=abandoned-recovery-1';
-import {freshRiots,stepRiot,validateRiots} from './riots.js?v=abandoned-recovery-1';
-import {freshLocusts,stepLocusts,validateLocusts} from './locusts.js?v=abandoned-recovery-1';
-import {tunnelTiles} from './tunnels.js?v=abandoned-recovery-1';
-import {STRUCTURES} from './structures.js?v=abandoned-recovery-1';
-import {POWER_PLANTS} from './power.js?v=abandoned-recovery-1';
-import {occupancy} from './utilities.js?v=abandoned-recovery-1';
+import {validateTornadoSettings,tornadoVector,validateTornadoMotion} from './tornado-settings.js?v=abandonment-history-1';
+import {DEFAULT_QUAKE_MAGNITUDE,validateQuakeMagnitude,quakeBands,quakeDamageChance} from './earthquake-settings.js?v=abandonment-history-1';
+import {dissolveBuildingLot} from './building-lots.js?v=abandonment-history-1';
+import {freshDisasterRelief,settleDisasterRelief,validateDisasterRelief} from './disaster-relief.js?v=abandonment-history-1';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=abandonment-history-1';
+import {freshEmergencyOrder,recordHazard,recordFire,validateEmergencyOrder} from './emergency-order.js?v=abandonment-history-1';
+import {beginEmergencySession,pendingWarnings,refreshShelter,validateHazardWarning} from './emergency-session.js?v=abandonment-history-1';
+import {freshUfo,stepUfo,validateUfo} from './ufo.js?v=abandonment-history-1';
+import {freshWhirlpool,stepWhirlpool,validateWhirlpool} from './whirlpool.js?v=abandonment-history-1';
+import {freshToxicCloud,stepToxicCloud,validateToxicCloud} from './toxic-cloud.js?v=abandonment-history-1';
+import {freshSpaceJunk,stepSpaceJunk,validateSpaceJunk} from './space-junk.js?v=abandonment-history-1';
+import {freshRiots,stepRiot,validateRiots} from './riots.js?v=abandonment-history-1';
+import {freshLocusts,stepLocusts,validateLocusts} from './locusts.js?v=abandonment-history-1';
+import {tunnelTiles} from './tunnels.js?v=abandonment-history-1';
+import {STRUCTURES} from './structures.js?v=abandonment-history-1';
+import {POWER_PLANTS} from './power.js?v=abandonment-history-1';
+import {occupancy} from './utilities.js?v=abandonment-history-1';
 const zones=['residential','commercial','industrial'];
 const random=(i,step,seed)=>{let n=Math.imul(i+17,374761393)^Math.imul(step+31,668265263)^seed;return((Math.imul(n^(n>>>13),1274126177)^(n>>>16))>>>0)/4294967296;};
 export const freshEmergency=()=>({relief:freshDisasterRelief(),navigationOrder:freshEmergencyOrder(),...freshUfo(),...freshWhirlpool(),...freshToxicCloud(),...freshSpaceJunk(),...freshRiots(),...freshLocusts(),randomFires:false,randomEarthquakes:false,randomTornadoes:false,tornado:null,tornadoes:0,sirenTrust:100,sirenIncident:0,shelter:0,falseAlarms:0,earthquake:null,quakes:0,infrastructureLost:0,active:false,step:0,units:[],nextUnit:0,started:0,contained:0,destroyed:0,displaced:0,resumeSpeed:0});
@@ -23,7 +23,7 @@ export function ignite(c,x,y){const n=Math.sqrt(c.tiles.length);if(!Number.isInt
 export function setRandomFires(c,value){if(c.emergency.active)return{ok:false,error:'An active disaster must run its course before changing this setting.'};if(typeof value!=='boolean')return{ok:false,error:'Choose a valid disaster setting.'};c.emergency.randomFires=value;return{ok:true};}
 export function dispatchFire(c,x,y){const n=Math.sqrt(c.tiles.length);if(!c.emergency.active)return{ok:false,error:'No fire emergency is active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n||c.tiles[y*n+x].terrain==='water')return{ok:false,error:'Dispatch firefighters to a land tile near the fire.'};const limit=1+c.tiles.filter(t=>t.type==='fire').length,e=c.emergency;e.units=e.units.slice(0,limit);if(e.units.length<limit)e.units.push({x,y});else{e.units[e.nextUnit%limit]={x,y};e.nextUnit=(e.nextUnit+1)%limit;}return{ok:true};}
 export function emergencyStats(c){return{contaminatedTiles:c.tiles.filter(t=>t.radiation).length,burningTiles:c.tiles.filter(t=>t.fire>0).length,fireUnits:1+c.tiles.filter(t=>t.type==='fire').length,rubbleTiles:c.tiles.filter(t=>t.rubble).length};}
-function destroy(c,t){let members=[t];if(t.lotRoot!=null)members=dissolveBuildingLot(c,t);else if(t.type==='industrial'&&t.industry==='farm'&&t.farmRoot!==null)members=c.tiles.filter(u=>u.type==='industrial'&&u.industry==='farm'&&u.farmRoot===t.farmRoot);else if(STRUCTURES[t.type])members=c.tiles.filter(u=>STRUCTURES[u.type]&&u.root===t.root);else if(['airport','seaport'].includes(t.type)&&t.facilityRoot!==null)members=c.tiles.filter(u=>u.facilityRoot===t.facilityRoot);let displaced=0;for(const u of members){if(u.type==='residential')displaced+=occupancy(u.level)*8;const keep=zones.includes(u.type)||['airport','seaport'].includes(u.type);u.type=keep?u.type:null;u.level=0;u.facilityAbandoned=false;u.abandonedLevel=0;u.historicalLevel=0;u.age=0;u.stress=0;u.nature=false;u.root=null;u.industry='dirty';u.farmRoot=null;u.rubble=true;u.fire=0;u.fireAge=0;}c.emergency.destroyed++;c.emergency.displaced+=displaced;return displaced;}
+function destroy(c,t){let members=[t];if(t.lotRoot!=null)members=dissolveBuildingLot(c,t);else if(t.type==='industrial'&&t.industry==='farm'&&t.farmRoot!==null)members=c.tiles.filter(u=>u.type==='industrial'&&u.industry==='farm'&&u.farmRoot===t.farmRoot);else if(STRUCTURES[t.type])members=c.tiles.filter(u=>STRUCTURES[u.type]&&u.root===t.root);else if(['airport','seaport'].includes(t.type)&&t.facilityRoot!==null)members=c.tiles.filter(u=>u.facilityRoot===t.facilityRoot);let displaced=0;for(const u of members){if(u.type==='residential')displaced+=occupancy(u.level)*8;const keep=zones.includes(u.type)||['airport','seaport'].includes(u.type);u.type=keep?u.type:null;u.level=0;u.facilityAbandoned=false;u.abandonedLevel=0;u.abandonmentCause=null;u.historicalLevel=0;u.age=0;u.stress=0;u.nature=false;u.root=null;u.industry='dirty';u.farmRoot=null;u.rubble=true;u.fire=0;u.fireAge=0;}c.emergency.destroyed++;c.emergency.displaced+=displaced;return displaced;}
 export function stepFire(c){const e=c.emergency;if(!e.active)return{ended:false,destroyed:0};e.step++;const alienDamage=stepUfo(c,ufoStrike);const waterDamage=stepWhirlpool(c,whirlpoolDamage);stepToxicCloud(c);const impactDamage=stepSpaceJunk(c,spaceJunkImpact);if(e.riot)stepRiot(c,ignite);if(e.locust)stepLocusts(c);const stormDamage=e.tornado?stepTornado(c):0;const quakeDamage=e.earthquake?stepEarthquake(c):0;e.units=e.units.slice(0,1+c.tiles.filter(t=>t.type==='fire').length);const burning=c.tiles.filter(t=>t.fire>0),n=Math.sqrt(c.tiles.length),spread=new Map();let destroyed=alienDamage+waterDamage+quakeDamage+stormDamage+impactDamage;
  for(const t of burning){if(!t.fire)continue;const flammability=t.nature?45:t.flammability||60;let suppression=t.fireCoverage*.16;for(let i=0;i<e.units.length;i++){const unit=e.units[i],d=Math.hypot(t.x-unit.x,t.y-unit.y);if(d<=3){const funding=i===0?1:c.stats.strikes.includes('fire')?0:c.civic.funding.fire/100;suppression+=24*(1-d/4)*funding;}}t.fire=Math.max(0,Math.min(100,t.fire+3+flammability*.1-suppression));t.fireAge++;if(t.fire===0)continue;
  for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=t.x+dx,y=t.y+dy,j=y*n+x;if(x<0||y<0||x>=n||y>=n)continue;const u=c.tiles[j];if(!u.fire&&combustible(u)&&random(j,e.step+c.emergency.started*100,c.seed)<.04*(u.nature?45:u.flammability||60)/100*t.fire/50){const order=e.navigationOrder.fires[t.y*n+t.x]??e.navigationOrder.next;spread.set(j,Math.min(spread.get(j)??Infinity,order));}}
