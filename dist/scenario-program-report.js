@@ -1,11 +1,11 @@
-import {dialogTextTarget} from './scenario-dialog-text.js?v=automatic-police-response-1';
-import {tornadoSettingsLabel} from './tornado-settings.js?v=automatic-police-response-1';
-import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=automatic-police-response-1';
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=automatic-police-response-1';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=automatic-police-response-1';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=automatic-police-response-1';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=automatic-police-response-1';
-import {escapeAnnouncement} from './scenario-announcements.js?v=automatic-police-response-1';
+import {dialogTextTarget} from './scenario-dialog-text.js?v=police-squad-recall-1';
+import {tornadoSettingsLabel} from './tornado-settings.js?v=police-squad-recall-1';
+import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=police-squad-recall-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=police-squad-recall-1';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=police-squad-recall-1';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=police-squad-recall-1';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=police-squad-recall-1';
+import {escapeAnnouncement} from './scenario-announcements.js?v=police-squad-recall-1';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';
