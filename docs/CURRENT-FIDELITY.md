@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 233 regression suites, save schema 122. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 234 regression suites, save schema 122. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -855,3 +855,5 @@ Financial advisor checkpoint: meet Mortimer and inspect month-by-month treasury 
 Zone development checkpoint: shared simulation conditions explain stalled lots, with sector/status filters, pagination and map/inspection shortcuts. See [zone growth diagnostics](ZONE-GROWTH-MILESTONE.md). All 233 suites passed, with browser filtering and location checks verified; source only, publication pending.
 
 Advisor browser follow-up: Mortimer’s portrait and ten-year horizon, Randall’s portrait, the free-clinic comparison (monthly balance 64 to 59; health target +3 years), return navigation and hospital tool selection verified after browser access resumed. No policies were applied and no city was saved. No browser errors or warnings were reported.
+
+Visible development checkpoint: static finishing-work barriers mark newly developed buildings in City view, follow camera rotation and can be hidden in Play preferences. See [recent construction](RECENT-CONSTRUCTION-MILESTONE.md). 234 suites passed across full-run and affected-fixture validation; live separate-origin growth, rotation and toggle verified. Source only, publication pending.
