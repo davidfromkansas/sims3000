@@ -1,8 +1,8 @@
-import {geyserPlumePixels} from './geyser-plume.js?v=geyser-park-1';
-import {WHEEL,themeParkRidePixels} from './theme-park-rides.js?v=geyser-park-1';
-import {stadiumMatchPixels} from './stadium-match.js?v=geyser-park-1';
-import {rasterizeMiniature} from './miniature-raster.js?v=geyser-park-1';
-export const MODELED_REWARDS=new Set(['geyserPark','themePark','countryClub','historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
+import {geyserPlumePixels} from './geyser-plume.js?v=stock-exchange-1';
+import {WHEEL,themeParkRidePixels} from './theme-park-rides.js?v=stock-exchange-1';
+import {stadiumMatchPixels} from './stadium-match.js?v=stock-exchange-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=stock-exchange-1';
+export const MODELED_REWARDS=new Set(['stockExchange','geyserPark','themePark','countryClub','historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){
  if(!MODELED_REWARDS.has(type))throw Error('Unknown reward model.');
@@ -12,7 +12,21 @@ export function rewardGeometry(type){
  const hall=(x,y,w,d,h,color)=>{box(x,y,.05,w,d,h,color);roof(x,y,h+.05,w+.02,d+.02,.075,'#647c83');for(const side of [-1,1])for(let i=0;i<Math.floor(w/.07);i++)for(const z of [.12,.23])if(z+.045<h+.05)box(x-w/2+.045+i*.07,y+side*(d/2+.003),z,.028,.007,.048,'#547e8a');};
  const tree=(x,y)=>{box(x,y,.06,.015,.015,.09,'#796449');for(const [z,w]of [[.14,.085],[.19,.065],[.23,.035]])box(x,y,z,w,w,.035,'#537a50');};
  box(0,0,0,.97,.97,.04,'#aaa993');box(0,0,.04,.93,.93,.015,'#81966d');
- if(type==='geyserPark'){
+ if(type==='stockExchange'){
+  // Original exchange hall with stone colonnade and stepped glass trading offices.
+  box(0,0,.055,.88,.86,.012,'#c6c4b0');
+  for(let i=0;i<4;i++)box(0,.31+i*.025,.07,.58+i*.045,.15-i*.025,.012*(4-i),'#d2cbb3');
+  box(0,.01,.07,.66,.48,.22,'#c3bea9');box(0,.01,.29,.70,.52,.035,'#ddd5bf');
+  box(0,-.12,.325,.46,.35,.24,'#697e85');
+  for(const side of [-1,1])for(let i=0;i<6;i++){box(-.19+i*.076,-.12+side*.178,.345,.045,.008,.19,'#9eb6b8');box(side*.234,-.25+i*.053,.345,.008,.034,.19,'#6c979f');}
+  box(0,-.12,.565,.50,.39,.025,'#d7cfb7');box(0,-.12,.59,.32,.25,.095,'#8a9996');box(0,-.12,.685,.36,.29,.018,'#c6c7b5');
+  for(const x of [-.25,-.15,-.05,.05,.15,.25]){box(x,.28,.09,.042,.042,.19,'#ded6bf');box(x,.28,.275,.056,.056,.02,'#eee3c8');}
+  box(0,.28,.295,.64,.10,.03,'#d9cfb4');add([[-.34,.335,.325],[.34,.335,.325],[0,.335,.43]],'#ddd3b8');add([[-.34,.245,.325],[.34,.245,.325],[0,.245,.43]],'#b6b6a2');add([[-.34,.335,.325],[0,.335,.43],[0,.245,.43],[-.34,.245,.325]],'#738d8b');add([[.34,.335,.325],[0,.335,.43],[0,.245,.43],[.34,.245,.325]],'#91a29b');
+  for(const x of [-.20,-.10,0,.10,.20])box(x,.253,.11,.055,.006,.12,'#4e6f7b');
+  for(const side of [-1,1])for(const y of [-.14,-.04,.06,.16])box(side*.334,y,.13,.008,.045,.10,'#65848c');
+  for(const x of [-.39,.39]){box(x,.34,.07,.07,.14,.026,'#819369');box(x,.34,.10,.05,.10,.05,'#59794f');}
+  box(-.39,-.31,.075,.009,.009,.27,'#e1d5b6');add([[-.39,-.31,.345],[-.31,-.31,.332],[-.39,-.31,.30]],'#647e98');
+ }else if(type==='geyserPark'){
   // Original mineral terraces, turquoise pool, timber walks and visitor lodge.
   const ring=(rx,ry,z,color)=>add(Array.from({length:40},(_,i)=>{const a=i*Math.PI/20,r=1+.05*Math.sin(a*5)+.04*Math.cos(a*7);return[-.08+rx*Math.cos(a)*r,-.08+ry*Math.sin(a)*r,z];}),color);
   box(0,0,.055,.91,.91,.009,'#6e8956');

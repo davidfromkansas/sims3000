@@ -1065,3 +1065,7 @@ Operating airport/seaport tiles now produce garbage (.48/.32 units per tile/mont
 ## Geyser Park reward
 
 The twelfth reward adds a park-area/approval unlock, a unique 5×5 site, jobs, residential capacity, pollution reduction, land-value/aura benefits and garbage handling. An original mineral-pool miniature includes an operational water plume with pause/reduced-motion gating. Schema 142 preserves earlier cities. Park-area counting and effect normalization remain explicit calibration; see [Geyser Park](GEYSER-PARK-MILESTONE.md).
+
+## Stock Exchange
+
+The thirteenth reward adds population, approval and treasury gates, 480 jobs and commercial demand satisfaction, differentiated sector land-value effects, pollution, adjacent crime pressure, aura and garbage handling. The growth guide includes a 200,000-resident checkpoint. Schema 143 migrates previous cities, and the original model has four verified views. The repeatable ordinary-checkpoint acceptance reaches 204,784 residents with served utilities, no loans, zero backlog and the exchange operating; see [Stock Exchange](STOCK-EXCHANGE-MILESTONE.md).

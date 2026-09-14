@@ -1,3 +1,4 @@
+import {generateCity} from '../dist/terrain-generator.js';
 import {geyserPlumeState} from '../dist/geyser-plume.js';
 import {themeParkRideState} from '../dist/theme-park-rides.js';
 import {stadiumMatchState} from '../dist/stadium-match.js';
@@ -18,7 +19,7 @@ for(const type of MODELED_REWARDS){const geometry=rewardGeometry(type);assert.ok
  const raster=rasterizeReward(type,rotation);let opaque=0;for(let i=3;i<raster.data.length;i+=4)opaque+=raster.data[i]===255?1:0;assert.ok(opaque>20000&&opaque<150000);views.push(Buffer.from(raster.data).toString('base64'));}assert.equal(new Set(views).size,4,type);}
 assert.throws(()=>rewardGeometry('unknown'));
 let created=0,put=0,drawn=0;const ctx={createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),putImageData(){put++;},save(){},fillRect(){},restore(){},drawImage(){drawn++;}};globalThis.document={createElement(){created++;return{getContext:()=>ctx};}};
-const city=createCity('Power models',false);city.startYear=2050;city.funds=1000000;for(const t of city.tiles){t.terrain='land';t.elevation=0;t.nature=false;}for(const type of MODELED_REWARDS)city.rewards.earned[type]=0;for(const [i,type] of [...MODELED_REWARDS].entries())assert.ok(build(city,type,[{x:4+i%4*10,y:6+Math.floor(i/4)*14}]).ok);recompute(city);const saved=serializeCity(city);
+const city=generateCity({name:'Reward models',size:96,water:0,mountains:0,trees:0});city.startYear=2050;city.funds=1000000;for(const t of city.tiles){t.terrain='land';t.elevation=0;t.nature=false;}for(const type of MODELED_REWARDS)city.rewards.earned[type]=0;for(const [i,type] of [...MODELED_REWARDS].entries())assert.ok(build(city,type,[{x:4+i%4*10,y:6+Math.floor(i/4)*14}]).ok);recompute(city);const saved=serializeCity(city);
 for(let repeat=0;repeat<2;repeat++)for(const type of MODELED_REWARDS)for(let rotation=0;rotation<4;rotation++)drawCityReward(ctx,type,rotation,100,100,84,.4);
 assert.equal(created,MODELED_REWARDS.size*4);assert.equal(put,MODELED_REWARDS.size*4);assert.equal(drawn,MODELED_REWARDS.size*8);assert.equal(serializeCity(city),saved);const loaded=validateSave(JSON.parse(saved));tick(city);tick(loaded);assert.deepEqual(city.stats,loaded.stats);
 // Execute the actual multi-tile branch for every footprint tile. Each plant must

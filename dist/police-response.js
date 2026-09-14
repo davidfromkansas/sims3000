@@ -1,5 +1,5 @@
-import {civicRoots,civicCenter} from './civic-footprints.js?v=geyser-park-1';
-import {civicServiceOperating,serviceRadius} from './civic.js?v=geyser-park-1';
+import {civicRoots,civicCenter} from './civic-footprints.js?v=stock-exchange-1';
+import {civicServiceOperating,serviceRadius} from './civic.js?v=stock-exchange-1';
 // Orders belong to their station root, so removing another station cannot move them.
 // An explicitly dispatched squad is unavailable for automatic precinct response.
 export function policeResponses(c){

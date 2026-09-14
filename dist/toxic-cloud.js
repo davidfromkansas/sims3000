@@ -1,8 +1,8 @@
-import {buildingLotMembers} from './building-lots.js?v=geyser-park-1';
-import {scenarioAllowsBackground} from './scenario-background-rules.js?v=geyser-park-1';
-import {recordHazard} from './emergency-order.js?v=geyser-park-1';
-import {beginEmergencySession} from './emergency-session.js?v=geyser-park-1';
-import {occupancy} from './utilities.js?v=geyser-park-1';
+import {buildingLotMembers} from './building-lots.js?v=stock-exchange-1';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=stock-exchange-1';
+import {recordHazard} from './emergency-order.js?v=stock-exchange-1';
+import {beginEmergencySession} from './emergency-session.js?v=stock-exchange-1';
+import {occupancy} from './utilities.js?v=stock-exchange-1';
 export const freshToxicCloud=()=>({randomToxicClouds:false,toxicCloud:null,toxicClouds:0,toxicEvacuations:0});
 export function startToxicCloud(c,x,y){const n=Math.sqrt(c.tiles.length),e=c.emergency;if(e.toxicCloud)return{ok:false,error:'This disaster type is already active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n)return{ok:false,error:'Choose a tile inside the city.'};const horizontal=Math.abs(x-n/2)>=Math.abs(y-n/2);beginEmergencySession(c);recordHazard(e,'toxicCloud');Object.assign(e,{toxicCloud:{x,y,age:0,dx:horizontal?(x<n/2?1:-1):0,dy:horizontal?0:(y<n/2?1:-1)}});e.toxicClouds++;return{ok:true};}
 export function stepToxicCloud(c){const e=c.emergency,s=e.toxicCloud;if(!s)return;const n=Math.sqrt(c.tiles.length),affected=new Set();for(let i=0;i<c.tiles.length;i++){const t=c.tiles[i];if(Math.hypot(t.x-s.x,t.y-s.y)>2||!t.level||!['residential','commercial','industrial','airport','seaport'].includes(t.type))continue;if(t.lotRoot!=null){for(const u of buildingLotMembers(c,t))affected.add(u.y*n+u.x);}else if(t.farmRoot!==null&&t.farmRoot!==undefined){for(let j=0;j<c.tiles.length;j++)if(c.tiles[j].farmRoot===t.farmRoot)affected.add(j);}else if(t.facilityRoot!==null&&t.facilityRoot!==undefined){for(let j=0;j<c.tiles.length;j++)if(c.tiles[j].facilityRoot===t.facilityRoot)affected.add(j);}else affected.add(i);}
