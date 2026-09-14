@@ -1,7 +1,8 @@
-import {WHEEL,themeParkRidePixels} from './theme-park-rides.js?v=port-garbage-1';
-import {stadiumMatchPixels} from './stadium-match.js?v=port-garbage-1';
-import {rasterizeMiniature} from './miniature-raster.js?v=port-garbage-1';
-export const MODELED_REWARDS=new Set(['themePark','countryClub','historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
+import {geyserPlumePixels} from './geyser-plume.js?v=geyser-park-1';
+import {WHEEL,themeParkRidePixels} from './theme-park-rides.js?v=geyser-park-1';
+import {stadiumMatchPixels} from './stadium-match.js?v=geyser-park-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=geyser-park-1';
+export const MODELED_REWARDS=new Set(['geyserPark','themePark','countryClub','historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){
  if(!MODELED_REWARDS.has(type))throw Error('Unknown reward model.');
@@ -11,7 +12,17 @@ export function rewardGeometry(type){
  const hall=(x,y,w,d,h,color)=>{box(x,y,.05,w,d,h,color);roof(x,y,h+.05,w+.02,d+.02,.075,'#647c83');for(const side of [-1,1])for(let i=0;i<Math.floor(w/.07);i++)for(const z of [.12,.23])if(z+.045<h+.05)box(x-w/2+.045+i*.07,y+side*(d/2+.003),z,.028,.007,.048,'#547e8a');};
  const tree=(x,y)=>{box(x,y,.06,.015,.015,.09,'#796449');for(const [z,w]of [[.14,.085],[.19,.065],[.23,.035]])box(x,y,z,w,w,.035,'#537a50');};
  box(0,0,0,.97,.97,.04,'#aaa993');box(0,0,.04,.93,.93,.015,'#81966d');
- if(type==='themePark'){
+ if(type==='geyserPark'){
+  // Original mineral terraces, turquoise pool, timber walks and visitor lodge.
+  const ring=(rx,ry,z,color)=>add(Array.from({length:40},(_,i)=>{const a=i*Math.PI/20,r=1+.05*Math.sin(a*5)+.04*Math.cos(a*7);return[-.08+rx*Math.cos(a)*r,-.08+ry*Math.sin(a)*r,z];}),color);
+  box(0,0,.055,.91,.91,.009,'#6e8956');
+  for(const [rx,ry,z,color] of [[.31,.28,.07,'#ac9970'],[.27,.24,.10,'#c9b58a'],[.23,.21,.13,'#dbcaa3'],[.20,.18,.15,'#e8d6aa'],[.15,.135,.17,'#b8cbbb'],[.12,.11,.175,'#68aeb8'],[.06,.055,.18,'#397f94']])ring(rx,ry,z,color);
+  box(0,.27,.072,.76,.075,.026,'#b69b70');box(.31,-.01,.072,.075,.62,.026,'#b69b70');
+  for(let x=-.34;x<.36;x+=.035)box(x,.27,.099,.006,.075,.003,'#826f53');
+  for(const x of [-.35,-.20,-.05,.10,.25,.35]){box(x,.315,.099,.009,.009,.05,'#8a7353');box(x,.225,.099,.009,.009,.05,'#8a7353');}box(0,.315,.145,.72,.008,.009,'#c5ac7f');box(0,.225,.145,.72,.008,.009,'#c5ac7f');
+  hall(.13,.385,.20,.10,.08,'#b6a47b');roof(.13,.385,.135,.23,.13,.04,'#54776c');
+  for(const [x,y] of [[-.4,-.37],[-.40,.04],[-.38,.38],[.38,-.37],[.39,.14],[.02,-.39]])tree(x,y);
+ }else if(type==='themePark'){
   // Original compact amusement park with observation wheel, coaster and carousel.
   const rod=(a,b,w,color)=>{const delta=b.map((n,i)=>n-a[i]),length=Math.hypot(...delta),v=delta.map(n=>n/length),ref=Math.abs(v[2])>.9?[1,0,0]:[0,0,1],cross=(u,v)=>[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],raw=cross(v,ref),m=Math.hypot(...raw),u=raw.map(n=>n/m*w/2),q=cross(v,u),corners=p=>[[1,1],[-1,1],[-1,-1],[1,-1]].map(([j,k])=>p.map((n,i)=>n+j*u[i]+k*q[i])),aa=corners(a),bb=corners(b);for(let i=0;i<4;i++)add([aa[i],aa[(i+1)%4],bb[(i+1)%4],bb[i]],shade(color,.72+i*.08));add(bb,color);add([...aa].reverse(),color);};
   box(0,0,.055,.90,.90,.012,'#c6bca0');box(0,0,.07,.075,.84,.005,'#decfb0');box(0,.03,.07,.84,.065,.005,'#decfb0');
@@ -124,5 +135,5 @@ export function rewardGeometry(type){
  return faces;
 }
 export const rasterizeReward=(type,rotation=0,includeDepth=false)=>rasterizeMiniature(rewardGeometry(type),rotation,includeDepth);
-const cache=new Map(),stadiumDepth=new Map(),themeDepth=new Map();
-export function drawCityReward(ctx,type,rotation,x,y,width,alpha=1,match=null){const key=type+':'+rotation;let canvas=cache.get(key);if(!canvas){canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;const c=canvas.getContext('2d'),raster=rasterizeReward(type,rotation,type==='stadium'||type==='themePark'),image=c.createImageData(512,512);if(type==='stadium')stadiumDepth.set(rotation,raster.depth);if(type==='themePark')themeDepth.set(rotation,raster.depth);image.data.set(raster.data);c.putImageData(image,0,0);cache.set(key,canvas);}ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(canvas,x-width/2,y-320*width/512,width,width);if(type==='stadium'&&match?.active){const scale=width/512;for(const p of stadiumMatchPixels(match.time,rotation,stadiumDepth.get(rotation))){ctx.fillStyle=p.color;ctx.fillRect(x+(p.x-256)*scale,y+(p.y-320)*scale,scale+.1,scale+.1);}}if(type==='themePark'){const scale=width/512;for(const p of themeParkRidePixels(match?.active?match.time:0,rotation,themeDepth.get(rotation))){ctx.fillStyle=p.color;ctx.fillRect(x+(p.x-256)*scale,y+(p.y-320)*scale,scale+.1,scale+.1);}}ctx.restore();}
+const cache=new Map(),stadiumDepth=new Map(),themeDepth=new Map(),geyserDepth=new Map();
+export function drawCityReward(ctx,type,rotation,x,y,width,alpha=1,match=null){const key=type+':'+rotation;let canvas=cache.get(key);if(!canvas){canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;const c=canvas.getContext('2d'),raster=rasterizeReward(type,rotation,type==='stadium'||type==='themePark'||type==='geyserPark'),image=c.createImageData(512,512);if(type==='stadium')stadiumDepth.set(rotation,raster.depth);if(type==='themePark')themeDepth.set(rotation,raster.depth);if(type==='geyserPark')geyserDepth.set(rotation,raster.depth);image.data.set(raster.data);c.putImageData(image,0,0);cache.set(key,canvas);}ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(canvas,x-width/2,y-320*width/512,width,width);if(type==='stadium'&&match?.active){const scale=width/512;for(const p of stadiumMatchPixels(match.time,rotation,stadiumDepth.get(rotation))){ctx.fillStyle=p.color;ctx.fillRect(x+(p.x-256)*scale,y+(p.y-320)*scale,scale+.1,scale+.1);}}if(type==='themePark'){const scale=width/512;for(const p of themeParkRidePixels(match?.active?match.time:0,rotation,themeDepth.get(rotation))){ctx.fillStyle=p.color;ctx.fillRect(x+(p.x-256)*scale,y+(p.y-320)*scale,scale+.1,scale+.1);}}if(type==='geyserPark'&&match?.active){const scale=width/512;for(const p of geyserPlumePixels(match.time,rotation,geyserDepth.get(rotation))){ctx.fillStyle=p.color;ctx.fillRect(x+(p.x-256)*scale,y+(p.y-320)*scale,scale+.1,scale+.1);}}ctx.restore();}

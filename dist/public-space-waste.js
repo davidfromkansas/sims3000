@@ -1,4 +1,4 @@
-import {RECREATION,recreationActive} from './recreation.js?v=port-garbage-1';
+import {RECREATION,recreationActive} from './recreation.js?v=geyser-park-1';
 // Prima table 14-2, pp.216–217: garbage weights / 100, per building/month.
 export const RECREATION_WASTE={largePark:.9,pond:.4,playground:.4,marina:3.6,zoo:6.4,sportsPark:3.2};
 export const TRANSIT_WASTE={busStop:.4,trainStation:2.4,subwayStation:.6,railTransfer:.6};

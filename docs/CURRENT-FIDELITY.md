@@ -1061,3 +1061,7 @@ Coal, oil, gas, nuclear, microwave and fusion plants now generate 8 garbage unit
 ## Airport and seaport waste
 
 Operating airport/seaport tiles now produce garbage (.48/.32 units per tile/month), derived from the guide's relative zone weights with reconstruction scaling. Full-facility road access handles collection, and Utilities/inspection expose each facility's production and backlog. Development, service loss, damage and reopening govern production; adjacent plots count separately. See [port garbage](PORT-GARBAGE-MILESTONE.md).
+
+## Geyser Park reward
+
+The twelfth reward adds a park-area/approval unlock, a unique 5×5 site, jobs, residential capacity, pollution reduction, land-value/aura benefits and garbage handling. An original mineral-pool miniature includes an operational water plume with pause/reduced-motion gating. Schema 142 preserves earlier cities. Park-area counting and effect normalization remain explicit calibration; see [Geyser Park](GEYSER-PARK-MILESTONE.md).
