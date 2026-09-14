@@ -4,13 +4,13 @@ import {serializeCity} from '../dist/save.js';
 import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,replaceBuildingStyle,zonedSprite} from '../dist/building-art.js';
 import {defaultBuildingDesign,applyBuildingDesign,designForTile,validateBuildingDesign,validateBuildingDesigns,exportBuildingDesign,importBuildingDesign,drawBuildingDesign,drawDesignedBuilding} from '../dist/building-designs.js';
 const c=createCity('Architecture collection',false),lots=[];
-assert.equal(Object.keys(REPLACEABLE_STYLES).length,18);
-for(const [source,style] of Object.entries(REPLACEABLE_STYLES).filter(([source])=>![76,77,78,79].includes(Number(source)))){
+assert.equal(Object.keys(REPLACEABLE_STYLES).length,19);
+for(const [source,style] of Object.entries(REPLACEABLE_STYLES).filter(([source])=>![76,77,78,79,80].includes(Number(source)))){
  const tile=c.tiles.find(t=>{if(lots.includes(t)||t.x<15||t.x>35||t.y<15||t.y>35)return false;return baseZonedSprite({...t,type:style.group,level:style.level,industry:Number(source)>=54?'clean':'dirty'},c.seed)===Number(source);});
  assert.ok(tile,source);Object.assign(tile,{type:style.group,level:style.level,density:style.level,industry:Number(source)>=54?'clean':'dirty',terrain:'land',elevation:0,nature:false});lots.push(tile);
 }
 recompute(c);const before=JSON.stringify(c.tiles),stats=structuredClone(c.stats),cash=c.funds;
-for(const [i,[source,style]] of Object.entries(REPLACEABLE_STYLES).filter(([source])=>![76,77,78,79].includes(Number(source))).entries()){
+for(const [i,[source,style]] of Object.entries(REPLACEABLE_STYLES).filter(([source])=>![76,77,78,79,80].includes(Number(source))).entries()){
  const design={...defaultBuildingDesign(Number(source)),name:style.name,roof:'flat'};applyBuildingDesign(c,source,design);assert.ok(canReplaceBuilding(lots[i]));assert.deepEqual(designForTile(c,lots[i]),design);
  assert.deepEqual(importBuildingDesign(exportBuildingDesign(design)),design);
  for(const state of [{level:0,abandonedLevel:style.level},{historicalLevel:style.level}])assert.deepEqual(designForTile(c,{...lots[i],...state}),design);

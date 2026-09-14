@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import {createCity,validateSave,tick,recompute} from '../dist/engine.js';
 import {serializeCity} from '../dist/save.js';
-import {copyBuildingSet,applyBuildingSet,buildingSetChanges} from '../dist/building-sets.js';
+import {copyBuildingSet,applyBuildingSet,buildingSetChanges,buildingSetCatalog} from '../dist/building-sets.js';
 import {defaultBuildingDesign} from '../dist/building-designs.js';
 import {baseZonedSprite} from '../dist/building-art.js';
 const source=createCity('Source'),target=createCity('Destination');
@@ -9,6 +9,14 @@ const tile=target.tiles.find(t=>t.type==='residential');tile.level=3;tile.densit
 source.buildingReplacements={[key]:key===2?74:2,'6@3x3':54};
 source.buildingDesigns={'5@2x2':{...defaultBuildingDesign('5@2x2'),name:'Copper offices',blocks:Array(100).fill(3)}};
 target.buildingDesigns={0:defaultBuildingDesign(0)};
+const catalog=buildingSetCatalog(target);assert.equal(catalog.length,14);assert.ok(catalog.find(r=>r.key==='0').custom);assert.ok(catalog.find(r=>r.key===String(key)).count>0);
+const future=buildingSetCatalog(source,{group:'commercial',footprint:{width:2,height:2}});assert.equal(future.length,4);assert.equal(future.find(r=>r.key==='5@2x2').current,'Copper offices');assert.equal(future.find(r=>r.key==='5@2x2').count,0);
+const allSizes=buildingSetCatalog(source,{footprint:{width:0,height:0}});
+assert.equal(allSizes.length,350);assert.equal(new Set(allSizes.map(r=>r.key)).size,350,'all source/footprint slots appear exactly once');
+assert.ok(allSizes.find(r=>r.key==='5@2x2').custom);assert.ok(allSizes.find(r=>r.key==='6@3x3').changed);
+const wide=buildingSetCatalog(source,{group:'commercial',footprint:{width:5,height:0}});assert.equal(wide.length,20);assert.ok(wide.every(r=>r.footprint.width===5));
+assert.deepEqual(wide.map(r=>r.key),allSizes.filter(r=>r.group==='commercial'&&r.footprint.width===5).map(r=>r.key));
+const tall=buildingSetCatalog(source,{group:'industrial',footprint:{width:0,height:5}});assert.equal(tall.length,30);assert.ok(tall.every(r=>r.footprint.height===5));
 const savedSource=serializeCity(source),before=JSON.parse(serializeCity(target)),control=validateSave(before),changes=buildingSetChanges(target,source);
 assert.ok(changes.some(c=>c.key===String(key)&&c.count>0));assert.ok(changes.some(c=>c.key==='0'&&c.to==='Detached homes'));assert.ok(changes.some(c=>c.key==='5@2x2'&&c.count===0));
 applyBuildingSet(target,source);assert.deepEqual(copyBuildingSet(target),copyBuildingSet(source));assert.equal(serializeCity(source),savedSource);
@@ -18,4 +26,17 @@ const restored=validateSave(JSON.parse(serializeCity(target)));assert.deepEqual(
 const valid=serializeCity(target);assert.throws(()=>applyBuildingSet(target,{buildingReplacements:{2:74},buildingDesigns:{5:{floors:999}}}));assert.equal(serializeCity(target),valid,'invalid model cannot partly apply replacement');
 applyBuildingSet(target,{});assert.deepEqual(copyBuildingSet(target),{buildingDesigns:{},buildingReplacements:{}});assert.equal(buildingSetChanges(target,{}).length,0);
 const legacy=JSON.parse(savedSource);legacy.version=57;delete legacy.buildingDesigns;delete legacy.buildingReplacements;applyBuildingSet(target,validateSave(legacy));assert.deepEqual(copyBuildingSet(target),{buildingDesigns:{},buildingReplacements:{}});
+
+// The city-wide manager commits the complete draft only at its final Apply action.
+const {showBuildingLibrary}=await import('../dist/building-library-ui.js');
+const nodes=new Map(),node=id=>{if(!nodes.has(id))nodes.set(id,{value:''});return nodes.get(id);};
+globalThis.document={querySelector:selector=>node(selector.slice(1)),getElementById:node,querySelectorAll:()=>[]};
+let writes=0,closed=0,draftCity,returnToManager;
+const ui={city:target,renderer:{},dialog(){},apply(){writes++;},close(){closed++;},backup(){},importSet(city,back){draftCity=city;returnToManager=back;}};
+const managerBefore=serializeCity(target);showBuildingLibrary(ui);node('libraryImport').onclick();applyBuildingSet(draftCity,source);returnToManager();assert.equal(serializeCity(target),managerBefore);assert.equal(node('libraryApply').disabled,false);node('libraryClose').onclick();assert.equal(serializeCity(target),managerBefore);assert.equal(writes,0);
+showBuildingLibrary(ui);node('libraryImport').onclick();applyBuildingSet(draftCity,source);returnToManager();node('libraryApply').onclick();assert.equal(writes,1);assert.deepEqual(copyBuildingSet(target),copyBuildingSet(source));
+const customized=serializeCity(target);showBuildingLibrary(ui);node('libraryClear').onclick();node('libraryConfirmClear').onclick();assert.equal(serializeCity(target),customized);node('libraryClose').onclick();assert.equal(serializeCity(target),customized,'canceling a whole-set reset preserves the city');
+showBuildingLibrary(ui);node('libraryClear').onclick();node('libraryConfirmClear').onclick();node('libraryApply').onclick();assert.equal(writes,2);assert.deepEqual(copyBuildingSet(target),{buildingReplacements:{},buildingDesigns:{}});
+delete globalThis.document;
+
 console.log('PASS: whole building-set import, footprint-aware change review, current/future styles, complete reset, deep copy, atomic rejection, legacy city import and exact appearance-only save/monthly continuation.');

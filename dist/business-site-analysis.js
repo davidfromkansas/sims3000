@@ -1,7 +1,7 @@
-import {build,validateSave} from './engine.js?v=science-center-2';
-import {serializeCity} from './save.js?v=science-center-2';
-import {BUSINESSES,businessOffer} from './business.js?v=science-center-2';
-import {neighborhoodSnapshot} from './neighborhood-report.js?v=science-center-2';
+import {build,validateSave} from './engine.js?v=architecture-collection-22';
+import {serializeCity} from './save.js?v=architecture-collection-22';
+import {BUSINESSES,businessOffer} from './business.js?v=architecture-collection-22';
+import {neighborhoodSnapshot} from './neighborhood-report.js?v=architecture-collection-22';
 export function analyzeBusinessSite(city,type,point){
  if(!Object.hasOwn(BUSINESSES,type))throw Error('Choose a business deal.');
  if(!Number.isInteger(point?.x)||!Number.isInteger(point?.y)||point.x<0||point.y<0||point.x>=city.size||point.y>=city.size)throw Error('Choose whole tile coordinates inside the city.');

@@ -1,7 +1,7 @@
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=science-center-2';
-import {PROGRAM_LIMITS} from './scenario-programs.js?v=science-center-2';
-import {startProgramInvocation,advanceProgramInvocation,programInvocationFinished,pendingProgramMessage,programActionSources} from './scenario-program-history.js?v=science-center-2';
-import {activeProgramInvocation} from './scenario-program-invocations.js?v=science-center-2';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=architecture-collection-22';
+import {PROGRAM_LIMITS} from './scenario-programs.js?v=architecture-collection-22';
+import {startProgramInvocation,advanceProgramInvocation,programInvocationFinished,pendingProgramMessage,programActionSources} from './scenario-program-history.js?v=architecture-collection-22';
+import {activeProgramInvocation} from './scenario-program-invocations.js?v=architecture-collection-22';
 export const hasProgramPopup=s=>s?.programInvocations?.some(run=>pendingProgramMessage(run)>=0)||false;
 export function runProgramEvent(c,index){
  const s=c.scenario,e=s.definition.events[index],programs=compileGameScenarioPrograms(s.definition.programs,{size:s.definition.mapSize,objectives:s.definition.objectives});let run=activeProgramInvocation(s);

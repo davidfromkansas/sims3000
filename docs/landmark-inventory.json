@@ -1,0 +1,721 @@
+{
+  "purpose": "Development coverage inventory, not a runtime catalog or proof of full visual fidelity. Names are normalized where unambiguous; original dimensions remain unverified.",
+  "sources": {
+    "gamefaqs": "https://gamefaqs.gamespot.com/pc/190488-simcity-3000/faqs/28363",
+    "prima": "https://www.scribd.com/doc/303581554/SimCity-3000-Unlimited-Prima-Guide",
+    "maxis-preservation": "https://community.simtropolis.com/files/file/31731-chrysler-building-new-york-new-york-usa/"
+  },
+  "entries": [
+    {
+      "name": "700 Louisiana",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Adler Planetarium",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Alcatraz Complex East",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Alcatraz Complex West",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "American Museum of Natural History",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Arc de Triomphe",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": "arcDeTriomphe",
+      "originalFootprint": null
+    },
+    {
+      "name": "Art Institute of Chicago",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Bank of America",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Bank of China Tower",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Big Ben",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": "bigBen",
+      "originalFootprint": null
+    },
+    {
+      "name": "Brandenburg Gate",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "California Plaza",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Capitol Records Building",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Chartres Cathedral",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "City Hall or Independence Hall",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "CN Tower",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null,
+      "review": "Not found in the extracted guide directory; secondary catalog evidence only."
+    },
+    {
+      "name": "Coit Tower",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Columbia Seafirst Center",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Conciergerie",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Congresshalle",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Dome of the Rock",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Eiffel Tower",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": "eiffelTower",
+      "originalFootprint": null
+    },
+    {
+      "name": "Empire State Building",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Fernsehturm 2",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null,
+      "review": "Verify spelling and architectural identity before modeling."
+    },
+    {
+      "name": "Gateway Arch",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": "gatewayArch",
+      "originalFootprint": null
+    },
+    {
+      "name": "Gedächtniskirche",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Grand Central Station",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Great Pyramids",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": "greatPyramid",
+      "originalFootprint": null,
+      "review": "Current runtime represents one pyramid; original entry composition needs visual verification."
+    },
+    {
+      "name": "Hagia Sophia",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Holsten Tor",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Jefferson Memorial",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": "jeffersonMemorial",
+      "originalFootprint": null
+    },
+    {
+      "name": "La Tour Montparnasse",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Lincoln Center",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Lincoln Memorial",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": "lincolnMemorial",
+      "originalFootprint": null
+    },
+    {
+      "name": "Maison de Radio France",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Melbourne Cricket Ground",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Notre Dame",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Old North Church",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Old State House",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Palacio Real",
+      "edition": "standard",
+      "directorySource": "gamefaqs",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Parthenon",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Peachtree Tower",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Petronas Twin Tower A",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Petronas Twin Tower B",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Pharos of Alexandria",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Place de la Concorde",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Quincy Market/Faneuil",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Renaissance Center",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Rockefeller Center",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Rotes Rathaus",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "San Francisco City Hall",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Schloss Neuschwanstein",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Schloss Schoenbrunn",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Shedd Aquarium",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Smith Tower",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Smithsonian Castle",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Sphinx",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "St. Paul's Cathedral",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "St. Basil's Cathedral",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Statue of Liberty",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": "statueLiberty",
+      "originalFootprint": null
+    },
+    {
+      "name": "Sydney Opera House",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Taj Mahal",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Temple Expiatiori de la Sagrada Familia",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null,
+      "review": "Verify spelling and architectural identity before modeling."
+    },
+    {
+      "name": "The Alamo",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Tokyo Tower",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Tower of London",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Trafalgar Square",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "United Nations",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "United States Capitol",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Washington Monument",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": "washingtonMonument",
+      "originalFootprint": null
+    },
+    {
+      "name": "Westminster Abbey",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "White House",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "World Trade Center A",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "World Trade Center B",
+      "edition": "standard",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Anglican Cathedral",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null,
+      "review": "Distinct directory entries; verify architectural identities before modeling."
+    },
+    {
+      "name": "Atlantis Condominium",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Broadcasting Building",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "City Hall (Seoul)",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "CKS Memorial Hall",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Daibutu",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null,
+      "review": "Verify spelling and architectural identity before modeling."
+    },
+    {
+      "name": "Dr. Sun Memorial Hall",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null,
+      "review": "Verify spelling and architectural identity before modeling."
+    },
+    {
+      "name": "Grand Hotel",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Helsinki Cathedral",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": "helsinkiCathedral",
+      "originalFootprint": null
+    },
+    {
+      "name": "Himeji Castle",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Kokkai",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Korea Life Building",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Kunjungjon",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Liver Building",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Liverpool Cathedral",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null,
+      "review": "Distinct directory entries; verify architectural identities before modeling."
+    },
+    {
+      "name": "Nam Dae Moon",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Nam San Tower",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "National Museum (Taipei)",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null,
+      "review": "Verify spelling and architectural identity before modeling."
+    },
+    {
+      "name": "One Canada",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null,
+      "review": "Verify spelling and architectural identity before modeling."
+    },
+    {
+      "name": "Palace of Fine Arts",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Shitteno-ji",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null,
+      "review": "Verify spelling and architectural identity before modeling."
+    },
+    {
+      "name": "St. Stephens Cathedral",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Stockholm Royal Palace",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Taiwan Presidential Building",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "The Duomo",
+      "edition": "unlimited-addition",
+      "directorySource": "prima",
+      "runtimeType": null,
+      "originalFootprint": null
+    },
+    {
+      "name": "Chrysler Building",
+      "edition": "download-extension",
+      "directorySource": "maxis-preservation",
+      "runtimeType": "chryslerBuilding",
+      "originalFootprint": null
+    }
+  ]
+}

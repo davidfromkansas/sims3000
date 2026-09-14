@@ -1,7 +1,7 @@
-import {compileScenarioPrograms} from './scenario-programs.js?v=science-center-2';
-import {validateEventDefinitions,validateEventCondition} from './scenario-events.js?v=science-center-2';
-import {validateGoalStatusReferences} from './scenario-goal-status.js?v=science-center-2';
-import {MAP_SIZES} from './city-grid.js?v=science-center-2';
+import {compileScenarioPrograms} from './scenario-programs.js?v=architecture-collection-22';
+import {validateEventDefinitions,validateEventCondition} from './scenario-events.js?v=architecture-collection-22';
+import {validateGoalStatusReferences} from './scenario-goal-status.js?v=architecture-collection-22';
+import {MAP_SIZES} from './city-grid.js?v=architecture-collection-22';
 // Program leaves have no clocks or private conditions: schedule the entry call,
 // and put conditional behavior in an explicit If / Else block.
 export function compileGameScenarioPrograms(value,{size=48,objectives=[]}={}){
