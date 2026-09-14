@@ -1,4 +1,4 @@
-import {MUSIC_TRACKS,musicScore} from './music-score.js?v=police-squad-recall-1';
+import {MUSIC_TRACKS,musicScore} from './music-score.js?v=restore-peace-1';
 export {MUSIC_TRACKS};
 const KEY='sims3000-music',ids=Object.keys(MUSIC_TRACKS);
 export function createGameMusic(){

@@ -1,9 +1,10 @@
-import {prepareGrowthCapCity} from './growth-cap-city.js?v=police-squad-recall-1';
-import {takeLoan} from './economy.js?v=police-squad-recall-1';
-import {recordWaterService} from './water-service.js?v=police-squad-recall-1';
-import {createCity,recompute,build,planBuild,selection,idx} from './engine.js?v=police-squad-recall-1';
-import {SCENARIOS,freshScenario} from './scenarios.js?v=police-squad-recall-1';
-export function createScenario(id){const definition=SCENARIOS[id];if(!definition)throw Error('Unknown scenario.');const c=createCity(definition.title,!['growth','roadless','roomToGrow'].includes(id),id==='roomToGrow'?96:48);c.scenario=freshScenario(id);c.emergency.randomFires=false;if(id==='roomToGrow')prepareGrowthCapCity(c);if(id==='pollution'){c.business.toxicWaste={offered:0,accepted:true,declinedUntil:0};const site=[...c.tiles].sort((a,b)=>Math.hypot(a.x-25,a.y-20)-Math.hypot(b.x-25,b.y-20)).find(t=>planBuild(c,'toxicWaste',[t]).ok);if(!site||!build(c,'toxicWaste',[site]).ok)throw Error('Could not prepare the pollution challenge.');c.funds=10000;}if(id==='growingUpward'){if(!build(c,'landfill',selection('landfill',{x:32,y:28},{x:34,y:29})).ok)throw Error('Could not prepare densification challenge.');c.funds=10000;}if(id==='learningCity'){if(!build(c,'landfill',selection('landfill',{x:32,y:28},{x:34,y:29})).ok)throw Error('Could not prepare learning challenge.');c.funds=8000;}if(id==='firstRepayment'){const landfill=build(c,'landfill',selection('landfill',{x:32,y:28},{x:34,y:29}));if(!landfill.ok||!takeLoan(c,25000).ok)throw Error('Could not prepare repayment challenge.');c.funds=2500;}if(id==='waterRecovery')prepareWaterRecovery(c);if(id==='roadless')prepareRoadless(c);if(id==='harbor')prepareHarbor(c);if(id==='streets'){c.finance.roadCondition=15;c.finance.roadFunding=25;c.funds=20000;}recompute(c);return c;}
+import {startRiot,dispatchPolice} from './riots.js?v=restore-peace-1';
+import {prepareGrowthCapCity} from './growth-cap-city.js?v=restore-peace-1';
+import {takeLoan} from './economy.js?v=restore-peace-1';
+import {recordWaterService} from './water-service.js?v=restore-peace-1';
+import {createCity,recompute,build,planBuild,selection,idx} from './engine.js?v=restore-peace-1';
+import {SCENARIOS,freshScenario} from './scenarios.js?v=restore-peace-1';
+export function createScenario(id){const definition=SCENARIOS[id];if(!definition)throw Error('Unknown scenario.');const c=createCity(definition.title,!['growth','roadless','roomToGrow'].includes(id),id==='roomToGrow'?96:48);c.scenario=freshScenario(id);c.emergency.randomFires=false;if(id==='roomToGrow')prepareGrowthCapCity(c);if(id==='restorePeace')prepareRestorePeace(c);if(id==='pollution'){c.business.toxicWaste={offered:0,accepted:true,declinedUntil:0};const site=[...c.tiles].sort((a,b)=>Math.hypot(a.x-25,a.y-20)-Math.hypot(b.x-25,b.y-20)).find(t=>planBuild(c,'toxicWaste',[t]).ok);if(!site||!build(c,'toxicWaste',[site]).ok)throw Error('Could not prepare the pollution challenge.');c.funds=10000;}if(id==='growingUpward'){if(!build(c,'landfill',selection('landfill',{x:32,y:28},{x:34,y:29})).ok)throw Error('Could not prepare densification challenge.');c.funds=10000;}if(id==='learningCity'){if(!build(c,'landfill',selection('landfill',{x:32,y:28},{x:34,y:29})).ok)throw Error('Could not prepare learning challenge.');c.funds=8000;}if(id==='firstRepayment'){const landfill=build(c,'landfill',selection('landfill',{x:32,y:28},{x:34,y:29}));if(!landfill.ok||!takeLoan(c,25000).ok)throw Error('Could not prepare repayment challenge.');c.funds=2500;}if(id==='waterRecovery')prepareWaterRecovery(c);if(id==='roadless')prepareRoadless(c);if(id==='harbor')prepareHarbor(c);if(id==='streets'){c.finance.roadCondition=15;c.finance.roadFunding=25;c.funds=20000;}recompute(c);return c;}
 
 function prepareHarbor(c){
  for(const t of c.tiles)if(t.x<10){t.terrain='water';t.waterKind='salt';t.nature=false;t.elevation=0;}
@@ -36,4 +37,10 @@ function prepareWaterRecovery(c){
  place('pipe',{x:24,y:10},{x:24,y:24});place('pipe',{x:14,y:24},{x:31,y:24});
  place('waterTower',{x:18,y:23});place('landfill',{x:32,y:28},{x:34,y:29});
  c.tiles[idx(18,23)].age=600;recompute(c);recordWaterService(c);place('removePipe',{x:24,y:16});c.funds=10000;recompute(c);
+}
+
+function prepareRestorePeace(c){
+ for(const [tool,a,b] of [['police',{x:23,y:25}],['fire',{x:27,y:21}],['jail',{x:27,y:14}],['landfill',{x:32,y:28},{x:34,y:29}]]){const result=build(c,tool,selection(tool,a,b||a));if(!result.ok)throw Error('Could not prepare peace challenge: '+result.error);}
+ c.civic.funding.police=25;c.funds=2500;recompute(c);
+ if(!startRiot(c,20,20).ok||!dispatchPolice(c,40,40).ok||!dispatchPolice(c,41,40).ok)throw Error('Could not prepare riot response.');
 }

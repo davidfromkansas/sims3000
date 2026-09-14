@@ -1,10 +1,10 @@
-import {outstandingLoanPayments} from './loan-debt.js?v=police-squad-recall-1';
-import {REWARDS,rewardSize,rewardRoots,rewardActive,CITY_HALL_EFFECTS} from './rewards.js?v=police-squad-recall-1';
-import {industrialJobs,industryPollution} from './industry.js?v=police-squad-recall-1';
-import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=police-squad-recall-1';
-import {POWER_PLANTS} from './power.js?v=police-squad-recall-1';
-import {civicSpending,ordinanceRevenue} from './civic.js?v=police-squad-recall-1';
-import {occupancy} from './utilities.js?v=police-squad-recall-1';
+import {outstandingLoanPayments} from './loan-debt.js?v=restore-peace-1';
+import {REWARDS,rewardSize,rewardRoots,rewardActive,CITY_HALL_EFFECTS} from './rewards.js?v=restore-peace-1';
+import {industrialJobs,industryPollution} from './industry.js?v=restore-peace-1';
+import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=restore-peace-1';
+import {POWER_PLANTS} from './power.js?v=restore-peace-1';
+import {civicSpending,ordinanceRevenue} from './civic.js?v=restore-peace-1';
+import {occupancy} from './utilities.js?v=restore-peace-1';
 // Loan terms from manual p. 91. Tax formula from p. 88; calibration constants are original approximations.
 export const SECTORS=['residential','commercial','industrial'];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));

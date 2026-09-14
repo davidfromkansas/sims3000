@@ -1,0 +1,21 @@
+import {readFileSync} from 'node:fs';
+import {SCENARIOS} from '../dist/scenarios.js';
+import assert from 'node:assert/strict';
+import {createScenario} from '../dist/scenario-setup.js';
+import {scenarioGoals} from '../dist/scenarios.js';
+import {tick,recompute,validateSave} from '../dist/engine.js';
+import {stepFire} from '../dist/emergency.js';
+import {recallPolice} from '../dist/police-orders.js';
+import {serializeCity} from '../dist/save.js';
+const c=createScenario('restorePeace');assert.equal(c.stats.population,224);assert.equal(c.funds,2500);assert.ok(c.emergency.active&&c.emergency.riot);assert.equal(c.emergency.policeUnits.length,2);assert.equal(c.civic.funding.police,25);assert.ok(c.stats.averageCrime>15);assert.equal(serializeCity(c),serializeCity(createScenario('restorePeace')));
+c.civic.funding.police=100;recompute(c);for(const p of [...c.emergency.policeUnits])assert.ok(recallPolice(c,p.owner).ok);
+for(let i=0;i<3;i++){stepFire(c);recompute(c);}const loaded=validateSave(JSON.parse(serializeCity(c)));
+let steps=3;while(c.emergency.active&&steps<100){stepFire(c);recompute(c);stepFire(loaded);recompute(loaded);steps++;}assert.equal(steps,8);assert.equal(c.month,0,'response steps leave the deadline clock unchanged');assert.equal(c.emergency.active,false);assert.equal(serializeCity(c),serializeCity(loaded));
+while(c.scenario.status==='playing'&&c.month<12){tick(c);tick(loaded);}assert.equal(c.scenario.status,'won');assert.equal(c.scenario.endedMonth,3);assert.equal(c.stats.population,280);assert.equal(c.funds,2452);assert.ok(scenarioGoals(c).every(g=>g.done));assert.equal(serializeCity(c),serializeCity(loaded));assert.equal(validateSave(JSON.parse(serializeCity(c))).scenario.status,'won');
+const neglected=createScenario('restorePeace');for(let i=0;i<200&&neglected.emergency.active;i++){stepFire(neglected);recompute(neglected);}assert.equal(neglected.emergency.active,false);for(let i=0;i<12;i++)tick(neglected);assert.equal(neglected.scenario.status,'lost');assert.equal(scenarioGoals(neglected)[4].done,false,'persistent underfunding fails low-crime recovery');
+const interrupted=createScenario('restorePeace');interrupted.civic.funding.police=100;recompute(interrupted);for(const p of [...interrupted.emergency.policeUnits])recallPolice(interrupted,p.owner);for(let i=0;i<100&&interrupted.emergency.active;i++){stepFire(interrupted);recompute(interrupted);}tick(interrupted);assert.equal(interrupted.scenario.streak,1);interrupted.civic.funding.police=25;recompute(interrupted);tick(interrupted);assert.equal(interrupted.scenario.streak,0);
+const restart=createScenario('restorePeace');assert.equal(restart.month,0);assert.equal(restart.funds,2500);assert.equal(restart.emergency.policeUnits.length,2);
+// Exercise the actual start callback: emergency scenarios open held for review.
+const app=readFileSync(new URL('../dist/app.js',import.meta.url),'utf8'),body=app.match(/start:id=>\{([\s\S]*?)\}\}\);\}/)[1],ui={city:null,speed:1,elapsed:1,emergencyElapsed:1,emergencyHeld:false,undo:[],recovered:true,createScenario,SCENARIOS,AUTO:'auto',renderer:{center(){}},setLayer(){},setTool(value){ui.tool=value;},persist(){},update(){},notify(value){ui.message=value;}};
+const start=new Function('ui','with(ui){return id=>{'+body+'}}')(ui);start('restorePeace');assert.equal(ui.emergencyHeld,true);assert.equal(ui.speed,0);assert.equal(ui.tool,'dispatchPolice');assert.match(ui.message,/emergency held/);start('growingUpward');assert.equal(ui.emergencyHeld,false);assert.equal(ui.tool,'road');assert.match(ui.message,/press Play/);
+console.log('PASS: prepared riot challenge, held calendar, eight-step containment, three-month victory, saved emergency continuation, neglected-funding loss, interrupted recovery streak and fresh restart.');

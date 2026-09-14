@@ -985,3 +985,7 @@ Available operating police stations automatically respond to riots in their cove
 ## Police squad recall
 
 Emergency rosters now support individual recall; manual orders persist station roots instead of shifting with station-list positions. Schema 135 migrates older ordinal orders. Exact-site replacement before order pruning still shares the root identity. See POLICE-SQUAD-RECALL-MILESTONE.md.
+
+## Restore the peace
+
+A prepared unrest/recovery challenge connects police recall, automatic response, funding, containment and sustained neighborhood recovery. The verified path wins at month three; neglected funding loses. Emergency-start scenarios open held for review. See RESTORE-PEACE-MILESTONE.md. Schema 135 is unchanged.
