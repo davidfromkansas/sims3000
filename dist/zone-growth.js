@@ -1,9 +1,9 @@
-import {economicGrowthFits} from './economic-cap.js?v=county-courthouse-1';
-import {residentialGrowthFits} from './residential-cap.js?v=county-courthouse-1';
-import {abandonmentExplanation} from './abandonment-history.js?v=county-courthouse-1';
-import {landDensityLimit} from './economy.js?v=county-courthouse-1';
-import {needsEstablishedWater} from './water-service.js?v=county-courthouse-1';
-import {buildingLotMembers,isBuildingLotRoot} from './building-lots.js?v=county-courthouse-1';
+import {economicGrowthFits} from './economic-cap.js?v=planned-zone-demand-1';
+import {residentialGrowthFits} from './residential-cap.js?v=planned-zone-demand-1';
+import {abandonmentExplanation} from './abandonment-history.js?v=planned-zone-demand-1';
+import {landDensityLimit} from './economy.js?v=planned-zone-demand-1';
+import {needsEstablishedWater} from './water-service.js?v=planned-zone-demand-1';
+import {buildingLotMembers,isBuildingLotRoot} from './building-lots.js?v=planned-zone-demand-1';
 export function zoneGrowthConditions(c,t,members=buildingLotMembers(c,t)){
  const blocked=new Set();let demand=Infinity,limit=3;
  for(const u of members){if(u.radiation)blocked.add('radiation');if(u.rubble)blocked.add('rubble');if(u.fire)blocked.add('fire');if(!u.powered)blocked.add('power');if(!(u.access||u.industry==='farm'&&c.tiles[u.farmRoot]?.access))blocked.add('transport');if(u.waste>=20)blocked.add('garbage');if(needsEstablishedWater(u)&&!u.watered)blocked.add('water');if(u.level>landDensityLimit(u))blocked.add('landValue');
