@@ -16,13 +16,13 @@ for(const type of ['eiffelTower','greatPyramid']){
 }
 // Exercise the renderer's actual structure branch, including the pyramid's 4x4 footprint.
 const city=createCity('Directional landmarks',false);for(const t of city.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});
-for(const [i,type] of Object.keys(LANDMARKS).entries())assert.ok(build(city,type,[{x:3+i%4*10,y:5+Math.floor(i/4)*15}]).ok);
+for(const [i,type] of Object.keys(LANDMARKS).entries())assert.ok(build(city,type,[{x:3+i%4*10,y:5+Math.floor(i/4)*10}]).ok);
 const source=readFileSync(new URL('../dist/renderer.js',import.meta.url),'utf8'),body=source.split('else if(STRUCTURES[t.type]){')[1].split('}else if(WATER_STRUCTURES[t.type])')[0],calls=[];
 const actual=new Function('structureSize','STRUCTURES','SERVICES','MODELED_POWER','MODELED_REWARDS','MODELED_RECREATION','drawCityLandmark','return function(city,t,c,p,u,fade){'+body+'}')(structureSize,STRUCTURES,{},new Set(),new Set(),new Set(),(...args)=>calls.push(args));
 const scene=Object.assign(Object.create(CityRenderer.prototype),{getCity:()=>city,rotation:0,zoom:1,w:1000,h:700,pan:{x:0,y:0},layer:'city',sprite(){throw Error('Landmark used static sprite fallback');}}),ctx={};
 for(let rotation=0;rotation<4;rotation++){
  scene.rotation=rotation;calls.length=0;for(const tile of city.tiles)if(LANDMARKS[tile.type])actual.call(scene,city,tile,ctx,scene.project(tile.x,tile.y),scene.unit,.6);
- assert.equal(calls.length,11);
+ assert.equal(calls.length,Object.keys(LANDMARKS).length);
  for(const call of calls){const type=call[1],root=city.tiles.find((t,i)=>t.type===type&&t.root===i),size=LANDMARKS[type].size,center=scene.project(root.x+(size-1)/2,root.y+(size-1)/2);assert.deepEqual(call,[ctx,type,rotation,center.x,center.y+scene.unit/2,scene.unit*size*2.1,.6]);}
 }
 console.log('PASS: complete current landmark model coverage, Eiffel/Pyramid finite unclipped depth rasters, actual drawing and every footprint rendered once at the correct center in all four map views.');

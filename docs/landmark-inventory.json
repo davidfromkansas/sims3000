@@ -115,7 +115,7 @@
       "name": "CN Tower",
       "edition": "standard",
       "directorySource": "gamefaqs",
-      "runtimeType": null,
+      "runtimeType": "cnTower",
       "originalFootprint": null,
       "review": "Not found in the extracted guide directory; secondary catalog evidence only."
     },
@@ -165,7 +165,7 @@
       "name": "Empire State Building",
       "edition": "standard",
       "directorySource": "gamefaqs",
-      "runtimeType": null,
+      "runtimeType": "empireStateBuilding",
       "originalFootprint": null
     },
     {

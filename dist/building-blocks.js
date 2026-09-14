@@ -1,9 +1,9 @@
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-22';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=architecture-collection-22';
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-22';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-22';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-36';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=architecture-collection-36';
+import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-36';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-36';
 export const BLOCK_GRID_SIZE=10;
-export function validateBuildingBlocks(value){if(!Array.isArray(value)||value.length!==100||!Array.from(value).every(h=>Number.isInteger(h)&&h>=0&&h<=24)||!value.some(h=>h>0))throw Error('A block layout needs 100 heights from 0–24 and at least one occupied square.');return [...value];}
+export function validateBuildingBlocks(value,allowEmpty=false){if(!Array.isArray(value)||value.length!==100||!Array.from(value).every(h=>Number.isInteger(h)&&h>=0&&h<=24)||(!allowEmpty&&!value.some(h=>h>0)))throw Error('A block layout needs 100 heights from 0–24 and at least one occupied square.');return [...value];}
 export function towerToBlocks(d){return Array.from({length:100},(_,i)=>{const x=i%10+.5-5,y=Math.floor(i/10)+.5-5;if(Math.abs(x)>d.width/2||Math.abs(y)>d.depth/2)return 0;return d.roof==='step'&&(Math.abs(x)>d.width*.35||Math.abs(y)>d.depth*.35)?Math.ceil(d.floors*.65):d.floors;});}
 export function paintBuildingBlock(blocks,x,y,height){if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=10||y>=10||!Number.isInteger(height)||height<0||height>24)throw Error('Choose a grid square and a height from 0–24.');const next=[...blocks];next[y*10+x]=height;return next;}
 export function buildingBlockFaces(blocks,rotation=0,footprint={width:1,height:1}){const rot=((rotation%4)+4)%4,turn=(x,y)=>rot===0?[x,y]:rot===1?[-y,x]:rot===2?[-x,-y]:[y,-x],visible=[[1,2],[0,1],[0,3],[2,3]][rot],directions=[[0,-1],[1,0],[0,1],[-1,0]],faces=[];

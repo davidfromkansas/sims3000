@@ -1,3 +1,4 @@
+import {buildingPlaneGuide} from '../dist/building-plane-guide.js';
 import assert from 'node:assert/strict';
 import {mountBuildingVoxelEditor} from '../dist/building-voxel-editor.js';
 import {defaultBuildingDesign} from '../dist/building-designs.js';
@@ -33,4 +34,17 @@ for(const orientation of ['horizontal','xz','yz']){
  draft={...defaultBuildingDesign(),voxels:Array(100).fill(0xffffff),blockGeometry:'3'.repeat(2400)};editor.reset();$('voxelPlane').value=orientation;$('voxelPlane').onchange();$('voxelLevel').value='2';$('voxelLevel').oninput();$('voxelAction').value='sample';$('voxelGeometry').value='0';const original=JSON.stringify(draft),priorWrites=writes;down(11);up();assert.equal($('voxelGeometry').value,'3');assert.equal(JSON.stringify(draft),original);assert.equal(writes,priorWrites);assert.equal($('voxelUndo').disabled,true);assert.match($('voxelStatus').textContent,/geometry selected/);
  draft={...draft,voxels:Array(100).fill(0),blockGeometry:undefined};editor.refresh();down(11);up();assert.equal($('voxelGeometry').value,'3','empty cells do not reset selected geometry');assert.match($('voxelStatus').textContent,/No block/);
 }
+// Pointer and keyboard targets appear before a stroke and never edit the draft.
+for(const orientation of ['horizontal','xz','yz']){
+ draft={...defaultBuildingDesign(),voxels:Array(100).fill(1)};editor.reset();$('voxelPlane').value=orientation;$('voxelPlane').onchange();$('voxelLevel').value='2';$('voxelLevel').oninput();$('voxelAction').value='place';$('voxelShape').value='plane';
+ const before=JSON.stringify(draft),priorWrites=writes;
+ move(12);assert.equal(editor.selection().reference,12);assert.equal(editor.selection().pending,null);assert.equal(buildingPlaneGuide(editor.selection()).length,2);assert.equal(cells.filter(c=>c.style.boxShadow).length,1);assert.ok(cells[12].style.boxShadow);
+ const priorViews=views;move(12);assert.equal(views,priorViews,'same hover target does not redraw');move(13);assert.equal(editor.selection().reference,13);assert.equal(cells[12].style.boxShadow,'');
+ grid.onpointerleave();assert.equal(editor.selection().reference,undefined);assert.equal(buildingPlaneGuide(editor.selection()).length,1);
+ grid.onfocusin({target:cells[21]});assert.equal(editor.selection().reference,21);grid.onkeydown({key:'ArrowRight',target:cells[21],preventDefault(){}});assert.equal(editor.selection().reference,22);grid.onfocusout({relatedTarget:null});assert.equal(editor.selection().reference,undefined);
+ move(14);grid.onkeydown({key:'Escape',preventDefault(){}});assert.equal(editor.selection().reference,undefined);
+ down(11);move(23);grid.onpointerleave();assert.equal(buildingPlaneGuide(editor.selection()).length,7,'leaving during drag retains the pending plane');up(true);assert.equal(JSON.stringify(draft),before);assert.equal(writes,priorWrites);assert.equal($('voxelUndo').disabled,true);
+ move(15);$('voxelNext').onclick();assert.equal(editor.selection().reference,undefined,'moving the slice discards the old target');
+}
+draft={...defaultBuildingDesign(),voxels:Array(100).fill(1)};editor.reset();const props=[{kind:'tree',x:1,y:2,z:.26,rotation:3}];editor.applyProps(props);assert.deepEqual(draft.props,props);$('voxelUndo').onclick();assert.equal(draft.props,undefined);$('voxelRedo').onclick();assert.deepEqual(draft.props,props);props[0].x=9;assert.equal(draft.props[0].x,1,'prop edits copy their input');
 console.log('PASS: layered editor previews, independent-plane placement/erasure, undo/redo, immediate layer refresh, pointer and Shift cancellation, invalid input and redo invalidation.');

@@ -1,7 +1,7 @@
-import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=architecture-collection-22';
-import {validateBuildingDesigns} from './building-designs.js?v=architecture-collection-22';
-import {buildingSlot,parseBuildingSlot} from './building-footprints.js?v=architecture-collection-22';
-import {isBuildingLotRoot} from './building-lots.js?v=architecture-collection-22';
+import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=architecture-collection-36';
+import {validateBuildingDesigns} from './building-designs.js?v=architecture-collection-36';
+import {buildingSlot,parseBuildingSlot} from './building-footprints.js?v=architecture-collection-36';
+import {isBuildingLotRoot} from './building-lots.js?v=architecture-collection-36';
 
 // Read an already validated city. Both maps are copied and validated before
 // either is installed, so a failed import cannot partly change the skyline.

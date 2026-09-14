@@ -1,4 +1,4 @@
-import {projectMiniature} from './miniature-raster.js?v=architecture-collection-22';
+import {projectMiniature} from './miniature-raster.js?v=architecture-collection-36';
 export const GEYSER_ORIGIN=[-.08,-.08,.18];
 // World-state indication on the existing scenery clock; no new timer or UI transition.
 export function geyserPlumeState(renderer,root){const c=renderer.getCity();let access=false,active=root.type==='geyserPark'&&renderer.layer==='city'&&c.finance.roadCondition>20;for(let y=root.y;y<root.y+5;y++)for(let x=root.x;x<root.x+5;x++){const t=c.tiles[y*c.size+x];if(!t||t.root!==root.root||!t.powered||t.fire||t.rubble||t.radiation)active=false;access ||= !!t?.roadIds?.length;}return{active:active&&access,time:renderer.preferences?.sceneryAnimations===false||renderer.reducedMotion.matches?0:renderer.vehicleTime};}

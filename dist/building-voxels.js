@@ -1,15 +1,15 @@
-import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=architecture-collection-22';
-import {blockCornerHeights} from './building-block-geometry.js?v=architecture-collection-22';
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-22';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=architecture-collection-22';
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-22';
-import {buildingShapeCells} from './building-shapes.js?v=architecture-collection-22';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-22';
+import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=architecture-collection-36';
+import {blockCornerHeights} from './building-block-geometry.js?v=architecture-collection-36';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-36';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=architecture-collection-36';
+import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-36';
+import {buildingShapeCells} from './building-shapes.js?v=architecture-collection-36';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-36';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;
-export function validateBuildingVoxels(value){
- if(!Array.isArray(value)||value.length!==100||!Array.from(value).every(v=>Number.isInteger(v)&&v>=0&&v<=VOXEL_MAX_MASK)||!value.some(Boolean))throw Error('A layered building needs 100 occupancy masks and at least one block.');
+export function validateBuildingVoxels(value,allowEmpty=false){
+ if(!Array.isArray(value)||value.length!==100||!Array.from(value).every(v=>Number.isInteger(v)&&v>=0&&v<=VOXEL_MAX_MASK)||(!allowEmpty&&!value.some(Boolean)))throw Error('A layered building needs 100 occupancy masks and at least one block.');
  return [...value];
 }
 export function blocksToVoxels(blocks){

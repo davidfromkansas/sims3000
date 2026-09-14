@@ -1,11 +1,11 @@
-import {dialogTextTarget} from './scenario-dialog-text.js?v=architecture-collection-22';
-import {tornadoSettingsLabel} from './tornado-settings.js?v=architecture-collection-22';
-import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=architecture-collection-22';
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=architecture-collection-22';
-import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=architecture-collection-22';
-import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=architecture-collection-22';
-import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=architecture-collection-22';
-import {escapeAnnouncement} from './scenario-announcements.js?v=architecture-collection-22';
+import {dialogTextTarget} from './scenario-dialog-text.js?v=architecture-collection-36';
+import {tornadoSettingsLabel} from './tornado-settings.js?v=architecture-collection-36';
+import {neighborDealLabel,neighborDealResultText} from './scenario-neighbor-deals.js?v=architecture-collection-36';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=architecture-collection-36';
+import {programActionSources,pendingProgramMessage,programInvocationFinished} from './scenario-program-history.js?v=architecture-collection-36';
+import {SCENARIO_EVENTS,eventConditionLabel} from './scenario-events.js?v=architecture-collection-36';
+import {startScenarioProgram,nextScenarioProgramAction} from './scenario-programs.js?v=architecture-collection-36';
+import {escapeAnnouncement} from './scenario-announcements.js?v=architecture-collection-36';
 const escape=escapeAnnouncement;
 export function scenarioProgramReport(c){
  const s=c.scenario;if(s?.id!=='custom'||!s.definition.programs?.length)return'';

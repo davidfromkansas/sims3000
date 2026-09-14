@@ -211,3 +211,105 @@ Schema 148 accepts the batch; earlier-version payloads containing these types ar
 There are now eleven runtime landmark mappings, leaving 89 inventory entries unmapped. This is part of the ongoing architecture release group; it has not been separately committed or published. Browser acceptance remains pending because the Mac is locked.
 
 A validated 96×96 review city containing all eleven landmarks is saved at `/tmp/sims3000-landmark-review-city.json` for the pending browser walkthrough.
+
+## Architect reference-block preview
+
+Manual printed pages 143–145 describe a yellow reference location in the edit plane and model before construction begins. Independent-layer editing now highlights the hovered or keyboard-focused cell before a click, using the existing 3D plane guide. The highlight follows all three cross-section orientations, clears on leaving/focus exit, Escape or slice changes, and yields to a pending drag preview. Repeated motion within one cell avoids redundant redraws.
+
+Three focused editor/guide/designer suites pass, including actual pointer/focus/keyboard handlers, unchanged draft and undo history, pending drag preservation, per-plane cell mapping and invalid reference rejection. Cache architecture-collection-23; schema 148 unchanged. The last full regression remains the 306-suite cache-22 run committed in draft PR #192. These follow-up edits are uncommitted and await browser review. The manual image confirms a scrolling block palette but does not identify all fourteen shapes; full block and prop catalogs remain outstanding.
+
+## Prop model and renderer foundation — controls unfinished
+
+Manual printed pages 149–150 describe rotatable props placed on ground/building surfaces, clipping at the model boundary, and persistence after the support block is removed. Custom block/layer designs now validate and preserve up to 64 independent prop records. The first original geometry types are a garden tree and parked car. Physical dimensions stay independent of lot aspect ratio; the renderer uses building faces as depth-only occluders before drawing the prop overlay. Imported prop models render in existing design previews and city caches.
+
+Portable building format 10 stores compact prop tuples; city schema 149 preserves records and rejects props in older-version cities. Older model formats remain supported. A maximum 5×5 model with full voxel occupancy, all paint/details/geometry and 64 props fits the existing 32 KB portable-file limit. `/tmp/sims3000-prop-model.json` is prepared for visual review.
+
+Focused prop, footprint, building-set, custom-library, tree-raster and cathedral-raster checks pass. They cover invalid records, deep copies, support-independent positions, saved simulation continuity, four-view occlusion, rooftop/floating visibility, model-space bounds and portable roundtrips. Cache architecture-collection-24; the last full regression remains 306 suites at cache 22.
+
+This is unfinished infrastructure, not a complete prop-placement tool. Next work must connect model/ground picking, a category/rotation picker, placement/removal and undo/redo to the designer; handle construction-mode switches coherently; verify cropping near walls; and visually review original prop assets and their game-scale rendering. Broader prop categories remain missing. These changes are uncommitted and not part of draft PR #192.
+
+## Architect prop placement controls
+
+The designer now offers Place props, with the first original Flora/Vehicle entries, a separate four-direction selector, a projected size outline, visible ground/roof picking and a placed-prop removal list. Click release commits one draft edit; Shift release, Escape, pointer cancellation or intervening camera/model changes discard a pending placement. Arrow keys move the target and Enter places. Props share each construction editor’s undo/redo history. Applying or exporting the building preserves props; changing a name or color does not discard them.
+
+Removing every supporting block leaves a valid prop-only building, as manual printed page 150 describes. A completely empty model still cannot be applied/exported. Switching between height layout and independent layers retains the latest prop edits independently of remembered construction geometry; a regression caught and fixed stale props being restored from the old height-layout snapshot. Switching to parametric towers asks the player to remove props first and leaves the current model/history intact.
+
+The five focused prop/editor/construction/designer suites passed. The new prop UI suite is included in npm test. Cache architecture-collection-25, schema 149; all 308 registered regression suites passed with 309 PASS records and exit code 0 in `/tmp/sims3000-prop-editor-tests.log`. Placement tests also cover all four model views, both rectangular lot orientations and zoom/pan transforms. A fresh computer-use check still reports the Mac locked, so no browser visual acceptance is claimed. The broader eight-category palette, near-wall cropping fidelity and game-scale appearance remain unfinished. This is continuing architecture work, not a new small milestone commit or a published release.
+
+## Eight-category original prop collection
+
+The prop palette now has a category selector and twelve original models spanning the manual’s eight groups. Added models include the specifically mentioned family station wagon and blue pickup truck, plus an arch, column, clock, bench, lamp, picnic table, storage tank and ventilation unit. These are authored originals; category coverage does not establish the full original prop inventory. All forty-eight enlarged directional review images were inspected, with a reversed arch face corrected and shared world-space lighting added. See `art/architecture/building-props/README.md` for reproduction and limits.
+
+An actual-scale raster test exposed a thin lamp disappearing on a 1×5 lot. Prop rendering now samples at four times resolution within only the affected bounds, then downsamples with alpha coverage. Model dimensions remain unchanged. Every prop/orientation/view combination now produces visible coverage on square and both narrow rectangular lots. Seven focused collection, prop, editor, construction, designer-save and custom-library suites pass. The new collection suite is registered in npm test (309 commands); the last full run remains the 308-suite cache-25 run.
+
+Cache architecture-collection-26; schema 149 and portable model 10 remain unchanged because this prop capability is still unpublished, uncommitted work following draft PR #192. Full shipped-palette parity, adjacent-wall physical cropping and browser appearance remain outstanding. No separate small milestone commit or Sites publication was made.
+
+## Prop surfaces cropped against construction
+
+Props now subtract the occupied volume of height-layout columns and independent cubes/wedges before drawing. Clipping is performed in model space, separately from camera occlusion, so the geometry stays consistent when rotated. It respects all four wedge directions, rectangular lots, overhangs and empty layer gaps. Props exactly on a roof retain their contact surfaces. Saved prop geometry is unchanged; removing construction restores the cropped surfaces. This is an explicit geometric reconstruction of the manual’s cropping behavior, not evidence of the original program’s exact clipping algorithm.
+
+Analytic tests compare remaining polygon areas against known cube/wedge intersections, including vertical surfaces and rectangular lots, and check gaps, contact, immutability and support removal. A sixteen-view enlarged geometry diagnostic was inspected at `art/architecture/building-props/clipping/contact-sheet.png`; regenerate with `node scripts/render-prop-clipping-review.mjs` then `python3 scripts/assemble-prop-clipping-review.py`. The browser still needs actual-scale acceptance.
+
+Cache architecture-collection-27; schema 149 unchanged. The full 310-command regression passed with 312 PASS records and exit code 0 in `/tmp/sims3000-prop-clipping-tests.log`. A one-pass stress diagnostic with 64 rooftop arches on a fully occupied 24-layer model took 86/59/52/42 ms across four view rasters on this Mac. These are individual raster timings, not browser FPS; repeated editor-hover rendering should reuse unchanged prop frames in the next performance pass.
+
+## Reuse unchanged prop preview frames
+
+Building Architect retains at most four directional prop frames per drawing context for the current model content. Cursor/guide/camera redraws reuse the unchanged artwork. Content fingerprints include prop records, blocks/layers, wedge geometry and footprint dimensions, so even in-place edits invalidate stale views. Clearing props draws no retained artwork; unrelated name or facade edits leave the prop layer reusable. Weakly held contexts allow discarded previews to be collected.
+
+Four focused cache/designer/clipping/editor suites passed, including byte-for-byte pixel equivalence, fifty repeated redraws, all four view reuse, actual changed geometry and independent destinations. The cache suite is registered (311 test commands); the last full regression remains the 310-suite cache-27 run. Cache architecture-collection-28, schema 149 unchanged.
+
+A stress diagnostic with 64 rooftop arches on a fully occupied 24-layer model measured cold frame preparation at 79.836/58.114/47.262/38.892 ms across four views; one hundred reused calls per view averaged 0.009/0.008/0.008/0.008 ms. This uses a mocked drawing context and measures frame preparation only; it excludes actual browser compositing, the rest of building rendering and input processing, so it is not a browser FPS claim. Browser acceptance is still pending. Changes remain grouped in the ongoing architecture work.
+
+## Inspect the selected prop before placement
+
+The prop palette now includes a fitted visual preview driven by the same model geometry and world-space lighting as placement. It follows both the selected prop’s physical direction and the building camera, with a caption and accessible image label naming each. Category, prop, direction and camera changes refresh the image; cursor-only redraws reuse it. The preview is intentionally enlarged to help choose small objects, independently of actual building scale.
+
+Four focused collection/editor/designer/cache suites pass. Every one of twelve models is tested through all sixteen direction/view combinations for visible coverage and transparent framing margins; actual controls verify labels and unchanged-preview reuse. The cache graph is architecture-collection-29, schema 149 unchanged. The last full regression remains the 310-suite cache-27 run. A fresh computer-use availability check still reported the Mac locked, so no browser visual acceptance was performed. This continues the architecture milestone without a separate small commit or publication.
+
+## Erase props directly from the model
+
+The manual tutorial (printed page 133) names Erase and Undo for removing props. A new Erase props preview mode now selects the frontmost visible prop surface and removes the corresponding record through the existing shared construction undo path. It also supports the preview cursor’s arrows/Enter and the existing Shift/Escape cancellation. Placement choices are disabled while erasing; the selected prop receives a removal highlight. The list-based removal option remains useful for completely hidden props.
+
+Picking uses clipped model-space prop geometry and building surfaces, projected with per-surface depth rather than selecting a bounding rectangle. It respects walls, all camera rotations, zoom/pan, rectangular lots and equal-depth overlapping props. Cached pick geometry refreshes when relevant model content changes. Four focused picking/editor/designer/paint suites pass, including the actual erase control and cancelling a removal. The picking suite is registered (312 test commands). Cache architecture-collection-30; schema 149 unchanged. Last full regression remains the 310-suite cache-27 run; browser acceptance is pending.
+
+## Skyline landmark batch
+
+Empire State Building and CN Tower now join the playable landmark gallery with original four-view miniatures, authored 3×3 footprints, free unique placement and the existing scenario/save/demolition behavior. The inventory now maps thirteen runtime landmarks and leaves 87 entries unmapped. CN Tower retains its directory-evidence discrepancy flag. Architectural sources, original geometry scope, condensed detail and footprint/scale limits are documented in `art/architecture/skyline-landmarks/README.md`.
+
+All eight enlarged model views were inspected. Focused skyline, collection, gallery, city-renderer and landmark lifecycle checks pass. Test fixtures now accommodate the larger collection while still checking every placed landmark exactly once in each map direction; old fixed raster-cache counts were replaced with current catalog counts. A validated 96×96 review city containing all thirteen is at `/tmp/sims3000-skyline-review-city.json`.
+
+Cache architecture-collection-31; schema 149 covers this continuing unpublished architecture follow-up, and version 148 payloads containing the new types are rejected. The full 313-command regression passed with 318 PASS records and exit code 0 in `/tmp/sims3000-skyline-batch-tests.log`, including the recent prop preview/cache/erase work. Browser review remains pending. No separate small landmark commit or Sites publication was made.
+
+## Find landmarks in the growing collection
+
+The gallery now searches landmark names and locations, matching multiple words case-insensitively and ignoring common accent differences. Availability filters distinguish all, available-to-place and already-placed landmarks. Live result counts, an explicit empty state and a Clear filters control make filtering recoverable. Cards retain their independent preview rotation when hidden and shown; browsing does not change the city or grant another copy of a placed landmark.
+
+The actual gallery-control suite passes name/location, combined-word, accent, availability, no-result and clear/focus checks alongside existing gallery/city raster reuse and placement protection. One initial test mistakenly assumed “state” would not match “United States”; the test now uses the unambiguous query “empire york.” Cache architecture-collection-32, schema 149 unchanged; the last full regression remains 313 suites at cache 31. Browser layout/accessibility acceptance remains pending. This is part of the architecture release group, without a separate small commit.
+
+## Prop selection and drag erasing
+
+Manual printed pages 151–152 describe a read-only eyedropper that selects a prop in its palette, plus dragging to erase multiple items. Select existing prop now copies the visible prop’s category, type and physical direction without changing the building. The player then chooses Place props to reuse it. Empty selection leaves the current palette intact.
+
+Erase props now gathers visible props across a drag and removes them in a single construction edit on release; Shift/Escape cancellation discards the pending removal. One Undo restores the entire stroke. Existing depth/clipping picking still prevents selecting hidden props. Selection and erase outlines are blue, while new placement stays yellow. The manual’s full blue hue/tint treatment is not yet reproduced; the current highlight is a bounding outline.
+
+Four focused prop-editor/construction/paint/designer suites pass, including unchanged state/history on selection, palette copying, empty selection, delayed multi-prop commit, cancellation and whole-stroke undo/redo. Cache architecture-collection-33, schema 149 unchanged. Last full regression remains 313 suites at cache 31. Full fourteen-block shape coverage, exact prop/texture/detail catalogs, navigation-panel parity and browser visual acceptance remain outstanding.
+
+## Visible-surface blue prop highlighting
+
+Select/Erase now tint the existing prop’s visible surfaces blue, retaining geometry shading, instead of outlining its bounds. Pending drag erases tint every marked prop. The overlay includes all construction and other prop surfaces in the depth test, so it cannot show through walls or overlapping props. Equal-depth ordering matches ordinary rendering. Color coverage is downsampled per sample to avoid bleeding the tint into unselected props. This supersedes the earlier outline-only gap; exact original tint colors and browser appearance are still unverified.
+
+Separate bounded overlay caches keep selection changes from evicting normal prop artwork. Six focused highlight/cache/editor/clipping/designer/model suites pass, including exact visible coverage, shaded blue channels, wall/prop occlusion, equal-depth overlap, per-prop sample ownership, unchanged models and actual multi-prop overlay drawing. The new highlight suite is registered (314 test commands). Cache architecture-collection-34; schema 149 unchanged. Last full regression remains 313 suites at cache 31.
+
+## Whole-model overview navigator
+
+The Building Architect navigation reference (printed page 152) describes a complete model preview with the current visible area highlighted and click-to-pan navigation. The designer now includes a small whole-model overview and visible-area frame. Clicking recenters the main view without changing zoom; arrow keys move the center, Shift increases the step, and Home resets. The frame is derived from the inverse camera transform and clipped to the overview bounds, so zoomed-out views still show a full frame. Cached artwork refreshes on model/rotation changes and is reused for camera movement.
+
+Three focused overview/camera/actual-designer suites pass, covering CSS-scaled pointer coordinates, inverse viewport dimensions, keyboard/recenter/reset, maintained zoom, model preservation and raster reuse. Test DOM canvases now model the overview as a separate context, preventing overview scaling from corrupting the mock main-canvas scale. The overview suite is registered (315 test commands). Cache architecture-collection-35, schema 149 unchanged; last full regression remains 313 suites at cache 31.
+
+The overview uses the rectangular main-preview viewport across modes. The manual’s special Construct-mode hexagonal frame/widget behavior is not reproduced, and actual browser layout/accessibility acceptance remains pending. Desktop main-preview sizing now reserves space for the overview controls.
+
+## Architecture feedback exercise and grouped checkpoint
+
+In-game checkpoint 7 now covers construction, paint, portable models, prop placement/selection/group erasing, overview navigation, custom-model reuse and landmark browsing/placement. Its original three step identifiers and texts are preserved, so prior player checkmarks retain their meaning; four new exercises start unmarked. The feedback dialog provides direct Building Architect, Building Library and Landmark launch controls. Notes remain browser-local until the player downloads and shares them; no feedback is assumed. Actual feedback controls and app routing are tested, including opening the menu before menu-owned tools.
+
+This checkpoint groups the post-PR-192 architecture work: twelve original props with editing, clipping, previews and highlights; the overview navigator; two additional landmarks; gallery filtering; and updated feedback exercises. Cache architecture-collection-36, schema 149. The full 315-command regression passed with 324 PASS records and exit code 0 in `/tmp/sims3000-architecture-feedback-tests.log`. The GitHub PR remains draft pending browser visual acceptance. A fresh computer-use check again reported the Mac locked; Sites source-export/publication authorization remains separately pending.

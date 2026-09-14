@@ -1,0 +1,82 @@
+[
+  {
+    "name": "Open space",
+    "rotation": 0,
+    "file": "0.rgba"
+  },
+  {
+    "name": "Open space",
+    "rotation": 1,
+    "file": "1.rgba"
+  },
+  {
+    "name": "Open space",
+    "rotation": 2,
+    "file": "2.rgba"
+  },
+  {
+    "name": "Open space",
+    "rotation": 3,
+    "file": "3.rgba"
+  },
+  {
+    "name": "Solid block",
+    "rotation": 0,
+    "file": "4.rgba"
+  },
+  {
+    "name": "Solid block",
+    "rotation": 1,
+    "file": "5.rgba"
+  },
+  {
+    "name": "Solid block",
+    "rotation": 2,
+    "file": "6.rgba"
+  },
+  {
+    "name": "Solid block",
+    "rotation": 3,
+    "file": "7.rgba"
+  },
+  {
+    "name": "Wedge",
+    "rotation": 0,
+    "file": "8.rgba"
+  },
+  {
+    "name": "Wedge",
+    "rotation": 1,
+    "file": "9.rgba"
+  },
+  {
+    "name": "Wedge",
+    "rotation": 2,
+    "file": "10.rgba"
+  },
+  {
+    "name": "Wedge",
+    "rotation": 3,
+    "file": "11.rgba"
+  },
+  {
+    "name": "Overhang",
+    "rotation": 0,
+    "file": "12.rgba"
+  },
+  {
+    "name": "Overhang",
+    "rotation": 1,
+    "file": "13.rgba"
+  },
+  {
+    "name": "Overhang",
+    "rotation": 2,
+    "file": "14.rgba"
+  },
+  {
+    "name": "Overhang",
+    "rotation": 3,
+    "file": "15.rgba"
+  }
+]

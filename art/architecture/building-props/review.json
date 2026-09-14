@@ -1,0 +1,338 @@
+[
+  {
+    "kind": "tree",
+    "name": "Garden tree",
+    "category": "Flora",
+    "rotation": 0,
+    "file": "tree-0.rgba"
+  },
+  {
+    "kind": "tree",
+    "name": "Garden tree",
+    "category": "Flora",
+    "rotation": 1,
+    "file": "tree-1.rgba"
+  },
+  {
+    "kind": "tree",
+    "name": "Garden tree",
+    "category": "Flora",
+    "rotation": 2,
+    "file": "tree-2.rgba"
+  },
+  {
+    "kind": "tree",
+    "name": "Garden tree",
+    "category": "Flora",
+    "rotation": 3,
+    "file": "tree-3.rgba"
+  },
+  {
+    "kind": "car",
+    "name": "Parked car",
+    "category": "Vehicles",
+    "rotation": 0,
+    "file": "car-0.rgba"
+  },
+  {
+    "kind": "car",
+    "name": "Parked car",
+    "category": "Vehicles",
+    "rotation": 1,
+    "file": "car-1.rgba"
+  },
+  {
+    "kind": "car",
+    "name": "Parked car",
+    "category": "Vehicles",
+    "rotation": 2,
+    "file": "car-2.rgba"
+  },
+  {
+    "kind": "car",
+    "name": "Parked car",
+    "category": "Vehicles",
+    "rotation": 3,
+    "file": "car-3.rgba"
+  },
+  {
+    "kind": "arch",
+    "name": "Garden arch",
+    "category": "Architecture",
+    "rotation": 0,
+    "file": "arch-0.rgba"
+  },
+  {
+    "kind": "arch",
+    "name": "Garden arch",
+    "category": "Architecture",
+    "rotation": 1,
+    "file": "arch-1.rgba"
+  },
+  {
+    "kind": "arch",
+    "name": "Garden arch",
+    "category": "Architecture",
+    "rotation": 2,
+    "file": "arch-2.rgba"
+  },
+  {
+    "kind": "arch",
+    "name": "Garden arch",
+    "category": "Architecture",
+    "rotation": 3,
+    "file": "arch-3.rgba"
+  },
+  {
+    "kind": "column",
+    "name": "Stone column",
+    "category": "Architecture",
+    "rotation": 0,
+    "file": "column-0.rgba"
+  },
+  {
+    "kind": "column",
+    "name": "Stone column",
+    "category": "Architecture",
+    "rotation": 1,
+    "file": "column-1.rgba"
+  },
+  {
+    "kind": "column",
+    "name": "Stone column",
+    "category": "Architecture",
+    "rotation": 2,
+    "file": "column-2.rgba"
+  },
+  {
+    "kind": "column",
+    "name": "Stone column",
+    "category": "Architecture",
+    "rotation": 3,
+    "file": "column-3.rgba"
+  },
+  {
+    "kind": "clock",
+    "name": "Freestanding clock",
+    "category": "Building Decoration",
+    "rotation": 0,
+    "file": "clock-0.rgba"
+  },
+  {
+    "kind": "clock",
+    "name": "Freestanding clock",
+    "category": "Building Decoration",
+    "rotation": 1,
+    "file": "clock-1.rgba"
+  },
+  {
+    "kind": "clock",
+    "name": "Freestanding clock",
+    "category": "Building Decoration",
+    "rotation": 2,
+    "file": "clock-2.rgba"
+  },
+  {
+    "kind": "clock",
+    "name": "Freestanding clock",
+    "category": "Building Decoration",
+    "rotation": 3,
+    "file": "clock-3.rgba"
+  },
+  {
+    "kind": "bench",
+    "name": "Park bench",
+    "category": "Plaza and Streets",
+    "rotation": 0,
+    "file": "bench-0.rgba"
+  },
+  {
+    "kind": "bench",
+    "name": "Park bench",
+    "category": "Plaza and Streets",
+    "rotation": 1,
+    "file": "bench-1.rgba"
+  },
+  {
+    "kind": "bench",
+    "name": "Park bench",
+    "category": "Plaza and Streets",
+    "rotation": 2,
+    "file": "bench-2.rgba"
+  },
+  {
+    "kind": "bench",
+    "name": "Park bench",
+    "category": "Plaza and Streets",
+    "rotation": 3,
+    "file": "bench-3.rgba"
+  },
+  {
+    "kind": "lamp",
+    "name": "Street lamp",
+    "category": "Plaza and Streets",
+    "rotation": 0,
+    "file": "lamp-0.rgba"
+  },
+  {
+    "kind": "lamp",
+    "name": "Street lamp",
+    "category": "Plaza and Streets",
+    "rotation": 1,
+    "file": "lamp-1.rgba"
+  },
+  {
+    "kind": "lamp",
+    "name": "Street lamp",
+    "category": "Plaza and Streets",
+    "rotation": 2,
+    "file": "lamp-2.rgba"
+  },
+  {
+    "kind": "lamp",
+    "name": "Street lamp",
+    "category": "Plaza and Streets",
+    "rotation": 3,
+    "file": "lamp-3.rgba"
+  },
+  {
+    "kind": "picnic",
+    "name": "Picnic table",
+    "category": "Yard Objects",
+    "rotation": 0,
+    "file": "picnic-0.rgba"
+  },
+  {
+    "kind": "picnic",
+    "name": "Picnic table",
+    "category": "Yard Objects",
+    "rotation": 1,
+    "file": "picnic-1.rgba"
+  },
+  {
+    "kind": "picnic",
+    "name": "Picnic table",
+    "category": "Yard Objects",
+    "rotation": 2,
+    "file": "picnic-2.rgba"
+  },
+  {
+    "kind": "picnic",
+    "name": "Picnic table",
+    "category": "Yard Objects",
+    "rotation": 3,
+    "file": "picnic-3.rgba"
+  },
+  {
+    "kind": "wagon",
+    "name": "Family station wagon",
+    "category": "Vehicles",
+    "rotation": 0,
+    "file": "wagon-0.rgba"
+  },
+  {
+    "kind": "wagon",
+    "name": "Family station wagon",
+    "category": "Vehicles",
+    "rotation": 1,
+    "file": "wagon-1.rgba"
+  },
+  {
+    "kind": "wagon",
+    "name": "Family station wagon",
+    "category": "Vehicles",
+    "rotation": 2,
+    "file": "wagon-2.rgba"
+  },
+  {
+    "kind": "wagon",
+    "name": "Family station wagon",
+    "category": "Vehicles",
+    "rotation": 3,
+    "file": "wagon-3.rgba"
+  },
+  {
+    "kind": "pickup",
+    "name": "Blue pickup truck",
+    "category": "Vehicles",
+    "rotation": 0,
+    "file": "pickup-0.rgba"
+  },
+  {
+    "kind": "pickup",
+    "name": "Blue pickup truck",
+    "category": "Vehicles",
+    "rotation": 1,
+    "file": "pickup-1.rgba"
+  },
+  {
+    "kind": "pickup",
+    "name": "Blue pickup truck",
+    "category": "Vehicles",
+    "rotation": 2,
+    "file": "pickup-2.rgba"
+  },
+  {
+    "kind": "pickup",
+    "name": "Blue pickup truck",
+    "category": "Vehicles",
+    "rotation": 3,
+    "file": "pickup-3.rgba"
+  },
+  {
+    "kind": "tank",
+    "name": "Storage tank",
+    "category": "Industrial",
+    "rotation": 0,
+    "file": "tank-0.rgba"
+  },
+  {
+    "kind": "tank",
+    "name": "Storage tank",
+    "category": "Industrial",
+    "rotation": 1,
+    "file": "tank-1.rgba"
+  },
+  {
+    "kind": "tank",
+    "name": "Storage tank",
+    "category": "Industrial",
+    "rotation": 2,
+    "file": "tank-2.rgba"
+  },
+  {
+    "kind": "tank",
+    "name": "Storage tank",
+    "category": "Industrial",
+    "rotation": 3,
+    "file": "tank-3.rgba"
+  },
+  {
+    "kind": "cooler",
+    "name": "Ventilation unit",
+    "category": "Rooftops",
+    "rotation": 0,
+    "file": "cooler-0.rgba"
+  },
+  {
+    "kind": "cooler",
+    "name": "Ventilation unit",
+    "category": "Rooftops",
+    "rotation": 1,
+    "file": "cooler-1.rgba"
+  },
+  {
+    "kind": "cooler",
+    "name": "Ventilation unit",
+    "category": "Rooftops",
+    "rotation": 2,
+    "file": "cooler-2.rgba"
+  },
+  {
+    "kind": "cooler",
+    "name": "Ventilation unit",
+    "category": "Rooftops",
+    "rotation": 3,
+    "file": "cooler-3.rgba"
+  }
+]

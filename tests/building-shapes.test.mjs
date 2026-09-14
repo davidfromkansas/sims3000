@@ -21,3 +21,15 @@ const floorPaint='0'.repeat(100)+'4'+'0'.repeat(11899),beforeFloorPaint=JSON.str
 $('blockMode').value='tower';$('blockMode').onchange();assert.equal(draft.surfacePaint,undefined);$('blockMode').value='blocks';$('blockMode').onchange();assert.equal(draft.surfacePaint,floorPaint,'height draft retains per-floor paint across mode changes');
 
 const detailLayer='3'+'0'.repeat(11999),beforeDetail=JSON.stringify(draft);editor.applyDetails(detailLayer);assert.equal(draft.surfaceDetails,detailLayer);$('blockUndo').onclick();assert.equal(JSON.stringify(draft),beforeDetail);$('blockRedo').onclick();assert.equal(draft.surfaceDetails,detailLayer);editor.applyFloorPaint('1'.repeat(12000));assert.equal(draft.surfaceDetails,detailLayer);$('blockUndo').onclick();assert.equal(draft.surfaceDetails,detailLayer);
+
+const propList=[{kind:'car',x:2,y:3,z:.26,rotation:1}],beforeProp=JSON.stringify(draft);editor.applyProps(propList);assert.deepEqual(draft.props,propList);$('blockUndo').onclick();assert.equal(JSON.stringify(draft),beforeProp);$('blockRedo').onclick();assert.deepEqual(draft.props,propList);$('blockMode').value='tower';$('blockMode').onchange();assert.ok(draft.blocks);assert.equal($('blockMode').value,'blocks');assert.deepEqual(draft.props,propList);editor.applyProps([]);$('blockMode').value='tower';$('blockMode').onchange();assert.equal(draft.props,undefined);assert.equal(draft.blocks,undefined);
+
+// Props belong to the model, not to the remembered construction representation.
+$('blockMode').value='blocks';$('blockMode').onchange();editor.applyProps(propList);
+$('blockMode').value='voxels';$('blockMode').onchange();assert.deepEqual(draft.props,propList);
+const movedProps=[{...propList[0],x:7,rotation:3}];editor.applyProps(movedProps);
+$('blockMode').value='blocks';$('blockMode').onchange();assert.deepEqual(draft.props,movedProps,'returning to height layout preserves newly edited props');
+$('blockMode').value='voxels';$('blockMode').onchange();editor.applyProps([]);
+$('blockMode').value='blocks';$('blockMode').onchange();assert.deepEqual(draft.props,[],'returning to height layout does not resurrect removed props');
+
+const erasedBatch=[{kind:'pickup',x:2,y:2,z:0,rotation:3},{kind:'bench',x:7,y:7,z:0,rotation:1}];editor.applyProps(erasedBatch);editor.applyProps([]);$('blockUndo').onclick();assert.deepEqual(draft.props,erasedBatch,'one Undo restores every prop in the erase stroke');$('blockRedo').onclick();assert.deepEqual(draft.props,[]);

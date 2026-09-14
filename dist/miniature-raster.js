@@ -11,7 +11,7 @@ export function rasterizeMiniature(geometry,rotation=0,includeDepth=false,{width
    const minX=Math.max(0,Math.floor(Math.min(a[0],b[0],c[0]))),maxX=Math.min(width-1,Math.ceil(Math.max(a[0],b[0],c[0]))),minY=Math.max(0,Math.floor(Math.min(a[1],b[1],c[1]))),maxY=Math.min(height-1,Math.ceil(Math.max(a[1],b[1],c[1])));
    for(let y=minY;y<=maxY;y++)for(let x=minX;x<=maxX;x++){
     const u=((b[1]-c[1])*(x+.5-c[0])+(c[0]-b[0])*(y+.5-c[1]))/area,v=((c[1]-a[1])*(x+.5-c[0])+(a[0]-c[0])*(y+.5-c[1]))/area,w=1-u-v;if(u<0||v<0||w<0)continue;
-    const z=u*a[2]+v*b[2]+w*c[2],index=y*width+x;if(z<depth[index]-1e-7)continue;depth[index]=z;data.set([...color,255],index*4);
+    const z=u*a[2]+v*b[2]+w*c[2],index=y*width+x;if(z<depth[index]-1e-7)continue;depth[index]=z;if(!face.depthOnly)data.set([...color,255],index*4);
    }
   }
  }
