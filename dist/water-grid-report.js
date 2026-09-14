@@ -1,7 +1,7 @@
-import {WATER_STRUCTURES} from './utilities.js?v=bungalow-style-1';
-import {waterBaseNeed} from './utility-demand.js?v=bungalow-style-1';
-import {conservationDemand} from './conservation.js?v=bungalow-style-1';
-import {pipeCoverage} from './water-coverage.js?v=bungalow-style-1';
+import {WATER_STRUCTURES} from './utilities.js?v=museum-capacity-1';
+import {waterBaseNeed} from './utility-demand.js?v=museum-capacity-1';
+import {conservationDemand} from './conservation.js?v=museum-capacity-1';
+import {pipeCoverage} from './water-coverage.js?v=museum-capacity-1';
 const number=n=>n.toLocaleString('en-US',{maximumFractionDigits:1});
 export function waterGridData(city){
  const groups=(city.stats.waterNetworks||[]).map((g,id)=>({...g,id,nodes:[],pipes:[],sources:[]})),uncovered=[];
