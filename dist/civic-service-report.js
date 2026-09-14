@@ -1,11 +1,11 @@
-import {jailCapacity,jailReport} from './jail.js?v=sawtooth-factory-1';
-import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=sawtooth-factory-1';
-import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=sawtooth-factory-1';
-import {SERVICE_JOBS} from './civic-jobs.js?v=sawtooth-factory-1';
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=sawtooth-factory-1';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=sawtooth-factory-1';
-import {occupancy} from './utilities.js?v=sawtooth-factory-1';
-import {educationServiceDemand} from './education.js?v=sawtooth-factory-1';
+import {jailCapacity,jailReport} from './jail.js?v=city-growth-guide-1';
+import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=city-growth-guide-1';
+import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=city-growth-guide-1';
+import {SERVICE_JOBS} from './civic-jobs.js?v=city-growth-guide-1';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=city-growth-guide-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=city-growth-guide-1';
+import {occupancy} from './utilities.js?v=city-growth-guide-1';
+import {educationServiceDemand} from './education.js?v=city-growth-guide-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  t=civicRoot(c,t);const definition=SERVICES[t.type];if(!definition)return null;

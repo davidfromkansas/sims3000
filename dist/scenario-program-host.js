@@ -1,7 +1,7 @@
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=sawtooth-factory-1';
-import {PROGRAM_LIMITS} from './scenario-programs.js?v=sawtooth-factory-1';
-import {startProgramInvocation,advanceProgramInvocation,programInvocationFinished,pendingProgramMessage,programActionSources} from './scenario-program-history.js?v=sawtooth-factory-1';
-import {activeProgramInvocation} from './scenario-program-invocations.js?v=sawtooth-factory-1';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=city-growth-guide-1';
+import {PROGRAM_LIMITS} from './scenario-programs.js?v=city-growth-guide-1';
+import {startProgramInvocation,advanceProgramInvocation,programInvocationFinished,pendingProgramMessage,programActionSources} from './scenario-program-history.js?v=city-growth-guide-1';
+import {activeProgramInvocation} from './scenario-program-invocations.js?v=city-growth-guide-1';
 export const hasProgramPopup=s=>s?.programInvocations?.some(run=>pendingProgramMessage(run)>=0)||false;
 export function runProgramEvent(c,index){
  const s=c.scenario,e=s.definition.events[index],programs=compileGameScenarioPrograms(s.definition.programs,{size:s.definition.mapSize,objectives:s.definition.objectives});let run=activeProgramInvocation(s);

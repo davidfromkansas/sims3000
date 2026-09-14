@@ -993,3 +993,7 @@ A prepared unrest/recovery challenge connects police recall, automatic response,
 ## Sawtooth factory artwork
 
 Single-tile small dirty factories can mix in an original sawtooth-roof sprite through City view, with saved explicit replacements and custom-design priority. Other industry types retain their automatic artwork. See SAWTOOTH-FACTORY-MILESTONE.md. Schema remains 135.
+
+## Verified ordinary city progression
+
+An empty 96 × 96 easy city reaches 32,296 residents by month 144 using ordinary construction and ticks, with no grants or loans. It earns Mayor’s House and City Hall, recovers from landfill exhaustion and preserves the final year through save/load. This is one verified route, not proof of original balance or 150k progression. The town guide now includes live population practice targets and expansion guidance. See CITY-GROWTH-PLAYTHROUGH-MILESTONE.md and test:city-progression. Schema remains 135.
