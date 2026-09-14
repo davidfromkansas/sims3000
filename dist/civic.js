@@ -1,19 +1,19 @@
-import {jailCapacity,jailStatus} from './jail.js?v=university-neighborhood-1';
-import {SERVICES,civicRoots,isCivicRoot,civicMembers,civicIntact,civicRoadIds,civicCenter} from './civic-footprints.js?v=university-neighborhood-1';
-import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=university-neighborhood-1';
-import {activeCityHalls,cityHallCrimeRelief,activeCourthouses,courthouseCrimeRelief} from './rewards.js?v=university-neighborhood-1';
-import {auraBreakdown} from './aura.js?v=university-neighborhood-1';
-import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=university-neighborhood-1';
-import {healthOutlook} from './health.js?v=university-neighborhood-1';
-import {casinoCrime,businessRoots} from './business.js?v=university-neighborhood-1';
-import {occupancy} from './utilities.js?v=university-neighborhood-1';
+import {jailCapacity,jailStatus} from './jail.js?v=stadium-match-day-1';
+import {SERVICES,civicRoots,isCivicRoot,civicMembers,civicIntact,civicRoadIds,civicCenter} from './civic-footprints.js?v=stadium-match-day-1';
+import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=stadium-match-day-1';
+import {activeCityHalls,cityHallCrimeRelief,activeCourthouses,courthouseCrimeRelief} from './rewards.js?v=stadium-match-day-1';
+import {auraBreakdown} from './aura.js?v=stadium-match-day-1';
+import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=stadium-match-day-1';
+import {healthOutlook} from './health.js?v=stadium-match-day-1';
+import {casinoCrime,businessRoots} from './business.js?v=stadium-match-day-1';
+import {occupancy} from './utilities.js?v=stadium-match-day-1';
 // Manual pp.106–113 describes relationships; radii, capacities and rates below are calibration approximations.
-export {SERVICES} from './civic-footprints.js?v=university-neighborhood-1';
+export {SERVICES} from './civic-footprints.js?v=stadium-match-day-1';
 export function civicServiceOperating(c,t){const d=SERVICES[t.type];return !!d&&civicIntact(c,t)&&civicMembers(c,t).every(u=>u.powered)&&civicRoadIds(c,t).length>0&&c.finance.roadCondition>20&&c.civic.funding[d.department]>0&&c.civic.underfunded[d.department]<6;}
 export function serviceRadius(c,t){const d=SERVICES[t.type],funding=d?c.civic.funding[d.department]:0,effective=Math.min(110,funding)+Math.max(0,funding-110)*.1;return t.serviceActive&&d?.radius?d.radius*Math.sqrt(effective/100):0;}
 export const DEPARTMENTS={police:'Police',fire:'Fire',health:'Healthcare',education:'Education'};
-import {ORDINANCES} from './ordinances.js?v=university-neighborhood-1';
-export {ORDINANCES} from './ordinances.js?v=university-neighborhood-1';
+import {ORDINANCES} from './ordinances.js?v=stadium-match-day-1';
+export {ORDINANCES} from './ordinances.js?v=stadium-match-day-1';
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 // Manual p.106 links good fire coverage with land value; eight points is reconstruction tuning.
 export function applyFireLandValue(t){const before=t.landValue;t.landValue=clamp(before+(t.terrain!=='water'&&!t.radiation?t.fireCoverage*.08:0),1,100);t.fireLandBonus=t.landValue-before;}
@@ -38,7 +38,7 @@ export function recomputeCivic(c){
  for(const jail of civicRoots(c).filter(t=>t.type==='jail'))for(const h of homes)if(Math.hypot(jail.x-h.x,jail.y-h.y)<5)h.landValue=clamp(h.landValue-8,1,100);
  let crime=0,fire=0,police=0,health=0,education=0,school=0,child=0,college=0,adult=0,library=0,museum=0,aura=0;
  for(const t of tiles){t.aura=0;t.policePresence=Math.max(0,t.policeCoverage);t.policeCoverage=clamp(t.policeCoverage);t.fireProtection=Math.max(0,t.fireCoverage);t.fireCoverage=clamp(t.fireCoverage);t.healthCoverage=clamp(t.healthCoverage);t.childEducationCoverage=clamp(t.childEducationCoverage);t.collegeEducationCoverage=clamp(t.collegeEducationCoverage);t.schoolCoverage=educationMix.youth?(t.childEducationCoverage*educationMix.counts[0]+t.collegeEducationCoverage*educationMix.counts[1])/(population*educationMix.youth):0;t.adultEducationCoverage=clamp(t.adultEducationCoverage);t.libraryEducationCoverage=clamp(t.libraryEducationCoverage);t.museumEducationCoverage=clamp(t.museumEducationCoverage);t.educationCoverage=t.schoolCoverage*educationMix.youth+t.adultEducationCoverage*educationMix.adult;if(!t.type){applyFireLandValue(t);continue;}
- t.crime=clamp((35+casinoCrime(casinos,t)+(t.universityCrimePressure||0)+occupancy(t.level)*2+(100-t.landValue)*.12-state.education*.2)*(1-t.policeCoverage/125)*(state.ordinances.watch?.85:1)*(state.ordinances.juniorSports?.95:1));
+ t.crime=clamp((35+casinoCrime(casinos,t)+(t.universityCrimePressure||0)+(t.stadiumCrimePressure||0)+occupancy(t.level)*2+(100-t.landValue)*.12-state.education*.2)*(1-t.policeCoverage/125)*(state.ordinances.watch?.85:1)*(state.ordinances.juniorSports?.95:1));
  const rawCrime=t.crime;t.crime=Math.max(0,t.crime-cityHallCrimeRelief(halls,t));t.cityHallCrimeRelief=rawCrime-t.crime;const beforeCourt=t.crime;t.crime=Math.max(0,t.crime-courthouseCrimeRelief(courts,t));t.courthouseCrimeRelief=beforeCourt-t.crime;
  const beforeCrime=t.landValue;t.landValue=clamp(t.landValue-t.crime*.2,1,100);t.crimeLandPenalty=beforeCrime-t.landValue;applyFireLandValue(t);
  if(t.type==='residential'&&t.level){const w=occupancy(t.level)*8;crime+=t.crime*w;police+=t.policeCoverage*w;fire+=t.fireCoverage*w;health+=t.healthCoverage*w;education+=t.educationCoverage*w;school+=t.schoolCoverage*w;child+=t.childEducationCoverage*w;college+=t.collegeEducationCoverage*w;adult+=t.adultEducationCoverage*w;library+=t.libraryEducationCoverage*w;museum+=t.museumEducationCoverage*w;aura+=(t.aura=auraBreakdown(c,t).value)*w;}

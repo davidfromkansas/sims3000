@@ -1,7 +1,7 @@
 export function projectMiniature([x,y,z],rotation=0){[x,y]=rotation===0?[x,y]:rotation===1?[-y,x]:rotation===2?[-x,-y]:[y,-x];return[256+(x-y)*230,320+(x+y)*115-z*230];}
 // Rasterize once per cached view. Per-pixel depth resolves intersecting wings,
 // rooftop details and fences that a single painter-order key cannot order.
-export function rasterizeMiniature(geometry,rotation=0){
+export function rasterizeMiniature(geometry,rotation=0,includeDepth=false){
  const size=512,data=new Uint8ClampedArray(size*size*4),depth=new Float32Array(size*size);depth.fill(-Infinity);
  const turn=([x,y,z])=>rotation===0?[x,y,z]:rotation===1?[-y,x,z]:rotation===2?[-x,-y,z]:[y,-x,z];
  for(const face of geometry){
@@ -15,5 +15,5 @@ export function rasterizeMiniature(geometry,rotation=0){
    }
   }
  }
- return{width:size,height:size,data};
+ return{width:size,height:size,data,...(includeDepth?{depth}:{})};
 }
