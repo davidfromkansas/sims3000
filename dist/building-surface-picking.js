@@ -1,8 +1,8 @@
-import {splitBuildingFloors} from './building-floor-paint.js?v=first-repayment-1';
-import {buildingBlockFaces} from './building-blocks.js?v=first-repayment-1';
-import {buildingVoxelFaces} from './building-voxels.js?v=first-repayment-1';
-import {projectBuildingPoint} from './building-footprints.js?v=first-repayment-1';
-import {validateBuildingMaterials,BUILDING_MATERIALS} from './building-materials.js?v=first-repayment-1';
+import {splitBuildingFloors} from './building-floor-paint.js?v=department-policies-1';
+import {buildingBlockFaces} from './building-blocks.js?v=department-policies-1';
+import {buildingVoxelFaces} from './building-voxels.js?v=department-policies-1';
+import {projectBuildingPoint} from './building-footprints.js?v=department-policies-1';
+import {validateBuildingMaterials,BUILDING_MATERIALS} from './building-materials.js?v=department-policies-1';
 // The drawing order is the same as the rendered model. Picking walks it backwards
 // so an occluded face never wins over the face actually painted on screen.
 export function projectedBuildingSurfaces(design,rotation=0){const faces=design.voxels?buildingVoxelFaces(design.voxels,rotation,design.footprint,design.blockGeometry):design.blocks?buildingBlockFaces(design.blocks,rotation,design.footprint):[];return splitBuildingFloors(faces).map(face=>({...face,index:face.y*10+face.x,polygon:face.points.map(point=>projectBuildingPoint(point,rotation,design.footprint))}));}
