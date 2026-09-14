@@ -969,3 +969,7 @@ The eleventh prepared challenge verifies early densification through ordinary wa
 ### Courtyard apartments — schema 134, 277 suites
 
 Original transparent Imagegen artwork adds a medium-density residential variation. Default mixed-apartment selection respects custom designs, explicit replacements and retained building history. This expands visual variety; the full original building catalog and AAA art review remain incomplete.
+
+## Courtyard building lots
+
+Mixed apartment buildings now covers larger residential lots with an original rotating courtyard model, alongside the generated single-tile sprite. Footprint-specific replacements and custom models retain priority. See COURTYARD-BUILDING-LOTS-MILESTONE.md. No simulation or schema change.
