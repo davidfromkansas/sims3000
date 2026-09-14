@@ -767,3 +767,7 @@ Earn a courthouse at 25,000 residents with strong approval, then place it to sup
 ## Plan districts without suppressing demand
 
 Reserve undeveloped RCI neighborhoods without counting empty land as excess housing or jobs. A previously stalled ordinary city now develops through monthly simulation. See [milestone details](PLANNED-ZONE-DEMAND-MILESTONE.md).
+
+## Explain the demand bars
+
+Inspect the factors behind each sector’s demand directly in Zone development, including taxes, available jobs, regional access and growth limits. See [milestone details](DEMAND-EXPLANATION-MILESTONE.md).
