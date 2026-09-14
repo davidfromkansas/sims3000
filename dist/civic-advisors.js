@@ -1,7 +1,7 @@
-import {showOrdinanceAnalysis} from './ordinance-analysis-ui.js?v=abandonment-history-1';
-import {educationServiceDemand} from './education.js?v=abandonment-history-1';
-import {DEPARTMENTS,SERVICES} from './civic.js?v=abandonment-history-1';
-import {escapeAnnouncement as escape} from './scenario-announcements.js?v=abandonment-history-1';
+import {showOrdinanceAnalysis} from './ordinance-analysis-ui.js?v=transport-advisor-1';
+import {educationServiceDemand} from './education.js?v=transport-advisor-1';
+import {DEPARTMENTS,SERVICES} from './civic.js?v=transport-advisor-1';
+import {escapeAnnouncement as escape} from './scenario-announcements.js?v=transport-advisor-1';
 const advisors={safety:{name:'Maria Montoya',role:'Public safety advisor',portrait:'assets/maria-advisor.png',departments:['police','fire']},hea:{name:'Randall Shoop',role:'Health, education & aura advisor',portrait:'assets/randall-advisor.png',departments:['health','education']}};
 export function civicAdvisorBriefing(c,kind){
  const advisor=advisors[kind];if(!advisor)throw Error('Choose a civic advisor.');const s=c.stats,issues=[],add=(title,text,tool,layer)=>issues.push({title,text,tool,layer});

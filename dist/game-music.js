@@ -1,4 +1,4 @@
-import {MUSIC_TRACKS,musicScore} from './music-score.js?v=abandonment-history-1';
+import {MUSIC_TRACKS,musicScore} from './music-score.js?v=transport-advisor-1';
 export {MUSIC_TRACKS};
 const KEY='sims3000-music',ids=Object.keys(MUSIC_TRACKS);
 export function createGameMusic(){

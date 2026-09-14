@@ -1,0 +1,15 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {createCity} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {transportationBriefing,showTransportationAdvisor} from '../dist/transport-advisor.js';
+const c=createCity('Moe',false),before=serializeCity(c);assert.ok(transportationBriefing(c).issues.some(i=>i.title==='Connect your first neighborhood'));assert.equal(serializeCity(c),before);
+Object.assign(c.stats,{population:80,commuters:40,unemployed:20,jobs:25,transitStrike:true,busStops:2,activeBusStops:1,stations:2,activeStations:1});c.finance.roadCondition=10;
+const home=c.tiles[20*c.size+20];Object.assign(home,{type:'residential',level:1,commuters:4,unemployed:4,access:false});const road=c.tiles[21*c.size+20];Object.assign(road,{type:'road',traffic:90});
+let b=transportationBriefing(c);assert.equal(b.issues[0].title,'Restore transit service');assert.equal(b.disconnected,1);assert.ok(b.issues.some(i=>i.title==='The city needs more workplaces'));assert.ok(b.issues.some(i=>i.title==='Check inactive rail stations'));assert.equal(b.unserved[0],home);assert.equal(b.busy[0],road);
+c.stats.jobs=100;assert.ok(!transportationBriefing(c).issues.some(i=>i.title==='The city needs more workplaces'));assert.ok(transportationBriefing(c).issues.some(i=>i.title==='Workers are still without reachable jobs'));
+let html='',layer='',tool='',point=null,closed=0,budget=0,back=0;const controls=new Map(),groups=new Map();globalThis.document={querySelector:s=>{if(!controls.has(s))controls.set(s,{});return controls.get(s);},querySelectorAll:s=>{const attr=s.slice(1,-1),key=attr.replace('data-','').replace(/-([a-z])/g,(_,x)=>x.toUpperCase()),nodes=Array.from(html.matchAll(new RegExp(attr+'="(\\d+)"','g')),m=>({dataset:{[key]:m[1]}}));groups.set(s,nodes);return nodes;}};
+showTransportationAdvisor({city:()=>c,dialog:(title,body)=>{assert.equal(title,'Moe Biehl');html=body;},setLayer:v=>layer=v,setTool:v=>tool=v,close:()=>closed++,budget:()=>budget++,locate:v=>point=v},()=>back++);
+assert.match(html,/moe-advisor.png/);groups.get('[data-moe-action]')[0].onclick();assert.equal(back,1);groups.get('[data-moe-action]')[1].onclick();assert.equal(budget,1);groups.get('[data-moe-build]')[0].onclick();assert.equal(tool,'road');groups.get('[data-moe-homes]')[0].onclick();assert.deepEqual(point,{x:20,y:20});groups.get('[data-moe-busy]')[0].onclick();assert.deepEqual(point,{x:20,y:21});const mapIndex=transportationBriefing(c).issues.findIndex(i=>i.action==='map');groups.get('[data-moe-action]')[mapIndex].onclick();assert.equal(layer,'traffic');assert.equal(closed,2);
+const png=readFileSync(new URL('../dist/assets/moe-advisor.png',import.meta.url));assert.equal(png.subarray(1,4).toString(),'PNG');assert.ok(png.readUInt32BE(16)>=512);
+console.log('PASS: transportation advisor prioritizes strikes, distinguishes shortages from inaccessible jobs, identifies inactive transit and congestion, and links to exact homes, maps, planning and budgets with original portrait.');
