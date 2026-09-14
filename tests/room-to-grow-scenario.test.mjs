@@ -1,0 +1,10 @@
+import assert from 'node:assert/strict';
+import {createScenario} from '../dist/scenario-setup.js';
+import {scenarioGoals} from '../dist/scenarios.js';
+import {build,tick,recompute,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+const c=createScenario('roomToGrow');assert.equal(c.size,96);assert.equal(c.stats.population,25000);assert.equal(c.stats.residentialCap.limit,25000);assert.equal(c.stats.demand.residential,0);assert.equal(c.tiles.filter(t=>t.type==='residential'&&!t.level).length,100);assert.ok(c.tiles.filter(t=>t.level).every(t=>t.powered));assert.equal(c.stats.connectedLandfillTiles,c.stats.landfillTiles);assert.equal(c.emergency.randomFires,false);assert.equal(c.funds,20000);assert.equal(serializeCity(c),serializeCity(createScenario('roomToGrow')));
+assert.ok(build(c,'largePark',[{x:85,y:2}]).ok);assert.equal(c.stats.residentialCap.limit,27250);assert.ok(c.stats.demand.residential>0);const loaded=validateSave(JSON.parse(serializeCity(c)));tick(c);tick(loaded);assert.equal(c.scenario.status,'won');assert.equal(c.scenario.endedMonth,1);assert.ok(scenarioGoals(c).every(g=>g.done));assert.ok(c.stats.population>=25200);assert.equal(c.stats.uncollectedWaste,0);assert.equal(serializeCity(c),serializeCity(loaded));
+const neglected=createScenario('roomToGrow');for(let i=0;i<12;i++)tick(neglected);assert.equal(neglected.scenario.status,'lost');assert.equal(neglected.stats.residentialCap.limit,25000);assert.equal(scenarioGoals(neglected)[0].done,false);
+const reset=createScenario('roomToGrow');assert.equal(reset.month,0);assert.equal(reset.stats.population,25000);assert.equal(reset.scenario.status,'playing');reset.funds=4999;recompute(reset);assert.equal(scenarioGoals(reset)[2].done,false);
+console.log('PASS: fully powered deterministic 25,000-resident challenge, 100 vacancies, connected landfill, ordinary park placement victory, exact saved continuation, twelve-month neglect loss and fresh restart.');
