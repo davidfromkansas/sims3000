@@ -1,5 +1,5 @@
-import {buildingSlot,parseBuildingSlot,tileBuildingFootprint} from './building-footprints.js?v=reward-jobs-1';
-import {tileIndex} from './city-grid.js?v=reward-jobs-1';
+import {buildingSlot,parseBuildingSlot,tileBuildingFootprint} from './building-footprints.js?v=mixed-homes-1';
+import {tileIndex} from './city-grid.js?v=mixed-homes-1';
 // Variants depend only on the lot and city seed, so saved and historical buildings keep their appearance.
 export function baseZonedSprite(t,seed){
  const level=t.historicalLevel||t.abandonedLevel||t.level;
@@ -20,3 +20,6 @@ export const buildingStyleKey=(city,tile)=>buildingSlot(baseZonedSprite(tile,cit
 export function zonedSprite(t,seed,replacements={},city){const base=baseZonedSprite(t,seed),key=city?buildingStyleKey(city,t):t.lotRoot==null?String(base):null;return key===null?base:replacements[key]??base;}
 export function validateBuildingReplacements(value){if(!value||typeof value!=='object'||Array.isArray(value))throw Error('Invalid building replacements.');const out={};for(const [source,target]of Object.entries(value)){const slot=parseBuildingSlot(source);if(!Object.hasOwn(REPLACEABLE_STYLES,slot.source)||!Number.isInteger(target)||!Object.hasOwn(REPLACEABLE_STYLES,target)||REPLACEABLE_STYLES[slot.source].group!==REPLACEABLE_STYLES[target].group)throw Error('Invalid building replacement style.');if(slot.source!==target)out[source]=target;}return out;}
 export function replaceBuildingStyle(c,source,target){const next=validateBuildingReplacements({...c.buildingReplacements,[source]:target});c.buildingReplacements=next;if(c.buildingDesigns)delete c.buildingDesigns[source];}
+
+// Optional browser art preference preserves simulation style slots and explicit customizations.
+export function cityZonedSprite(t,city,view){const sprite=zonedSprite(t,city.seed,city.buildingReplacements,city);if(!view?.variedHomes||t.lotRoot!=null||sprite!==0||Object.hasOwn(city.buildingReplacements||{},'0')||city.buildingDesigns?.['0'])return sprite;return ((Math.imul(t.x+1,73856093)^Math.imul(t.y+1,19349663)^city.seed)>>>3)&1?76:0;}

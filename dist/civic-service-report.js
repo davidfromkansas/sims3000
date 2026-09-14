@@ -1,8 +1,8 @@
-import {SERVICE_JOBS} from './civic-jobs.js?v=reward-jobs-1';
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=reward-jobs-1';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=reward-jobs-1';
-import {occupancy} from './utilities.js?v=reward-jobs-1';
-import {educationServiceDemand} from './education.js?v=reward-jobs-1';
+import {SERVICE_JOBS} from './civic-jobs.js?v=mixed-homes-1';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=mixed-homes-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=mixed-homes-1';
+import {occupancy} from './utilities.js?v=mixed-homes-1';
+import {educationServiceDemand} from './education.js?v=mixed-homes-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  const definition=SERVICES[t.type];if(!definition)return null;
