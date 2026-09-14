@@ -953,3 +953,7 @@ Stadiums now use original population, construction price and footprint, plus the
 ### County Courthouse — schema 134, 273 suites
 
 The fifth reward adds original population, footprint, price, jobs and nominal crime effect/radius, with normalized aura eligibility. Procedural artwork covers four views. Crime falloff is tuned and original separate zone-specific land-value bonuses remain incomplete.
+
+### Planned-zone demand — schema 134, 274 suites
+
+Undeveloped zoning no longer creates vacancy pressure. A verified 270-tile RCI layout now develops instead of remaining entirely empty. Abandoned buildings still affect demand. Original demand formulas and late-game reachability remain unproven.

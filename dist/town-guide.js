@@ -1,4 +1,4 @@
-import {utilityTrendSnapshot} from './utility-trends.js?v=county-courthouse-1';
+import {utilityTrendSnapshot} from './utility-trends.js?v=planned-zone-demand-1';
 const number=n=>Number(n||0).toLocaleString('en-US',{maximumFractionDigits:1});
 export function townGoals(city){const s=city.stats,u=utilityTrendSnapshot(city),types=['residential','commercial','industrial'],missing=types.filter(type=>!city.tiles.some(t=>t.type===type)),workers=s.commuters||0,employed=Math.max(0,workers-(s.unemployed||0)),last=city.history.at(-1),collected=last?['garbageRecycled','garbageIncinerated','garbageLandfilled','garbageExported'].reduce((sum,k)=>sum+(last[k]||0),0):0,cleanMonth=last?.month===city.month&&last.garbageGenerated>0&&collected>0&&last.garbageUncollected<1e-7&&s.uncollectedWaste<1e-7;
  return[

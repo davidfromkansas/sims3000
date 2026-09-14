@@ -763,3 +763,7 @@ Grow to 150,000 residents with strong approval, then fund a 75,000 stadium on a 
 ## County Courthouse reward
 
 Earn a courthouse at 25,000 residents with strong approval, then place it to supply civic jobs and reduce nearby crime. Includes a new four-view building model. See [milestone details](COUNTY-COURTHOUSE-MILESTONE.md).
+
+## Plan districts without suppressing demand
+
+Reserve undeveloped RCI neighborhoods without counting empty land as excess housing or jobs. A previously stalled ordinary city now develops through monthly simulation. See [milestone details](PLANNED-ZONE-DEMAND-MILESTONE.md).
