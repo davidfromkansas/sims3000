@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 250 regression suites, save schema 127. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 251 regression suites, save schema 128. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -921,3 +921,7 @@ Residential growth now respects a 25,000 base capacity plus additive relief from
 ## Commercial and industrial population capacity
 
 Commerce and industry now use separate base capacities with relief from paid road/highway/rail connections and operating developed port tiles. Reports explain contributions, ordinary lot growth respects remaining jobs, and farm formation/expansion reserves industrial capacity. See ECONOMIC-CAP-MILESTONE.md. Subway neighbor connections, reward relievers and exact original regional/demand formulas remain unfinished.
+
+## Subway neighbor connections
+
+Subways reaching a dry border can now receive a paid neighbor connection through the regional panel, adding 25,000 commercial capacity. Saved connections survive reload and recover after edge rebuilding. No utility/freight contracts or simulated cross-border passengers are attached to subways. See SUBWAY-NEIGHBORS-MILESTONE.md.
