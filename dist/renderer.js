@@ -1,42 +1,42 @@
-import {drawRecentConstruction} from './recent-construction.js?v=mixed-homes-1';
-import {visibleSceneGeometry} from './scene-geometry.js?v=mixed-homes-1';
-import {waterViewColor} from './water-view.js?v=mixed-homes-1';
-import {drawGarbageBacklog} from './garbage-visuals.js?v=mixed-homes-1';
-import {MODELED_WASTE,drawCityWaste,wastePlumeOutput} from './waste-models.js?v=mixed-homes-1';
-import {quakeBands} from './earthquake-settings.js?v=mixed-homes-1';
-import {MODELED_REWARDS,drawCityReward} from './reward-models.js?v=mixed-homes-1';
-import {landscapePalette,landscapeGround} from './city-appearance.js?v=mixed-homes-1';
-import {drawCityTrees} from './tree-models.js?v=mixed-homes-1';
-import {EDUCATION_LAYERS,educationLayerProfile,educationLayerColor} from './education-layers.js?v=mixed-homes-1';
-import {buildingLotPlacement} from './building-lot-view.js?v=mixed-homes-1';
-import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=mixed-homes-1';
-import {drawCityWater} from './water-models.js?v=mixed-homes-1';
-import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=mixed-homes-1';
-import {drawCityCivic} from './civic-models.js?v=mixed-homes-1';
-import {drawBridgeStructure} from './bridge-structures.js?v=mixed-homes-1';
-import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=mixed-homes-1';
-import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=mixed-homes-1';
-import {stationAreas} from './service-areas.js?v=mixed-homes-1';
-import {cityGrid,visibleTileBounds} from './city-grid.js?v=mixed-homes-1';
-import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=mixed-homes-1';
-import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=mixed-homes-1';
-import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=mixed-homes-1';
-import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=mixed-homes-1';
-import {inScenarioArea} from './scenario-area.js?v=mixed-homes-1';
-import {railPaths,railVehicles} from './rail-visuals.js?v=mixed-homes-1';
-import {baseZonedSprite,zonedSprite,cityZonedSprite} from './building-art.js?v=mixed-homes-1';
-import {trafficPaths,trafficVehicles} from './traffic-visuals.js?v=mixed-homes-1';
-import {tunnelAt} from './tunnels.js?v=mixed-homes-1';
-import {STRUCTURES} from './structures.js?v=mixed-homes-1';
-import {LANDSCAPE} from './landscape.js?v=mixed-homes-1';
-import {POWER_PLANTS} from './power.js?v=mixed-homes-1';
-import {WATER_STRUCTURES} from './utilities.js?v=mixed-homes-1';
-import {FACILITIES} from './facilities.js?v=mixed-homes-1';
-import {rampCrossings} from './highway.js?v=mixed-homes-1';
-import {STATIONS} from './rail.js?v=mixed-homes-1';
-import {roadNeighbors} from './transport.js?v=mixed-homes-1';
-import {SERVICES} from './civic.js?v=mixed-homes-1';
-import {ZONES,selection,planBuild} from './engine.js?v=mixed-homes-1';
+import {drawRecentConstruction} from './recent-construction.js?v=corner-shop-1';
+import {visibleSceneGeometry} from './scene-geometry.js?v=corner-shop-1';
+import {waterViewColor} from './water-view.js?v=corner-shop-1';
+import {drawGarbageBacklog} from './garbage-visuals.js?v=corner-shop-1';
+import {MODELED_WASTE,drawCityWaste,wastePlumeOutput} from './waste-models.js?v=corner-shop-1';
+import {quakeBands} from './earthquake-settings.js?v=corner-shop-1';
+import {MODELED_REWARDS,drawCityReward} from './reward-models.js?v=corner-shop-1';
+import {landscapePalette,landscapeGround} from './city-appearance.js?v=corner-shop-1';
+import {drawCityTrees} from './tree-models.js?v=corner-shop-1';
+import {EDUCATION_LAYERS,educationLayerProfile,educationLayerColor} from './education-layers.js?v=corner-shop-1';
+import {buildingLotPlacement} from './building-lot-view.js?v=corner-shop-1';
+import {MODELED_POWER,drawCityPower,windSceneryTime} from './power-models.js?v=corner-shop-1';
+import {drawCityWater} from './water-models.js?v=corner-shop-1';
+import {cityElementVisible,cityTileVisible} from './city-view-options.js?v=corner-shop-1';
+import {drawCityCivic} from './civic-models.js?v=corner-shop-1';
+import {drawBridgeStructure} from './bridge-structures.js?v=corner-shop-1';
+import {pedestrianRoutes,pedestrians,drawPedestrian} from './pedestrian-visuals.js?v=corner-shop-1';
+import {drawCityRecreation,MODELED_RECREATION} from './recreation-models.js?v=corner-shop-1';
+import {stationAreas} from './service-areas.js?v=corner-shop-1';
+import {cityGrid,visibleTileBounds} from './city-grid.js?v=corner-shop-1';
+import {drawCityLandmark,MODELED_LANDMARKS} from './landmark-models.js?v=corner-shop-1';
+import {designForTile,drawDesignedBuilding,defaultLotDesign} from './building-designs.js?v=corner-shop-1';
+import {airportFlights,drawAirportFlight} from './airport-visuals.js?v=corner-shop-1';
+import {harborPaths,harborShips,drawHarborShip} from './harbor-visuals.js?v=corner-shop-1';
+import {inScenarioArea} from './scenario-area.js?v=corner-shop-1';
+import {railPaths,railVehicles} from './rail-visuals.js?v=corner-shop-1';
+import {baseZonedSprite,zonedSprite,cityZonedSprite} from './building-art.js?v=corner-shop-1';
+import {trafficPaths,trafficVehicles} from './traffic-visuals.js?v=corner-shop-1';
+import {tunnelAt} from './tunnels.js?v=corner-shop-1';
+import {STRUCTURES} from './structures.js?v=corner-shop-1';
+import {LANDSCAPE} from './landscape.js?v=corner-shop-1';
+import {POWER_PLANTS} from './power.js?v=corner-shop-1';
+import {WATER_STRUCTURES} from './utilities.js?v=corner-shop-1';
+import {FACILITIES} from './facilities.js?v=corner-shop-1';
+import {rampCrossings} from './highway.js?v=corner-shop-1';
+import {STATIONS} from './rail.js?v=corner-shop-1';
+import {roadNeighbors} from './transport.js?v=corner-shop-1';
+import {SERVICES} from './civic.js?v=corner-shop-1';
+import {ZONES,selection,planBuild} from './engine.js?v=corner-shop-1';
 const COLORS={residential:'#81b96b',commercial:'#79baca',industrial:'#d9ba6b'};
 export class CityRenderer{
  constructor(canvas,getCity){this.canvas=canvas;this.ctx=canvas.getContext('2d');this.getCity=getCity;this.zoom=1;this.pan={x:0,y:0};this.rotation=0;this.layer='city';this.tool='road';this.density=1;this.hover=null;this.drag=null;this.sprites=[];this.assetReady=false;this.reducedMotion=matchMedia('(prefers-reduced-motion: reduce)');this.time=0;this.vehicleTime=0;this.previousFrame=null;this.dirty=true;this.w=0;this.h=0;this.resize=new ResizeObserver(()=>{const first=this.w===0;this.w=canvas.clientWidth;this.h=canvas.clientHeight;this.dpr=Math.min(devicePixelRatio||1,2);canvas.width=this.w*this.dpr;canvas.height=this.h*this.dpr;if(first)this.center();this.dirty=true;});this.resize.observe(canvas);this.loadSprites();this.frame=this.frame.bind(this);requestAnimationFrame(this.frame);}
@@ -75,7 +75,7 @@ export class CityRenderer{
  const toxicWaste=new Image();toxicWaste.src='./assets/toxic-waste.png';await toxicWaste.decode();this.sprites.push({atlas:toxicWaste,x:0,y:0,w:toxicWaste.width,h:toxicWaste.height});
  const ufo=new Image();ufo.src='./assets/ufo.png';await ufo.decode();this.sprites.push({atlas:ufo,x:92,y:354,w:1070,h:575});
  for(const file of ['eiffel-tower','great-pyramid']){const atlas=new Image();atlas.src='./assets/'+file+'.png';await atlas.decode();const crop=file==='eiffel-tower'?{x:190,y:0,w:840,h:1295}:{x:0,y:0,w:1536,h:1024};this.sprites.push({atlas,...crop});}
- for(const file of ['residential-tower-v2','commercial-tower-v2','craftsman-bungalow']){const atlas=new Image();atlas.src='./assets/'+file+'.png';await atlas.decode();const sample=document.createElement('canvas');sample.width=atlas.width;sample.height=atlas.height;const context=sample.getContext('2d',{willReadFrequently:true});context.drawImage(atlas,0,0);const pixels=context.getImageData(0,0,atlas.width,atlas.height).data;let left=atlas.width,top=atlas.height,right=0,bottom=0;for(let y=0;y<atlas.height;y++)for(let x=0;x<atlas.width;x++)if(pixels[(y*atlas.width+x)*4+3]>40){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x);bottom=Math.max(bottom,y);}this.sprites.push({atlas,x:left,y:top,w:right-left+1,h:bottom-top+1});}
+ for(const file of ['residential-tower-v2','commercial-tower-v2','craftsman-bungalow','corner-shop']){const atlas=new Image();atlas.src='./assets/'+file+'.png';await atlas.decode();const sample=document.createElement('canvas');sample.width=atlas.width;sample.height=atlas.height;const context=sample.getContext('2d',{willReadFrequently:true});context.drawImage(atlas,0,0);const pixels=context.getImageData(0,0,atlas.width,atlas.height).data;let left=atlas.width,top=atlas.height,right=0,bottom=0;for(let y=0;y<atlas.height;y++)for(let x=0;x<atlas.width;x++)if(pixels[(y*atlas.width+x)*4+3]>40){left=Math.min(left,x);top=Math.min(top,y);right=Math.max(right,x);bottom=Math.max(bottom,y);}this.sprites.push({atlas,x:left,y:top,w:right-left+1,h:bottom-top+1});}
  this.assetReady=true;this.dirty=true;window.dispatchEvent(new Event('spritesready'));}catch(e){this.assetError=true;console.error('Sprite atlas failed to load',e);window.dispatchEvent(new Event('spriteserror'));}}
  transform(x,y){const {SIZE,idx,inside}=cityGrid(this.getCity());switch(this.rotation){case 1:return[SIZE-1-y,x];case 2:return[SIZE-1-x,SIZE-1-y];case 3:return[y,SIZE-1-x];default:return[x,y];}}
  inverse(x,y){const {SIZE,idx,inside}=cityGrid(this.getCity());switch(this.rotation){case 1:return[y,SIZE-1-x];case 2:return[SIZE-1-x,SIZE-1-y];case 3:return[SIZE-1-y,x];default:return[x,y];}}
