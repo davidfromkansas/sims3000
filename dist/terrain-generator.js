@@ -1,7 +1,7 @@
-import {freshAppearance,validateAppearance} from './city-appearance.js?v=scenario-result-1';
-import {copyBuildingSet} from './building-sets.js?v=scenario-result-1';
-import {MAP_SIZES} from './city-grid.js?v=scenario-result-1';
-import {createCity,recompute} from './engine.js?v=scenario-result-1';
+import {freshAppearance,validateAppearance} from './city-appearance.js?v=civic-advisors-2';
+import {copyBuildingSet} from './building-sets.js?v=civic-advisors-2';
+import {MAP_SIZES} from './city-grid.js?v=civic-advisors-2';
+import {createCity,recompute} from './engine.js?v=civic-advisors-2';
 export const START_FUNDS={easy:50000,medium:30000,hard:10000};
 export function generateCity(options={}){const o={size:48,name:'New Haven',mayorName:'Mayor',startYear:1950,difficulty:'easy',seed:73,mountains:30,water:35,trees:35,center:'river',coasts:['west'],starter:false,...options};if(!MAP_SIZES.includes(o.size)||typeof o.name!=='string'||o.name.length>50||typeof o.mayorName!=='string'||o.mayorName.length>50||!Number.isInteger(o.startYear)||o.startYear<1900||o.startYear>2050||!Object.hasOwn(START_FUNDS,o.difficulty)||!Number.isInteger(o.seed)||o.seed<0||o.seed>4294967295||['mountains','water','trees'].some(k=>!Number.isFinite(o[k])||o[k]<0||o[k]>100)||!['river','mountain','dry','lake'].includes(o.center)||!Array.isArray(o.coasts)||o.coasts.some(e=>!['north','south','east','west'].includes(e)))throw Error('Invalid new-city options.');const appearance=validateAppearance(o.appearance===undefined?freshAppearance():o.appearance);if(o.buildingSet!==undefined&&(!o.buildingSet||typeof o.buildingSet!=='object'||Array.isArray(o.buildingSet)))throw Error('Choose a valid building set.');const artwork=copyBuildingSet(o.buildingSet||{}),SIZE=o.size,c=createCity(o.name,o.starter,SIZE);Object.assign(c,artwork,{appearance});c.seed=o.seed;c.startYear=o.startYear;c.mayorName=o.mayorName;c.difficulty=o.difficulty;c.funds=START_FUNDS[o.difficulty]-(o.starter?7500:0);if(o.starter){recompute(c);return c;}
  const random=(x,y)=>{let k=Math.imul(x+17,374761393)^Math.imul(y+31,668265263)^o.seed;return((Math.imul(k^(k>>>13),1274126177)^(k>>>16))>>>0)/4294967296;},phase=o.seed%1000/137;

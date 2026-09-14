@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 229 regression suites, save schema 122. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 230 regression suites, save schema 122. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -845,3 +845,5 @@ Edit-plane navigation checkpoint: inspect cross-sections using a synchronized sl
 Script editing checkpoint: cut/copy/paste complete structured steps across routines, with independent copies, reference preservation and bounded insertion. Message textareas now render correctly in browsers. See [script clipboard](SCENARIO-STEP-CLIPBOARD-MILESTONE.md). Full suite and targeted final-fix validation documented there; source only, publication pending.
 
 Scenario outcome checkpoint: captured scripted ending messages appear on the result screen. Browser-authored popup/reload/acknowledgement/victory/reload/restart flow verified on an isolated origin. See [result playthrough](SCENARIO-RESULT-PLAYTHROUGH-MILESTONE.md). All 229 suites passed; source only, publication pending.
+
+Civic advisor checkpoint: original portraits for Maria Montoya and Randall Shoop accompany current safety, health, education and aura priorities, with map, planning and funding shortcuts. See [civic advisor briefings](CIVIC-ADVISOR-BRIEFINGS-MILESTONE.md). All 230 suites passed; final markup fix passed targeted validation. Browser layout checked for Maria; remaining live shortcut checks interrupted by a locked Mac. Source only, publication pending.
