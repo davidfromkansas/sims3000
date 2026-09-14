@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 244 regression suites, save schema 125. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 245 regression suites, save schema 125. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -893,3 +893,7 @@ Good fire coverage now raises local land values, closing the missing public-safe
 ## Large power-grid allocation checkpoint
 
 Nearest-source allocation now computes distances once, with an exact Manhattan field for dense grids, preserving legacy stable ordering and blackout decisions. A synthetic 256×256 city recomputed at a median 510 ms versus 1,411 ms before, with identical complete city state. A browser worker completed one month in about 4.8 seconds while accepting test-page input. These are bounded fixture measurements, not whole-game performance acceptance. All 244 suites passed, with an additional allocation-suite rerun after reducing sparse-grid storage. Schema125 unchanged. See LARGE-POWER-GRID-MILESTONE.md and the reproducible Node/browser fixtures. Source delivery only.
+
+## Neighborhood aura checkpoint
+
+Traffic now exerts a direct local aura penalty as described on manual p.113. Occupied-home inspection explains all current aura factors using the same calculation as the simulation, including larger-building tiles. Actual carpooling improves the traffic factor and policy previews match enactment. 245 regression suites passed in aggregate after updating a query harness dependency; browser expansion verified. Radius and penalty strength are authored tuning. Schema125 unchanged; source delivery only. See NEIGHBORHOOD-AURA-MILESTONE.md for feedback and limits.

@@ -1,4 +1,4 @@
-import {selection} from './engine.js?v=power-allocation-1';
+import {selection} from './engine.js?v=neighborhood-aura-1';
 const directions={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0]};
 const pointInCity=(r,p)=>p&&Number.isInteger(p.x)&&Number.isInteger(p.y)&&p.x>=0&&p.y>=0&&p.x<r.getCity().size&&p.y<r.getCity().size;
 function cursor(r){return pointInCity(r,r.hover)?r.hover:r.pick(r.w/2,r.h/2)||{x:Math.floor(r.getCity().size/2),y:Math.floor(r.getCity().size/2)};}

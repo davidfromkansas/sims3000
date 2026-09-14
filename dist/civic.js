@@ -1,13 +1,14 @@
-import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=power-allocation-1';
-import {healthOutlook} from './health.js?v=power-allocation-1';
-import {casinoCrime,businessRoots} from './business.js?v=power-allocation-1';
-import {occupancy} from './utilities.js?v=power-allocation-1';
+import {auraBreakdown} from './aura.js?v=neighborhood-aura-1';
+import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=neighborhood-aura-1';
+import {healthOutlook} from './health.js?v=neighborhood-aura-1';
+import {casinoCrime,businessRoots} from './business.js?v=neighborhood-aura-1';
+import {occupancy} from './utilities.js?v=neighborhood-aura-1';
 // Manual pp.106–113 describes relationships; radii, capacities and rates below are calibration approximations.
 export const SERVICES={police:{name:'Police station',department:'police',cost:500,upkeep:25,radius:9},fire:{name:'Fire station',department:'fire',cost:500,upkeep:25,radius:9},hospital:{name:'Hospital',department:'health',cost:1000,upkeep:40,capacity:1000},school:{name:'School',department:'education',cost:500,upkeep:20,capacity:300},jail:{name:'Jail',department:'police',cost:1500,upkeep:35,capacity:200},college:{name:'College',department:'education',cost:1000,upkeep:35,capacity:500},library:{name:'Library',department:'education',cost:500,upkeep:10,capacity:1000},museum:{name:'Museum',department:'education',cost:1500,upkeep:20,capacity:1500}};
 export function serviceRadius(c,t){const d=SERVICES[t.type];return t.serviceActive&&d?.radius?d.radius*Math.sqrt(c.civic.funding[d.department]/100):0;}
 export const DEPARTMENTS={police:'Police',fire:'Fire',health:'Healthcare',education:'Education'};
-import {ORDINANCES} from './ordinances.js?v=power-allocation-1';
-export {ORDINANCES} from './ordinances.js?v=power-allocation-1';
+import {ORDINANCES} from './ordinances.js?v=neighborhood-aura-1';
+export {ORDINANCES} from './ordinances.js?v=neighborhood-aura-1';
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 // Manual p.106 links good fire coverage with land value; eight points is reconstruction tuning.
 export function applyFireLandValue(t){const before=t.landValue;t.landValue=clamp(before+(t.terrain!=='water'&&!t.radiation?t.fireCoverage*.08:0),1,100);t.fireLandBonus=t.landValue-before;}
@@ -33,7 +34,7 @@ export function recomputeCivic(c){
  for(const t of tiles){t.aura=0;t.policeCoverage=clamp(t.policeCoverage);t.fireCoverage=clamp(t.fireCoverage);t.healthCoverage=clamp(t.healthCoverage);t.childEducationCoverage=clamp(t.childEducationCoverage);t.collegeEducationCoverage=clamp(t.collegeEducationCoverage);t.schoolCoverage=educationMix.youth?(t.childEducationCoverage*educationMix.counts[0]+t.collegeEducationCoverage*educationMix.counts[1])/(population*educationMix.youth):0;t.adultEducationCoverage=clamp(t.adultEducationCoverage);t.educationCoverage=t.schoolCoverage*educationMix.youth+t.adultEducationCoverage*educationMix.adult;if(!t.type){applyFireLandValue(t);continue;}
  t.crime=clamp((35+casinoCrime(casinos,t)+occupancy(t.level)*2+(100-t.landValue)*.12-state.education*.2)*(1-t.policeCoverage/125)*(state.ordinances.watch?.85:1)*(state.ordinances.juniorSports?.95:1));
  const beforeCrime=t.landValue;t.landValue=clamp(t.landValue-t.crime*.2,1,100);t.crimeLandPenalty=beforeCrime-t.landValue;applyFireLandValue(t);
- if(t.type==='residential'&&t.level){const w=occupancy(t.level)*8;crime+=t.crime*w;police+=t.policeCoverage*w;fire+=t.fireCoverage*w;health+=t.healthCoverage*w;education+=t.educationCoverage*w;school+=t.schoolCoverage*w;child+=t.childEducationCoverage*w;college+=t.collegeEducationCoverage*w;adult+=t.adultEducationCoverage*w;aura+=(t.aura=clamp(50+(state.education-40)*.3+(state.lifeExpectancy-59)*.6-t.crime*.35-t.airPollution*.25+(t.landValue-50)*.3-(c.finance.taxes.residential-7)*3-(state.ordinances.parkingFines?3:0)))*w;}
+ if(t.type==='residential'&&t.level){const w=occupancy(t.level)*8;crime+=t.crime*w;police+=t.policeCoverage*w;fire+=t.fireCoverage*w;health+=t.healthCoverage*w;education+=t.educationCoverage*w;school+=t.schoolCoverage*w;child+=t.childEducationCoverage*w;college+=t.collegeEducationCoverage*w;adult+=t.adultEducationCoverage*w;aura+=(t.aura=auraBreakdown(c,t).value)*w;}
  }
  const avg=v=>population?v/population:0;
  const zones=tiles.filter(t=>['residential','commercial','industrial'].includes(t.type));
