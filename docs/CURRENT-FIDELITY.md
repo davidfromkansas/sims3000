@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 241 regression suites, save schema 125. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 242 regression suites, save schema 125. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -881,3 +881,7 @@ Shaped decoration checkpoint: wedge walls now clip material patterns, default wi
 The eighth prepared challenge, “The first repayment,” turns dated loan commitments into a playable twelve-month budget exercise. Start with 224 residents, §2,500 and a §25,000 loan; pay the first §3,750 installment while retaining 224 residents, 80% road condition and §500 cash, without another loan. This is an original challenge using the manual’s scenario format and loan rules, not a shipped scenario.
 
 All 241 suites pass. A browser playthrough applied 12% sector taxes, consulted Mortimer, and won after twelve months with 224 residents, 100% roads and §715. Automated checks cover unchanged-budget loss, extra-borrowing disqualification, reserve/road boundaries and identical saved continuation. Save schema remains 125. See FIRST-REPAYMENT-SCENARIO-MILESTONE.md for the feedback exercise.
+
+## Department policy planning checkpoint
+
+Transportation, environment and utilities advisors now provide direct, scoped ordinance comparisons alongside the existing safety and HEA comparisons. Tables prioritize department measures and retain other changing values. Actual delivered supply, unmet demand and operating recycling capacity make policy limits visible. Application returns to the same advisor and survives saves. All 242 suites passed, with browser enactment/restoration checked. Schema125 unchanged; source delivery only. See DEPARTMENT-POLICY-PLANNING-MILESTONE.md for the feedback exercise and fidelity limits.
