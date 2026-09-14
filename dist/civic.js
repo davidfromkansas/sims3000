@@ -1,15 +1,15 @@
-import {activeCityHalls,cityHallCrimeRelief} from './rewards.js?v=adult-learning-1';
-import {auraBreakdown} from './aura.js?v=adult-learning-1';
-import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=adult-learning-1';
-import {healthOutlook} from './health.js?v=adult-learning-1';
-import {casinoCrime,businessRoots} from './business.js?v=adult-learning-1';
-import {occupancy} from './utilities.js?v=adult-learning-1';
+import {activeCityHalls,cityHallCrimeRelief} from './rewards.js?v=civic-damage-1';
+import {auraBreakdown} from './aura.js?v=civic-damage-1';
+import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=civic-damage-1';
+import {healthOutlook} from './health.js?v=civic-damage-1';
+import {casinoCrime,businessRoots} from './business.js?v=civic-damage-1';
+import {occupancy} from './utilities.js?v=civic-damage-1';
 // Manual pp.106–113 describes relationships; radii, capacities and rates below are calibration approximations.
 export const SERVICES={police:{name:'Police station',department:'police',cost:500,upkeep:25,radius:9},fire:{name:'Fire station',department:'fire',cost:500,upkeep:25,radius:9},hospital:{name:'Hospital',department:'health',cost:1000,upkeep:40,capacity:1000},school:{name:'School',department:'education',cost:500,upkeep:20,capacity:300},jail:{name:'Jail',department:'police',cost:1500,upkeep:35,capacity:200},college:{name:'College',department:'education',cost:1000,upkeep:35,capacity:500},library:{name:'Library',department:'education',cost:500,upkeep:10,capacity:1000},museum:{name:'Museum',department:'education',cost:1500,upkeep:20,capacity:1500}};
 export function serviceRadius(c,t){const d=SERVICES[t.type];return t.serviceActive&&d?.radius?d.radius*Math.sqrt(c.civic.funding[d.department]/100):0;}
 export const DEPARTMENTS={police:'Police',fire:'Fire',health:'Healthcare',education:'Education'};
-import {ORDINANCES} from './ordinances.js?v=adult-learning-1';
-export {ORDINANCES} from './ordinances.js?v=adult-learning-1';
+import {ORDINANCES} from './ordinances.js?v=civic-damage-1';
+export {ORDINANCES} from './ordinances.js?v=civic-damage-1';
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
 // Manual p.106 links good fire coverage with land value; eight points is reconstruction tuning.
 export function applyFireLandValue(t){const before=t.landValue;t.landValue=clamp(before+(t.terrain!=='water'&&!t.radiation?t.fireCoverage*.08:0),1,100);t.fireLandBonus=t.landValue-before;}
@@ -23,7 +23,7 @@ export function recomputeCivic(c){
  const educationMix=educationWeights(c,population);refreshEducationAverages(c,population);
  for(const k of Object.keys(SERVICES)){counts[k]=0;active[k]=0;capacities[k]=0;}
  const strikes=Object.keys(DEPARTMENTS).filter(k=>state.underfunded[k]>=6);
- for(const t of tiles){t.aura=0;t.policeCoverage=0;t.fireCoverage=0;t.healthCoverage=0;t.educationCoverage=0;t.schoolCoverage=0;t.childEducationCoverage=0;t.collegeEducationCoverage=0;t.adultEducationCoverage=0;t.libraryEducationCoverage=0;t.museumEducationCoverage=0;t.serviceActive=false;t.crime=0;t.flammability=t.type?(t.type==='industrial'?80:60)*(t.watered?.35:1)*(state.ordinances.fireCode?.8:1):0;const s=SERVICES[t.type];if(!s)continue;counts[t.type]++;t.serviceActive=t.powered&&t.roadIds.length>0&&c.finance.roadCondition>20&&state.funding[s.department]>0&&!strikes.includes(s.department);if(t.serviceActive){active[t.type]++;capacities[t.type]+=(s.capacity||0)*state.funding[s.department]/100;}}
+ for(const t of tiles){t.aura=0;t.policeCoverage=0;t.fireCoverage=0;t.healthCoverage=0;t.educationCoverage=0;t.schoolCoverage=0;t.childEducationCoverage=0;t.collegeEducationCoverage=0;t.adultEducationCoverage=0;t.libraryEducationCoverage=0;t.museumEducationCoverage=0;t.serviceActive=false;t.crime=0;t.flammability=t.type?(t.type==='industrial'?80:60)*(t.watered?.35:1)*(state.ordinances.fireCode?.8:1):0;const s=SERVICES[t.type];if(!s)continue;counts[t.type]++;t.serviceActive=!t.fire&&!t.rubble&&!t.radiation&&t.powered&&t.roadIds.length>0&&c.finance.roadCondition>20&&state.funding[s.department]>0&&!strikes.includes(s.department);if(t.serviceActive){active[t.type]++;capacities[t.type]+=(s.capacity||0)*state.funding[s.department]/100;}}
  const jailNeed=Math.ceil(population*.01),jailAdequacy=jailNeed?Math.min(1,capacities.jail/jailNeed):1;
  for(const t of tiles){const s=SERVICES[t.type];if(!s||!t.serviceActive||!s.radius)continue;const funding=state.funding[s.department]/100,r=serviceRadius(c,t),field=t.type==='police'?'policeCoverage':'fireCoverage';for(let y=Math.max(0,Math.floor(t.y-r));y<=Math.min(n-1,Math.ceil(t.y+r));y++)for(let x=Math.max(0,Math.floor(t.x-r));x<=Math.min(n-1,Math.ceil(t.x+r));x++){const d=Math.hypot(x-t.x,y-t.y);if(d<r)tiles[y*n+x][field]+=100*funding*(1-d/r)*(t.type==='police'?.6+.4*jailAdequacy:1);}}
  // Capacity is shared among homes reached on the same road component, not credited to disconnected neighborhoods.
