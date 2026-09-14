@@ -1,0 +1,18 @@
+import {civicFacilityReport} from '../dist/civic-service-report.js';
+import assert from 'node:assert/strict';
+import {createCity,build,recompute,validateSave} from '../dist/engine.js';
+import {serviceRadius} from '../dist/civic.js';
+import {policeAura,auraBreakdown,auraReport} from '../dist/aura.js';
+import {serializeCity} from '../dist/save.js';
+const c=createCity('Police presence',false,96);c.funds=1e6;for(const t of c.tiles)Object.assign(t,{terrain:'land',nature:false,elevation:0});
+for(const [type,x,y] of [['coal',8,8],['powerline',15,15],['road',23,17],['road',28,23],['police',20,20]])assert.ok(build(c,type,[{x,y}]).ok);
+const at=(x,y)=>c.tiles[y*96+x],station=at(20,20);for(const [x,y] of [[22,25],[50,21],[51,21],[52,21]])Object.assign(at(x,y),{type:'residential',level:1});recompute(c);
+assert.equal(serviceRadius(c,station),30);assert.ok(at(22,25).policeCoverage>at(50,21).policeCoverage);assert.equal(at(51,21).policeCoverage,18.75,'outer edge retains limited protection without jail capacity');assert.equal(at(52,21).policeCoverage,0);
+assert.equal(policeAura({policePresence:0}),0);assert.equal(policeAura({policePresence:100}),20);assert.equal(policeAura({policePresence:200}),-10);assert.equal(policeAura({policePresence:400}),-10);
+assert.ok(build(c,'police',[{x:24,y:20}]).ok);const home=at(22,25),two=auraBreakdown(c,home).factors.police;assert.ok(home.policePresence>100);assert.equal(home.policeCoverage,100);
+assert.ok(build(c,'police',[{x:24,y:24}]).ok);assert.ok(home.policePresence>200);assert.equal(auraBreakdown(c,home).factors.police,-10);assert.ok(two>policeAura(home));assert.match(auraReport(c,home),/Overlapping precincts exceed optimal coverage/);assert.match(civicFacilityReport(c,station),/Excess police presence in this precinct/);
+const before=serializeCity(c),restored=validateSave(JSON.parse(before));assert.equal(restored.tiles[25*96+22].policePresence,home.policePresence);assert.deepEqual(auraBreakdown(restored,restored.tiles[25*96+22]),auraBreakdown(c,home));for(let i=0;i<3;i++)recompute(c);assert.equal(serializeCity(c),before);
+assert.ok(build(c,'bulldoze',[{x:24,y:24}]).ok);assert.equal(policeAura(home),two,'removing excessive overlap restores the wellbeing contribution');
+c.civic.funding.police=25;recompute(c);assert.equal(serviceRadius(c,station),15);assert.equal(at(51,21).policePresence,0);c.civic.funding.police=110;recompute(c);const range=serviceRadius(c,station);c.civic.funding.police=150;recompute(c);assert.ok(serviceRadius(c,station)-range<1);
+c.civic.underfunded.police=6;recompute(c);assert.equal(home.policePresence,0);assert.equal(policeAura(home),0);
+console.log('PASS: 30-tile police radius, distance and boundary protection, additive presence, excessive-policing wellbeing tradeoff, removal recovery, funding/strikes and save reconstruction.');
