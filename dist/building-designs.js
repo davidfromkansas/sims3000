@@ -1,14 +1,15 @@
-import {validateBuildingDecals,encodeBuildingDecals,decodeBuildingDecals} from './building-decals.js?v=architecture-collection-44';
-import {validateGroundPaint,drawGroundPaint} from './building-ground-paint.js?v=architecture-collection-44';
-import {validateBuildingProps,encodeBuildingProps,decodeBuildingProps,drawBuildingProps} from './building-props.js?v=architecture-collection-44';
-import {validateBlockGeometry} from './building-block-geometry.js?v=architecture-collection-44';
-import {validateSurfaceDetails} from './building-surface-details.js?v=architecture-collection-44';
-import {validateFloorPaint} from './building-floor-paint.js?v=architecture-collection-44';
-import {validateBuildingVoxels,drawBuildingVoxels} from './building-voxels.js?v=architecture-collection-44';
-import {buildingSlot,parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=architecture-collection-44';
-import {validateBuildingMaterials,usesLandscapeMaterials} from './building-materials.js?v=architecture-collection-44';
-import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=architecture-collection-44';
-import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=architecture-collection-44';
+import {towerSolids} from './building-tower-geometry.js?v=architecture-collection-47';
+import {validateBuildingDecals,encodeBuildingDecals,decodeBuildingDecals} from './building-decals.js?v=architecture-collection-47';
+import {validateGroundPaint,drawGroundPaint} from './building-ground-paint.js?v=architecture-collection-47';
+import {validateBuildingProps,encodeBuildingProps,decodeBuildingProps,drawBuildingProps} from './building-props.js?v=architecture-collection-47';
+import {validateBlockGeometry} from './building-block-geometry.js?v=architecture-collection-47';
+import {validateSurfaceDetails} from './building-surface-details.js?v=architecture-collection-47';
+import {validateFloorPaint} from './building-floor-paint.js?v=architecture-collection-47';
+import {validateBuildingVoxels,drawBuildingVoxels} from './building-voxels.js?v=architecture-collection-47';
+import {buildingSlot,parseBuildingSlot,validateBuildingFootprint,sameBuildingFootprint,tileBuildingFootprint,projectBuildingPoint} from './building-footprints.js?v=architecture-collection-47';
+import {validateBuildingMaterials,usesLandscapeMaterials} from './building-materials.js?v=architecture-collection-47';
+import {validateBuildingBlocks,drawBuildingBlocks} from './building-blocks.js?v=architecture-collection-47';
+import {REPLACEABLE_STYLES,baseZonedSprite,canReplaceBuilding,buildingStyleKey} from './building-art.js?v=architecture-collection-47';
 export function defaultBuildingDesign(key=2){const {source,footprint}=parseBuildingSlot(key);return{name:REPLACEABLE_STYLES[source]?.level===1?'My neighborhood building':'My building',floors:[0,2,6,12][REPLACEABLE_STYLES[source]?.level||3],width:8,depth:8,roof:'step',facade:'#b6c4bd',windows:'#3c6b79',accent:'#dab572',...(footprint.width!==1||footprint.height!==1?{footprint}:{})};}
 // Original procedural artwork for larger lots; style swaps select a matching
 // footprint model, never enlarge a legacy single-tile image.
@@ -34,8 +35,7 @@ export function drawBuildingDesign(ctx,d,rotation=0){
  drawGroundPaint(d,polygon);
  if(d.voxels){drawBuildingVoxels(ctx,d,rotation);drawBuildingProps(ctx,d,rotation);return;}
  if(d.blocks){drawBuildingBlocks(ctx,d,rotation);drawBuildingProps(ctx,d,rotation);return;}
- const w=d.width*.085,dep=d.depth*.085,h=d.floors*.14;box(w+.08,dep+.08,0,.12,d.accent);if(d.roof==='step'){const lower=Math.ceil(d.floors*.65);box(w,dep,.12,lower*.14,d.facade,true,lower);box(w*.7,dep*.7,.12+lower*.14,(d.floors-lower)*.14,d.facade,true,d.floors-lower);}else box(w,dep,.12,h,d.facade,true,d.floors);
- box(w*.3,dep*.3,h+.12,.12,d.accent);if(d.roof==='spire'){const p=project([0,0,h+.25]),q=project([0,0,h+.8]);ctx.beginPath();ctx.moveTo(...p);ctx.lineTo(...q);ctx.strokeStyle=d.accent;ctx.lineWidth=3;ctx.stroke();}
+ for(const solid of towerSolids(d))box(solid.w,solid.depth,solid.z,solid.height,solid.color,solid.windows,solid.floors);const h=d.floors*.14;if(d.roof==='spire'){const p=project([0,0,h+.25]),q=project([0,0,h+.8]);ctx.beginPath();ctx.moveTo(...p);ctx.lineTo(...q);ctx.strokeStyle=d.accent;ctx.lineWidth=3;ctx.stroke();}
 }
 export function buildingDesignCanvas(design,rotation=0){const canvas=document.createElement('canvas');canvas.width=256;canvas.height=384;drawBuildingDesign(canvas.getContext('2d'),design,rotation);return canvas;}
 const sprites=new Map();

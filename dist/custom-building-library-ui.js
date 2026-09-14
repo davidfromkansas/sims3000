@@ -1,5 +1,5 @@
-import {readCustomBuildingLibrary,saveCustomBuildingLibrary,customBuildingIdentity,MAX_CUSTOM_BUILDINGS} from './custom-building-library.js?v=architecture-collection-44';
-import {sameBuildingFootprint} from './building-footprints.js?v=architecture-collection-44';
+import {readCustomBuildingLibrary,saveCustomBuildingLibrary,customBuildingIdentity,MAX_CUSTOM_BUILDINGS} from './custom-building-library.js?v=architecture-collection-47';
+import {sameBuildingFootprint} from './building-footprints.js?v=architecture-collection-47';
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export function mountCustomBuildingLibrary({host,footprint,getDraft,selectDesign,storage}){
  let saved,models,pending=null;

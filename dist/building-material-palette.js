@@ -1,4 +1,4 @@
-import {BUILDING_MATERIALS,materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-44';
+import {BUILDING_MATERIALS,materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-47';
 export const MATERIAL_GROUPS={all:{name:'All materials',ids:[0,1,2,3,4,5,6]},facade:{name:'Facades',ids:[0,1,2,3]},roof:{name:'Roofing',ids:[4]},landscape:{name:'Landscape',ids:[5,6]}};
 export function materialPaletteHTML(){return `<fieldset class="building-material-palette"><legend>Paint palette</legend><label>Material set<select id="materialSet">${Object.entries(MATERIAL_GROUPS).map(([key,g])=>`<option value="${key}">${g.name}</option>`).join('')}</select></label><input id="previewMaterial" type="hidden" value="0"><div class="material-swatches">${BUILDING_MATERIALS.map((name,i)=>`<button type="button" id="materialSwatch${i}" aria-label="${name}" aria-pressed="${i===0}"><canvas id="materialTexture${i}" width="80" height="64" aria-hidden="true"></canvas><span>${name}</span></button>`).join('')}</div></fieldset>`;}
 export function drawMaterialSwatch(ctx,material,design){

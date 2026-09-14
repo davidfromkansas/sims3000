@@ -118,10 +118,23 @@ for(const layered of [false,true]){
  const detailCity=createCity(),layout=Array(100).fill(0);for(let i=42;i<=47;i++)layout[i]=layered?15:4;const model={...defaultBuildingDesign(2),...(layered?{voxels:layout}:{blocks:layout})};detailCity.buildingDesigns[2]=model;
  showBuildingDesigner({city:detailCity,dialog(){node('designSource').value='2';node('designFootprint').value='1x1';},apply(){},close(){}},2);
  const canvas=node('designPreview');Object.assign(canvas,{getBoundingClientRect:()=>({left:0,top:0,width:256,height:384}),focus(){},setPointerCapture(){}});
- node('previewTool').value='anchored-detail';node('previewTool').onchange();node('decalKind').value='5';node('decalWidth').value='3';node('decalHeight').value='1';
+ node('previewTool').value='anchored-detail';node('previewTool').onchange();node('detailSwatch5').onclick();node('designAccent').value='#123456';node('designAccent').oninput();assert.match(node('detailTexture5').innerHTML,/#123456/,'changing the accent refreshes the actual mounted palette');node('decalWidth').value='3';node('decalHeight').value='1';
  const face=projectedBuildingSurfaces(model).find(f=>f.side===2&&f.x===3&&f.from===1),p=face.polygon.reduce((sum,[x,y])=>({x:sum.x+x/4,y:sum.y+y/4}),{x:0,y:0}),e={button:0,pointerId:88,clientX:p.x,clientY:p.y,preventDefault(){}};
  canvas.onpointerdown(e);canvas.onpointerup(e);assert.equal(detailCity.buildingDesigns[2].decals,undefined);
  node('designName').value='Cornice test';node('designName').oninput();node('applyDesign').onclick();assert.equal(detailCity.buildingDesigns[2].decals.length,1);assert.equal(detailCity.buildingDesigns[2].decals[0].kind,5);
  node(layered?'voxelUndo':'blockUndo').onclick();node('applyDesign').onclick();assert.equal(detailCity.buildingDesigns[2].decals,undefined);node(layered?'voxelRedo':'blockRedo').onclick();node('applyDesign').onclick();assert.equal(detailCity.buildingDesigns[2].decals.length,1);
  assert.deepEqual(validateSave(JSON.parse(serializeCity(detailCity))).buildingDesigns[2].decals,detailCity.buildingDesigns[2].decals);
+}
+// Tower ground edits use their own history without changing the construction method.
+{
+ const towerCity=createCity(),model=defaultBuildingDesign(2);towerCity.buildingDesigns[2]=model;
+ showBuildingDesigner({city:towerCity,dialog(){node('designSource').value='2';node('designFootprint').value='1x1';},apply(){},close(){}},2);
+ const {groundFaces}=await import('../dist/building-ground-paint.js'),{projectedTowerOcclusion}=await import('../dist/building-tower-geometry.js'),{pickBuildingSurface}=await import('../dist/building-surface-picking.js');
+ const center=f=>f.polygon.reduce((p,[x,y])=>({x:p.x+x/4,y:p.y+y/4}),{x:0,y:0}),f=groundFaces(model).find(f=>!pickBuildingSurface(projectedTowerOcclusion(model),center(f))),point=center(f),canvas=node('designPreview');
+ Object.assign(canvas,{getBoundingClientRect:()=>({left:0,top:0,width:256,height:384}),focus(){},setPointerCapture(){}});
+ node('previewTool').value='paint-ground';node('previewTool').onchange();node('materialSwatch5').onclick();const e={button:0,pointerId:91,clientX:point.x,clientY:point.y,preventDefault(){}};canvas.onpointerdown(e);canvas.onpointerup(e);
+ assert.equal(towerCity.buildingDesigns[2].groundPaint,undefined);assert.equal(node('blockMode').value,'tower');node('applyDesign').onclick();assert.equal(towerCity.buildingDesigns[2].groundPaint[f.index],'6');
+ node('towerGroundUndo').onclick();node('applyDesign').onclick();assert.equal(towerCity.buildingDesigns[2].groundPaint,undefined);node('towerGroundRedo').onclick();node('applyDesign').onclick();assert.equal(towerCity.buildingDesigns[2].groundPaint[f.index],'6');
+ node('designFloors').value='12';node('designFloors').oninput();node('applyDesign').onclick();assert.equal(towerCity.buildingDesigns[2].groundPaint[f.index],'6');assert.equal(towerCity.buildingDesigns[2].floors,12);assert.equal(towerCity.buildingDesigns[2].blocks,undefined);
+ assert.deepEqual(validateSave(JSON.parse(serializeCity(towerCity))).buildingDesigns[2],towerCity.buildingDesigns[2]);
 }
