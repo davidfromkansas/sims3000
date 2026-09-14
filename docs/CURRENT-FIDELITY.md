@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 246 regression suites, save schema 126. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 247 regression suites, save schema 126. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -901,3 +901,7 @@ Traffic now exerts a direct local aura penalty as described on manual p.113. Occ
 ## Completed scenario evidence checkpoint
 
 Scenario goals now retain their ending-month evidence through later city changes and save/load. Both wins and losses are preserved, scripted wins may retain unfinished optional goals, and restart clears the record. Legacy results explicitly distinguish current values from unavailable ending evidence. 246 suites passed in aggregate, with browser result/reload checks. Schema126 adds the validated optional snapshot. See SCENARIO-RESULT-EVIDENCE-MILESTONE.md. Source delivery only.
+
+## Recovery-site navigation checkpoint
+
+Emergency recovery now includes paginated current damage and interrupted-service sites with exact map/inspection links. Building duplicates and active flames are excluded appropriately, and normal dry starter development is not flagged as interrupted water service. All 247 suites passed; browser paging and second-page inspection verified. Schema126 unchanged. This is current-condition navigation, not historical disaster attribution or automatic reconstruction. See RECOVERY-SITES-MILESTONE.md. Source delivery only.
