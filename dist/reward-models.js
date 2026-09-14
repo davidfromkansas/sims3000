@@ -1,5 +1,5 @@
-import {stadiumMatchPixels} from './stadium-match.js?v=civic-landmarks-1';
-import {rasterizeMiniature} from './miniature-raster.js?v=civic-landmarks-1';
+import {stadiumMatchPixels} from './stadium-match.js?v=courthouse-neighborhood-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=courthouse-neighborhood-1';
 export const MODELED_REWARDS=new Set(['historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){

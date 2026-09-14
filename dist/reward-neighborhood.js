@@ -1,0 +1,8 @@
+// Contributions are the live pre-clamp land-value terms from recomputeEnvironment.
+// They are not a forecast or the change in final land value after all city effects.
+export function rewardNeighborhoodReport(t){
+ if(!['residential','commercial','industrial'].includes(t.type))return '';
+ const sources=[['Courthouse',t.courthouseLandValue],['City Hall, Mayor’s House and civic landmarks',t.civicRewardLandValue],['University',t.universityLandValue],['Stadium',t.stadiumLandValue],['Medical Research Center',t.medicalResearchLandValue],['Performing Arts Center',t.performingArtsLandValue]].filter(([,value])=>Number.isFinite(value)&&Math.abs(value)>1e-9);
+ const number=n=>(n>0?'+':'')+n.toLocaleString('en-US',{minimumFractionDigits:1,maximumFractionDigits:1});
+ return `<details class="reward-neighborhood"><summary>Nearby rewards · land value</summary>${sources.length?`<table aria-label="Nearby reward land value"><thead><tr><th>Reward</th><th>Local contribution</th></tr></thead><tbody>${sources.map(([name,value])=>`<tr><th scope="row">${name}</th><td>${number(value)} points</td></tr>`).join('')}</tbody></table>`:'<p>No active reward contributes directly to this zone’s land value.</p>'}<p>These contributions depend on the zone type and distance from operating rewards. Pollution, crime, fire protection and other neighborhood conditions also affect the final value, which is limited to 1–100. A listed bonus may be partly absorbed by that limit. Benefits stop if a reward loses power, road access or an intact footprint.</p></details>`;
+}
