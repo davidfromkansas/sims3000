@@ -1,4 +1,4 @@
-import {announcementText} from './scenario-announcements.js?v=power-overload-grace-1';
+import {announcementText} from './scenario-announcements.js?v=metropolis-growth-planning-1';
 const targets=['briefing','winMessage','lossMessage'];
 const actionTargets=a=>a.type==='dialogText'?['briefing']:a.outcome==='won'?['winMessage']:a.outcome==='lost'?['lossMessage']:['winMessage','lossMessage'];
 const forbidden=/[\x00-\x08\x0b\x0c\x0e-\x1f]/;

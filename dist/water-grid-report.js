@@ -1,7 +1,7 @@
-import {WATER_STRUCTURES} from './utilities.js?v=power-overload-grace-1';
-import {waterBaseNeed} from './utility-demand.js?v=power-overload-grace-1';
-import {conservationDemand} from './conservation.js?v=power-overload-grace-1';
-import {pipeCoverage} from './water-coverage.js?v=power-overload-grace-1';
+import {WATER_STRUCTURES} from './utilities.js?v=metropolis-growth-planning-1';
+import {waterBaseNeed} from './utility-demand.js?v=metropolis-growth-planning-1';
+import {conservationDemand} from './conservation.js?v=metropolis-growth-planning-1';
+import {pipeCoverage} from './water-coverage.js?v=metropolis-growth-planning-1';
 const number=n=>n.toLocaleString('en-US',{maximumFractionDigits:1});
 export function waterGridData(city){
  const groups=(city.stats.waterNetworks||[]).map((g,id)=>({...g,id,nodes:[],pipes:[],sources:[]})),uncovered=[];
