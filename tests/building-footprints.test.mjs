@@ -92,3 +92,24 @@ openReplacement();let releaseCanceled;fileControl.files=[{size:100,text:()=>new 
 console.log('PASS: footprint-scoped custom models and replacements, atomic mismatch rejection, portable v4 tower/block/material files, legacy 1x1 compatibility, saved libraries, physical height, rectangular painter order and actual designer handlers.');
 
 const propCity=createCity();propCity.buildingDesigns[2]={...defaultBuildingDesign(2),blocks:Array(100).fill(1),props:[{kind:'tree',x:1,y:2,z:.26,rotation:2}]};showBuildingDesigner({city:propCity,dialog(){node('designSource').value='2';node('designFootprint').value='1x1';},apply(){},close(){}},2);node('designName').value='Preserve my props';node('designName').oninput();node('applyDesign').onclick();assert.equal(propCity.buildingDesigns[2].name,'Preserve my props');assert.equal(propCity.buildingDesigns[2].props.length,1);assert.equal(propCity.buildingDesigns[2].props[0].rotation,2);
+
+for(const layered of [false,true]){
+ const groundCity=createCity(),groundPaint='6'.repeat(50)+'7'.repeat(50),model={...defaultBuildingDesign(2),groundPaint,...(layered?{voxels:Array(100).fill(1)}:{blocks:Array(100).fill(1)})};groundCity.buildingDesigns[2]=model;
+ showBuildingDesigner({city:groundCity,dialog(){node('designSource').value='2';node('designFootprint').value='1x1';},apply(){},close(){}},2);
+ node('designName').value='Keep the garden';node('designName').oninput();node('designFacade').value='#112233';node('designFacade').oninput();node('applyDesign').onclick();
+ assert.equal(groundCity.buildingDesigns[2].groundPaint,groundPaint,'actual designer field edits and Apply retain ground paint');
+ const imported={...model,name:'Imported garden',groundPaint:'7'.repeat(100)};await node('designFile').onchange({target:{files:[{size:100,text:async()=>exportBuildingDesign(imported)}],value:'ground'}});node('applyDesign').onclick();assert.equal(groundCity.buildingDesigns[2].groundPaint,imported.groundPaint,'actual import followed by Apply retains ground paint');
+}
+// Exercise the composed designer handlers, including palette, ground tool and final Apply.
+for(const layered of [false,true]){
+ const paintedCity=createCity(),layout=Array(100).fill(0);layout[44]=1;paintedCity.buildingDesigns[2]={...defaultBuildingDesign(2),...(layered?{voxels:layout}:{blocks:layout})};
+ showBuildingDesigner({city:paintedCity,dialog(){node('designSource').value='2';node('designFootprint').value='1x1';},apply(){},close(){}},2);
+ const canvas=node('designPreview');Object.assign(canvas,{getBoundingClientRect:()=>({left:0,top:0,width:256,height:384}),focus(){},setPointerCapture(){}});
+ node('previewTool').value='paint-ground';node('previewTool').onchange();node('materialSwatch5').onclick();
+ const event={button:0,pointerId:77,clientX:128,clientY:374.8,preventDefault(){}};
+ canvas.onpointerdown(event);canvas.onpointerup(event);assert.equal(paintedCity.buildingDesigns[2].groundPaint,undefined,'painting is still a draft');
+ node('designName').value='Painted from controls';node('designName').oninput();node('applyDesign').onclick();assert.equal(paintedCity.buildingDesigns[2].groundPaint?.[99],'6','palette choice and composed ground handlers reach Apply');
+ node('previewTool').value='sample-ground';node('previewTool').onchange();node('previewMaterial').value='0';canvas.onpointerdown(event);assert.equal(node('previewMaterial').value,'5');
+ node('previewTool').value='erase-ground';node('previewTool').onchange();canvas.onpointerdown(event);canvas.onpointerup(event);node(layered?'voxelUndo':'blockUndo').onclick();node('applyDesign').onclick();assert.equal(paintedCity.buildingDesigns[2].groundPaint[99],'6','undo restores ground through the composed editor');
+ const saved=validateSave(JSON.parse(serializeCity(paintedCity)));assert.equal(saved.buildingDesigns[2].groundPaint[99],'6');
+}

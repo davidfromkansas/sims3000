@@ -1,10 +1,10 @@
-import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=architecture-collection-39';
-import {blockCornerHeights} from './building-block-geometry.js?v=architecture-collection-39';
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-39';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=architecture-collection-39';
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-39';
-import {buildingShapeCells} from './building-shapes.js?v=architecture-collection-39';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-39';
+import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=architecture-collection-41';
+import {blockCornerHeights} from './building-block-geometry.js?v=architecture-collection-41';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=architecture-collection-41';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=architecture-collection-41';
+import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-41';
+import {buildingShapeCells} from './building-shapes.js?v=architecture-collection-41';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=architecture-collection-41';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;

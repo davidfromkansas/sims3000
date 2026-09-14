@@ -1,8 +1,8 @@
-import {clipPropGeometry} from './building-prop-clipping.js?v=architecture-collection-39';
-import {projectedBuildingSurfaces} from './building-surface-picking.js?v=architecture-collection-39';
-import {rasterizeMiniature} from './miniature-raster.js?v=architecture-collection-39';
-import {BUILDING_PROPS,propModelGeometry,shadePropFaces} from './building-prop-models.js?v=architecture-collection-39';
-export {BUILDING_PROPS,PROP_CATEGORIES} from './building-prop-models.js?v=architecture-collection-39';
+import {clipPropGeometry} from './building-prop-clipping.js?v=architecture-collection-41';
+import {projectedBuildingSurfaces} from './building-surface-picking.js?v=architecture-collection-41';
+import {rasterizeMiniature} from './miniature-raster.js?v=architecture-collection-41';
+import {BUILDING_PROPS,propModelGeometry,shadePropFaces} from './building-prop-models.js?v=architecture-collection-41';
+export {BUILDING_PROPS,PROP_CATEGORIES} from './building-prop-models.js?v=architecture-collection-41';
 export function validateBuildingProps(value){
  if(!Array.isArray(value)||value.length>64)throw Error('A custom building supports up to 64 props.');
  return Array.from(value,p=>{if(!p||!Object.hasOwn(BUILDING_PROPS,p.kind)||!Number.isInteger(p.x)||p.x<0||p.x>9||!Number.isInteger(p.y)||p.y<0||p.y>9||!Number.isFinite(p.z)||p.z<0||p.z>3.480001||!Number.isInteger(p.rotation)||p.rotation<0||p.rotation>3)throw Error('Choose a valid prop, block position, height and rotation.');return{kind:p.kind,x:p.x,y:p.y,z:p.z,rotation:p.rotation};});

@@ -1124,3 +1124,12 @@ Ground-paint follow-up: block/layer models now support a separate saved lot-grou
 
 
 Grouped painting checkpoint verified: the full 319-command regression at cache architecture-collection-39/schema 151 completed with exit code 0 and 328 PASS records in `/tmp/sims3000-ground-paint-tests.log` (session 14633 closed). Product source was unchanged during this run. This closes automated verification for visual block selection, landscape surface materials and ground painting together. Browser acceptance and publication remain pending; PR 192 stays draft.
+
+
+Visual Paint palette: seven current materials now have selectable runtime swatches with authored set filters, sampled-selection reveal and color-aware preview caching. A discovered designer read-path bug that dropped ground paint on Apply/name/color edits is fixed locally and covered by actual designer tests. Cache 40/schema 151; 320 commands registered; focused checks and swatch review passed. Full current regression, original paint catalog, browser acceptance and publication remain incomplete.
+
+
+Composed ground-paint workflow verified through actual designer handlers in both construction modes: swatch selection, paint, draft isolation, rename, Apply, sampling, erase/Undo and city restoration. Checkpoint 7 includes a new eighth ground-paint exercise without changing saved prior checkmarks. Cache 41/schema 151; focused designer/palette/feedback tests passed. Browser acceptance remains pending.
+
+
+Paint-palette follow-up verified: all 320 registered regression commands passed with 329 PASS records and terminal exit 0 in `/tmp/sims3000-paint-palette-tests.log` (session 66956 closed). Product source remained unchanged during the run. Cache architecture-collection-41/schema 151. This checkpoint includes the visual material palette, the designer ground-paint preservation correction, composed painting/Apply/save coverage and the eighth architecture feedback exercise. Browser acceptance and publication remain pending.

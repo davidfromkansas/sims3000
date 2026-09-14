@@ -1,7 +1,7 @@
-import {COURTYARD_ART_FRAMES} from './courtyard-art-frames.js?v=architecture-collection-39';
-import {FACTORY_ART_FRAMES} from './factory-art-frames.js?v=architecture-collection-39';
-import {COMMERCIAL_ART_FRAMES} from './commercial-art-frames.js?v=architecture-collection-39';
-import {loadDirectionalSprite,spriteView} from './directional-sprites.js?v=architecture-collection-39';
+import {COURTYARD_ART_FRAMES} from './courtyard-art-frames.js?v=architecture-collection-41';
+import {FACTORY_ART_FRAMES} from './factory-art-frames.js?v=architecture-collection-41';
+import {COMMERCIAL_ART_FRAMES} from './commercial-art-frames.js?v=architecture-collection-41';
+import {loadDirectionalSprite,spriteView} from './directional-sprites.js?v=architecture-collection-41';
 export const DIRECTIONAL_BUILDINGS={78:{name:'Courtyard apartments',asset:'courtyard-apartments',frames:COURTYARD_ART_FRAMES},79:{name:'Sawtooth factory',asset:'sawtooth-factory',frames:FACTORY_ART_FRAMES},80:{name:'Limestone office block',asset:'commercial-midrise',frames:COMMERCIAL_ART_FRAMES}};
 const cache=new Map();
 const canRetry=entry=>entry?.retryAt!=null&&Date.now()>=entry.retryAt;

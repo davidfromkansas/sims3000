@@ -349,3 +349,17 @@ Review artifact: `art/architecture/ground-paint/garden-court.building.json` is a
 
 
 Grouped painting checkpoint verified: the full 319-command regression at cache architecture-collection-39/schema 151 completed with exit code 0 and 328 PASS records in `/tmp/sims3000-ground-paint-tests.log` (session 14633 closed). Product source was unchanged during this run. This closes automated verification for visual block selection, landscape surface materials and ground painting together. Browser acceptance and publication remain pending; PR 192 stays draft.
+
+## Visual Paint palette and ground-preservation correction
+
+The manual's printed page 147 describes selecting a texture/paint from a visual palette organized into sets. The designer now shows seven clickable runtime texture swatches, grouped as All materials, Facades, Roofing and Landscape. These set names and memberships are authored organization of the current material inventory, not a reconstruction of the original complete palette catalog. Selection uses native buttons with aria-pressed; sampled selections outside the filtered group reveal themselves by returning to All materials. Swatches follow editable facade/glass colors and cache unchanged artwork. Ground restore mode updates disabled controls immediately.
+
+Inspection also found a real integration omission: the designer's field-to-draft read function discarded groundPaint, despite the format and editor layers preserving it. It now carries groundPaint through name/color edits, Apply and imported drafts. The actual designer suite now asserts these paths for both block and voxel representations. This corrects a bug present in the previous GitHub checkpoint; the fix is currently local.
+
+Focused material-palette, actual designer/footprint, preview-paint and ground-editor suites passed. The seven swatch renderings were inspected in `/tmp/sims3000-material-swatches.png`. Current cache architecture-collection-40, schema 151 unchanged, 320 registered test commands. Last full regression remains 319 commands at cache 39 before these changes; browser acceptance and publication remain pending. The full original paint/color catalog remains incomplete.
+
+
+Composed painting acceptance: the actual Building Architect controls are now exercised together for block and voxel models. Tests choose a material swatch, paint a visible ground square, prove the city remains unchanged before Apply, rename the draft, apply, sample the ground, erase/undo, apply again and restore a serialized city. Both representations preserve the lawn through the entire sequence. This is handler-based acceptance with an in-memory DOM, not browser visual acceptance. Checkpoint 7 now adds an eighth exercise for material previews and ground-paint/save continuity; all seven earlier step identities remain unchanged and the new check starts unmarked. Focused composed-designer, palette and feedback suites passed. Cache architecture-collection-41, schema 151 unchanged.
+
+
+Paint-palette follow-up verified: all 320 registered regression commands passed with 329 PASS records and terminal exit 0 in `/tmp/sims3000-paint-palette-tests.log` (session 66956 closed). Product source remained unchanged during the run. Cache architecture-collection-41/schema 151. This checkpoint includes the visual material palette, the designer ground-paint preservation correction, composed painting/Apply/save coverage and the eighth architecture feedback exercise. Browser acceptance and publication remain pending.

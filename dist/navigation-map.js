@@ -1,7 +1,7 @@
-import {powerBaseNeed,waterBaseNeed} from './utility-demand.js?v=architecture-collection-39';
-import {EDUCATION_LAYERS,EDUCATION_LAYER_LEGEND,educationLayerProfile,educationLayerColor} from './education-layers.js?v=architecture-collection-39';
-import {drawNavigationPrecincts,PRECINCT_LAYERS,PRECINCT_LEGEND,precinctCoverageNote} from './service-areas.js?v=architecture-collection-39';
-import {mapSize} from './city-grid.js?v=architecture-collection-39';
+import {powerBaseNeed,waterBaseNeed} from './utility-demand.js?v=architecture-collection-41';
+import {EDUCATION_LAYERS,EDUCATION_LAYER_LEGEND,educationLayerProfile,educationLayerColor} from './education-layers.js?v=architecture-collection-41';
+import {drawNavigationPrecincts,PRECINCT_LAYERS,PRECINCT_LEGEND,precinctCoverageNote} from './service-areas.js?v=architecture-collection-41';
+import {mapSize} from './city-grid.js?v=architecture-collection-41';
 export const NAV_LAYERS={city:'City',zones:'Zones',aura:'Approval / aura',density:'Built density',flammability:'Flammability',power:'Power',water:'Water',traffic:'Road traffic',rail:'Rail usage',subway:'Subway usage',pollution:'Air pollution',waterPollution:'Water pollution',crime:'Crime',landValue:'Land value',police:'Police coverage',fire:'Fire coverage',health:'Health coverage',education:'Education coverage',garbage:'Uncollected waste',...Object.fromEntries(Object.entries(EDUCATION_LAYERS).map(([key,value])=>[key,value.name]))};
 export function navigationLegend(layer){return EDUCATION_LAYERS[layer]?EDUCATION_LAYER_LEGEND:['rail','subway'].includes(layer)?'Used track bright · Unused track gray · Stations: operating gold, inactive orange':layer==='aura'?'Occupied homes: low approval red → high green · Other tiles gray':layer==='density'?'Built density: pale low → dark dense · Empty zones gray':layer==='flammability'?'Fire risk: low green → high red':['city','zones'].includes(layer)?'Homes green · Shops blue · Industry gold':['power','water'].includes(layer)?'Served teal · Unserved orange':['landValue','police','fire','health','education'].includes(layer)?'Low red → High green':'Low green → High red';}
 const heat=(value,good=false)=>`hsl(${Math.max(0,Math.min(120,(good?value:100-value)*1.2))},55%,48%)`;

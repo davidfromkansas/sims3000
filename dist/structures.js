@@ -1,9 +1,9 @@
-import {SERVICES,civicSize} from './civic-footprints.js?v=architecture-collection-39';
-import {LANDMARKS} from './landmarks.js?v=architecture-collection-39';
-import {BUSINESSES} from './business.js?v=architecture-collection-39';
-import {REWARDS,rewardSize} from './rewards.js?v=architecture-collection-39';
-import {POWER_PLANTS} from './power.js?v=architecture-collection-39';
-import {RECREATION} from './recreation.js?v=architecture-collection-39';
+import {SERVICES,civicSize} from './civic-footprints.js?v=architecture-collection-41';
+import {LANDMARKS} from './landmarks.js?v=architecture-collection-41';
+import {BUSINESSES} from './business.js?v=architecture-collection-41';
+import {REWARDS,rewardSize} from './rewards.js?v=architecture-collection-41';
+import {POWER_PLANTS} from './power.js?v=architecture-collection-41';
+import {RECREATION} from './recreation.js?v=architecture-collection-41';
 // Fixed-footprint ploppable structures share construction, damage and save validation.
 export const STRUCTURES={...LANDMARKS,...POWER_PLANTS,...RECREATION,...REWARDS,...BUSINESSES,...SERVICES};
 

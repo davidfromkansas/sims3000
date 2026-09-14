@@ -1,5 +1,5 @@
-import {navigationColor,navigationLegend} from './navigation-map.js?v=architecture-collection-39';
-import {escapeAnnouncement} from './scenario-announcements.js?v=architecture-collection-39';
+import {navigationColor,navigationLegend} from './navigation-map.js?v=architecture-collection-41';
+import {escapeAnnouncement} from './scenario-announcements.js?v=architecture-collection-41';
 export const SCENARIO_PREVIEW_LAYERS={city:'Starting city',power:'Power service',water:'Water service',rail:'Surface rail'};
 export function scenarioPreviewMap(city,layer='city'){
  if(!Object.hasOwn(SCENARIO_PREVIEW_LAYERS,layer))throw Error('Unknown scenario preview layer.');
