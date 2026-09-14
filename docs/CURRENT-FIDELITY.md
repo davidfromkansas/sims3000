@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 242 regression suites, save schema 125. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 243 regression suites, save schema 125. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -885,3 +885,7 @@ All 241 suites pass. A browser playthrough applied 12% sector taxes, consulted M
 ## Department policy planning checkpoint
 
 Transportation, environment and utilities advisors now provide direct, scoped ordinance comparisons alongside the existing safety and HEA comparisons. Tables prioritize department measures and retain other changing values. Actual delivered supply, unmet demand and operating recycling capacity make policy limits visible. Application returns to the same advisor and survives saves. All 242 suites passed, with browser enactment/restoration checked. Schema125 unchanged; source delivery only. See DEPARTMENT-POLICY-PLANNING-MILESTONE.md for the feedback exercise and fidelity limits.
+
+## Fire-protection property-value checkpoint
+
+Good fire coverage now raises local land values, closing the missing public-safety relationship described on manual p.106. The capped benefit follows active coverage/funding/strikes, feeds existing tax/development calculations and appears separately in tile inspection. All 243 suites pass; a browser-built station produced the expected inspected benefit. Schema125 unchanged. The eight-point maximum is authored tuning, not a recovered original coefficient. See FIRE-PROTECTION-LAND-VALUE-MILESTONE.md for the feedback exercise. Source delivery only.

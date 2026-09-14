@@ -1,0 +1,14 @@
+import assert from 'node:assert/strict';
+import {createCity,build,recompute,idx,validateSave} from '../dist/engine.js';
+import {changeCivic,recomputeCivic,advanceCivic,applyFireLandValue} from '../dist/civic.js';
+import {serializeCity} from '../dist/save.js';
+const c=createCity(),near=c.tiles[idx(20,20)],far=c.tiles[idx(16,20)],before=near.landValue,revenue=c.stats.revenues.residential;
+assert.equal(near.fireLandBonus,0);assert.ok(build(c,'fire',[{x:20,y:21}]).ok);assert.ok(near.fireLandBonus>far.fireLandBonus);assert.ok(far.fireLandBonus>0);assert.ok(near.landValue>before);assert.ok(c.stats.revenues.residential>revenue,'safer property feeds the existing tax base');
+const normal=near.fireLandBonus,value=near.landValue,save=serializeCity(c);for(let i=0;i<5;i++)recompute(c);recomputeCivic(c);assert.equal(near.landValue,value);assert.equal(serializeCity(c),save,'coverage benefits do not accumulate on repeated recomputation');
+changeCivic(c,{...c.civic.funding,fire:150},c.civic.ordinances);recompute(c);assert.ok(near.fireLandBonus>=normal);assert.ok(near.fireLandBonus<=8);
+changeCivic(c,{...c.civic.funding,fire:0},c.civic.ordinances);recompute(c);assert.equal(near.fireLandBonus,0);assert.equal(near.landValue,before);for(let i=0;i<6;i++)advanceCivic(c);changeCivic(c,{...c.civic.funding,fire:100},c.civic.ordinances);recompute(c);assert.equal(near.fireLandBonus,0,'striking station gives no value benefit after funding alone');advanceCivic(c);recompute(c);assert.equal(near.fireLandBonus,normal,'service resumption restores the benefit');
+const restored=validateSave(JSON.parse(serializeCity(c)));assert.equal(restored.tiles[idx(20,20)].fireLandBonus,normal);assert.equal(restored.stats.averageLandValue,c.stats.averageLandValue);
+near.radiation=true;recompute(c);assert.equal(near.landValue,1);assert.equal(near.fireLandBonus,0);near.radiation=false;
+assert.ok(build(c,'bulldoze',[{x:20,y:21}]).ok);assert.equal(near.fireLandBonus,0);
+const coast={terrain:'water',radiation:false,landValue:50,fireCoverage:100};applyFireLandValue(coast);assert.equal(coast.landValue,50);const premium={terrain:'land',radiation:false,landValue:98,fireCoverage:100};applyFireLandValue(premium);assert.equal(premium.landValue,100);assert.equal(premium.fireLandBonus,2,'inspection reports actual capped gain');
+console.log('PASS: fire protection raises nearby land value and revenue, follows distance/funding/strikes, restores with service, preserves radiation and caps, survives saves and never compounds.');
