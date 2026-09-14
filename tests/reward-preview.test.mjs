@@ -4,7 +4,7 @@ import {REWARDS} from '../dist/rewards.js';
 import {createCity} from '../dist/engine.js';
 import {serializeCity} from '../dist/save.js';
 const canvases=new Map(),rotate=new Map(),place=[];let renders=0,closed=0,tool=null;
-const ctx={clearRect(){},save(){},restore(){},drawImage(){renders++;},createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),putImageData(){}};
+const ctx={clearRect(){},fillRect(){},save(){},restore(){},drawImage(){renders++;},createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),putImageData(){}};
 globalThis.document={createElement:()=>({getContext:()=>ctx}),getElementById:id=>canvases.get(id),querySelector:s=>rotate.get(s),querySelectorAll:()=>place};
 const c=createCity('Reward previews',false);c.rewards.earned.mayorHouse=0;const before=serializeCity(c);
 showRewards({city:()=>c,dialog(title,html){assert.match(title,/Rewards/);for(const k of Object.keys(REWARDS)){assert.ok(html.includes('rewardPreview-'+k));canvases.set('rewardPreview-'+k,{getContext:()=>ctx});rotate.set('[data-reward-rotate="'+k+'"]',{});place.push({dataset:{reward:k}});}},close(){closed++;},setTool:v=>tool=v});
