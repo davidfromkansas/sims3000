@@ -1,13 +1,13 @@
-import {civicSize} from './civic-footprints.js?v=courthouse-neighborhood-1';
-import {REWARDS,rewardSize} from './rewards.js?v=courthouse-neighborhood-1';
-import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=courthouse-neighborhood-1';
-import {JobCapacity} from './job-capacity.js?v=courthouse-neighborhood-1';
-import {workforceShare} from './workforce.js?v=courthouse-neighborhood-1';
-import {routeLength} from './tunnels.js?v=courthouse-neighborhood-1';
-import {industrialJobs} from './industry.js?v=courthouse-neighborhood-1';
-import {streetGraph,MinQueue} from './highway.js?v=courthouse-neighborhood-1';
-import {railNetwork,STATIONS} from './rail.js?v=courthouse-neighborhood-1';
-import {occupancy} from './utilities.js?v=courthouse-neighborhood-1';
+import {civicSize} from './civic-footprints.js?v=country-club-1';
+import {REWARDS,rewardSize} from './rewards.js?v=country-club-1';
+import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=country-club-1';
+import {JobCapacity} from './job-capacity.js?v=country-club-1';
+import {workforceShare} from './workforce.js?v=country-club-1';
+import {routeLength} from './tunnels.js?v=country-club-1';
+import {industrialJobs} from './industry.js?v=country-club-1';
+import {streetGraph,MinQueue} from './highway.js?v=country-club-1';
+import {railNetwork,STATIONS} from './rail.js?v=country-club-1';
+import {occupancy} from './utilities.js?v=country-club-1';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const freshTransport=()=>({funding:100,condition:100,underfunded:0});
 export function changeTransit(c,value){if(!Number.isInteger(value)||value<0||value>150)return{ok:false,error:'Transit funding must be 0–150%.'};c.transport.funding=value;return{ok:true};}
