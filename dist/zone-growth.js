@@ -1,6 +1,6 @@
-import {landDensityLimit} from './economy.js?v=recent-construction-1';
-import {needsEstablishedWater} from './water-service.js?v=recent-construction-1';
-import {buildingLotMembers,isBuildingLotRoot} from './building-lots.js?v=recent-construction-1';
+import {landDensityLimit} from './economy.js?v=city-hall-1';
+import {needsEstablishedWater} from './water-service.js?v=city-hall-1';
+import {buildingLotMembers,isBuildingLotRoot} from './building-lots.js?v=city-hall-1';
 export function zoneGrowthConditions(c,t,members=buildingLotMembers(c,t)){
  const blocked=new Set();let demand=Infinity,limit=3;
  for(const u of members){if(u.radiation)blocked.add('radiation');if(u.rubble)blocked.add('rubble');if(u.fire)blocked.add('fire');if(!u.powered)blocked.add('power');if(!(u.access||u.industry==='farm'&&c.tiles[u.farmRoot]?.access))blocked.add('transport');if(u.waste>=20)blocked.add('garbage');if(needsEstablishedWater(u)&&!u.watered)blocked.add('water');if(u.level>landDensityLimit(u))blocked.add('landValue');

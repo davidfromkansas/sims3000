@@ -1,5 +1,5 @@
-import {rasterizeMiniature} from './miniature-raster.js?v=recent-construction-1';
-export const MODELED_REWARDS=new Set(['mayorHouse','stadium','university']);
+import {rasterizeMiniature} from './miniature-raster.js?v=city-hall-1';
+export const MODELED_REWARDS=new Set(['cityHall','mayorHouse','stadium','university']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){
  if(!MODELED_REWARDS.has(type))throw Error('Unknown reward model.');
@@ -14,6 +14,16 @@ export function rewardGeometry(type){
   box(-.06,.145,.06,.27,.12,.045,'#c9c4ae');for(const x of [-.17,-.06,.05])box(x,.15,.105,.018,.018,.18,'#f0dfb6');roof(-.06,.15,.285,.30,.13,.035,'#6b7e83');box(-.06,.079,.06,.057,.01,.14,'#605d57');box(-.20,-.11,.36,.045,.065,.12,'#ac7f65');
   for(const y of [-.34,.34])for(const x of [-.35,.35])tree(x,y);for(const x of [-.42,.42])box(x,0,.06,.025,.80,.04,'#567e52');
   box(.24,.26,.06,.23,.17,.02,'#b5b99f');box(.24,.26,.08,.18,.12,.01,'#79a5a3');for(const x of [-.19,.07])box(x,.30,.06,.07,.15,.008,'#c7a879');
+ }else if(type==='cityHall'){
+  // Original limestone civic hall with colonnade, clock tower and formal gardens.
+  hall(0,-.10,.72,.34,.27,'#d5ceb5');box(0,-.10,.33,.30,.26,.09,'#c3baa1');
+  box(0,-.10,.42,.17,.17,.17,'#ddd4b8');roof(0,-.10,.59,.22,.22,.09,'#547e77');
+  for(const side of [-1,1]){box(0,-.10+side*.086,.47,.065,.005,.065,'#f1e6c6');box(side*.086,-.10,.47,.005,.065,.065,'#f1e6c6');box(0,-.10+side*.091,.482,.005,.005,.034,'#485657');box(side*.091,-.10,.482,.005,.005,.034,'#485657');}
+  for(let step=0;step<3;step++)box(0,.19+step*.027,.055,.39,.18-step*.034,.018*(step+1),'#c6c1ae');
+  for(const x of [-.16,-.08,0,.08,.16]){box(x,.14,.11,.024,.024,.20,'#eee4c8');box(x,.14,.30,.038,.04,.025,'#ddd1b1');}
+  roof(0,.14,.33,.43,.15,.065,'#719086');box(0,.073,.06,.07,.006,.17,'#49615e');
+  box(0,.36,.055,.18,.23,.01,'#c5bda4');for(const x of [-.34,.34])for(const y of [-.34,.32])tree(x,y);
+  for(const x of [-.24,.24]){box(x,.34,.06,.055,.055,.035,'#afad9d');box(x,.34,.095,.009,.009,.29,'#c5c9ba');box(x+.042,.34,.31,.08,.005,.06,x<0?'#658b9b':'#c09264');}
  }else if(type==='university'){
   box(0,0,.056,.65,.69,.009,'#c6b89c');box(0,.08,.066,.28,.33,.005,'#829b6b');hall(0,-.26,.77,.24,.28,'#c3a27d');for(const x of [-.29,.29])hall(x,.09,.19,.46,.22,'#bca07e');
   hall(0,-.24,.16,.20,.49,'#cbb595');box(0,-.24,.565,.19,.23,.025,'#dad0ab');roof(0,-.24,.59,.20,.24,.11,'#597779');for(const side of [-1,1]){box(0,-.24+side*.105,.425,.063,.005,.063,'#e0dbbe');box(0,-.24+side*.109,.452,.025,.005,.007,'#536568');}
