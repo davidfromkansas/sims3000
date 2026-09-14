@@ -1,7 +1,7 @@
-import {LANDMARKS} from './landmarks.js?v=fire-readiness-1';
-import {BUSINESSES} from './business.js?v=fire-readiness-1';
-import {REWARDS} from './rewards.js?v=fire-readiness-1';
-import {POWER_PLANTS} from './power.js?v=fire-readiness-1';
-import {RECREATION} from './recreation.js?v=fire-readiness-1';
+import {LANDMARKS} from './landmarks.js?v=learning-city-1';
+import {BUSINESSES} from './business.js?v=learning-city-1';
+import {REWARDS} from './rewards.js?v=learning-city-1';
+import {POWER_PLANTS} from './power.js?v=learning-city-1';
+import {RECREATION} from './recreation.js?v=learning-city-1';
 // Fixed-footprint ploppable structures share construction, damage and save validation.
 export const STRUCTURES={...LANDMARKS,...POWER_PLANTS,...RECREATION,...REWARDS,...BUSINESSES};
