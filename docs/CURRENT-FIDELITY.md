@@ -933,3 +933,7 @@ Arrow-key selection now retains control of the map cursor through passive pointe
 ## Room to grow prepared challenge
 
 A ninth original challenge starts a supplied 96×96 city at 25,000 residents and its residential cap. Players raise capacity to 26,000 and reach 25,200 residents with a §5,000 reserve within twelve months. See ROOM-TO-GROW-MILESTONE.md. This is an original tutorial city, not a shipped SC3KU scenario.
+
+### Reward progress checklist — schema 130, 269 suites
+
+Reward inspection now shares exact eligibility comparisons with monthly awards and explains missing conditions, streak resets and durable offers. Existing reward balancing remains reconstruction tuning; original stadium and university prerequisites, prices and footprints still need migration-aware reconciliation.

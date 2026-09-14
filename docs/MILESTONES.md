@@ -743,3 +743,7 @@ Camera inspection checkpoint: rotate both directions while keeping the panned ne
 Visible sanitation checkpoint: rubbish piles now reveal uncollected waste in City view and disappear with actual collection. See [visible garbage](VISIBLE-GARBAGE-MILESTONE.md). Source only; publication pending.
 
 Disposal planning checkpoint: locate aging recycling and incineration facilities, compare current and future capacity, and inspect them directly. See [disposal maintenance](DISPOSAL-MAINTENANCE-MILESTONE.md). Source only; publication pending.
+
+## Reward progress checklist
+
+Current values, missing requirements and consecutive-month guidance now explain how to earn each reward. Earned and placed states explain deferred placement and rebuilding. See [milestone details](REWARD-PROGRESS-MILESTONE.md). Feedback: is the next action needed to earn a reward clear?
