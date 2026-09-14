@@ -1,5 +1,5 @@
 // Manual pp.56,124,209 describes offers and deferred placement. Thresholds are original tuning.
-export const REWARDS={cityHall:{name:'City Hall',jobs:36,size:3,cost:0,upkeep:0,radius:10,amenity:25,months:1,requirement:'At least 20,000 residents and 50 approval for one simulation month.'},mayorHouse:{jobs:4,name:"Mayor's House",size:2,cost:0,upkeep:5,sprite:57,radius:7,amenity:20,months:3,requirement:'At least 5,000 residents and 50 approval for three consecutive months.'},stadium:{jobs:200,name:'Stadium',size:4,cost:5000,upkeep:25,sprite:58,radius:10,amenity:20,months:6,requirement:'At least 1,000 residents, 55 approval and a positive monthly balance for six consecutive months.'},university:{jobs:500,name:'University',size:4,cost:0,upkeep:40,sprite:59,radius:9,amenity:15,months:1,requirement:'Reach 70 EQ on the city’s 0–100 education scale to receive an offer at the next monthly evaluation.'}};
+export const REWARDS={cityHall:{name:'City Hall',jobs:36,size:3,cost:0,upkeep:0,radius:10,amenity:25,months:1,requirement:'At least 20,000 residents and 50 approval for one simulation month.'},mayorHouse:{jobs:4,name:"Mayor's House",size:2,cost:0,upkeep:5,sprite:57,radius:7,amenity:20,months:3,requirement:'At least 5,000 residents and 50 approval for three consecutive months.'},stadium:{jobs:200,name:'Stadium',size:4,cost:5000,upkeep:25,sprite:58,radius:10,amenity:20,months:6,requirement:'At least 1,000 residents, 55 approval and a positive monthly balance for six consecutive months.'},university:{jobs:500,name:'University',size:10,cost:0,upkeep:40,sprite:59,radius:9,amenity:15,months:1,requirement:'Reach 70 EQ on the city’s 0–100 education scale to receive an offer at the next monthly evaluation.'}};
 export const freshRewards=()=>({lastMonth:0,earned:Object.fromEntries(Object.keys(REWARDS).map(k=>[k,null])),streaks:Object.fromEntries(Object.keys(REWARDS).map(k=>[k,0]))});
 // Prima introductory EQ overview and p.417: university needs 105 EQ on the original 0–150 scale,
 // normalized here to 70/100; no population/college gate or purchase price.
@@ -30,3 +30,6 @@ export function rewardJobSites(c){return rewardRoots(c).filter(t=>REWARDS[t.type
 export const CITY_HALL_EFFECTS={crime:20,crimeRadius:20,air:4.5,airRadius:10,water:4.5,waterRadius:5};
 export function activeCityHalls(c){return rewardRoots(c).filter(t=>t.type==='cityHall'&&rewardActive(c,t));}
 export function cityHallCrimeRelief(halls,t){return halls.reduce((sum,h)=>sum+CITY_HALL_EFFECTS.crime*Math.max(0,1-Math.hypot(t.x-h.x-1,t.y-h.y-1)/CITY_HALL_EFFECTS.crimeRadius),0);}
+
+// Pre-132 campuses retain their original 4×4 lot; new campuses store 10.
+export const rewardSize=t=>t.type==='university'?(t.universitySize??4):REWARDS[t.type]?.size||1;

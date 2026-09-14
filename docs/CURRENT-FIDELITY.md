@@ -941,3 +941,7 @@ Reward inspection now shares exact eligibility comparisons with monthly awards a
 ### University progression — schema 131, 270 suites
 
 University unlock now uses normalized original EQ eligibility (105/150 → 70/100), no population/college gate, no six-month delay, and free construction. Earned offers and existing buildings migrate safely. The original 10×10 footprint and exact original education/proximity models remain incomplete.
+
+### University campus — schema 132, 271 suites
+
+New universities now use the original 10×10 footprint, with actual-size commuter access, amenity center, inspection and four-view rendering. Legacy 4×4 campuses are preserved. Existing procedural art is scaled; original detailed art and exact education/proximity formulas remain incomplete.

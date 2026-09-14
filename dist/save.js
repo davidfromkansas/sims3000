@@ -1,7 +1,7 @@
-import {HISTORY_LIMIT,METRICS} from './reports.js?v=university-progression-1';
+import {HISTORY_LIMIT,METRICS} from './reports.js?v=university-campus-1';
 // Persist simulation inputs and history. Networks, coverage and statistics are rebuilt on load.
 const CITY_FIELDS=['appearance','size','petitions','version','buildingDesigns','demographics','buildingReplacements','name','startYear','mayorName','difficulty','month','funds','seed','finance','civic','transport','region','emergency','scenario','business','rewards','tunnels','goals','starter'];
-export const TILE_FIELDS=['civicSize','abandonmentCause','waterEstablished','lotRoot','facilityAbandoned','abandonedLevel','historicalLevel','industry','farmRoot','x','y','elevation','treeLevel','terrain','waterKind','type','level','density','age','stress','nature','root','pipe','rail','subway','highway','bridgeAxis','railAxis','highwayAxis','waste','garbage','fire','fireAge','rubble','radiation','burnedLastMonth','recycledLastMonth'];
+export const TILE_FIELDS=['universitySize','civicSize','abandonmentCause','waterEstablished','lotRoot','facilityAbandoned','abandonedLevel','historicalLevel','industry','farmRoot','x','y','elevation','treeLevel','terrain','waterKind','type','level','density','age','stress','nature','root','pipe','rail','subway','highway','bridgeAxis','railAxis','highwayAxis','waste','garbage','fire','fireAge','rubble','radiation','burnedLastMonth','recycledLastMonth'];
 const HISTORY_FIELDS=[...Object.keys(METRICS),'month','population','funds','income','expenses','loanPayment','regionalPenalty','disasterRelief','landValue','pollution','crime','education','lifeExpectancy'];
 const pick=(value,fields)=>Object.fromEntries(fields.filter(k=>value[k]!==undefined).map(k=>[k,value[k]]));
 export function serializeCity(city){return JSON.stringify({...pick(city,CITY_FIELDS),tiles:city.tiles.map(t=>pick(t,TILE_FIELDS)),history:city.history.slice(-HISTORY_LIMIT).map(h=>pick(h,HISTORY_FIELDS))});}

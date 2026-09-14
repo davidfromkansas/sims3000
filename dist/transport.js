@@ -1,13 +1,13 @@
-import {civicSize} from './civic-footprints.js?v=university-progression-1';
-import {REWARDS} from './rewards.js?v=university-progression-1';
-import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=university-progression-1';
-import {JobCapacity} from './job-capacity.js?v=university-progression-1';
-import {workforceShare} from './workforce.js?v=university-progression-1';
-import {routeLength} from './tunnels.js?v=university-progression-1';
-import {industrialJobs} from './industry.js?v=university-progression-1';
-import {streetGraph,MinQueue} from './highway.js?v=university-progression-1';
-import {railNetwork,STATIONS} from './rail.js?v=university-progression-1';
-import {occupancy} from './utilities.js?v=university-progression-1';
+import {civicSize} from './civic-footprints.js?v=university-campus-1';
+import {REWARDS,rewardSize} from './rewards.js?v=university-campus-1';
+import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=university-campus-1';
+import {JobCapacity} from './job-capacity.js?v=university-campus-1';
+import {workforceShare} from './workforce.js?v=university-campus-1';
+import {routeLength} from './tunnels.js?v=university-campus-1';
+import {industrialJobs} from './industry.js?v=university-campus-1';
+import {streetGraph,MinQueue} from './highway.js?v=university-campus-1';
+import {railNetwork,STATIONS} from './rail.js?v=university-campus-1';
+import {occupancy} from './utilities.js?v=university-campus-1';
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 export const freshTransport=()=>({funding:100,condition:100,underfunded:0});
 export function changeTransit(c,value){if(!Number.isInteger(value)||value<0||value>150)return{ok:false,error:'Transit funding must be 0–150%.'};c.transport.funding=value;return{ok:true};}
@@ -17,7 +17,7 @@ export function roadNeighbors(tiles,i){const n=Math.sqrt(tiles.length),t=tiles[i
 export function bridgePlan(c,points,mode='road'){const tiles=c.tiles,n=Math.sqrt(tiles.length),valid=points.length&&points.every(p=>Number.isInteger(p.x)&&Number.isInteger(p.y)&&p.x>=0&&p.y>=0&&p.x<n&&p.y<n);if(!valid)return{ok:false,error:'Build inside the city boundary.'};if(!points.some(p=>tiles[p.y*n+p.x].terrain==='water'))return{ok:true,axis:null};const axis=points.every(p=>p.y===points[0].y)?'x':points.every(p=>p.x===points[0].x)?'y':null;if(!axis)return{ok:false,error:'Bridges must run straight across water.'};const sorted=[...points].sort((a,b)=>a[axis]-b[axis]);if(sorted.some((p,i)=>i&&p[axis]!==sorted[i-1][axis]+1)||tiles[sorted[0].y*n+sorted[0].x].terrain==='water'||tiles[sorted.at(-1).y*n+sorted.at(-1).x].terrain==='water')return{ok:false,error:'Drag the route across water until both ends reach dry land.'};if(sorted.some(p=>{const t=tiles[p.y*n+p.x];return t.terrain==='water'&&(mode==='highway'?t.highway:mode==='rail'?t.rail:t.type==='road')&&(mode==='highway'?t.highwayAxis:mode==='rail'?t.railAxis:t.bridgeAxis)!==axis;}))return{ok:false,error:'Bridges cannot intersect over water.'};return{ok:true,axis};}
 export function recomputeTransport(c){
  const tiles=c.tiles,n=Math.sqrt(tiles.length),transit=c.transport,stops=tiles.filter(t=>t.type==='busStop'),strike=transit.underfunded>=6;
- const roadsNear=(t,r)=>{const size=REWARDS[t.type]?.jobs?REWARDS[t.type].size:civicSize(t),out=[];for(let y=Math.max(0,t.y-r);y<=Math.min(n-1,t.y+size-1+r);y++)for(let x=Math.max(0,t.x-r);x<=Math.min(n-1,t.x+size-1+r);x++)if(tiles[y*n+x].type==='road')out.push(y*n+x);return out;};
+ const roadsNear=(t,r)=>{const size=REWARDS[t.type]?.jobs?rewardSize(t):civicSize(t),out=[];for(let y=Math.max(0,t.y-r);y<=Math.min(n-1,t.y+size-1+r);y++)for(let x=Math.max(0,t.x-r);x<=Math.min(n-1,t.x+size-1+r);x++)if(tiles[y*n+x].type==='road')out.push(y*n+x);return out;};
  for(const t of tiles){t.traffic=0;t.highwayTraffic=0;t.busRiders=0;t.commuteLength=0;t.commuters=0;t.unemployed=0;t.stopActive=false;t.civicEmployed=0;}
  for(const s of stops){s.stopRoads=[];for(const [dx,dy]of [[1,0],[-1,0],[0,1],[0,-1]]){const x=s.x+dx,y=s.y+dy;if(x>=0&&y>=0&&x<n&&y<n&&tiles[y*n+x].type==='road'&&tiles[y*n+x].terrain==='land')s.stopRoads.push(y*n+x);}s.stopActive=s.stopRoads.length>0&&transit.funding>0&&transit.condition>20&&!strike&&c.finance.roadCondition>20;}
  const street=streetGraph(c),groups=street.groups,N=tiles.length;
