@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 249 regression suites, save schema 127. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 250 regression suites, save schema 127. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -917,3 +917,7 @@ Operating City Hall reduces nearby crime and generates modest air/water pollutio
 ## Residential population capacity
 
 Residential growth now respects a 25,000 base capacity plus additive relief from supported parks, recreation, operating libraries, City Hall and stadiums. The zone-development report explains current capacity and contributions; monthly growth respects remaining room, including multi-tile buildings. City Hall adds 9,000 capacity. See RESIDENTIAL-CAP-MILESTONE.md. Commercial and industrial caps and the full original reliever catalog remain unfinished.
+
+## Commercial and industrial population capacity
+
+Commerce and industry now use separate base capacities with relief from paid road/highway/rail connections and operating developed port tiles. Reports explain contributions, ordinary lot growth respects remaining jobs, and farm formation/expansion reserves industrial capacity. See ECONOMIC-CAP-MILESTONE.md. Subway neighbor connections, reward relievers and exact original regional/demand formulas remain unfinished.

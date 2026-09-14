@@ -1,4 +1,4 @@
-import {validateScenarioArea} from './scenario-area.js?v=residential-cap-1';
+import {validateScenarioArea} from './scenario-area.js?v=economic-cap-1';
 export const captureResultGoals=goals=>goals.map(g=>({title:g.title,done:g.done,detail:g.detail,...(g.instructions?{instructions:g.instructions}:{}),...(g.area?{area:{...g.area}}:{})}));
 export function validateResultGoals(goals,status,size,version){
  if(goals===undefined)return undefined;

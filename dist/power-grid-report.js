@@ -1,4 +1,4 @@
-import {POWER_PLANTS,plantCapacity} from './power.js?v=residential-cap-1';
+import {POWER_PLANTS,plantCapacity} from './power.js?v=economic-cap-1';
 const number=n=>n.toLocaleString('en-US',{maximumFractionDigits:1});
 export function gridStatus(grid){return grid.maxStress>=4&&grid.load>1?'Failure risk':grid.unpowered?'Blackout':grid.demand===0?'No demand':grid.margin<=grid.demand*.1?'Limited reserve':'Supplied';}
 export function plantPlanning(city){return city.tiles.filter((t,i)=>POWER_PLANTS[t.type]&&t.root===i).map(t=>{const d=POWER_PLANTS[t.type],potential=Math.round(d.capacity*(t.type==='wind'?1+(t.elevation||0)*.1:1));return{tile:t.y*city.size+t.x,name:d.name,age:t.age,current:plantCapacity(t),potential,nextYear:plantCapacity({...t,age:t.age+12}),stress:t.stress,grid:t.powerNetwork,cost:d.cost};}).sort((a,b)=>b.stress-a.stress||b.age-a.age||a.tile-b.tile);}
