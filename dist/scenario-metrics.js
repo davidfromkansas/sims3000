@@ -1,15 +1,15 @@
-import {BUILDING_UTILITY_METRICS} from './scenario-building-utilities.js?v=city-hall-neighborhood-1';
-import {NEIGHBOR_METRICS} from './scenario-neighbor-metrics.js?v=city-hall-neighborhood-1';
-import {isBuildingLotRoot,buildingLotMembers} from './building-lots.js?v=city-hall-neighborhood-1';
-import {averageWaterPollution,averageRoadTraffic,surplusPower,surplusWater} from './city-measures.js?v=city-hall-neighborhood-1';
-import {outstandingLoanPayments} from './loan-debt.js?v=city-hall-neighborhood-1';
-import {CALENDAR_MONTHS,calendarMonthIndex} from './scenario-calendar.js?v=city-hall-neighborhood-1';
-import {tileIndex} from './city-grid.js?v=city-hall-neighborhood-1';
-import {STRUCTURE_METRICS} from './scenario-structures.js?v=city-hall-neighborhood-1';
-import {inScenarioArea} from './scenario-area.js?v=city-hall-neighborhood-1';
-import {ORDINANCES} from './ordinances.js?v=city-hall-neighborhood-1';
-import {LANDMARKS,landmarkRoots} from './landmarks.js?v=city-hall-neighborhood-1';
-import {businessRoots} from './business.js?v=city-hall-neighborhood-1';
+import {BUILDING_UTILITY_METRICS} from './scenario-building-utilities.js?v=residential-cap-1';
+import {NEIGHBOR_METRICS} from './scenario-neighbor-metrics.js?v=residential-cap-1';
+import {isBuildingLotRoot,buildingLotMembers} from './building-lots.js?v=residential-cap-1';
+import {averageWaterPollution,averageRoadTraffic,surplusPower,surplusWater} from './city-measures.js?v=residential-cap-1';
+import {outstandingLoanPayments} from './loan-debt.js?v=residential-cap-1';
+import {CALENDAR_MONTHS,calendarMonthIndex} from './scenario-calendar.js?v=residential-cap-1';
+import {tileIndex} from './city-grid.js?v=residential-cap-1';
+import {STRUCTURE_METRICS} from './scenario-structures.js?v=residential-cap-1';
+import {inScenarioArea} from './scenario-area.js?v=residential-cap-1';
+import {ORDINANCES} from './ordinances.js?v=residential-cap-1';
+import {LANDMARKS,landmarkRoots} from './landmarks.js?v=residential-cap-1';
+import {businessRoots} from './business.js?v=residential-cap-1';
 export const CUSTOM_METRICS={population:{name:'Population',direction:'at least',max:1000000,initial:400,read:c=>c.stats.population},funds:{name:'Treasury',direction:'at least',min:-1000000000,max:1000000000,initial:50000,read:c=>c.funds},education:{name:'Education',direction:'at least',max:100,initial:60,read:c=>c.civic.education},crime:{name:'Crime',direction:'at most',max:100,initial:20,read:c=>c.stats.averageCrime},pollution:{name:'Air pollution',direction:'at most',max:100,initial:10,read:c=>c.stats.averagePollution},roadCondition:{name:'Road condition',direction:'at least',max:100,initial:80,read:c=>c.finance.roadCondition},aura:{name:'Resident wellbeing',direction:'at least',max:100,initial:60,read:c=>c.stats.aura},lifeExpectancy:{name:'Life expectancy',direction:'at least',min:45,max:90,initial:70,read:c=>c.civic.lifeExpectancy}};
 
 const homesWithout=(c,utility,area)=>c.tiles.filter(t=>inScenarioArea(t,area)&&isBuildingLotRoot(c,t)&&t.type==='residential'&&t.level>0&&!t.rubble&&buildingLotMembers(c,t).some(u=>!u[utility])).length;
