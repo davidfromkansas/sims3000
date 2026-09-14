@@ -1,14 +1,17 @@
-import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=department-policies-1';
-import {healthOutlook} from './health.js?v=department-policies-1';
-import {casinoCrime,businessRoots} from './business.js?v=department-policies-1';
-import {occupancy} from './utilities.js?v=department-policies-1';
+import {advanceEducation,initialAgeEducation,educationWeights,educationServiceDemand,refreshEducationAverages} from './education.js?v=fire-land-value-1';
+import {healthOutlook} from './health.js?v=fire-land-value-1';
+import {casinoCrime,businessRoots} from './business.js?v=fire-land-value-1';
+import {occupancy} from './utilities.js?v=fire-land-value-1';
 // Manual pp.106–113 describes relationships; radii, capacities and rates below are calibration approximations.
 export const SERVICES={police:{name:'Police station',department:'police',cost:500,upkeep:25,radius:9},fire:{name:'Fire station',department:'fire',cost:500,upkeep:25,radius:9},hospital:{name:'Hospital',department:'health',cost:1000,upkeep:40,capacity:1000},school:{name:'School',department:'education',cost:500,upkeep:20,capacity:300},jail:{name:'Jail',department:'police',cost:1500,upkeep:35,capacity:200},college:{name:'College',department:'education',cost:1000,upkeep:35,capacity:500},library:{name:'Library',department:'education',cost:500,upkeep:10,capacity:1000},museum:{name:'Museum',department:'education',cost:1500,upkeep:20,capacity:1500}};
 export function serviceRadius(c,t){const d=SERVICES[t.type];return t.serviceActive&&d?.radius?d.radius*Math.sqrt(c.civic.funding[d.department]/100):0;}
 export const DEPARTMENTS={police:'Police',fire:'Fire',health:'Healthcare',education:'Education'};
-import {ORDINANCES} from './ordinances.js?v=department-policies-1';
-export {ORDINANCES} from './ordinances.js?v=department-policies-1';
+import {ORDINANCES} from './ordinances.js?v=fire-land-value-1';
+export {ORDINANCES} from './ordinances.js?v=fire-land-value-1';
 const clamp=(v,a=0,b=100)=>Math.max(a,Math.min(b,v));
+// Manual p.106 links good fire coverage with land value; eight points is reconstruction tuning.
+export function applyFireLandValue(t){const before=t.landValue;t.landValue=clamp(before+(t.terrain!=='water'&&!t.radiation?t.fireCoverage*.08:0),1,100);t.fireLandBonus=t.landValue-before;}
+
 export const freshCivic=()=>({funding:Object.fromEntries(Object.keys(DEPARTMENTS).map(k=>[k,100])),underfunded:Object.fromEntries(Object.keys(DEPARTMENTS).map(k=>[k,0])),ageEducation:initialAgeEducation(),education:40,youthEducation:40,adultEducation:40,lifeExpectancy:59,ordinances:Object.fromEntries(Object.keys(ORDINANCES).map(k=>[k,false]))});
 export function changeCivic(c,funding,ordinances){if(!funding||Object.keys(DEPARTMENTS).some(k=>!Number.isInteger(funding[k])||funding[k]<0||funding[k]>150)||!ordinances||Object.keys(ORDINANCES).some(k=>typeof ordinances[k]!=='boolean'))return{ok:false,error:'Service funding must be 0–150%; choose valid ordinance settings.'};c.civic.funding=Object.fromEntries(Object.keys(DEPARTMENTS).map(k=>[k,funding[k]]));c.civic.ordinances=Object.fromEntries(Object.keys(ORDINANCES).map(k=>[k,ordinances[k]]));return{ok:true};}
 export const ordinanceCost=(c,key)=>Math.ceil((ORDINANCES[key]?.cost||0)+(ORDINANCES[key]?.perResident||0)*(c.stats.population||0));
@@ -24,12 +27,12 @@ export function recomputeCivic(c){
  // Capacity is shared among homes reached on the same road component, not credited to disconnected neighborhoods.
  for(const t of tiles){const s=SERVICES[t.type];if(!s||!t.serviceActive||!['hospital','school','college','library','museum'].includes(t.type))continue;const served=homes.filter(h=>h.roadIds.some(id=>t.roadIds.includes(id))),people=served.reduce((v,h)=>v+occupancy(h.level)*8,0);if(!people)continue;const demand=t.type==='hospital'?{share:1,field:'healthCoverage'}:educationServiceDemand(c,t.type,population);if(!demand.share)continue;const coverage=100*s.capacity*state.funding[s.department]/100/(people*demand.share);for(const h of served)h[demand.field]+=coverage;}
  // Restore environmental values so repeated civic recomputation cannot compound penalties.
- for(const t of tiles){t.landValue=t.environmentLandValue??t.landValue;t.crimeLandPenalty=0;}
+ for(const t of tiles){t.landValue=t.environmentLandValue??t.landValue;t.crimeLandPenalty=0;t.fireLandBonus=0;}
  for(const jail of tiles.filter(t=>t.type==='jail'))for(const h of homes)if(Math.hypot(jail.x-h.x,jail.y-h.y)<5)h.landValue=clamp(h.landValue-8,1,100);
  let crime=0,fire=0,police=0,health=0,education=0,school=0,child=0,college=0,adult=0,aura=0;
- for(const t of tiles){t.aura=0;t.policeCoverage=clamp(t.policeCoverage);t.fireCoverage=clamp(t.fireCoverage);t.healthCoverage=clamp(t.healthCoverage);t.childEducationCoverage=clamp(t.childEducationCoverage);t.collegeEducationCoverage=clamp(t.collegeEducationCoverage);t.schoolCoverage=educationMix.youth?(t.childEducationCoverage*educationMix.counts[0]+t.collegeEducationCoverage*educationMix.counts[1])/(population*educationMix.youth):0;t.adultEducationCoverage=clamp(t.adultEducationCoverage);t.educationCoverage=t.schoolCoverage*educationMix.youth+t.adultEducationCoverage*educationMix.adult;if(!t.type)continue;
+ for(const t of tiles){t.aura=0;t.policeCoverage=clamp(t.policeCoverage);t.fireCoverage=clamp(t.fireCoverage);t.healthCoverage=clamp(t.healthCoverage);t.childEducationCoverage=clamp(t.childEducationCoverage);t.collegeEducationCoverage=clamp(t.collegeEducationCoverage);t.schoolCoverage=educationMix.youth?(t.childEducationCoverage*educationMix.counts[0]+t.collegeEducationCoverage*educationMix.counts[1])/(population*educationMix.youth):0;t.adultEducationCoverage=clamp(t.adultEducationCoverage);t.educationCoverage=t.schoolCoverage*educationMix.youth+t.adultEducationCoverage*educationMix.adult;if(!t.type){applyFireLandValue(t);continue;}
  t.crime=clamp((35+casinoCrime(casinos,t)+occupancy(t.level)*2+(100-t.landValue)*.12-state.education*.2)*(1-t.policeCoverage/125)*(state.ordinances.watch?.85:1)*(state.ordinances.juniorSports?.95:1));
- const beforeCrime=t.landValue;t.landValue=clamp(t.landValue-t.crime*.2,1,100);t.crimeLandPenalty=beforeCrime-t.landValue;
+ const beforeCrime=t.landValue;t.landValue=clamp(t.landValue-t.crime*.2,1,100);t.crimeLandPenalty=beforeCrime-t.landValue;applyFireLandValue(t);
  if(t.type==='residential'&&t.level){const w=occupancy(t.level)*8;crime+=t.crime*w;police+=t.policeCoverage*w;fire+=t.fireCoverage*w;health+=t.healthCoverage*w;education+=t.educationCoverage*w;school+=t.schoolCoverage*w;child+=t.childEducationCoverage*w;college+=t.collegeEducationCoverage*w;adult+=t.adultEducationCoverage*w;aura+=(t.aura=clamp(50+(state.education-40)*.3+(state.lifeExpectancy-59)*.6-t.crime*.35-t.airPollution*.25+(t.landValue-50)*.3-(c.finance.taxes.residential-7)*3-(state.ordinances.parkingFines?3:0)))*w;}
  }
  const avg=v=>population?v/population:0;

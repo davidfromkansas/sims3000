@@ -1,4 +1,4 @@
-import {expandScenarioText} from './scenario-text.js?v=department-policies-1';
+import {expandScenarioText} from './scenario-text.js?v=fire-land-value-1';
 export function validateGoalText(goal,mode,index){
  const name=goal.name??'',description=goal.description??'',revealWhenActive=goal.revealWhenActive??false;
  if(typeof name!=='string'||name.length>60||/[\x00-\x1f]/.test(name)||typeof description!=='string'||description.length>1500||/[\x00-\x08\x0b\x0c\x0e-\x1f]/.test(description))throw Error('Goal names allow 60 characters; instructions allow 1,500 characters of plain text.');
