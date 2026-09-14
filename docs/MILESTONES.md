@@ -755,3 +755,7 @@ University offers now depend on education alone, arrive on the next qualifying m
 ## Full university campus
 
 Reserve 100 tiles for a new university, with campus-wide placement, service checks, rendering and transport access. Old campuses retain their boundaries. See [milestone details](UNIVERSITY-CAMPUS-MILESTONE.md).
+
+## Stadium as a major city project
+
+Grow to 150,000 residents with strong approval, then fund a 75,000 stadium on a 5×5 lot. Existing offers and stadiums are preserved. See [milestone details](STADIUM-PROJECT-MILESTONE.md).

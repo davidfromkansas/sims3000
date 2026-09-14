@@ -1,5 +1,5 @@
-import {formatScenarioMetric} from './scenario-calendar.js?v=university-campus-1';
-import {CUSTOM_METRICS} from './scenario-metrics.js?v=university-campus-1';
+import {formatScenarioMetric} from './scenario-calendar.js?v=stadium-project-1';
+import {CUSTOM_METRICS} from './scenario-metrics.js?v=stadium-project-1';
 export const STORY_VALUES={
  city:{name:'City name',read:c=>c.name},mayor:{name:'Mayor name',read:c=>c.mayorName},
  year:{name:'Calendar year',read:c=>c.startYear+Math.floor(c.month/12)},

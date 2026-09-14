@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {generateCity} from '../dist/terrain-generator.js';
+import {build,selection,recompute,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {REWARDS,STADIUM_APPROVAL,rewardCondition,advanceRewards,rewardActive,validateRewards,freshRewards} from '../dist/rewards.js';
+import {structureSize} from '../dist/structures.js';
+const blank=()=>{const c=generateCity({startYear:2000,water:0,mountains:0,trees:0});c.funds=300000;return c;};
+const c=blank();Object.assign(c.stats,{population:149999,aura:100,balance:10000});c.month=1;assert.equal(advanceRewards(c).includes('stadium'),false);
+c.stats.population=150000;c.stats.aura=STADIUM_APPROVAL-.000001;c.month=2;assert.equal(advanceRewards(c).includes('stadium'),false);
+c.stats.aura=STADIUM_APPROVAL;c.stats.balance=-10000;c.month=3;assert.equal(rewardCondition(c,'stadium'),true,'profit is not required');assert.equal(advanceRewards(c).includes('stadium'),true,'no invented six-month delay');assert.deepEqual(advanceRewards(c),[]);
+c.stats.population=0;c.stats.aura=0;c.month++;advanceRewards(c);assert.equal(c.rewards.earned.stadium,3);
+assert.ok(build(c,'solar',[{x:10,y:20}]).ok);assert.ok(build(c,'powerline',selection('powerline',{x:14,y:20},{x:19,y:20})).ok);assert.ok(build(c,'road',selection('road',{x:20,y:19},{x:24,y:19})).ok);
+c.funds=74999;const before=serializeCity(c);assert.equal(build(c,'stadium',[{x:20,y:20}]).ok,false);assert.equal(serializeCity(c),before,'unaffordable construction is atomic');
+c.funds=75000;assert.ok(build(c,'stadium',[{x:20,y:20}]).ok);assert.equal(c.funds,0);assert.equal(REWARDS.stadium.size,5);const root=c.tiles[20*48+20],members=c.tiles.filter(t=>t.type==='stadium');assert.equal(members.length,25);assert.ok(members.every(t=>t.stadiumSize===5));assert.ok(rewardActive(c,root));assert.equal(c.stats.civicJobs,200);assert.equal(c.stats.rewardUpkeep,25);
+const saved=JSON.parse(serializeCity(c));assert.equal(saved.version,133);assert.equal(validateSave(saved).stats.civicJobs,200);
+for(const mutate of [s=>delete s.tiles[20*48+20].stadiumSize,s=>s.tiles[24*48+24].stadiumSize=4,s=>s.tiles[24*48+24].type=null,s=>s.tiles[20*48+20].stadiumSize=6]){const bad=structuredClone(saved);mutate(bad);assert.throws(()=>validateSave(bad));}
+const edge=c.tiles[24*48+24];edge.fire=10;recompute(c);assert.equal(c.stats.civicJobs,0);edge.fire=0;recompute(c);assert.equal(c.stats.civicJobs,200);
+c.funds=100000;assert.ok(build(c,'bulldoze',[{x:24,y:24}]).ok);assert.equal(c.tiles.filter(t=>t.type==='stadium').length,0);assert.ok(members.every(t=>t.stadiumSize===undefined));assert.ok(build(c,'stadium',[{x:20,y:20}]).ok);
+const blocked=blank();blocked.rewards.earned.stadium=0;blocked.tiles[24*48+24].type='road';const untouched=serializeCity(blocked);assert.equal(build(blocked,'stadium',[{x:20,y:20}]).ok,false);assert.equal(serializeCity(blocked),untouched);assert.equal(build(blocked,'stadium',[{x:44,y:44}]).ok,false);
+const old=blank();old.version=132;old.rewards.earned.stadium=0;old.rewards.streaks.stadium=6;for(let y=20;y<24;y++)for(let x=20;x<24;x++)Object.assign(old.tiles[y*48+x],{type:'stadium',root:20*48+20});old.tiles[20*48+24].type='road';
+const legacy=validateSave(JSON.parse(serializeCity(old)));assert.equal(structureSize(legacy.tiles[20*48+20]),4);assert.equal(legacy.tiles[20*48+24].type,'road');assert.equal(legacy.tiles.filter(t=>t.type==='stadium').length,16);assert.equal(legacy.rewards.earned.stadium,0);assert.equal(legacy.rewards.streaks.stadium,1);assert.equal(validateSave(JSON.parse(serializeCity(legacy))).tiles[20*48+20].stadiumSize,4);
+const pending=freshRewards();pending.lastMonth=5;pending.streaks.stadium=5;assert.equal(validateRewards(pending,5,132).streaks.stadium,0);pending.streaks.stadium=7;assert.throws(()=>validateRewards(pending,5,132));saved.rewards.streaks.stadium=2;assert.throws(()=>validateSave(saved));
+console.log('PASS: major-city stadium eligibility, normalized aura boundary, no profit gate, 75000 construction, 5×5 footprint, atomic rejection, service loss, demolition and legacy permits/lots.');

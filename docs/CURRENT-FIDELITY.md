@@ -945,3 +945,7 @@ University unlock now uses normalized original EQ eligibility (105/150 → 70/10
 ### University campus — schema 132, 271 suites
 
 New universities now use the original 10×10 footprint, with actual-size commuter access, amenity center, inspection and four-view rendering. Legacy 4×4 campuses are preserved. Existing procedural art is scaled; original detailed art and exact education/proximity formulas remain incomplete.
+
+### Stadium progression and footprint — schema 133, 272 suites
+
+Stadiums now use original population, construction price and footprint, plus the original aura threshold normalized onto the existing approval scale. Invented profit and six-month gates are removed. Old lots and offers migrate. Original aura and detailed proximity formulas remain incomplete.
