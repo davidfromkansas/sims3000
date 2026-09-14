@@ -1,5 +1,5 @@
-import {projectBuildingPoint} from './building-footprints.js?v=live-scenario-comparisons-2';
-import {BUILDING_EDIT_PLANES} from './building-edit-planes.js?v=live-scenario-comparisons-2';
+import {projectBuildingPoint} from './building-footprints.js?v=east-asian-landmarks-1';
+import {BUILDING_EDIT_PLANES} from './building-edit-planes.js?v=east-asian-landmarks-1';
 export const PLANE_WIDGET_COLORS={horizontal:'#49a77e',xz:'#c35c59',yz:'#4c8bc8'};
 export function planeWidgetGeometry(design,positions){
  return Object.keys(BUILDING_EDIT_PLANES).map(plane=>{

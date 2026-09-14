@@ -1,10 +1,10 @@
-import {outstandingLoanPayments} from './loan-debt.js?v=live-scenario-comparisons-2';
-import {REWARDS,rewardSize,rewardRoots,rewardActive,CITY_HALL_EFFECTS} from './rewards.js?v=live-scenario-comparisons-2';
-import {industrialJobs,industryPollution} from './industry.js?v=live-scenario-comparisons-2';
-import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=live-scenario-comparisons-2';
-import {POWER_PLANTS} from './power.js?v=live-scenario-comparisons-2';
-import {civicSpending,ordinanceRevenue} from './civic.js?v=live-scenario-comparisons-2';
-import {occupancy} from './utilities.js?v=live-scenario-comparisons-2';
+import {outstandingLoanPayments} from './loan-debt.js?v=east-asian-landmarks-1';
+import {REWARDS,rewardSize,rewardRoots,rewardActive,CITY_HALL_EFFECTS} from './rewards.js?v=east-asian-landmarks-1';
+import {industrialJobs,industryPollution} from './industry.js?v=east-asian-landmarks-1';
+import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=east-asian-landmarks-1';
+import {POWER_PLANTS} from './power.js?v=east-asian-landmarks-1';
+import {civicSpending,ordinanceRevenue} from './civic.js?v=east-asian-landmarks-1';
+import {occupancy} from './utilities.js?v=east-asian-landmarks-1';
 // Loan terms from manual p. 91. Tax formula from p. 88; calibration constants are original approximations.
 export const SECTORS=['residential','commercial','industrial'];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));

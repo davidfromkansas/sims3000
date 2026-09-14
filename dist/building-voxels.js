@@ -1,11 +1,11 @@
-import {drawBuildingDecals} from './building-decals.js?v=live-scenario-comparisons-2';
-import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=live-scenario-comparisons-2';
-import {blockCornerHeights} from './building-block-geometry.js?v=live-scenario-comparisons-2';
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=live-scenario-comparisons-2';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=live-scenario-comparisons-2';
-import {projectBuildingPoint} from './building-footprints.js?v=live-scenario-comparisons-2';
-import {buildingShapeCells} from './building-shapes.js?v=live-scenario-comparisons-2';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=live-scenario-comparisons-2';
+import {drawBuildingDecals} from './building-decals.js?v=east-asian-landmarks-1';
+import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=east-asian-landmarks-1';
+import {blockCornerHeights} from './building-block-geometry.js?v=east-asian-landmarks-1';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=east-asian-landmarks-1';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=east-asian-landmarks-1';
+import {projectBuildingPoint} from './building-footprints.js?v=east-asian-landmarks-1';
+import {buildingShapeCells} from './building-shapes.js?v=east-asian-landmarks-1';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=east-asian-landmarks-1';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;

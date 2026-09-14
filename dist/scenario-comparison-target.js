@@ -1,4 +1,4 @@
-import {validateScenarioArea,scenarioAreaLabel} from './scenario-area.js?v=live-scenario-comparisons-2';
+import {validateScenarioArea,scenarioAreaLabel} from './scenario-area.js?v=east-asian-landmarks-1';
 export function validateComparisonTarget(condition,metric,metrics,size,limit){
  if(condition.right===undefined){
   const target=condition.target;

@@ -1,7 +1,7 @@
-import {WATER_STRUCTURES} from './utilities.js?v=live-scenario-comparisons-2';
-import {waterBaseNeed} from './utility-demand.js?v=live-scenario-comparisons-2';
-import {conservationDemand} from './conservation.js?v=live-scenario-comparisons-2';
-import {pipeCoverage} from './water-coverage.js?v=live-scenario-comparisons-2';
+import {WATER_STRUCTURES} from './utilities.js?v=east-asian-landmarks-1';
+import {waterBaseNeed} from './utility-demand.js?v=east-asian-landmarks-1';
+import {conservationDemand} from './conservation.js?v=east-asian-landmarks-1';
+import {pipeCoverage} from './water-coverage.js?v=east-asian-landmarks-1';
 const number=n=>n.toLocaleString('en-US',{maximumFractionDigits:1});
 export function waterGridData(city){
  const groups=(city.stats.waterNetworks||[]).map((g,id)=>({...g,id,nodes:[],pipes:[],sources:[]})),uncovered=[];

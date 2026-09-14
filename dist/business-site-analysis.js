@@ -1,7 +1,7 @@
-import {build,validateSave} from './engine.js?v=live-scenario-comparisons-2';
-import {serializeCity} from './save.js?v=live-scenario-comparisons-2';
-import {BUSINESSES,businessOffer} from './business.js?v=live-scenario-comparisons-2';
-import {neighborhoodSnapshot} from './neighborhood-report.js?v=live-scenario-comparisons-2';
+import {build,validateSave} from './engine.js?v=east-asian-landmarks-1';
+import {serializeCity} from './save.js?v=east-asian-landmarks-1';
+import {BUSINESSES,businessOffer} from './business.js?v=east-asian-landmarks-1';
+import {neighborhoodSnapshot} from './neighborhood-report.js?v=east-asian-landmarks-1';
 export function analyzeBusinessSite(city,type,point){
  if(!Object.hasOwn(BUSINESSES,type))throw Error('Choose a business deal.');
  if(!Number.isInteger(point?.x)||!Number.isInteger(point?.y)||point.x<0||point.y<0||point.x>=city.size||point.y>=city.size)throw Error('Choose whole tile coordinates inside the city.');

@@ -1,4 +1,4 @@
-import {tick} from './engine.js?v=live-scenario-comparisons-2';
+import {tick} from './engine.js?v=east-asian-landmarks-1';
 const TILE_BATCH=2048;
 let transfer=null;
 self.onmessage=({data})=>{

@@ -1,5 +1,5 @@
-import {defaultScenarioVariables,MAX_SCENARIO_VARIABLES} from './scenario-variables.js?v=live-scenario-comparisons-2';
-import {scenarioVariableIndex} from './scenario-variable-references.js?v=live-scenario-comparisons-2';
+import {defaultScenarioVariables,MAX_SCENARIO_VARIABLES} from './scenario-variables.js?v=east-asian-landmarks-1';
+import {scenarioVariableIndex} from './scenario-variable-references.js?v=east-asian-landmarks-1';
 
 export function mountScenarioVariableEditor(root,{scope=document,programEditor,initial=defaultScenarioVariables(),onChange=()=>{}}={}){
  let variables=structuredClone(initial),rows=[];

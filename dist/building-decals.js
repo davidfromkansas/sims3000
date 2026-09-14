@@ -1,7 +1,7 @@
-import {roofDetailPolygonsOnFace} from './building-roof-details.js?v=live-scenario-comparisons-2';
-import {clipPolygon} from './building-decal-clipping.js?v=live-scenario-comparisons-2';
-import {projectBuildingPoint} from './building-footprints.js?v=live-scenario-comparisons-2';
-import {drawBuildingSurfaceDetail} from './building-surface-details.js?v=live-scenario-comparisons-2';
+import {roofDetailPolygonsOnFace} from './building-roof-details.js?v=east-asian-landmarks-1';
+import {clipPolygon} from './building-decal-clipping.js?v=east-asian-landmarks-1';
+import {projectBuildingPoint} from './building-footprints.js?v=east-asian-landmarks-1';
+import {drawBuildingSurfaceDetail} from './building-surface-details.js?v=east-asian-landmarks-1';
 export const MAX_BUILDING_DECALS=32;
 export const DECAL_NAMES=['','Framed window','Entrance door','Vent grille','Window with ledge','Cornice'];
 const bounded=(v,min,max)=>Number.isFinite(v)&&v>=min&&v<=max&&Math.abs(v*1000-Math.round(v*1000))<1e-7;

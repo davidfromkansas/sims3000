@@ -53,3 +53,8 @@ Run `node scripts/audit-landmark-coverage.mjs` to compare the inventory with run
 This inventory is a development artifact, not a menu of unavailable buildings or a completeness claim. A runtime mapping establishes presence only. The audit rejects duplicate names, missing sources, stale mappings, multiple entries sharing one runtime type, and runtime types omitted from the inventory.
 
 Skyline batch update: Empire State Building and CN Tower now map to runtime types, bringing coverage to thirteen mapped entries and 87 unmapped inventory entries. CN Tower’s directory-source discrepancy remains flagged. Both models use authored 3×3 footprints and passed focused gameplay/gallery/renderer checks; eight enlarged directional views were inspected. Browser acceptance remains pending.
+
+
+## East Asian collection milestone
+
+The working catalog now maps 25 of the 100 inventory entries, leaving 75 unmapped. Himeji Castle, Geunjeongjeon Hall (inventory Kunjungjon), and Chiang Kai-shek Memorial Hall add original directional models and authored 4 × 4 lots. Four-view browser review, real saved challenge victory and the full registered regression set passed; see EAST-ASIAN-LANDMARKS-MILESTONE.md for run boundaries and art sources. Catalog presence is not proof of original composition or dimensions.

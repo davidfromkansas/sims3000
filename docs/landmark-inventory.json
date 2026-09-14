@@ -561,7 +561,7 @@
       "name": "CKS Memorial Hall",
       "edition": "unlimited-addition",
       "directorySource": "prima",
-      "runtimeType": null,
+      "runtimeType": "cksMemorialHall",
       "originalFootprint": null
     },
     {
@@ -598,7 +598,7 @@
       "name": "Himeji Castle",
       "edition": "unlimited-addition",
       "directorySource": "prima",
-      "runtimeType": null,
+      "runtimeType": "himejiCastle",
       "originalFootprint": null
     },
     {
@@ -619,7 +619,7 @@
       "name": "Kunjungjon",
       "edition": "unlimited-addition",
       "directorySource": "prima",
-      "runtimeType": null,
+      "runtimeType": "geunjeongjeon",
       "originalFootprint": null
     },
     {
