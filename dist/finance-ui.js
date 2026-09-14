@@ -1,9 +1,9 @@
-import {showFinancialAdvisor} from './financial-advisor.js?v=stock-exchange-1';
-import {loanScheduleReport} from './loan-schedule.js?v=stock-exchange-1';
-import {disasterReliefReport} from './disaster-relief.js?v=stock-exchange-1';
-import {businessIncomeReport} from './business.js?v=stock-exchange-1';
-import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=stock-exchange-1';
-import {applyBudget,borrow} from './engine.js?v=stock-exchange-1';
+import {showFinancialAdvisor} from './financial-advisor.js?v=science-center-2';
+import {loanScheduleReport} from './loan-schedule.js?v=science-center-2';
+import {disasterReliefReport} from './disaster-relief.js?v=science-center-2';
+import {businessIncomeReport} from './business.js?v=science-center-2';
+import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=science-center-2';
+import {applyBudget,borrow} from './engine.js?v=science-center-2';
 const names={residential:'Residential',commercial:'Commercial',industrial:'Industrial'};
 export function showFinance(ui){
  const {city,dialog,close,update,save,clearUndo,notify,review}=ui,c=city(),fmt=n=>'§'+Math.round(n).toLocaleString(),$=s=>document.querySelector(s),f=c.finance;

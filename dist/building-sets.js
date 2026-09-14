@@ -1,7 +1,7 @@
-import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=stock-exchange-1';
-import {validateBuildingDesigns} from './building-designs.js?v=stock-exchange-1';
-import {parseBuildingSlot} from './building-footprints.js?v=stock-exchange-1';
-import {isBuildingLotRoot} from './building-lots.js?v=stock-exchange-1';
+import {validateBuildingReplacements,canReplaceBuilding,buildingStyleKey,REPLACEABLE_STYLES} from './building-art.js?v=science-center-2';
+import {validateBuildingDesigns} from './building-designs.js?v=science-center-2';
+import {parseBuildingSlot} from './building-footprints.js?v=science-center-2';
+import {isBuildingLotRoot} from './building-lots.js?v=science-center-2';
 
 // Read an already validated city. Both maps are copied and validated before
 // either is installed, so a failed import cannot partly change the skyline.

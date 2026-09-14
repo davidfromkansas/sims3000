@@ -1,8 +1,8 @@
-import {civicSize} from './civic-footprints.js?v=stock-exchange-1';
-import {REWARDS,rewardSize} from './rewards.js?v=stock-exchange-1';
-import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=stock-exchange-1';
-import {tunnelEdges,routeLength} from './tunnels.js?v=stock-exchange-1';
-import {MinQueue} from './highway.js?v=stock-exchange-1';
+import {civicSize} from './civic-footprints.js?v=science-center-2';
+import {REWARDS,rewardSize} from './rewards.js?v=science-center-2';
+import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=science-center-2';
+import {tunnelEdges,routeLength} from './tunnels.js?v=science-center-2';
+import {MinQueue} from './highway.js?v=science-center-2';
 export const STATIONS={trainStation:{name:'Train station',cost:500,upkeep:10},subwayStation:{name:'Subway station',cost:500,upkeep:10},railTransfer:{name:'Rail–subway connection',cost:1000,upkeep:20}};
 export function railNetwork(c){
  const tiles=c.tiles,N=tiles.length,n=Math.sqrt(N),enabled=c.transport.funding>0&&c.transport.condition>20&&c.transport.underfunded<6,edges=Array.from({length:N*2},()=>[]),present=i=>i<N?tiles[i].rail:tiles[i-N].subway;

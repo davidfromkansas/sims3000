@@ -1,8 +1,8 @@
-import {geyserPlumePixels} from './geyser-plume.js?v=stock-exchange-1';
-import {WHEEL,themeParkRidePixels} from './theme-park-rides.js?v=stock-exchange-1';
-import {stadiumMatchPixels} from './stadium-match.js?v=stock-exchange-1';
-import {rasterizeMiniature} from './miniature-raster.js?v=stock-exchange-1';
-export const MODELED_REWARDS=new Set(['stockExchange','geyserPark','themePark','countryClub','historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
+import {geyserPlumePixels} from './geyser-plume.js?v=science-center-2';
+import {WHEEL,themeParkRidePixels} from './theme-park-rides.js?v=science-center-2';
+import {stadiumMatchPixels} from './stadium-match.js?v=science-center-2';
+import {rasterizeMiniature} from './miniature-raster.js?v=science-center-2';
+export const MODELED_REWARDS=new Set(['scienceCenter','stockExchange','geyserPark','themePark','countryClub','historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){
  if(!MODELED_REWARDS.has(type))throw Error('Unknown reward model.');
@@ -12,7 +12,33 @@ export function rewardGeometry(type){
  const hall=(x,y,w,d,h,color)=>{box(x,y,.05,w,d,h,color);roof(x,y,h+.05,w+.02,d+.02,.075,'#647c83');for(const side of [-1,1])for(let i=0;i<Math.floor(w/.07);i++)for(const z of [.12,.23])if(z+.045<h+.05)box(x-w/2+.045+i*.07,y+side*(d/2+.003),z,.028,.007,.048,'#547e8a');};
  const tree=(x,y)=>{box(x,y,.06,.015,.015,.09,'#796449');for(const [z,w]of [[.14,.085],[.19,.065],[.23,.035]])box(x,y,z,w,w,.035,'#537a50');};
  box(0,0,0,.97,.97,.04,'#aaa993');box(0,0,.04,.93,.93,.015,'#81966d');
- if(type==='stockExchange'){
+ if(type==='scienceCenter'){
+  // Original research pavilion: copper planetarium, glazed labs and solar courtyard.
+  box(0,0,.055,.90,.90,.012,'#c4c7b9');
+  box(.13,-.13,.07,.47,.47,.20,'#d9d7c7');
+  box(.13,-.13,.27,.51,.51,.025,'#aabdbb');
+  for(const side of [-1,1])for(let i=0;i<6;i++){
+   box(-.07+i*.08,-.13+side*.237,.105,.049,.007,.13,'#639ca9');
+   box(.13+side*.237,-.33+i*.08,.105,.007,.049,.13,'#568a9a');
+  }
+  // Faceted hemispherical planetarium with distinct latitude bands.
+  const cx=-.20,cy=.08,r=.235,base=.15;
+  box(cx,cy,.07,.43,.43,.08,'#91a4a0');
+  for(let band=0;band<8;band++)for(let i=0;i<32;i++){
+   const point=(b,j)=>{const phi=b*Math.PI/16,a=j*Math.PI/16;return[cx+r*Math.cos(phi)*Math.cos(a),cy+r*Math.cos(phi)*Math.sin(a),base+r*Math.sin(phi)];};
+   add([point(band,i),point(band,i+1),point(band+1,i+1),point(band+1,i)],shade(band%2?'#81b3ab':'#75a59f',.80+.18*Math.sin(i*Math.PI/16)));
+  }
+  box(.08,.27,.075,.25,.22,.11,'#d8d7c4');
+  for(let i=0;i<5;i++)box(-.02+i*.05,.383,.09,.034,.009,.08,'#5d8a98');
+  box(.08,.27,.185,.28,.25,.015,'#a8bcb6');
+  box(.10,.405,.067,.26,.06,.015,'#d6cdb5');
+  for(const x of [.03,.14,.25])for(const y of [-.25,-.13]){
+   box(x,y,.295,.007,.007,.04,'#526b72');
+   add([[x-.043,y-.035,.34],[x+.043,y-.035,.34],[x+.043,y+.035,.32],[x-.043,y+.035,.32]],'#365e81');
+  }
+  for(const [x,y]of [[-.39,-.36],[.39,.31],[-.36,.36]])tree(x,y);
+  box(.39,.01,.07,.025,.12,.08,'#639d99');box(.39,.01,.15,.05,.05,.055,'#91c1b7');
+ }else if(type==='stockExchange'){
   // Original exchange hall with stone colonnade and stepped glass trading offices.
   box(0,0,.055,.88,.86,.012,'#c6c4b0');
   for(let i=0;i<4;i++)box(0,.31+i*.025,.07,.58+i*.045,.15-i*.025,.012*(4-i),'#d2cbb3');

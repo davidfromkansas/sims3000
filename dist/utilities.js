@@ -1,14 +1,14 @@
-import {facilityWasteProduction} from './facilities.js?v=stock-exchange-1';
-import {powerWasteProduction} from './power.js?v=stock-exchange-1';
-import {publicSpaceWasteProduction} from './public-space-waste.js?v=stock-exchange-1';
-import {civicWasteProduction} from './civic-waste.js?v=stock-exchange-1';
-import {rewardWasteProduction,garbageSourceRoads} from './reward-waste.js?v=stock-exchange-1';
-import {landfillRailFreight} from './rail-freight.js?v=stock-exchange-1';
-import {waterBaseNeed} from './utility-demand.js?v=stock-exchange-1';
-import {pipeCoverage} from './water-coverage.js?v=stock-exchange-1';
-import {conservationDemand} from './conservation.js?v=stock-exchange-1';
-import {industrialJobs} from './industry.js?v=stock-exchange-1';
-import {tradeCapacity} from './region.js?v=stock-exchange-1';
+import {facilityWasteProduction} from './facilities.js?v=science-center-2';
+import {powerWasteProduction} from './power.js?v=science-center-2';
+import {publicSpaceWasteProduction} from './public-space-waste.js?v=science-center-2';
+import {civicWasteProduction} from './civic-waste.js?v=science-center-2';
+import {rewardWasteProduction,garbageSourceRoads} from './reward-waste.js?v=science-center-2';
+import {landfillRailFreight} from './rail-freight.js?v=science-center-2';
+import {waterBaseNeed} from './utility-demand.js?v=science-center-2';
+import {pipeCoverage} from './water-coverage.js?v=science-center-2';
+import {conservationDemand} from './conservation.js?v=science-center-2';
+import {industrialJobs} from './industry.js?v=science-center-2';
+import {tradeCapacity} from './region.js?v=science-center-2';
 // Manual pp. 16–17, 103, 115, 117–118. Capacities/rates are explicit model approximations.
 export const WATER_CAPACITY=500,LANDFILL_CAPACITY=200,LANDFILL_DECAY=.5;
 export const occupancy=level=>[0,1,3,8][level]||0;
