@@ -1,6 +1,6 @@
 # Building Architect: remaining acceptance requirements
 
-This is a bounded audit of editor gaps, not a percentage-complete estimate or a replacement for the whole-game goal. Source: [user-supplied manual](https://excalet.com/technology/game_manuals/simcity_3000_unlimited.pdf), printed pages 143–152. Runtime evidence was inspected at cache architecture-collection-53, schema 156.
+This is a bounded audit of editor gaps, not a percentage-complete estimate or a replacement for the whole-game goal. Source: [user-supplied manual](https://excalet.com/technology/game_manuals/simcity_3000_unlimited.pdf), printed pages 143–152. Runtime evidence was inspected at cache architecture-collection-55, schema 156.
 
 | Manual requirement | Current evidence | Remaining acceptance |
 | --- | --- | --- |
@@ -11,7 +11,7 @@ This is a bounded audit of editor gaps, not a percentage-complete estimate or a 
 | Detail lower-left anchor and edge cropping (p.148) | Legacy tile details coexist with `building-decals.js` wall-plane records and convex clipping, schema 152/portable format 13 | Saved anchored wall details now span coplanar faces with exposed-face clipping and support width/height, sampling, erasure and Undo. Composed block/layer Apply/save tests and a four-view review passed. Cursor-position wall anchors now use fractional coordinates, with optional tile snapping and a precise crosshair. Tests cover four rotations, all 25 footprints, scaled/panned pointers and saved retention. Variable-size skylights and vents now use plane-aware roof clipping and shared history, with composed-control/save coverage. Remaining: visual/browser targeting and overlap review. |
 | Detail sets including doors, windows, cornice and ledges (p.149) | Five authored anchored detail designs: framed window, entrance door, grille, window with ledge and cornice | Five visual buttons and authored sets now use runtime polygons, with sampled-selection reveal, disabled state and cached color refresh. The full original detail catalog and browser acceptance remain unverified. |
 | Prop placement, clipping, sampling and group erasure (pp.149–151) | Twelve original props, clipping and composed editor tests | Full original prop inventory and exact original clipping semantics remain unverified. Browser review at actual scale is pending. |
-| Navigation overview and Construct widgets (p.152) | Rectangular viewport overview, zoom, pan, rotation and edit-plane tools | Original Construct-mode hexagonal frame/widget behavior is absent. Browser layout, text enlargement and keyboard acceptance remain pending. |
+| Navigation overview and Construct widgets (p.152) | Rectangular viewport overview, zoom, pan, rotation and edit-plane tools; colored model handles now drag all three layered cross-sections | Direct edit-plane dragging now has 36 geometry/pointer cases plus a composed selector/slider synchronization check. The Move layered edit planes tool now has six-sided overview framing, blocked overview recentering and pointer-driven edge panning. Frame proportions and the dedicated tool activation are authored web adaptations; visual/browser acceptance remains pending. Browser layout, text enlargement and keyboard acceptance remain pending. |
 
 ## Next substantial editor acceptance
 

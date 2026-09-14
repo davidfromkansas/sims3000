@@ -1,4 +1,4 @@
-import {projectMiniature,rasterizeMiniature} from './miniature-raster.js?v=architecture-collection-53';
+import {projectMiniature,rasterizeMiniature} from './miniature-raster.js?v=architecture-collection-55';
 export const MODELED_POWER=new Set(['coal','oil','gas','nuclear','wind','solar','microwave','fusion']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function powerGeometry(type,includeRotor=true){

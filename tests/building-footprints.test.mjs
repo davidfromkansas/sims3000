@@ -176,3 +176,14 @@ for(const layered of [false,true]){
  node(layered?'voxelUndo':'blockUndo').onclick();node('applyDesign').onclick();assert.equal(city.buildingDesigns[2].roofDetails.length,1);
 }
 console.log('PASS: composed roof-detail placement, draft isolation, exact anchor, sizing, sampling, erase/Undo/Redo, field edits and city-save continuity for blocks and layers.');
+// Drag a model-space plane widget through the complete designer.
+{
+ const city=createCity(),model={...defaultBuildingDesign(2),voxels:Array(100).fill(1)};city.buildingDesigns[2]=model;
+ showBuildingDesigner({city,dialog(){node('designSource').value='2';node('designFootprint').value='1x1';},apply(){},close(){}},2);
+ const canvas=node('designPreview');Object.assign(canvas,{getBoundingClientRect:()=>({left:0,top:0,width:256,height:384}),focus(){},setPointerCapture(){}});
+ node('voxelGrid').dataset={};node('previewTool').value='construct';node('previewTool').onchange();
+ const {planeWidgetGeometry}=await import('../dist/building-plane-widgets.js'),g=planeWidgetGeometry({...model,rotation:0},{horizontal:0,xz:0,yz:0}).find(g=>g.plane==='xz'),event=p=>({button:0,pointerId:201,clientX:p[0],clientY:p[1],preventDefault(){}});
+ canvas.onpointerdown(event(g.center));canvas.onpointermove(event(g.center.map((n,i)=>n+g.step[i]*4)));canvas.onpointerup(event(g.center));
+ assert.equal(node('voxelPlane').value,'xz');assert.equal(node('voxelLevel').value,'5');assert.equal(node('voxelPlaneSlider').value,'5');assert.deepEqual(city.buildingDesigns[2],model);node('applyDesign').onclick();assert.deepEqual(city.buildingDesigns[2],model,'navigation-only changes do not change the applied design');
+}
+console.log('PASS: composed model widget updates the cross-section selector, position and slider without changing the building.');

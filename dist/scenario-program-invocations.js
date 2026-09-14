@@ -1,5 +1,5 @@
-import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=architecture-collection-53';
-import {validateProgramInvocation,programActionSources,programInvocationFinished,pendingProgramMessage} from './scenario-program-history.js?v=architecture-collection-53';
+import {compileGameScenarioPrograms} from './scenario-program-definitions.js?v=architecture-collection-55';
+import {validateProgramInvocation,programActionSources,programInvocationFinished,pendingProgramMessage} from './scenario-program-history.js?v=architecture-collection-55';
 // The enclosing scenario validator must validate event definitions first. Event
 // runs count started occurrences; active invocations separately block victory.
 export function validateProgramInvocations(value,definition,eventStates,startMonth,month){

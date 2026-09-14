@@ -1,6 +1,6 @@
-import {buildingLotMembers} from './building-lots.js?v=architecture-collection-53';
-import {occupancy} from './utilities.js?v=architecture-collection-53';
-import {industrialJobs} from './industry.js?v=architecture-collection-53';
+import {buildingLotMembers} from './building-lots.js?v=architecture-collection-55';
+import {occupancy} from './utilities.js?v=architecture-collection-55';
+import {industrialJobs} from './industry.js?v=architecture-collection-55';
 // A rectangular lot has one frontmost corner in each quarter-turn view.
 // Select it directly instead of sorting every member for every drawn tile.
 export function buildingLotPlacement(renderer,t){const city=renderer.getCity(),lot=city.buildingLots?.get(t.lotRoot);if(!lot)return null;const rotation=((renderer.rotation%4)+4)%4,endX=lot.x+(rotation===0||rotation===1?lot.width-1:0),endY=lot.y+(rotation===0||rotation===3?lot.height-1:0);if(t!==city.tiles[endY*city.size+endX])return null;const center=renderer.project(lot.x+(lot.width-1)/2,lot.y+(lot.height-1)/2);return{lot,root:city.tiles[lot.root],center,scale:(lot.width+lot.height)/2};}

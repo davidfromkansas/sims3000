@@ -1,10 +1,10 @@
-import {mountCustomBuildingLibrary} from './custom-building-library-ui.js?v=architecture-collection-53';
-import {DIRECTIONAL_BUILDINGS,directionalBuildingSprite,loadDirectionalBuilding} from './directional-buildings.js?v=architecture-collection-53';
-import {parseBuildingSlot,sameBuildingFootprint} from './building-footprints.js?v=architecture-collection-53';
-import {isBuildingLotRoot} from './building-lots.js?v=architecture-collection-53';
-import {buildingDesignCanvas,defaultLotDesign,importBuildingDesign,applyBuildingDesign} from './building-designs.js?v=architecture-collection-53';
-import {buildingStyleKey,REPLACEABLE_STYLES,replaceBuildingStyle,canReplaceBuilding} from './building-art.js?v=architecture-collection-53';
-export {canReplaceBuilding} from './building-art.js?v=architecture-collection-53';
+import {mountCustomBuildingLibrary} from './custom-building-library-ui.js?v=architecture-collection-55';
+import {DIRECTIONAL_BUILDINGS,directionalBuildingSprite,loadDirectionalBuilding} from './directional-buildings.js?v=architecture-collection-55';
+import {parseBuildingSlot,sameBuildingFootprint} from './building-footprints.js?v=architecture-collection-55';
+import {isBuildingLotRoot} from './building-lots.js?v=architecture-collection-55';
+import {buildingDesignCanvas,defaultLotDesign,importBuildingDesign,applyBuildingDesign} from './building-designs.js?v=architecture-collection-55';
+import {buildingStyleKey,REPLACEABLE_STYLES,replaceBuildingStyle,canReplaceBuilding} from './building-art.js?v=architecture-collection-55';
+export {canReplaceBuilding} from './building-art.js?v=architecture-collection-55';
 function preview(renderer,index,footprint={width:1,height:1},rotation=renderer.rotation){const s=DIRECTIONAL_BUILDINGS[index]?directionalBuildingSprite(renderer,index,footprint,rotation):renderer.sprites[index];if(!s)return DIRECTIONAL_BUILDINGS[index]?buildingDesignCanvas(defaultLotDesign(index,footprint),rotation).toDataURL('image/png'):'';const canvas=document.createElement('canvas');canvas.width=180;canvas.height=200;const ctx=canvas.getContext('2d'),scale=Math.min(160/s.w,180/s.h);ctx.drawImage(s.atlas,s.x,s.y,s.w,s.h,(180-s.w*scale)/2,190-s.h*scale,s.w*scale,s.h*scale);return canvas.toDataURL('image/png');}
 export function showBuildingReplacement({city,renderer,dialog,apply,back,draftMode=false},tile){
  const key=typeof tile==='string'?tile:buildingStyleKey(city,tile),{source,footprint}=parseBuildingSlot(key),current=city.buildingReplacements?.[key]??source,style=REPLACEABLE_STYLES[source],count=city.tiles.filter(t=>canReplaceBuilding(t)&&isBuildingLotRoot(city,t)&&buildingStyleKey(city,t)===key).length;let pointerHeld=false,keyHeld=false,imported=false,request=0,draft=city.buildingDesigns?.[key];let rotation=renderer.rotation,showCustom=Boolean(city.buildingDesigns?.[key]);const artwork=index=>DIRECTIONAL_BUILDINGS[index]?preview(renderer,index,footprint,rotation):footprint.width===1&&footprint.height===1?preview(renderer,index,footprint,rotation):buildingDesignCanvas(defaultLotDesign(index,footprint),rotation).toDataURL('image/png');

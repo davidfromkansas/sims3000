@@ -1,9 +1,9 @@
-import {showFinancialAdvisor} from './financial-advisor.js?v=architecture-collection-53';
-import {loanScheduleReport} from './loan-schedule.js?v=architecture-collection-53';
-import {disasterReliefReport} from './disaster-relief.js?v=architecture-collection-53';
-import {businessIncomeReport} from './business.js?v=architecture-collection-53';
-import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=architecture-collection-53';
-import {applyBudget,borrow} from './engine.js?v=architecture-collection-53';
+import {showFinancialAdvisor} from './financial-advisor.js?v=architecture-collection-55';
+import {loanScheduleReport} from './loan-schedule.js?v=architecture-collection-55';
+import {disasterReliefReport} from './disaster-relief.js?v=architecture-collection-55';
+import {businessIncomeReport} from './business.js?v=architecture-collection-55';
+import {annualAccounts,setAutoBudget,budgetForecast,SECTORS} from './economy.js?v=architecture-collection-55';
+import {applyBudget,borrow} from './engine.js?v=architecture-collection-55';
 const names={residential:'Residential',commercial:'Commercial',industrial:'Industrial'};
 export function showFinance(ui){
  const {city,dialog,close,update,save,clearUndo,notify,review}=ui,c=city(),fmt=n=>'§'+Math.round(n).toLocaleString(),$=s=>document.querySelector(s),f=c.finance;

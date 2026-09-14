@@ -16,3 +16,9 @@ assert.equal(design.floors,defaultBuildingDesign().floors,'navigation leaves mod
 console.log('PASS: whole-model overview, inverse viewport frame, CSS-scaled recentering, keyboard movement/reset, preserved zoom, artwork reuse and model/view invalidation.');
 
 for(let i=0;i<10;i++)controls.zoomOut.onclick();assert.equal(camera.state.zoom,.5);assert.deepEqual(rect.map(v=>v||0),[0,0,256,384],'zooming out beyond the model keeps a full overview frame visible');
+let construct=true,hex=[],strokes=0;context.beginPath=()=>{hex=[];};context.moveTo=(x,y)=>hex.push([x,y]);context.lineTo=(x,y)=>hex.push([x,y]);context.stroke=()=>{strokes++;};
+overview=mountBuildingOverview(canvas,{get:()=>design,camera:()=>camera.state,center:p=>camera.center(p),reset:()=>camera.reset(),construct:()=>construct});overview.draw();assert.equal(hex.length,6);assert.ok(hex.every(([x,y])=>x>=0&&x<=256&&y>=0&&y<=384));assert.match(canvas['aria-label'],/Construct view/);
+const frozen={...camera.state};canvas.onpointerdown(event());canvas.onkeydown(event('ArrowRight'));assert.deepEqual(camera.state,frozen,'construct overview cannot reposition the view');
+camera.pan(-30,20);assert.ok(strokes>1);const moved=overviewViewport(camera.state);assert.notDeepEqual(moved,overviewViewport(frozen));
+construct=false;overview.draw();canvas.onpointerdown(event());assert.notDeepEqual(camera.state,{...frozen,x:frozen.x-30,y:frozen.y+20},'ordinary overview remains interactive');
+console.log('PASS: six-sided Construct overview follows camera panning, disables preview recentering, preserves ordinary interaction and describes its controls accessibly.');

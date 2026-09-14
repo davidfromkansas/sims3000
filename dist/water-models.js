@@ -1,4 +1,4 @@
-import {rasterizeMiniature} from './miniature-raster.js?v=architecture-collection-53';
+import {rasterizeMiniature} from './miniature-raster.js?v=architecture-collection-55';
 export const MODELED_WATER=new Set(['pump','waterTower','desalination','waterTreatment']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function waterGeometry(type){
