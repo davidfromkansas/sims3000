@@ -1,11 +1,11 @@
-import {jailCapacity,jailReport} from './jail.js?v=medical-research-center-1';
-import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=medical-research-center-1';
-import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=medical-research-center-1';
-import {SERVICE_JOBS} from './civic-jobs.js?v=medical-research-center-1';
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=medical-research-center-1';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=medical-research-center-1';
-import {occupancy} from './utilities.js?v=medical-research-center-1';
-import {educationServiceDemand} from './education.js?v=medical-research-center-1';
+import {jailCapacity,jailReport} from './jail.js?v=university-neighborhood-1';
+import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=university-neighborhood-1';
+import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=university-neighborhood-1';
+import {SERVICE_JOBS} from './civic-jobs.js?v=university-neighborhood-1';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=university-neighborhood-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=university-neighborhood-1';
+import {occupancy} from './utilities.js?v=university-neighborhood-1';
+import {educationServiceDemand} from './education.js?v=university-neighborhood-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  t=civicRoot(c,t);const definition=SERVICES[t.type];if(!definition)return null;

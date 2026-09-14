@@ -1,4 +1,4 @@
-import {NEIGHBORS,connectionCandidates} from './region.js?v=medical-research-center-1';
+import {NEIGHBORS,connectionCandidates} from './region.js?v=university-neighborhood-1';
 const cap=s=>s[0].toUpperCase()+s.slice(1);
 const same=(a,b)=>a.tile===b.tile&&a.kind===b.kind&&a.side===b.side;
 export function neighborConnectionActive(c,side,kind){const registered=c.region.connections.filter(p=>p.side===side&&p.kind===kind);if(!registered.length)return 0;const available=connectionCandidates(c);return registered.some(p=>available.some(q=>same(p,q)))?1:0;}
