@@ -19,3 +19,5 @@ Income and expenses remain fixed at current city conditions. Construction, futur
 All 232 regression suites passed; the final payment-timing wording also passed the targeted advisor suite. Tests compare all 120 projected months with actual settlement of staggered loans through maturity, verify year-end forecast agreement, and cover initial debt, future shortages with positive operating income, recurring deficits, policy advice, portrait PNG dimensions, read-only state preservation and UI horizon/navigation callbacks. The original portrait was visually inspected. Browser playtesting was unavailable because the Mac remains locked.
 
 Save schema remains 122. This is a GitHub/local-preview milestone; Sites publication remains blocked pending explicit source-export authorization.
+
+Browser follow-up during the zone-growth milestone verified the portrait layout, switching from one to ten years (ending treasury §50,180 for the unchanged starter city), and return to budget.

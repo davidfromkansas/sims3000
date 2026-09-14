@@ -17,3 +17,5 @@ All 230 regression suites passed before the final markup and button-label adjust
 Browser review found a global header style interfering with the portrait layout. Replacing that semantic wrapper with a scoped div resolved the overlap, and Maria's final layout was visually checked. Remaining Randall and shortcut browser checks were interrupted by the Mac locking; callback behavior is covered in tests. No user city was changed or saved during this review.
 
 Save schema remains 122; cache token is civic-advisors-2. GitHub/local-preview milestone only: Sites publication remains blocked pending explicit source-export authorization.
+
+Browser follow-up during the zone-growth milestone verified Randall’s portrait layout, return from policy comparison, and Plan hospital selecting the hospital tool without spending or saving.
