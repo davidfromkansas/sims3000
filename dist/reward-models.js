@@ -1,6 +1,7 @@
-import {stadiumMatchPixels} from './stadium-match.js?v=country-club-1';
-import {rasterizeMiniature} from './miniature-raster.js?v=country-club-1';
-export const MODELED_REWARDS=new Set(['countryClub','historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
+import {WHEEL,themeParkRidePixels} from './theme-park-rides.js?v=theme-park-1';
+import {stadiumMatchPixels} from './stadium-match.js?v=theme-park-1';
+import {rasterizeMiniature} from './miniature-raster.js?v=theme-park-1';
+export const MODELED_REWARDS=new Set(['themePark','countryClub','historicStatue','lighthouse','performingArts','medicalResearch','cityHall','mayorHouse','stadium','university','countyCourthouse']);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function rewardGeometry(type){
  if(!MODELED_REWARDS.has(type))throw Error('Unknown reward model.');
@@ -10,7 +11,22 @@ export function rewardGeometry(type){
  const hall=(x,y,w,d,h,color)=>{box(x,y,.05,w,d,h,color);roof(x,y,h+.05,w+.02,d+.02,.075,'#647c83');for(const side of [-1,1])for(let i=0;i<Math.floor(w/.07);i++)for(const z of [.12,.23])if(z+.045<h+.05)box(x-w/2+.045+i*.07,y+side*(d/2+.003),z,.028,.007,.048,'#547e8a');};
  const tree=(x,y)=>{box(x,y,.06,.015,.015,.09,'#796449');for(const [z,w]of [[.14,.085],[.19,.065],[.23,.035]])box(x,y,z,w,w,.035,'#537a50');};
  box(0,0,0,.97,.97,.04,'#aaa993');box(0,0,.04,.93,.93,.015,'#81966d');
- if(type==='countryClub'){
+ if(type==='themePark'){
+  // Original compact amusement park with observation wheel, coaster and carousel.
+  const rod=(a,b,w,color)=>{const delta=b.map((n,i)=>n-a[i]),length=Math.hypot(...delta),v=delta.map(n=>n/length),ref=Math.abs(v[2])>.9?[1,0,0]:[0,0,1],cross=(u,v)=>[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]],raw=cross(v,ref),m=Math.hypot(...raw),u=raw.map(n=>n/m*w/2),q=cross(v,u),corners=p=>[[1,1],[-1,1],[-1,-1],[1,-1]].map(([j,k])=>p.map((n,i)=>n+j*u[i]+k*q[i])),aa=corners(a),bb=corners(b);for(let i=0;i<4;i++)add([aa[i],aa[(i+1)%4],bb[(i+1)%4],bb[i]],shade(color,.72+i*.08));add(bb,color);add([...aa].reverse(),color);};
+  box(0,0,.055,.90,.90,.012,'#c6bca0');box(0,0,.07,.075,.84,.005,'#decfb0');box(0,.03,.07,.84,.065,.005,'#decfb0');
+  const [wx,wy,wz]=WHEEL.center,r=WHEEL.radius;
+  for(let i=0;i<48;i++){const a=i*Math.PI/24,b=(i+1)*Math.PI/24;rod([wx+r*Math.cos(a),wy,wz+r*Math.sin(a)],[wx+r*Math.cos(b),wy,wz+r*Math.sin(b)],.012,'#d9d5b7');}
+  for(const side of [-1,1])for(const x of [wx-.14,wx+.14])rod([x,wy+side*.08,.075],[wx,wy+side*.025,wz],.016,'#709a9c');rod([wx,wy-.06,wz],[wx,wy+.06,wz],.025,'#ad755c');
+  const track=Array.from({length:41},(_,i)=>{const a=i*Math.PI/20;return[.23+.16*Math.cos(a),-.01+.25*Math.sin(a),.16+.12*(.5+.5*Math.sin(a*2))];});
+  for(let i=0;i<40;i++){rod(track[i],track[i+1],.015,'#c2634e');if(i%4===0)rod([track[i][0],track[i][1],.075],track[i],.012,'#a3987a');}
+  box(.23,-.29,.07,.22,.09,.09,'#7f9c9c');roof(.23,-.29,.16,.24,.11,.04,'#bd805b');
+  const cx=-.23,cy=.26;for(let i=0;i<16;i++){const a=i*Math.PI/8,b=(i+1)*Math.PI/8;add([[cx,cy,.235],[cx+.13*Math.cos(a),cy+.13*Math.sin(a),.165],[cx+.13*Math.cos(b),cy+.13*Math.sin(b),.165]],i%2?'#ddbf72':'#ba6b56');}
+  box(cx,cy,.07,.18,.18,.025,'#b6a17c');for(const x of [-.31,-.15])for(const y of [.18,.34]){box(x,y,.095,.007,.007,.08,'#e1cda3');box(x,y,.105,.038,.025,.025,'#8da8a1');}
+  for(const x of [.07,.22]){hall(x,.37,.10,.11,.08,'#d3b98c');roof(x,.37,.14,.12,.13,.035,x<.1?'#ad6b58':'#779b9b');}
+  rod([.05,.44,.075],[.05,.44,.22],.012,'#a7b8aa');rod([.24,.44,.075],[.24,.44,.22],.012,'#a7b8aa');box(.145,.44,.20,.23,.024,.06,'#b86b54');
+  for(const [x,y]of [[-.40,-.37],[.41,-.36],[.41,.35],[-.40,.38],[-.05,-.36]])tree(x,y);
+ }else if(type==='countryClub'){
   // Original miniature golf landscape: curved fairways, bunkers, water and clubhouse.
   const oval=(x,y,rx,ry,z,color)=>add(Array.from({length:24},(_,i)=>[x+rx*Math.cos(i*Math.PI/12),y+ry*Math.sin(i*Math.PI/12),z]),color);
   box(0,0,.055,.91,.91,.007,'#597b48');
@@ -108,5 +124,5 @@ export function rewardGeometry(type){
  return faces;
 }
 export const rasterizeReward=(type,rotation=0,includeDepth=false)=>rasterizeMiniature(rewardGeometry(type),rotation,includeDepth);
-const cache=new Map(),stadiumDepth=new Map();
-export function drawCityReward(ctx,type,rotation,x,y,width,alpha=1,match=null){const key=type+':'+rotation;let canvas=cache.get(key);if(!canvas){canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;const c=canvas.getContext('2d'),raster=rasterizeReward(type,rotation,type==='stadium'),image=c.createImageData(512,512);if(type==='stadium')stadiumDepth.set(rotation,raster.depth);image.data.set(raster.data);c.putImageData(image,0,0);cache.set(key,canvas);}ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(canvas,x-width/2,y-320*width/512,width,width);if(type==='stadium'&&match?.active){const scale=width/512;for(const p of stadiumMatchPixels(match.time,rotation,stadiumDepth.get(rotation))){ctx.fillStyle=p.color;ctx.fillRect(x+(p.x-256)*scale,y+(p.y-320)*scale,scale+.1,scale+.1);}}ctx.restore();}
+const cache=new Map(),stadiumDepth=new Map(),themeDepth=new Map();
+export function drawCityReward(ctx,type,rotation,x,y,width,alpha=1,match=null){const key=type+':'+rotation;let canvas=cache.get(key);if(!canvas){canvas=document.createElement('canvas');canvas.width=512;canvas.height=512;const c=canvas.getContext('2d'),raster=rasterizeReward(type,rotation,type==='stadium'||type==='themePark'),image=c.createImageData(512,512);if(type==='stadium')stadiumDepth.set(rotation,raster.depth);if(type==='themePark')themeDepth.set(rotation,raster.depth);image.data.set(raster.data);c.putImageData(image,0,0);cache.set(key,canvas);}ctx.save();ctx.globalAlpha=alpha;ctx.drawImage(canvas,x-width/2,y-320*width/512,width,width);if(type==='stadium'&&match?.active){const scale=width/512;for(const p of stadiumMatchPixels(match.time,rotation,stadiumDepth.get(rotation))){ctx.fillStyle=p.color;ctx.fillRect(x+(p.x-256)*scale,y+(p.y-320)*scale,scale+.1,scale+.1);}}if(type==='themePark'){const scale=width/512;for(const p of themeParkRidePixels(match?.active?match.time:0,rotation,themeDepth.get(rotation))){ctx.fillStyle=p.color;ctx.fillRect(x+(p.x-256)*scale,y+(p.y-320)*scale,scale+.1,scale+.1);}}ctx.restore();}

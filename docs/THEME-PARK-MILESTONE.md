@@ -1,0 +1,19 @@
+# Theme Park milestone
+
+Players can earn a Theme Park at 80,000 residents and strong approval, then place a 10×10 amusement park for §125,000. It adds 400 accessible civic jobs and residential capacity for 200,000 more residents while operating. Its reward preview and city model include an observation wheel, coaster track, carousel, entrance and concession buildings. The original procedural art is drawn in all four camera rotations.
+
+Placement has consequences: nearby commercial value and wellbeing improve, but residential value falls and local air/water pollution and crime pressure rise. Zone inspection shows the signed Theme Park value contribution. The reward description encourages separation from homes/water supplies and police coverage. An earned offer persists; the city may have one park, and rebuilding costs the original construction price.
+
+[Prima official guide, reward directory p.417](https://www.scribd.com/doc/303581554/SimCity-3000-Unlimited-Prima-Guide) specifies the represented unlock, footprint, price, jobs, capacity, sector value strengths (−18/12/0), air 6,000/radius 10, water 8,000/radius 10, crime 16/radius 14 and aura 1/radius 15. Pollution is divided by 100 and aura normalized to this simulation's scales. The 14-tile land-value falloff reuses the crime radius as explicit reconstruction tuning. Zero upkeep remains an assumption; the reward entry did not establish a maintenance charge. The exact original waste generation and pollution balance remain unfinished.
+
+Motion purpose is operational-state indication. The wheel uses the existing paused scenery clock and Canvas rendering, with no new timer or library. It turns linearly at 0.25 radians per scenery-clock second. UI transition timing tables do not apply to this world simulation. Reduced motion and disabled scenery use a static pose; unpowered/damaged/inaccessible parks and non-city layers show a parked pose. The overlay depth-tests wheel spokes and cabins against the cached structure raster. The coaster and carousel are static in this milestone. Browser feel and frame-rate acceptance remain pending the locked Mac; offline frame inspection does not establish those.
+
+Schema 141 migrates older cities with an unearned Theme Park offer and rejects new park history or structures mislabeled as old saves. Existing rewards remain available.
+
+Focused verification covers unlock boundaries, durable offers, price, uniqueness, whole footprint, 400 reachable jobs, 200,000 capacity relief, environmental tradeoffs, shutdown/rebuild, save migration, signed inspection, four-view depth, stopped-clock determinism and scenery/reduced-motion gates. Reward preview and actual renderer-footprint tests also passed after adding the ride state and paint operation to their fixtures. Production rasterizer frames were inspected from four rotations at two animation times.
+
+Live publication remains pending explicit authorization to export the repository to the private Sites source repository after automatic approval review rejection. This milestone's GitHub merge does not deploy.
+
+Ordinary-city audit: the metropolis earned the Theme Park in month 549 at 174,424 residents. Seven power-line tiles cost §35; the park at (211,75) cost §125,000. All 400 jobs filled, residential capacity rose exactly 200,000, and the live ride-state check confirmed operation. Treasury remained §16,282,160. No reward grants, population edits or funding injections were used. Snapshot: `/tmp/sims3000-theme-park-built-city.json` (local audit artifact, not committed). A fresh CUA check confirmed the Mac remains locked.
+
+Regression result: 291 suites passed in the full run. The remaining generic reward rebuild fixture had only §250,000, which no longer covered two §125,000 park builds plus infrastructure. Its starting funds now explicitly cover two construction charges plus infrastructure; the corrected suite passed separately. All 292 default suites therefore pass.

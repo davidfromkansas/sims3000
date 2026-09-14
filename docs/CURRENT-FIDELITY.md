@@ -1037,3 +1037,7 @@ County Courthouse now adds direct residential/commercial value (20/25 strengths)
 ## Country Club
 
 The reward catalog now includes ten playable rewards. Country Club adds the original 125,000-resident gate, strong approval, 5×5 footprint, §25,000 price, 75 jobs and 37,500 residential relief. It cleans air but pollutes water, with local value and aura effects. Save schema 140 preserves earlier cities. Its golf-course model is original procedural art. See COUNTRY-CLUB-MILESTONE.md for scale/falloff/upkeep assumptions and validation limits.
+
+## Theme Park
+
+Eleven playable rewards now include the Theme Park, with an 80,000-resident/strong-approval gate, 10×10 footprint, §125,000 price, 400 jobs and 200,000 residential capacity relief. Original procedural rides include a moving observation wheel on the existing scenery clock. Neighborhood value, pollution, crime and aura tradeoffs are represented, with documented scale/falloff/upkeep assumptions. Save schema 141 preserves older cities. Coaster/carousel motion, exact original waste generation and browser performance acceptance remain unfinished; see THEME-PARK-MILESTONE.md.

@@ -1,10 +1,10 @@
-import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=country-club-1';
-import {blockCornerHeights} from './building-block-geometry.js?v=country-club-1';
-import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=country-club-1';
-import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=country-club-1';
-import {projectBuildingPoint} from './building-footprints.js?v=country-club-1';
-import {buildingShapeCells} from './building-shapes.js?v=country-club-1';
-import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=country-club-1';
+import {wallDecorationFrame,clipWallDecoration} from './building-face-clipping.js?v=theme-park-1';
+import {blockCornerHeights} from './building-block-geometry.js?v=theme-park-1';
+import {buildingSurfaceDetail,drawBuildingSurfaceDetail} from './building-surface-details.js?v=theme-park-1';
+import {floorSurfaceMaterial,splitBuildingFloors} from './building-floor-paint.js?v=theme-park-1';
+import {projectBuildingPoint} from './building-footprints.js?v=theme-park-1';
+import {buildingShapeCells} from './building-shapes.js?v=theme-park-1';
+import {materialSurfaceColor,drawMaterialDetail} from './building-materials.js?v=theme-park-1';
 // Each footprint column holds 24 occupancy bits. Gaps and overhangs are explicit;
 // the compact representation stays bounded independently of exposed face count.
 export const VOXEL_MAX_MASK=0xffffff;
