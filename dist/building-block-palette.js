@@ -1,4 +1,4 @@
-import {blockCornerHeights} from './building-block-geometry.js?v=architecture-collection-43';
+import {blockCornerHeights} from './building-block-geometry.js?v=architecture-collection-44';
 export const BLOCK_PALETTE_NAMES=['Cube','Wedge · rises north','Wedge · rises east','Wedge · rises south','Wedge · rises west'];
 export function blockPaletteIcon(shape){
  if(!Number.isInteger(shape)||shape<0||shape>=BLOCK_PALETTE_NAMES.length)throw Error('Choose a supported block shape.');

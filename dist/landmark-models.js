@@ -1,11 +1,12 @@
-import {SKYLINE_LANDMARK_GEOMETRY} from './skyline-landmark-models.js?v=architecture-collection-43';
-import {US_MEMORIAL_GEOMETRY} from './us-memorial-models.js?v=architecture-collection-43';
-import {eiffelTowerGeometry} from './eiffel-tower-model.js?v=architecture-collection-43';
-import {greatPyramidGeometry} from './great-pyramid-model.js?v=architecture-collection-43';
-import {rasterizeMiniature} from './miniature-raster.js?v=architecture-collection-43';
-import {helsinkiCathedralGeometry} from './helsinki-cathedral-model.js?v=architecture-collection-43';
+import {ASIAN_LANDMARK_GEOMETRY} from './asian-landmark-models.js?v=architecture-collection-44';
+import {SKYLINE_LANDMARK_GEOMETRY} from './skyline-landmark-models.js?v=architecture-collection-44';
+import {US_MEMORIAL_GEOMETRY} from './us-memorial-models.js?v=architecture-collection-44';
+import {eiffelTowerGeometry} from './eiffel-tower-model.js?v=architecture-collection-44';
+import {greatPyramidGeometry} from './great-pyramid-model.js?v=architecture-collection-44';
+import {rasterizeMiniature} from './miniature-raster.js?v=architecture-collection-44';
+import {helsinkiCathedralGeometry} from './helsinki-cathedral-model.js?v=architecture-collection-44';
 // Original landmark geometry shared by the city renderer and gallery previews.
-export const MODELED_LANDMARKS=new Set(['bigBen','statueLiberty','chryslerBuilding','arcDeTriomphe','helsinkiCathedral','eiffelTower','greatPyramid',...Object.keys(US_MEMORIAL_GEOMETRY),...Object.keys(SKYLINE_LANDMARK_GEOMETRY)]);
+export const MODELED_LANDMARKS=new Set(['bigBen','statueLiberty','chryslerBuilding','arcDeTriomphe','helsinkiCathedral','eiffelTower','greatPyramid',...Object.keys(US_MEMORIAL_GEOMETRY),...Object.keys(SKYLINE_LANDMARK_GEOMETRY),...Object.keys(ASIAN_LANDMARK_GEOMETRY)]);
 const shade=(hex,f)=>'#'+hex.slice(1).match(/../g).map(v=>Math.min(255,Math.round(parseInt(v,16)*f)).toString(16).padStart(2,'0')).join('');
 export function landmarkGeometry(type){
  const faces=[],add=(points,color)=>faces.push({points,color});
@@ -13,7 +14,8 @@ export function landmarkGeometry(type){
  function box(x,y,z,w,d,h,color){const p=[[x-w/2,y-d/2,z],[x+w/2,y-d/2,z],[x+w/2,y+d/2,z],[x-w/2,y+d/2,z]],q=p.map(([a,b])=>[a,b,z+h]);for(let i=0;i<4;i++)add([p[i],p[(i+1)%4],q[(i+1)%4],q[i]],shade(color,[.7,.82,.95,.78][i]));add(q,shade(color,1.1));}
  function beam(a,b,r,color){const v=b.map((n,i)=>n-a[i]),len=Math.hypot(...v),u=v.map(n=>n/len),ref=Math.abs(u[2])<.9?[0,0,1]:[1,0,0],cross=(a,b)=>[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],v1=cross(u,ref),l=Math.hypot(...v1),p=v1.map(n=>n/l),q=cross(u,p),circle=c=>Array.from({length:8},(_,i)=>c.map((n,j)=>n+r*(p[j]*Math.cos(i*Math.PI/4)+q[j]*Math.sin(i*Math.PI/4)))),aa=circle(a),bb=circle(b);for(let i=0;i<8;i++)add([aa[i],aa[(i+1)%8],bb[(i+1)%8],bb[i]],shade(color,.72+i*.035));add(bb,color);}
  const stone='#c5ae87',copper='#73a799';box(0,0,0,2.8,2.8,.12,stone);if(type!=='greatPyramid'){box(0,0,.12,2.55,2.55,.025,'#65805c');box(0,0,.15,2.1,2.1,.08,'#d0c8b5');}
- if(SKYLINE_LANDMARK_GEOMETRY[type]){SKYLINE_LANDMARK_GEOMETRY[type]({box,add,ring,beam});
+ if(ASIAN_LANDMARK_GEOMETRY[type]){ASIAN_LANDMARK_GEOMETRY[type]({box,add,ring,beam});
+ }else if(SKYLINE_LANDMARK_GEOMETRY[type]){SKYLINE_LANDMARK_GEOMETRY[type]({box,add,ring,beam});
  }else if(US_MEMORIAL_GEOMETRY[type]){US_MEMORIAL_GEOMETRY[type]({box,add,ring,beam});
  }else if(type==='eiffelTower'){eiffelTowerGeometry({box,beam});
  }else if(type==='greatPyramid'){greatPyramidGeometry({box,add});
@@ -96,7 +98,7 @@ export function rasterizeLandmark(type,rotation=0,includeDepth=false){
  return rasterizeMiniature(landmarkGeometry(type),rotation,includeDepth,{width:512,height:848,project});
 }
 export function drawLandmarkModel(ctx,type,rotation=0){
- if(SKYLINE_LANDMARK_GEOMETRY[type]||US_MEMORIAL_GEOMETRY[type]||['helsinkiCathedral','eiffelTower','greatPyramid'].includes(type)){const raster=rasterizeLandmark(type,rotation),pixels=ctx.createImageData(raster.width,raster.height);pixels.data.set(raster.data);ctx.putImageData(pixels,0,0);return;}
+ if(ASIAN_LANDMARK_GEOMETRY[type]||SKYLINE_LANDMARK_GEOMETRY[type]||US_MEMORIAL_GEOMETRY[type]||['helsinkiCathedral','eiffelTower','greatPyramid'].includes(type)){const raster=rasterizeLandmark(type,rotation),pixels=ctx.createImageData(raster.width,raster.height);pixels.data.set(raster.data);ctx.putImageData(pixels,0,0);return;}
  const turn=([x,y,z])=>rotation===0?[x,y,z]:rotation===1?[-y,x,z]:rotation===2?[-x,-y,z]:[y,-x,z];
  const project=([x,y,z])=>[256+(x-y)*80,720+(x+y)*40-z*80];
  const faces=landmarkGeometry(type).map(f=>({...f,points:f.points.map(turn)})).filter(f=>{if(type!=='arcDeTriomphe')return true;const [a,b,c]=f.points,u=b.map((v,i)=>v-a[i]),v=c.map((n,i)=>n-a[i]),normal=[u[1]*v[2]-u[2]*v[1],u[2]*v[0]-u[0]*v[2],u[0]*v[1]-u[1]*v[0]];return normal[0]+normal[1]+normal[2]>0;});

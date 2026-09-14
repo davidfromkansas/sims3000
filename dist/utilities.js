@@ -1,14 +1,14 @@
-import {facilityWasteProduction} from './facilities.js?v=architecture-collection-43';
-import {powerWasteProduction} from './power.js?v=architecture-collection-43';
-import {publicSpaceWasteProduction} from './public-space-waste.js?v=architecture-collection-43';
-import {civicWasteProduction} from './civic-waste.js?v=architecture-collection-43';
-import {rewardWasteProduction,garbageSourceRoads} from './reward-waste.js?v=architecture-collection-43';
-import {landfillRailFreight} from './rail-freight.js?v=architecture-collection-43';
-import {waterBaseNeed} from './utility-demand.js?v=architecture-collection-43';
-import {pipeCoverage} from './water-coverage.js?v=architecture-collection-43';
-import {conservationDemand} from './conservation.js?v=architecture-collection-43';
-import {industrialJobs} from './industry.js?v=architecture-collection-43';
-import {tradeCapacity} from './region.js?v=architecture-collection-43';
+import {facilityWasteProduction} from './facilities.js?v=architecture-collection-44';
+import {powerWasteProduction} from './power.js?v=architecture-collection-44';
+import {publicSpaceWasteProduction} from './public-space-waste.js?v=architecture-collection-44';
+import {civicWasteProduction} from './civic-waste.js?v=architecture-collection-44';
+import {rewardWasteProduction,garbageSourceRoads} from './reward-waste.js?v=architecture-collection-44';
+import {landfillRailFreight} from './rail-freight.js?v=architecture-collection-44';
+import {waterBaseNeed} from './utility-demand.js?v=architecture-collection-44';
+import {pipeCoverage} from './water-coverage.js?v=architecture-collection-44';
+import {conservationDemand} from './conservation.js?v=architecture-collection-44';
+import {industrialJobs} from './industry.js?v=architecture-collection-44';
+import {tradeCapacity} from './region.js?v=architecture-collection-44';
 // Manual pp. 16–17, 103, 115, 117–118. Capacities/rates are explicit model approximations.
 export const WATER_CAPACITY=500,LANDFILL_CAPACITY=200,LANDFILL_DECAY=.5;
 export const occupancy=level=>[0,1,3,8][level]||0;

@@ -1,12 +1,12 @@
-import {civicGarbageInspection} from './civic-waste.js?v=architecture-collection-43';
-import {jailCapacity,jailReport} from './jail.js?v=architecture-collection-43';
-import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=architecture-collection-43';
-import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=architecture-collection-43';
-import {SERVICE_JOBS} from './civic-jobs.js?v=architecture-collection-43';
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=architecture-collection-43';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=architecture-collection-43';
-import {occupancy} from './utilities.js?v=architecture-collection-43';
-import {educationServiceDemand} from './education.js?v=architecture-collection-43';
+import {civicGarbageInspection} from './civic-waste.js?v=architecture-collection-44';
+import {jailCapacity,jailReport} from './jail.js?v=architecture-collection-44';
+import {civicRoot,civicMembers,civicRoadIds,civicSize,civicCenter} from './civic-footprints.js?v=architecture-collection-44';
+import {hospitalStaffing,hospitalizationRate} from './hospital.js?v=architecture-collection-44';
+import {SERVICE_JOBS} from './civic-jobs.js?v=architecture-collection-44';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=architecture-collection-44';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=architecture-collection-44';
+import {occupancy} from './utilities.js?v=architecture-collection-44';
+import {educationServiceDemand} from './education.js?v=architecture-collection-44';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  t=civicRoot(c,t);const definition=SERVICES[t.type];if(!definition)return null;

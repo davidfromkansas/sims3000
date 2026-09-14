@@ -1,7 +1,7 @@
-import {DECAL_NAMES,MAX_BUILDING_DECALS,anchoredDecal,decalPolygonsOnFace} from './building-decals.js?v=architecture-collection-43';
-import {projectedBuildingSurfaces,pickBuildingSurface,pointInBuildingSurface} from './building-surface-picking.js?v=architecture-collection-43';
-import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=architecture-collection-43';
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-43';
+import {DECAL_NAMES,MAX_BUILDING_DECALS,anchoredDecal,decalPolygonsOnFace} from './building-decals.js?v=architecture-collection-44';
+import {projectedBuildingSurfaces,pickBuildingSurface,pointInBuildingSurface} from './building-surface-picking.js?v=architecture-collection-44';
+import {buildingPropPickFaces,pickBuildingProp} from './building-prop-picking.js?v=architecture-collection-44';
+import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-44';
 export const anchoredDetailMode=mode=>['anchored-detail','sample-decal','erase-decal'].includes(mode);
 export function mountBuildingDecalEditor(root,canvas,{get,camera,mode,material,apply,render,status}){
  root.innerHTML=`<fieldset id="anchoredDetailControls"><legend>Anchored wall details</legend><div class="block-editor-controls"><label>Detail design<select id="decalKind">${DECAL_NAMES.slice(1).map((name,i)=>`<option value="${i+1}">${name}</option>`).join('')}</select></label><label>Width (wall tiles)<input id="decalWidth" type="number" min=".25" max="10" step=".25" value="2"></label><label>Height (floors)<input id="decalHeight" type="number" min=".25" max="25" step=".25" value="2"></label></div><p class="fine">The highlighted wall tile anchors the lower-left corner. Details extend right and up, clipping at wall edges, gaps and slopes. Click and release to place; Shift or Escape cancels. Select an anchored detail to reuse its design and size. Erase removes the selected placement; Undo restores it.</p></fieldset>`;
