@@ -1,6 +1,6 @@
 # SIMS3000 current fidelity audit
 
-Current source: 251 regression suites, save schema 128. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
+Current source: 252 regression suites, save schema 128. Publication after version 150 is pending explicit Sites source-export approval. This is a playable reconstruction with substantial incomplete scope, not verified full SimCity 3000 Unlimited parity. The opening table records the earlier schema-92 scope baseline; the implementation checkpoints below supersede its resolved gaps. A passing suite count does not establish complete manual fidelity.
 
 The manual describes behavior but does not expose all simulation formulas. Numerical calibration, RCI lot-growth selection, selectable browser map sizes and adapted browser controls must not be presented as recovered original algorithms.
 
@@ -925,3 +925,7 @@ Commerce and industry now use separate base capacities with relief from paid roa
 ## Subway neighbor connections
 
 Subways reaching a dry border can now receive a paid neighbor connection through the regional panel, adding 25,000 commercial capacity. Saved connections survive reload and recover after edge rebuilding. No utility/freight contracts or simulated cross-border passengers are attached to subways. See SUBWAY-NEIGHBORS-MILESTONE.md.
+
+## Stable keyboard construction cursor
+
+Arrow-key selection now retains control of the map cursor through passive pointer movement and departure. A map click or gesture cancellation releases it. Browser QA placed and inspected a park at tile 48,24 immediately after rapid keyboard movement. See KEYBOARD-CURSOR-MILESTONE.md.
