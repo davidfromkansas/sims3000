@@ -1,7 +1,8 @@
-import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=mayor-house-1';
-import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=mayor-house-1';
-import {occupancy} from './utilities.js?v=mayor-house-1';
-import {educationServiceDemand} from './education.js?v=mayor-house-1';
+import {SERVICE_JOBS} from './civic-jobs.js?v=public-jobs-1';
+import {RESIDENTIAL_RELIEF} from './residential-cap.js?v=public-jobs-1';
+import {SERVICES,DEPARTMENTS,serviceRadius} from './civic.js?v=public-jobs-1';
+import {occupancy} from './utilities.js?v=public-jobs-1';
+import {educationServiceDemand} from './education.js?v=public-jobs-1';
 const CAPACITY_SERVICES=['hospital','school','college','library','museum'];
 export function civicFacilityDetails(c,t){
  const definition=SERVICES[t.type];if(!definition)return null;
@@ -16,6 +17,7 @@ export function civicFacilityDetails(c,t){
 export function civicFacilityReport(c,t){
  const d=civicFacilityDetails(c,t);if(!d)return'';const number=n=>n.toLocaleString(undefined,{maximumFractionDigits:1});
  let body=`<p class="fine">Tile ${t.x+1}, ${t.y+1}</p><p>${d.operating?'Operating.':d.reasons.length?'Not operating: '+d.reasons.join('; ')+'.':'Not operating.'}</p><div class="metric-grid"><div><small>${DEPARTMENTS[d.definition.department]} funding</small><strong>${d.funding}%</strong></div><div><small>Monthly upkeep contribution</small><strong>§${number(d.monthlyCost)}</strong></div></div>`;
+ body+=`<p>Civic employment: ${number(t.civicEmployed||0)} / ${d.operating?SERVICE_JOBS[t.type]:0} operating jobs filled. Residents need a working commute to fill these positions.</p>`;
  if(d.capacityService)body+=`<h3>Road-connected service area</h3><div class="metric-grid"><div><small>Occupied homes reached</small><strong>${d.homes}</strong></div><div><small>Residents on these road networks</small><strong>${number(d.residents)}</strong></div><div><small>Demand · ${d.group}</small><strong>${number(d.demand)}</strong></div><div><small>Operating capacity contribution</small><strong>${number(d.capacity)}</strong></div><div><small>This facility’s coverage contribution</small><strong>${number(d.contribution)}%</strong></div><div><small>Combined local coverage</small><strong>${number(d.combinedCoverage)}%</strong></div></div><p>${d.residents?'Each residential building is counted once when any of its tiles is reached. Resident demand includes only the connected tiles, matching the service simulation. This facility shares its capacity across these connected homes. Contributions can overlap other facilities; combined coverage is capped at 100% per home.':'No occupied homes share a road network with this facility. Connecting a road only at the building is not enough to reach a disconnected neighborhood.'}</p>${d.group!=='residents'?'<p>Demand uses the city’s age mix: schools serve ages 0–14, colleges ages 15–24, and libraries and museums support retention for ages 25+. School and college places are separate; adding one does not replace the other. Age cutoffs are reconstruction estimates.</p>':''}<p>${!d.operating?'Restore the missing service conditions to use its funded contribution of '+number(d.fundedCapacity)+'.':d.demand>d.capacity&&d.combinedCoverage<99.9?'This area has unmet demand. Increase department funding or add another connected facility.':d.demand?'Coverage is sufficient or shared with other facilities. Check other neighborhoods before adding capacity here.':d.residents?'No residents in this age group currently need places.':'Zone and develop homes along a connected road network to use this capacity.'}</p>`;
  else if(t.type==='jail')body+=`<p>Citywide jail demand: ${number(c.stats.jailNeed)}. This jail contributes ${number(d.capacity)} operating places. Combined city adequacy: ${number(c.stats.jailAdequacy*100)}%.</p>`;
  else body+=`<p>Base response radius: ${d.definition.radius} tiles. At this funding level, the operating radius is ${number(serviceRadius(c,t))} tiles. Coverage weakens with distance; inspect the coverage map for gaps.${t.type==='police'?' Jail adequacy also affects police effectiveness.':''}</p>`;
