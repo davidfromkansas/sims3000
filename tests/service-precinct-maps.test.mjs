@@ -7,7 +7,7 @@ import {CityRenderer} from '../dist/renderer.js';
 const c=createCity('Precincts',false);c.funds=100000;for(const t of c.tiles){t.terrain='land';t.nature=false;t.elevation=0;}
 const place=(type,x,y,xx=x,yy=y)=>assert.ok(build(c,type,selection(type,{x,y},{x:xx,y:yy})).ok,type),at=(x,y)=>c.tiles[y*48+x];
 place('coal',8,14);place('road',10,20,35,20);place('powerline',10,22,35,22);place('police',20,23);place('fire',30,23);recompute(c);
-assert.equal(serviceRadius(c,at(20,23)),9);assert.equal(serviceRadius(c,at(30,23)),25);
+assert.equal(serviceRadius(c,at(20,23)),30);assert.equal(serviceRadius(c,at(30,23)),25);
 assert.deepEqual(stationAreas(c,'crime'),stationAreas(c,'police'));assert.deepEqual(stationAreas(c,'flammability'),stationAreas(c,'fire'));
 assert.deepEqual(stationAreas(c,'health'),[]);assert.deepEqual(stationAreas(c,'city'),[]);
 for(const funding of [25,100,150]){

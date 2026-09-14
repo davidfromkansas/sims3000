@@ -1,6 +1,6 @@
-import {civicRoots,civicCenter} from './civic-footprints.js?v=fire-coverage-1';
-import {EDUCATION_LAYERS} from './education-layers.js?v=fire-coverage-1';
-import {serviceRadius} from './civic.js?v=fire-coverage-1';
+import {civicRoots,civicCenter} from './civic-footprints.js?v=police-presence-1';
+import {EDUCATION_LAYERS} from './education-layers.js?v=police-presence-1';
+import {serviceRadius} from './civic.js?v=police-presence-1';
 export const PRECINCT_LAYERS={police:'police',crime:'police',fire:'fire',flammability:'fire'};
 export const PRECINCT_LEGEND='Station dots: operating white, inactive orange · Rings: current service limit';
 export function stationAreas(city,layer){
@@ -19,4 +19,4 @@ export function drawNavigationPrecincts(ctx,city,layer,transform,scale){
  ctx.restore();
 }
 
-export const precinctCoverageNote=layer=>PRECINCT_LAYERS[layer]==='fire'?'Protection is uniform inside each ring; overlapping stations strengthen firefighting.':'Police strength falls toward the edge.';
+export const precinctCoverageNote=layer=>PRECINCT_LAYERS[layer]==='fire'?'Protection is uniform inside each ring; overlapping stations strengthen firefighting.':'Police strength falls toward the edge; excessive overlap can reduce wellbeing.';
