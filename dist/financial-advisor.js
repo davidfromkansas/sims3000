@@ -1,5 +1,5 @@
-import {budgetForecast} from './economy.js?v=shaped-details-1';
-import {loanRepaymentSchedule} from './loan-schedule.js?v=shaped-details-1';
+import {budgetForecast} from './economy.js?v=first-repayment-1';
+import {loanRepaymentSchedule} from './loan-schedule.js?v=first-repayment-1';
 const money=n=>'§'+Math.round(n).toLocaleString('en-US');
 export function treasuryOutlook(city,months=12){
  if(!Number.isInteger(months)||months<1||months>120)throw Error('Choose a projection from 1 to 120 months.');

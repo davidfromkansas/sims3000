@@ -1,6 +1,6 @@
-import {BUILDING_EDIT_PLANES,voxelPlanePoint} from './building-edit-planes.js?v=shaped-details-1';
-import {buildingShapeCells} from './building-shapes.js?v=shaped-details-1';
-import {projectBuildingPoint} from './building-footprints.js?v=shaped-details-1';
+import {BUILDING_EDIT_PLANES,voxelPlanePoint} from './building-edit-planes.js?v=first-repayment-1';
+import {buildingShapeCells} from './building-shapes.js?v=first-repayment-1';
+import {projectBuildingPoint} from './building-footprints.js?v=first-repayment-1';
 const colors={horizontal:['#49a77e','rgba(73,167,126,.12)'],xz:['#c35c59','rgba(195,92,89,.12)'],yz:['#4c8bc8','rgba(76,139,200,.12)']};
 export function buildingPlaneGuide(selection){
  if(!selection)return[];const {plane,slice,pending}=selection,p=BUILDING_EDIT_PLANES[plane];if(!p||!Number.isInteger(slice)||slice<0||slice>=p.slices)return[];

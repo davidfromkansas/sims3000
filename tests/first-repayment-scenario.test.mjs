@@ -1,0 +1,13 @@
+import assert from 'node:assert/strict';
+import {createScenario} from '../dist/scenario-setup.js';
+import {scenarioGoals,advanceScenario} from '../dist/scenarios.js';
+import {changeBudget,takeLoan} from '../dist/economy.js';
+import {tick,recompute,validateSave} from '../dist/engine.js';
+import {serializeCity} from '../dist/save.js';
+import {treasuryOutlook} from '../dist/financial-advisor.js';
+const c=createScenario('firstRepayment');assert.equal(c.funds,2500);assert.equal(c.stats.population,224);assert.equal(c.finance.loans[0].principal,25000);assert.equal(c.finance.loans[0].paymentsMade,0);assert.equal(c.emergency.randomFires,false);assert.equal(c.stats.uncollectedWaste,0);assert.equal(treasuryOutlook(c).debtDue,3750);assert.equal(treasuryOutlook(c).firstShortfall.month,12);assert.equal(scenarioGoals(c)[0].done,false);assert.equal(serializeCity(c),serializeCity(createScenario('firstRepayment')));
+assert.ok(changeBudget(c,{residential:12,commercial:12,industrial:12},100).ok);recompute(c);assert.ok(treasuryOutlook(c).ending>=500);for(let i=0;i<6;i++)tick(c);assert.equal(c.scenario.status,'playing');advanceScenario(c);assert.equal(c.scenario.status,'playing');const loaded=validateSave(JSON.parse(serializeCity(c)));for(let i=0;i<6;i++){tick(c);tick(loaded);}assert.equal(c.scenario.status,'won');assert.equal(c.scenario.endedMonth,12);assert.equal(c.finance.totalLoanPaid,3750);assert.equal(c.finance.loans[0].paymentsMade,1);assert.equal(c.finance.loans.length,1);assert.ok(c.funds>=500&&c.stats.population>=224&&c.finance.roadCondition>=80);assert.ok(scenarioGoals(c).every(g=>g.done));assert.equal(serializeCity(c),serializeCity(loaded));
+const neglected=createScenario('firstRepayment');for(let i=0;i<12;i++)tick(neglected);assert.equal(neglected.scenario.status,'lost');assert.ok(neglected.funds<500);assert.equal(neglected.finance.totalLoanPaid,3750);
+const borrowed=createScenario('firstRepayment');takeLoan(borrowed,5000);for(let i=0;i<12;i++)tick(borrowed);assert.equal(borrowed.scenario.status,'lost');assert.equal(scenarioGoals(borrowed)[2].done,false);assert.ok(borrowed.funds>=500,'extra borrowing cannot bypass the challenge');
+const boundary=validateSave(JSON.parse(serializeCity(c)));boundary.funds=499;assert.equal(scenarioGoals(boundary).at(-1).done,false);boundary.funds=500;assert.equal(scenarioGoals(boundary).at(-1).done,true);boundary.finance.roadCondition=79;assert.equal(scenarioGoals(boundary)[4].done,false);
+console.log('PASS: deterministic budget challenge, dated actual repayment, ordinary-budget winning solution, exact midyear save continuation, neglect loss, borrowing disqualification and reserve/service boundaries.');
