@@ -1,7 +1,7 @@
-import {floorPaintKey} from './building-floor-paint.js?v=seven-advisors-1';
+import {floorPaintKey} from './building-floor-paint.js?v=sloped-blocks-1';
 export const BUILDING_DETAILS=['Remove detail','Framed window','Entrance door','Vent grille','Window with ledge'];
 export function validateSurfaceDetails(value){if(typeof value!=='string'||value.length!==12000||/[^0-4]/.test(value))throw Error('Building details need 12,000 valid surface entries.');for(let i=4;i<value.length;i+=5)if(!['0','3'].includes(value[i]))throw Error('Only vent grilles can be placed on roofs.');return value;}
-export function detailFitsSurface(detail,face){return face.side!==4||detail===0||detail===3;}
+export function detailFitsSurface(detail,face){return detail===0||(!face.shape||face.side===4)&&(face.side!==4||detail===3);}
 export function placeSurfaceDetails(design,faces,detail){if(!Number.isInteger(detail)||detail<0||detail>=BUILDING_DETAILS.length)throw Error('Choose a building detail.');const next=(design.surfaceDetails?validateSurfaceDetails(design.surfaceDetails):'0'.repeat(12000)).split('');for(const face of faces)if(detailFitsSurface(detail,face))next[floorPaintKey(face)]=String(detail);return next.join('');}
 export function buildingSurfaceDetail(design,face){return Number(design.surfaceDetails?.[floorPaintKey(face)]||0);}
 // Original procedural decals, contained within a surface tile. They render after
