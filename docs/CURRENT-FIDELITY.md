@@ -977,3 +977,7 @@ Mixed apartment buildings now covers larger residential lots with an original ro
 ## Jail overcrowding
 
 Jails now use 300 cells / 360 maximum, §2,500 construction and §75 monthly upkeep. Overcrowding reduces police coverage and is visible in city/facility reports. Demand remains a disclosed 1%-of-population estimate; penalties between guide thresholds are tuned. See JAIL-OVERCROWDING-MILESTONE.md. Schema remains 134.
+
+## Automatic police response
+
+Available operating police stations automatically respond to riots in their coverage; manual dispatch excludes the same squad from automatic service. Live readiness applies to both. The emergency panel and map expose automatic response. Existing ordinal dispatch slots and tuned response timing remain limitations. See AUTOMATIC-POLICE-RESPONSE-MILESTONE.md.

@@ -1,10 +1,10 @@
-import {outstandingLoanPayments} from './loan-debt.js?v=jail-overcrowding-1';
-import {REWARDS,rewardSize,rewardRoots,rewardActive,CITY_HALL_EFFECTS} from './rewards.js?v=jail-overcrowding-1';
-import {industrialJobs,industryPollution} from './industry.js?v=jail-overcrowding-1';
-import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=jail-overcrowding-1';
-import {POWER_PLANTS} from './power.js?v=jail-overcrowding-1';
-import {civicSpending,ordinanceRevenue} from './civic.js?v=jail-overcrowding-1';
-import {occupancy} from './utilities.js?v=jail-overcrowding-1';
+import {outstandingLoanPayments} from './loan-debt.js?v=automatic-police-response-1';
+import {REWARDS,rewardSize,rewardRoots,rewardActive,CITY_HALL_EFFECTS} from './rewards.js?v=automatic-police-response-1';
+import {industrialJobs,industryPollution} from './industry.js?v=automatic-police-response-1';
+import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=automatic-police-response-1';
+import {POWER_PLANTS} from './power.js?v=automatic-police-response-1';
+import {civicSpending,ordinanceRevenue} from './civic.js?v=automatic-police-response-1';
+import {occupancy} from './utilities.js?v=automatic-police-response-1';
 // Loan terms from manual p. 91. Tax formula from p. 88; calibration constants are original approximations.
 export const SECTORS=['residential','commercial','industrial'];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));

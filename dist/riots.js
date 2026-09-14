@@ -1,13 +1,14 @@
-import {civicRoots} from './civic-footprints.js?v=jail-overcrowding-1';
-import {scenarioAllowsBackground} from './scenario-background-rules.js?v=jail-overcrowding-1';
-import {recordHazard} from './emergency-order.js?v=jail-overcrowding-1';
-import {beginEmergencySession} from './emergency-session.js?v=jail-overcrowding-1';
+import {policeResponses} from './police-response.js?v=automatic-police-response-1';
+import {civicRoots} from './civic-footprints.js?v=automatic-police-response-1';
+import {scenarioAllowsBackground} from './scenario-background-rules.js?v=automatic-police-response-1';
+import {recordHazard} from './emergency-order.js?v=automatic-police-response-1';
+import {beginEmergencySession} from './emergency-session.js?v=automatic-police-response-1';
 const developed=t=>t.terrain==='land'&&['residential','commercial','industrial'].includes(t.type)&&t.level>0&&!t.rubble;
 export const freshRiots=()=>({randomRiots:false,unrestMonths:0,riot:null,policeUnits:[],nextPolice:0,riots:0});
 export function startRiot(c,x,y){const n=Math.sqrt(c.tiles.length),e=c.emergency;if(e.riot)return{ok:false,error:'This disaster type is already active.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n||!developed(c.tiles[y*n+x]))return{ok:false,error:'Choose an occupied residential, commercial or industrial building.'};beginEmergencySession(c);recordHazard(e,'riot');Object.assign(e,{riot:{x,y,age:0,anger:100}});e.riots++;return{ok:true};}
 export function dispatchPolice(c,x,y){const e=c.emergency,n=Math.sqrt(c.tiles.length);if(!e.active)return{ok:false,error:'Police dispatch is available during an emergency.'};if(!Number.isInteger(x)||!Number.isInteger(y)||x<0||y<0||x>=n||y>=n||c.tiles[y*n+x].terrain==='water')return{ok:false,error:'Dispatch police to land near the crowd.'};const limit=1+civicRoots(c).filter(t=>t.type==='police').length;e.policeUnits=e.policeUnits.slice(0,limit);if(e.policeUnits.length<limit)e.policeUnits.push({x,y});else{e.policeUnits[e.nextPolice%limit]={x,y};e.nextPolice=(e.nextPolice+1)%limit;}return{ok:true};}
 export function stepRiot(c,ignite){const e=c.emergency,r=e.riot;if(!r)return;r.age++;const n=Math.sqrt(c.tiles.length),tile=c.tiles[r.y*n+r.x];e.policeUnits=e.policeUnits.slice(0,1+civicRoots(c).filter(t=>t.type==='police').length);let calm=2+(tile.policeCoverage||0)*.12;
- for(const [i,p] of e.policeUnits.entries()){const d=Math.hypot(p.x-r.x,p.y-r.y);if(d<=4){const funding=i===0?1:c.stats.strikes.includes('police')?0:c.civic.funding.police/100;calm+=18*(1-d/5)*funding*(i===0?1:.6+.4*c.stats.jailAdequacy);}}
+ for(const p of policeResponses(c)){const d=Math.hypot(p.x-r.x,p.y-r.y);if(d<=4)calm+=18*(1-d/5)*p.strength;}
  r.anger=Math.max(0,r.anger-calm);if(!r.anger||r.age>=40){e.riot=null;return;}
  if(r.age%3===0){const targets=c.tiles.filter(t=>developed(t)&&!t.fire&&Math.hypot(t.x-r.x,t.y-r.y)<=2);if(targets.length){const t=targets[(c.seed+r.age)%targets.length];ignite(c,t.x,t.y);}}
  if(r.age%2===0){const targets=c.tiles.filter(t=>developed(t)&&(t.x!==r.x||t.y!==r.y)&&Math.hypot(t.x-r.x,t.y-r.y)<=6);if(targets.length){const target=targets[(c.seed+r.age)%targets.length],dx=target.x-r.x,dy=target.y-r.y;const x=r.x+(Math.abs(dx)>=Math.abs(dy)?Math.sign(dx):0),y=r.y+(Math.abs(dx)<Math.abs(dy)?Math.sign(dy):0);if(c.tiles[y*n+x].terrain==='land'){r.x=x;r.y=y;}}}
