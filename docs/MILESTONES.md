@@ -751,3 +751,7 @@ Current values, missing requirements and consecutive-month guidance now explain 
 ## University reward progression
 
 University offers now depend on education alone, arrive on the next qualifying month and cost nothing to place. Saved offers and campuses are preserved. See [milestone details](UNIVERSITY-PROGRESSION-MILESTONE.md).
+
+## Full university campus
+
+Reserve 100 tiles for a new university, with campus-wide placement, service checks, rendering and transport access. Old campuses retain their boundaries. See [milestone details](UNIVERSITY-CAMPUS-MILESTONE.md).

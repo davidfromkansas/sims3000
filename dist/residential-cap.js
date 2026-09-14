@@ -1,7 +1,7 @@
-import {isCivicRoot} from './civic-footprints.js?v=university-progression-1';
-import {REWARDS,rewardRoots,rewardActive} from './rewards.js?v=university-progression-1';
-import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=university-progression-1';
-import {occupancy} from './utilities.js?v=university-progression-1';
+import {isCivicRoot} from './civic-footprints.js?v=university-campus-1';
+import {REWARDS,rewardRoots,rewardActive} from './rewards.js?v=university-campus-1';
+import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=university-campus-1';
+import {occupancy} from './utilities.js?v=university-campus-1';
 // Prima pp.163–165: residential base 25,000 and additive cap relief.
 export const RESIDENTIAL_RELIEF={park:250,largePark:2250,fountain:250,pond:1000,playground:1000,marina:9000,zoo:24000,sportsPark:4000,library:7000,museum:9000,cityHall:9000,mayorHouse:6000,stadium:125000};
 export function residentialCap(c,population=c.stats.population||0){

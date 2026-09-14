@@ -1,10 +1,10 @@
-import {outstandingLoanPayments} from './loan-debt.js?v=university-progression-1';
-import {REWARDS,rewardRoots,rewardActive,CITY_HALL_EFFECTS} from './rewards.js?v=university-progression-1';
-import {industrialJobs,industryPollution} from './industry.js?v=university-progression-1';
-import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=university-progression-1';
-import {POWER_PLANTS} from './power.js?v=university-progression-1';
-import {civicSpending,ordinanceRevenue} from './civic.js?v=university-progression-1';
-import {occupancy} from './utilities.js?v=university-progression-1';
+import {outstandingLoanPayments} from './loan-debt.js?v=university-campus-1';
+import {REWARDS,rewardSize,rewardRoots,rewardActive,CITY_HALL_EFFECTS} from './rewards.js?v=university-campus-1';
+import {industrialJobs,industryPollution} from './industry.js?v=university-campus-1';
+import {RECREATION,recreationRoots,recreationActive} from './recreation.js?v=university-campus-1';
+import {POWER_PLANTS} from './power.js?v=university-campus-1';
+import {civicSpending,ordinanceRevenue} from './civic.js?v=university-campus-1';
+import {occupancy} from './utilities.js?v=university-campus-1';
 // Loan terms from manual p. 91. Tax formula from p. 88; calibration constants are original approximations.
 export const SECTORS=['residential','commercial','industrial'];
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
@@ -39,7 +39,7 @@ export function recomputeEnvironment(c){
   if(t.terrain==='water')spread(t,2,i=>{shore[i]=1;});
  }
  for(const t of recreationRoots(c)){if(!recreationActive(c,t))continue;const d=RECREATION[t.type],center={x:t.x+Math.floor(d.size/2),y:t.y+Math.floor(d.size/2)};spread(center,d.radius,(i,f)=>{green[i]+=d.green*f;amenity[i]+=d.amenity*f;health[i]+=d.health*f;});}
- for(const t of rewardRoots(c)){if(!rewardActive(c,t))continue;const d=REWARDS[t.type];const center={x:t.x+Math.floor(d.size/2),y:t.y+Math.floor(d.size/2)};spread(center,d.radius,(i,f)=>{amenity[i]+=d.amenity*f;});if(t.type==='cityHall'){spread(center,CITY_HALL_EFFECTS.airRadius,(i,f)=>{air[i]+=CITY_HALL_EFFECTS.air*f;});spread(center,CITY_HALL_EFFECTS.waterRadius,(i,f)=>{pollution[i]+=CITY_HALL_EFFECTS.water*f;});}}
+ for(const t of rewardRoots(c)){if(!rewardActive(c,t))continue;const d=REWARDS[t.type];const center={x:t.x+Math.floor(rewardSize(t)/2),y:t.y+Math.floor(rewardSize(t)/2)};spread(center,d.radius,(i,f)=>{amenity[i]+=d.amenity*f;});if(t.type==='cityHall'){spread(center,CITY_HALL_EFFECTS.airRadius,(i,f)=>{air[i]+=CITY_HALL_EFFECTS.air*f;});spread(center,CITY_HALL_EFFECTS.waterRadius,(i,f)=>{pollution[i]+=CITY_HALL_EFFECTS.water*f;});}}
  let totalValue=0,totalAir=0,count=0;
  for(let i=0;i<tiles.length;i++){const t=tiles[i];t.recreationHealth=Math.min(5,health[i]);t.airPollution=clamp(air[i]-Math.min(20,green[i]),0,100);t.waterPollution=clamp(pollution[i]-Math.min(8,green[i]*.25),0,100);t.landValue=t.radiation?1:clamp(48+Math.min(30,amenity[i])+(shore[i]?8:0)+(t.access?10:0)-t.airPollution*.45-t.waterPollution*.15-t.waste*.3-(100-c.finance.roadCondition)*.15,1,100);t.environmentLandValue=t.landValue;if(SECTORS.includes(t.type)){totalValue+=t.landValue;totalAir+=t.airPollution;count++;}}
  return{averageLandValue:count?totalValue/count:0,averagePollution:count?totalAir/count:0};
