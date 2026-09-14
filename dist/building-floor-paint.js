@@ -1,4 +1,4 @@
-import {BUILDING_MATERIAL_LIMIT,encodePaintMaterial,decodePaintMaterial} from './building-paint-colors.js?v=architecture-collection-55';
+import {BUILDING_MATERIAL_LIMIT,encodePaintMaterial,decodePaintMaterial} from './building-paint-colors.js?v=architecture-collection-57';
 // One character per column, floor and side: 0 inherits column paint; 1–7
 // explicitly select the palette, including the original facade. Fixed bounds
 // make imported paint predictable without allowing arbitrary object keys.

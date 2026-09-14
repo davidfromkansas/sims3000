@@ -1,4 +1,4 @@
-import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-55';
+import {projectBuildingPoint} from './building-footprints.js?v=architecture-collection-57';
 // Shared tower solids keep rendering, lot coverage and ground picking aligned.
 export function towerSolids(d){const w=d.width*.085,depth=d.depth*.085,h=d.floors*.14,solids=[{w:w+.08,depth:depth+.08,z:0,height:.12,color:d.accent}];
  if(d.roof==='step'){const lower=Math.ceil(d.floors*.65);solids.push({w,depth,z:.12,height:lower*.14,color:d.facade,windows:true,floors:lower},{w:w*.7,depth:depth*.7,z:.12+lower*.14,height:(d.floors-lower)*.14,color:d.facade,windows:true,floors:d.floors-lower});}

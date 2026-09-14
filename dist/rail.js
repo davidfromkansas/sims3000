@@ -1,8 +1,8 @@
-import {civicSize} from './civic-footprints.js?v=architecture-collection-55';
-import {REWARDS,rewardSize} from './rewards.js?v=architecture-collection-55';
-import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=architecture-collection-55';
-import {tunnelEdges,routeLength} from './tunnels.js?v=architecture-collection-55';
-import {MinQueue} from './highway.js?v=architecture-collection-55';
+import {civicSize} from './civic-footprints.js?v=architecture-collection-57';
+import {REWARDS,rewardSize} from './rewards.js?v=architecture-collection-57';
+import {civicJobSites,civicJobCapacity} from './civic-jobs.js?v=architecture-collection-57';
+import {tunnelEdges,routeLength} from './tunnels.js?v=architecture-collection-57';
+import {MinQueue} from './highway.js?v=architecture-collection-57';
 export const STATIONS={trainStation:{name:'Train station',cost:500,upkeep:10},subwayStation:{name:'Subway station',cost:500,upkeep:10},railTransfer:{name:'Rail–subway connection',cost:1000,upkeep:20}};
 export function railNetwork(c){
  const tiles=c.tiles,N=tiles.length,n=Math.sqrt(N),enabled=c.transport.funding>0&&c.transport.condition>20&&c.transport.underfunded<6,edges=Array.from({length:N*2},()=>[]),present=i=>i<N?tiles[i].rail:tiles[i-N].subway;

@@ -1,4 +1,4 @@
-import {floorPaintKey} from './building-floor-paint.js?v=architecture-collection-55';
+import {floorPaintKey} from './building-floor-paint.js?v=architecture-collection-57';
 export const BUILDING_DETAILS=['Remove detail','Framed window','Entrance door','Vent grille','Window with ledge'];
 export function validateSurfaceDetails(value){if(typeof value!=='string'||value.length!==12000||/[^0-4]/.test(value))throw Error('Building details need 12,000 valid surface entries.');for(let i=4;i<value.length;i+=5)if(!['0','3'].includes(value[i]))throw Error('Only vent grilles can be placed on roofs.');return value;}
 export function detailFitsSurface(detail,face){return face.side!==4||detail===0||detail===3;}

@@ -1,4 +1,4 @@
-import {exportBuildingDesign,importBuildingDesign} from './building-designs.js?v=architecture-collection-55';
+import {exportBuildingDesign,importBuildingDesign} from './building-designs.js?v=architecture-collection-57';
 export const CUSTOM_BUILDING_LIBRARY_KEY='sims3000-custom-buildings-v1';
 export const MAX_CUSTOM_BUILDINGS=100;
 export const customBuildingIdentity=model=>JSON.stringify([model.name,model.footprint?.width??1,model.footprint?.height??1]);

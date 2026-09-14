@@ -187,3 +187,22 @@ console.log('PASS: composed roof-detail placement, draft isolation, exact anchor
  assert.equal(node('voxelPlane').value,'xz');assert.equal(node('voxelLevel').value,'5');assert.equal(node('voxelPlaneSlider').value,'5');assert.deepEqual(city.buildingDesigns[2],model);node('applyDesign').onclick();assert.deepEqual(city.buildingDesigns[2],model,'navigation-only changes do not change the applied design');
 }
 console.log('PASS: composed model widget updates the cross-section selector, position and slider without changing the building.');
+// A drag erases several wall/roof details as one recoverable edit.
+const {decalPolygonsOnFace}=await import('../dist/building-decals.js');
+for(const layered of [false,true])for(const roof of [false,true]){
+ const city=createCity(),layout=Array(100).fill(0);for(let x=2;x<=7;x++)layout[40+x]=layered?15:4;
+ const field=roof?'roofDetails':'decals',details=[2.1,4.1,6.1].map(u=>roof?{kind:1,u,v:4.1,width:1.5,depth:.8,plane:[0,0,.68]}:{kind:1,side:2,plane:5,u,z:.14,width:1.5,height:.28}),model={...defaultBuildingDesign(2),...(layered?{voxels:layout}:{blocks:layout}),[field]:details};city.buildingDesigns[2]=model;
+ showBuildingDesigner({city,dialog(){node('designSource').value='2';node('designFootprint').value='1x1';},apply(){},close(){}},2);
+ const canvas=node('designPreview');Object.assign(canvas,{getBoundingClientRect:()=>({left:0,top:0,width:256,height:384}),focus(){},setPointerCapture(){}});
+ node('decalSurface').value=roof?'roof':'wall';node('decalSurface').onchange();node('previewTool').value='erase-decal';node('previewTool').onchange();
+ const polygons=projectedBuildingSurfaces(model).flatMap(f=>roof?roofDetailPolygonsOnFace(f,details,model):decalPolygonsOnFace(f,details,model)),points=details.map((_,i)=>{const polygon=polygons.find(p=>p.owner===i).points.map(p=>projectBuildingPoint(p));return polygon.reduce((sum,[x,y])=>({x:sum.x+x/polygon.length,y:sum.y+y/polygon.length}),{x:0,y:0});}),event=p=>({button:0,pointerId:301,clientX:p.x,clientY:p.y,preventDefault(){}});
+ canvas.onpointerdown(event(points[0]));canvas.onpointermove(event(points[2]));node('applyDesign').onclick();assert.equal(city.buildingDesigns[2][field].length,3,'stroke has no effect before release');canvas.onpointerup({...event(points[2]),shiftKey:true});node('applyDesign').onclick();assert.equal(city.buildingDesigns[2][field].length,3,'Shift cancels the entire stroke');
+ canvas.onpointerdown(event(points[0]));canvas.onpointermove(event(points[2]));canvas.onpointerup(event(points[2]));node('applyDesign').onclick();assert.deepEqual(city.buildingDesigns[2][field],[],'fast stroke includes the middle detail');
+ node(layered?'voxelUndo':'blockUndo').onclick();node('applyDesign').onclick();assert.deepEqual(city.buildingDesigns[2][field],details,'one Undo restores all three details');
+ node(layered?'voxelRedo':'blockRedo').onclick();node('applyDesign').onclick();assert.deepEqual(city.buildingDesigns[2][field],[]);assert.deepEqual(validateSave(JSON.parse(serializeCity(city))).buildingDesigns[2],city.buildingDesigns[2]);
+ city.buildingDesigns[2]={...model,[field]:[...details,structuredClone(details[0])]};
+ showBuildingDesigner({city,dialog(){node('designSource').value='2';node('designFootprint').value='1x1';},apply(){},close(){}},2);
+ Object.assign(node('designPreview'),{getBoundingClientRect:()=>({left:0,top:0,width:256,height:384}),focus(){},setPointerCapture(){}});node('decalSurface').value=roof?'roof':'wall';node('decalSurface').onchange();node('previewTool').value='erase-decal';node('previewTool').onchange();
+ node('designPreview').onpointerdown(event(points[0]));node('designPreview').onpointermove(event(points[2]));node('designPreview').onpointerup(event(points[2]));node('applyDesign').onclick();assert.deepEqual(city.buildingDesigns[2][field],[details[0]],'a covered detail survives beneath the erased top placement');
+}
+console.log('PASS: composed multi-detail wall/roof erasure in block/layer modes, intervening-detail coverage, draft isolation, whole-stroke cancellation, one-action Undo/Redo and saves.');

@@ -1,9 +1,9 @@
-import {economicGrowthFits} from './economic-cap.js?v=architecture-collection-55';
-import {residentialGrowthFits} from './residential-cap.js?v=architecture-collection-55';
-import {abandonmentExplanation} from './abandonment-history.js?v=architecture-collection-55';
-import {landDensityLimit} from './economy.js?v=architecture-collection-55';
-import {needsEstablishedWater} from './water-service.js?v=architecture-collection-55';
-import {buildingLotMembers,isBuildingLotRoot} from './building-lots.js?v=architecture-collection-55';
+import {economicGrowthFits} from './economic-cap.js?v=architecture-collection-57';
+import {residentialGrowthFits} from './residential-cap.js?v=architecture-collection-57';
+import {abandonmentExplanation} from './abandonment-history.js?v=architecture-collection-57';
+import {landDensityLimit} from './economy.js?v=architecture-collection-57';
+import {needsEstablishedWater} from './water-service.js?v=architecture-collection-57';
+import {buildingLotMembers,isBuildingLotRoot} from './building-lots.js?v=architecture-collection-57';
 export function zoneGrowthConditions(c,t,members=buildingLotMembers(c,t)){
  const blocked=new Set();let demand=Infinity,limit=3;
  for(const u of members){if(u.radiation)blocked.add('radiation');if(u.rubble)blocked.add('rubble');if(u.fire)blocked.add('fire');if(!u.powered)blocked.add('power');if(!(u.access||u.industry==='farm'&&c.tiles[u.farmRoot]?.access))blocked.add('transport');if(u.waste>=20)blocked.add('garbage');if(needsEstablishedWater(u)&&!u.watered)blocked.add('water');if(u.level>landDensityLimit(u))blocked.add('landValue');
